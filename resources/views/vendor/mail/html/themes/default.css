@@ -1,0 +1,100 @@
+
+
+body, .wrapper {
+    background: linear-gradient(135deg, #faf9f7 80%, #ece7e1 100%) !important;
+    color: #4a3f35 !important;
+    font-family: 'Inter', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper, .inner-body {
+    background: #fff !important;
+    border-radius: 18px !important;
+    box-shadow: 0 4px 32px rgba(155,139,122,0.10);
+    max-width: 600px;
+    margin: 48px auto;
+    padding: 48px 36px;
+    border-left: 6px solid #9b8b7a;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif !important;
+    color: #9b8b7a !important;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 1.2em;
+    letter-spacing: 0.5px;
+}
+
+p, ul, li, span {
+    color: #4a3f35 !important;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1.2em;
+}
+
+a.button, .button, .button--primary {
+    background: #9b8b7a !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+    font-family: 'Inter', Arial, sans-serif;
+    font-weight: 600;
+    padding: 14px 36px;
+    text-decoration: none !important;
+    box-shadow: 0 2px 8px rgba(155,139,122,0.10);
+    border: none !important;
+    display: inline-block;
+    margin: 2em 0 1em 0;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    transition: background 0.2s;
+}
+
+a.button:hover, .button:hover, .button--primary:hover {
+    background: #7A6B5A !important;
+}
+
+.header {
+    background: transparent !important;
+    text-align: center;
+    padding: 0 0 24px 0;
+}
+
+.divider {
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #9b8b7a, #A8B5A0);
+    border-radius: 2px;
+    margin: 32px auto 24px auto;
+}
+
+.footer {
+    color: #b0adc5 !important;
+    font-size: 0.95rem;
+    text-align: center;
+    margin-top: 2em;
+    border-top: 1px solid #E8E0D8;
+    padding-top: 1.5em;
+    background: transparent !important;
+}
+
+img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin: 1.5em 0;
+}
+
+.panel {
+    border-left: 4px solid #9b8b7a;
+    background: #FAF9F7;
+    border-radius: 8px;
+    padding: 1.2em 1.5em;
+    margin: 2em 0;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #E8E0D8;
+    margin: 2em 0;
+}

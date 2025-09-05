@@ -1,0 +1,189 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Brand;
+use Illuminate\Http\Request;
+
+class ProductController extends Controller
+{
+    /**
+     * Display a listing of products
+     */
+    public function index(Request $request)
+    {
+        $query = Product::with(['category', 'brand'])->where('status', 'active');
+
+        // Filter by category (by slug only)
+        if ($request->has('category') && $request->category) {
+            $query->whereHas('category', function($q) use ($request) {
+                $q->where('slug', $request->category);
+            });
+        }
+
+        // Filter by brand
+        if ($request->has('brand') && $request->brand) {
+            $query->where('brand_id', $request->brand);
+        }
+
+        // Search by name or description
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('sku', 'like', "%{$search}%");
+            });
+        }
+
+        // Price range filter
+        if ($request->has('min_price') && $request->min_price) {
+            $query->where('price', '>=', $request->min_price);
+        }
+        if ($request->has('max_price') && $request->max_price) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        // Sort products
+        $sort = $request->get('sort', 'name');
+        
+        // Handle sorting with _desc suffix
+        if (str_ends_with($sort, '_desc')) {
+            $sort = str_replace('_desc', '', $sort);
+            $direction = 'desc';
+        } else {
+            $direction = 'asc';
+        }
+        
+        switch ($sort) {
+            case 'price':
+                $query->orderBy('price', $direction);
+                break;
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'popular':
+                $query->orderBy('views', 'desc');
+                break;
+            case 'name':
+            default:
+                $query->orderBy('name', $direction);
+                break;
+        }
+
+        $products = $query->paginate(12);
+        $categories = Category::all();
+        $brands = Brand::all();
+
+        // Get current category for display
+        $currentCategory = null;
+        if ($request->has('category') && $request->category) {
+            $currentCategory = Category::where('slug', $request->category)->first();
+        }
+
+        return view('frontend.products.index', compact('products', 'categories', 'brands', 'currentCategory'));
+    }
+
+    /**
+     * Display the specified product
+     */
+    public function show(Product $product)
+    {
+        $product->increment('views');
+        // Get related products - first try same category and brand, then same category, then same brand
+        $relatedProducts = Product::where('status', 'active')
+            ->where('id', '!=', $product->id) // Exclude current product
+            ->where(function($query) use ($product) {
+                $query->where(function($q) use ($product) {
+                    // Same category and brand
+                    $q->where('category_id', $product->category_id)
+                      ->where('brand_id', $product->brand_id);
+                })->orWhere(function($q) use ($product) {
+                    // Same category only
+                    $q->where('category_id', $product->category_id)
+                      ->where('brand_id', '!=', $product->brand_id);
+                })->orWhere(function($q) use ($product) {
+                    // Same brand only
+                    $q->where('brand_id', $product->brand_id)
+                      ->where('category_id', '!=', $product->category_id);
+                });
+            })
+            ->orderByRaw('
+                CASE 
+                    WHEN category_id = ? AND brand_id = ? THEN 1
+                    WHEN category_id = ? THEN 2
+                    WHEN brand_id = ? THEN 3
+                    ELSE 4
+                END
+            ', [$product->category_id, $product->brand_id, $product->category_id, $product->brand_id])
+            ->limit(4)
+            ->get();
+
+        // If we don't have enough related products, get more from the same category
+        if ($relatedProducts->count() < 4) {
+            $additionalProducts = Product::where('status', 'active')
+                ->where('id', '!=', $product->id)
+                ->whereNotIn('id', $relatedProducts->pluck('id'))
+                ->where('category_id', $product->category_id)
+                ->limit(4 - $relatedProducts->count())
+                ->get();
+            
+            $relatedProducts = $relatedProducts->merge($additionalProducts);
+        }
+
+        // If still not enough, get random products
+        if ($relatedProducts->count() < 4) {
+            $randomProducts = Product::where('status', 'active')
+                ->where('id', '!=', $product->id)
+                ->whereNotIn('id', $relatedProducts->pluck('id'))
+                ->inRandomOrder()
+                ->limit(4 - $relatedProducts->count())
+                ->get();
+            
+            $relatedProducts = $relatedProducts->merge($randomProducts);
+        }
+
+        // Prepare variants data for the view
+        $variants = [];
+        if ($product->hasVariants() && !empty($product->variants)) {
+            foreach ($product->variants as $variant) {
+                $variants[] = [
+                    'sku' => $variant['sku'],
+                    'price' => $variant['price'],
+                    'stock' => $variant['stock'] ?? 0,
+                    'image' => $variant['image'] ?? null,
+                    'attributes' => $variant['attributes'] ?? [],
+                    'label' => implode(', ', array_values($variant['attributes'] ?? [])),
+                ];
+            }
+        }
+
+        // If product is digital, return a different view
+        if ($product->is_digital) {
+            // Fetch related audiobooks
+            $audioBooks = $product->audioBooks()->get();
+
+            // Collect all trial audio files from JSON column
+            $trialAudioFiles = [];
+            foreach ($audioBooks as $audioBook) {
+                foreach ($audioBook->audio_files ?? [] as $file) {
+                    if (!empty($file['trial'])) {
+                        $trialAudioFiles[] = [
+                            'audio_book_title' => $audioBook->title,
+                            'track_title' => $file['title'],
+                            'file_url' => $file['file'],
+                            'duration' => $file['duration'] ?? null,
+                        ];
+                    }
+                }
+            }
+
+            return view('frontend.products.show-digital', compact('product', 'relatedProducts', 'variants', 'trialAudioFiles'));
+        }
+
+        // Default (physical) product view
+        return view('frontend.products.show', compact('product', 'relatedProducts', 'variants'));
+    }
+} 
