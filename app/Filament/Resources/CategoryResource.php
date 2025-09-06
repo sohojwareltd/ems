@@ -38,16 +38,18 @@ class CategoryResource extends Resource
                 ->required()
                 ->maxLength(255)
                 ->helperText('Unique URL slug for the category. Auto-generated from the name.'),
-            Forms\Components\Textarea::make('description')
-                ->helperText('Optional: Add a description for this category.'),
 
-            Select::make('parent_id')
+                Select::make('parent_id')
                 ->label('Parent Category')
                 ->options(function () {
                     return Category::whereNull('parent_id')
                         ->pluck('name', 'id')
                         ->toArray();
-                })
+                }),
+            Forms\Components\Textarea::make('description')
+                ->helperText('Optional: Add a description for this category.'),
+
+            
         ]);
     }
 
