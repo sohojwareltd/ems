@@ -28,24 +28,24 @@ class ProductResource extends Resource
                     Forms\Components\Tabs\Tab::make('General')
                         ->icon('heroicon-o-information-circle')
                         ->schema([
-                            Forms\Components\Toggle::make('has_variants')->label('Has Variants')->default(false)
-                                ->live()
-                                ->visible(fn($get) => !$get('is_digital'))
-                                ->helperText('Enable if this product has multiple variants.')->columnSpanFull(),
-                            Forms\Components\Toggle::make('is_digital')->label('Is Digital')->default(false)
-                                ->live()
-                                ->visible(fn($get) => !$get('has_variants'))
-                                ->afterStateUpdated(function ($state, callable $set) {
-                                    if ($state) {
-                                        $audioCategoryId = \App\Models\Category::where('slug', 'audiobooks')->value('id');
-                                        if ($audioCategoryId) {
-                                            $set('category_id', $audioCategoryId);
-                                        }
-                                    } else {
-                                        $set('category_id', null);
-                                    }
-                                })
-                                ->helperText('Enable if this product is digital.')->columnSpanFull(),
+                            // Forms\Components\Toggle::make('has_variants')->label('Has Variants')->default(false)
+                            //     ->live()
+                            //     ->visible(fn($get) => !$get('is_digital'))
+                            //     ->helperText('Enable if this product has multiple variants.')->columnSpanFull(),
+                            // Forms\Components\Toggle::make('is_digital')->label('Is Digital')->default(false)
+                            //     ->live()
+                            //     ->visible(fn($get) => !$get('has_variants'))
+                            //     ->afterStateUpdated(function ($state, callable $set) {
+                            //         if ($state) {
+                            //             $audioCategoryId = \App\Models\Category::where('slug', 'audiobooks')->value('id');
+                            //             if ($audioCategoryId) {
+                            //                 $set('category_id', $audioCategoryId);
+                            //             }
+                            //         } else {
+                            //             $set('category_id', null);
+                            //         }
+                            //     })
+                            //     ->helperText('Enable if this product is digital.')->columnSpanFull(),
                             Forms\Components\TextInput::make('name')->required()->maxLength(255)
                                 ->live(onBlur: true)
                                 ->afterStateUpdated(function (string $state, callable $set) {
@@ -64,8 +64,8 @@ class ProductResource extends Resource
                                 ->searchable()
                                 ->nullable()
                                 ->disabled(fn($get) => $get('is_digital'))
-                                ->helperText(fn($get) => $get('is_digital') 
-                                    ? 'Automatically set to Audiobooks for digital products.' 
+                                ->helperText(fn($get) => $get('is_digital')
+                                    ? 'Automatically set to Audiobooks for digital products.'
                                     : 'Assign a category for better organization.')
                                 ->afterStateHydrated(function ($state, $set, $get) {
                                     if ($get('is_digital')) {
@@ -82,12 +82,12 @@ class ProductResource extends Resource
                                     }
                                     return $state;
                                 }),
-                            Forms\Components\Select::make('brand_id')
-                                ->label('Brand')
-                                ->relationship('brand', 'name')
-                                ->searchable()
-                                ->nullable()
-                                ->helperText('Select the product brand.'),
+                            // Forms\Components\Select::make('brand_id')
+                            //     ->label('Brand')
+                            //     ->relationship('brand', 'name')
+                            //     ->searchable()
+                            //     ->nullable()
+                            //     ->helperText('Select the product brand.'),
                             Forms\Components\Select::make('audio_books')
                                 ->label('Attach Audio Books')
                                 ->relationship('audioBooks', 'title')
@@ -115,27 +115,29 @@ class ProductResource extends Resource
                             Forms\Components\TextInput::make('cost_per_item')->label('Cost per Item')->numeric()
                                 ->prefix('$')->helperText('Internal cost for profit calculation.'),
                         ]),
-                    Forms\Components\Tabs\Tab::make('Inventory')
-                        ->icon('heroicon-o-archive-box')
-                        ->visible(fn($get) => !$get('has_variants')  && !$get('is_digital'))
-                        ->schema([
-                            Forms\Components\TextInput::make('sku')->label('SKU')->maxLength(255)
-                                ->helperText('Stock Keeping Unit for inventory tracking.'),
-                            Forms\Components\TextInput::make('barcode')->label('Barcode')->maxLength(255)
-                                ->helperText('Product barcode (UPC, EAN, etc).'),
-                            Forms\Components\TextInput::make('stock')->label('Stock')->numeric()->default(0)
-                                ->helperText('Available quantity in stock.'),
-                            Forms\Components\Toggle::make('track_quantity')->label('Track Quantity')->default(true)
-                                ->helperText('Enable to track inventory quantity.'),
-                            Forms\Components\TextInput::make('weight')->label('Weight (kg)')->numeric()
-                                ->helperText('Weight for shipping calculation.'),
-                            Forms\Components\TextInput::make('height')->label('Height (cm)')->numeric(),
-                            Forms\Components\TextInput::make('width')->label('Width (cm)')->numeric(),
-                            Forms\Components\TextInput::make('length')->label('Length (cm)')->numeric(),
-                        ]),
+                    // Forms\Components\Tabs\Tab::make('Inventory')
+                    //     ->icon('heroicon-o-archive-box')
+                    //     ->visible(fn($get) => !$get('has_variants')  && !$get('is_digital'))
+                    //     ->schema([
+                    //         Forms\Components\TextInput::make('sku')->label('SKU')->maxLength(255)
+                    //             ->helperText('Stock Keeping Unit for inventory tracking.'),
+                    //         Forms\Components\TextInput::make('barcode')->label('Barcode')->maxLength(255)
+                    //             ->helperText('Product barcode (UPC, EAN, etc).'),
+                    //         Forms\Components\TextInput::make('stock')->label('Stock')->numeric()->default(0)
+                    //             ->helperText('Available quantity in stock.'),
+                    //         Forms\Components\Toggle::make('track_quantity')->label('Track Quantity')->default(true)
+                    //             ->helperText('Enable to track inventory quantity.'),
+                    //         Forms\Components\TextInput::make('weight')->label('Weight (kg)')->numeric()
+                    //             ->helperText('Weight for shipping calculation.'),
+                    //         Forms\Components\TextInput::make('height')->label('Height (cm)')->numeric(),
+                    //         Forms\Components\TextInput::make('width')->label('Width (cm)')->numeric(),
+                    //         Forms\Components\TextInput::make('length')->label('Length (cm)')->numeric(),
+                    //     ]),
                     Forms\Components\Tabs\Tab::make('Media')
                         ->icon('heroicon-o-photo')
                         ->schema([
+
+                            // Thumbnail upload (always visible)
                             Forms\Components\FileUpload::make('thumbnail')
                                 ->label('Thumbnail')
                                 ->image()
@@ -144,15 +146,39 @@ class ProductResource extends Resource
                                 ->helperText('Main product image (shown in listings).')
                                 ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
                                 ->maxSize(2048),
+
+                            // File Type Selector
+                            Forms\Components\Select::make('file_type')
+                                ->label('Select File Type')
+                                ->options([
+                                    'pdf' => 'PDF',
+                                    'ppt' => 'PowerPoint',
+                                ])
+                                ->reactive()
+                                ->required()
+                                ->dehydrated(false) // DB-তে save হবে না
+                                ->helperText('Choose what type of file you want to upload.'),
+
+                            // PDF Upload (only when PDF is selected)
                             Forms\Components\FileUpload::make('gallery')
-                                ->label('Gallery Images')
-                                ->image()
-                                ->multiple()
-                                ->directory('products/gallery')
-                                ->nullable()
-                                ->helperText('Additional images for the product gallery.')
-                                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
-                                ->maxSize(2048),
+                                ->label('Upload PDF File')
+                                ->directory('products/gallery/pdf')
+                                ->acceptedFileTypes(['application/pdf'])
+                                ->maxSize(5120)
+                                ->visible(fn(callable $get) => $get('file_type') === 'pdf')
+                                ->columnSpanFull(),
+
+                            // PowerPoint Upload (only when PPT is selected)
+                            Forms\Components\FileUpload::make('gallery')
+                                ->label('Upload PowerPoint File')
+                                ->directory('products/gallery/ppt')
+                                ->acceptedFileTypes([
+                                    'application/vnd.ms-powerpoint', // .ppt
+                                    'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
+                                ])
+                                ->maxSize(5120)
+                                ->visible(fn(callable $get) => $get('file_type') === 'ppt')
+                                ->columnSpanFull(),
                         ]),
                     Forms\Components\Tabs\Tab::make('Variants')
                         ->icon('heroicon-o-squares-2x2')
@@ -252,21 +278,20 @@ class ProductResource extends Resource
                     } elseif ($record->hasVariants()) {
                         return '<span class="inline-badge badge badge-success">' . $stock . '</span>';
                     } elseif ($record->hasVariants() == false && $record->getStock() > 0) {
-                        return '<span class="inline-badge badge badge-danger">'.$stock.'</span>';
+                        return '<span class="inline-badge badge badge-danger">' . $stock . '</span>';
                     } else {
                         return '<span class="inline-badge badge badge-danger">Out of Stock</span>';
                     }
-                 
                 })
                 ->html()
                 ->tooltip('Shows total stock (sum of all variants if applicable)'),
             Tables\Columns\TextColumn::make('status')->sortable(),
-            Tables\Columns\TextColumn::make('is_digital')->label('Type')->sortable()->formatStateUsing(function ($state) {
-                return $state ? 'Digital' : 'Physical';
-            }),
-            Tables\Columns\TextColumn::make('has_variants')->label('Has Variants')->sortable()->formatStateUsing(function ($state) {
-                return $state ? 'Yes' : 'No';
-            }),
+            // Tables\Columns\TextColumn::make('is_digital')->label('Type')->sortable()->formatStateUsing(function ($state) {
+            //     return $state ? 'Digital' : 'Physical';
+            // }),
+            // Tables\Columns\TextColumn::make('has_variants')->label('Has Variants')->sortable()->formatStateUsing(function ($state) {
+            //     return $state ? 'Yes' : 'No';
+            // }),
             Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
         ])->filters([
             Tables\Filters\SelectFilter::make('status')
