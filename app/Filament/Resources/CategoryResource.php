@@ -7,10 +7,13 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Resources\ResourcePermissionTrait;
 use Illuminate\Support\Str;
+use Filament\Forms\Components\Select;
+
 
 class CategoryResource extends Resource
 {
@@ -37,6 +40,14 @@ class CategoryResource extends Resource
                 ->helperText('Unique URL slug for the category. Auto-generated from the name.'),
             Forms\Components\Textarea::make('description')
                 ->helperText('Optional: Add a description for this category.'),
+
+            Select::make('parent_id')
+                ->label('Parent Category')
+                ->options(function () {
+                    return Category::whereNull('parent_id')
+                        ->pluck('name', 'id')
+                        ->toArray();
+                })
         ]);
     }
 
@@ -44,15 +55,23 @@ class CategoryResource extends Resource
     {
         return $table->columns([
             Tables\Columns\TextColumn::make('name')->searchable(),
+            Tables\Columns\TextColumn::make('parent.name')->label('Parent Category')->searchable(),
             Tables\Columns\TextColumn::make('slug')->searchable(),
             Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
-        ])->actions([
+        ])->filters([
+            Filter::make('parent_id')
+                ->label('Show Parent Category')
+                ->query(fn ( $query) => $query->whereNull('parent_id'))
+        ])
+    
+        ->actions([
             Tables\Actions\EditAction::make(),
         ])->bulkActions([
             Tables\Actions\BulkActionGroup::make([
                 Tables\Actions\DeleteBulkAction::make(),
             ]),
         ]);
+
     }
 
     public static function getRelations(): array
@@ -68,4 +87,4 @@ class CategoryResource extends Resource
             'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
     }
-} 
+}
