@@ -47,21 +47,25 @@ class EssayResource extends Resource
                                 ->label('Resource')
                                 ->relationship('resource', 'title')
                                 ->searchable()
+                                ->required()
                                 ->helperText('Assign a resource for better organization.'),
                              Forms\Components\Select::make('qualiification_id')
                                 ->label('Qualiification')
                                 ->relationship('qualiification', 'title')
                                 ->searchable()
+                                ->required()
                                 ->helperText('Assign a qualiification for better organization.'),
                              Forms\Components\Select::make('subject_id')
                                 ->label('Subject')
                                 ->relationship('subject', 'title')
                                 ->searchable()
+                                ->required()
                                 ->helperText('Assign a subject for better organization.'),
                              Forms\Components\Select::make('examboard_id')
                                 ->label('Examboard')
                                 ->relationship('examboard', 'title')
                                 ->searchable()
+                                ->required()
                                 ->helperText('Assign a examboard for better organization.'),
                                 
                             Forms\Components\Textarea::make('description')
@@ -85,7 +89,13 @@ class EssayResource extends Resource
                             Forms\Components\FileUpload::make('thumbnail')
                                ->label('Thumbnail')
                                 ->directory('products/gallery/pdf')
+                                ->acceptedFileTypes(['image/*'])
+                                ->maxSize(5120),
+                            Forms\Components\FileUpload::make('file')
+                               ->label('PDF File')
+                                ->directory('products/essay')
                                 ->acceptedFileTypes(['application/pdf'])
+                                ->required()
                                 ->maxSize(5120),
                         ]),
                     Forms\Components\Tabs\Tab::make('SEO')

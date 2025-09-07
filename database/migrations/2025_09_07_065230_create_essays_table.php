@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('examboard_id');
             $table->unsignedBigInteger('resource_type_id');
             $table->string('thumbnail')->nullable();
+            $table->string('file');
             $table->enum('status', ['draft', 'active', 'archived'])->default('draft');
             $table->timestamp('published_at')->nullable();
             $table->json('tags')->nullable();
