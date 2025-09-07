@@ -18,8 +18,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class EssayResource extends Resource
 {
     protected static ?string $model = Essay::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Model Essays';
+    protected static ?string $navigationGroup = 'Catalogue';
+    protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form
     {

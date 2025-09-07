@@ -18,7 +18,7 @@ class ExamboardResource extends Resource
     protected static ?string $model = Examboard::class;
     protected static ?string $navigationLabel = 'Examboard';
     protected static ?string $navigationGroup = 'Catalogue';
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 5;
 
     // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

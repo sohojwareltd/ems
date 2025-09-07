@@ -18,7 +18,7 @@ class ResourceResource extends FilamentResource
     protected static ?string $model = Resource::class;
     protected static ?string $navigationLabel = 'Resource';
     protected static ?string $navigationGroup = 'Catalogue';
-    protected static ?int $navigationSort = 7;
+    protected static ?int $navigationSort = 4;
 
     // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
