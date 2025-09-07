@@ -58,19 +58,19 @@
                     @endif
                 @endif
             </div>
-            @if($product->getStock() == 0 && !$product->is_digital)
+            {{-- @if($product->getStock() == 0 && !$product->is_digital)
                 <button class="btn btn-premium btn-add-to-cart w-100 py-2" disabled>
                     <i class="bi bi-cart-x me-2"></i> Out of Stock
                 </button>
-            @elseif(method_exists($product, 'hasVariants') && $product->hasVariants())
+            @elseif(method_exists($product, 'hasVariants') && $product->hasVariants()) --}}
                 <a href="{{ route('products.show', $product) }}" class="btn btn-premium btn-add-to-cart w-100 py-2">
                     <i class="bi bi-sliders me-2"></i> Select Options
                 </a>
-            @else
+            {{-- @else
                 <button class="btn btn-premium btn-add-to-cart w-100 py-2" onclick="addToCart({{ $product->id }})">
                     <i class="bi bi-cart-plus me-2"></i> Add to Cart
                 </button>
-            @endif
+            @endif --}}
         </div>
     </div>
 </div> 
