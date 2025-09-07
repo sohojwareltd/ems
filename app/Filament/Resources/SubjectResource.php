@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class SubjectResource extends Resource
 {
     protected static ?string $model = Subject::class;
-        protected static ?string $navigationLabel = 'Add Subject';
+    protected static ?string $navigationLabel = 'Subject';
     protected static ?string $navigationGroup = 'Catalogue';
     protected static ?int $navigationSort = 5;
 

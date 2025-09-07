@@ -11,31 +11,32 @@ class Essay extends Model
 
 
     public function category()
-{
-    return $this->belongsTo(\App\Models\Category::class, 'category_id');
-}
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 
-public function brand()
-{
-    return $this->belongsTo(\App\Models\Brand::class, 'brand_id');
-}
-public function resource()
-{
-    return $this->belongsTo(\App\Models\Resource_type::class, 'resource_type_id');
-}
-public function qualiification()
-{
-    return $this->belongsTo(\App\Models\Qualification::class, 'qualiification_id');
-}
-public function subject()
-{
-    return $this->belongsTo(\App\Models\Subject::class, 'subject_id');
-}
-public function examboard()
-{
-    return $this->belongsTo(\App\Models\Examboard::class, 'examboard_id');
-}
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
 
+    public function resource()
+    {
+        return $this->belongsTo(Resource::class, 'resource_type_id');
+    }
 
+    public function qualiification()
+    {
+        return $this->belongsTo(Qualification::class, 'qualiification_id');
+    }
 
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class, 'subject_id');
+    }
+    
+    public function examboard()
+    {
+        return $this->belongsTo(Examboard::class, 'examboard_id');
+    }
 }

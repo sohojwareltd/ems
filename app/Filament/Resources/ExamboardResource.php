@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ExamboardResource extends Resource
 {
     protected static ?string $model = Examboard::class;
-           protected static ?string $navigationLabel = 'Add Examboard';
+    protected static ?string $navigationLabel = 'Examboard';
     protected static ?string $navigationGroup = 'Catalogue';
     protected static ?int $navigationSort = 6;
 

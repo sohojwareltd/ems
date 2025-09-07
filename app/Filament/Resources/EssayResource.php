@@ -41,6 +41,28 @@ class EssayResource extends Resource
                                 ->required()
                                 ->maxLength(255)
                                 ->helperText('Unique URL slug for the product. Auto-generated from the name.'),
+
+                            Forms\Components\Select::make('resource_id')
+                                ->label('Resource')
+                                ->relationship('resource', 'title')
+                                ->searchable()
+                                ->helperText('Assign a resource for better organization.'),
+                             Forms\Components\Select::make('qualiification_id')
+                                ->label('Qualiification')
+                                ->relationship('qualiification', 'title')
+                                ->searchable()
+                                ->helperText('Assign a qualiification for better organization.'),
+                             Forms\Components\Select::make('subject_id')
+                                ->label('Subject')
+                                ->relationship('subject', 'title')
+                                ->searchable()
+                                ->helperText('Assign a subject for better organization.'),
+                             Forms\Components\Select::make('examboard_id')
+                                ->label('Examboard')
+                                ->relationship('examboard', 'title')
+                                ->searchable()
+                                ->helperText('Assign a examboard for better organization.'),
+                                
                             Forms\Components\Textarea::make('description')
                                 ->helperText('Detailed product description.'),
                            
@@ -64,28 +86,6 @@ class EssayResource extends Resource
                                 ->directory('products/gallery/pdf')
                                 ->acceptedFileTypes(['application/pdf'])
                                 ->maxSize(5120),
-
-                             Forms\Components\Select::make('resource_type_id')
-                                ->label('Resource')
-                                ->relationship('resource', 'title')
-                                ->searchable()
-                                ->helperText('Assign a resource for better organization.'),
-                             Forms\Components\Select::make('qualiification_id')
-                                ->label('Qualiification')
-                                ->relationship('qualiification', 'title')
-                                ->searchable()
-                                ->helperText('Assign a qualiification for better organization.'),
-                             Forms\Components\Select::make('subject_id')
-                                ->label('Subject')
-                                ->relationship('subject', 'title')
-                                ->searchable()
-                                ->helperText('Assign a subject for better organization.'),
-                             Forms\Components\Select::make('examboard_id')
-                                ->label('Examboard')
-                                ->relationship('examboard', 'title')
-                                ->searchable()
-                                ->helperText('Assign a examboard for better organization.'),
-
                         ]),
                     Forms\Components\Tabs\Tab::make('SEO')
                         ->icon('heroicon-o-magnifying-glass')

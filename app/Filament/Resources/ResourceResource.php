@@ -4,20 +4,19 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ResourceResource\Pages;
 use App\Filament\Resources\ResourceResource\RelationManagers;
-use App\Models\Resource as ResourceModel;
-use App\Models\Resource_type;
+use App\Models\Resource;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Filament\Resources\Resource as FilamentResource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ResourceResource extends Resource
+class ResourceResource extends FilamentResource
 {
-    protected static ?string $model = Resource_type::class;
-               protected static ?string $navigationLabel = 'Add Resource';
+    protected static ?string $model = Resource::class;
+    protected static ?string $navigationLabel = 'Resource';
     protected static ?string $navigationGroup = 'Catalogue';
     protected static ?int $navigationSort = 7;
 

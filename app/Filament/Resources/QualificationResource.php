@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class QualificationResource extends Resource
 {
     protected static ?string $model = Qualification::class;
-     protected static ?string $navigationLabel = 'Add Qualifications';
+    protected static ?string $navigationLabel = 'Qualifications';
     protected static ?string $navigationGroup = 'Catalogue';
     protected static ?int $navigationSort = 4;
 
