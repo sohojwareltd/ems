@@ -84,35 +84,25 @@ class ProductResource extends Resource
                         ->schema([
                             // Thumbnail upload
                             Forms\Components\FileUpload::make('thumbnail')
-                                ->label('Thumbnail')
-                                ->image()
-                                ->directory('products/thumbnails')
-                                ->nullable()
-                                ->helperText('Main product image (shown in listings).')
-                                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
-                                ->maxSize(2048)
-                                ->columnSpanFull(),
-
-                            // File Type Selector
-                            Forms\Components\Select::make('file_type')
-                                ->label('Select File Type')
-                                ->options([
-                                    'pdf' => 'PDF',
-                                    'ppt' => 'PowerPoint',
-                                ])
-                                ->reactive()
-                                ->required()
-                                ->dehydrated(false) // DB-তে save হবে না
-                                ->helperText('Choose what type of file you want to upload.'),
-
-                            // PDF Upload (only when PDF is selected)
-                            Forms\Components\FileUpload::make('gallery')
-                                ->label('Upload PDF File')
+                               ->label('Thumbnail')
                                 ->directory('products/gallery/pdf')
                                 ->acceptedFileTypes(['application/pdf'])
-                                ->maxSize(5120)
-                                ->visible(fn(callable $get) => $get('file_type') === 'pdf')
-                                ->columnSpanFull(),
+                                ->maxSize(5120),
+
+                            // File Type Selector
+                            // Forms\Components\Select::make('file_type')
+                            //     ->label('Select File Type')
+                            //     ->options([
+                            //         'pdf' => 'PDF',
+                            //         'ppt' => 'PowerPoint',
+                            //     ])
+                            //     ->reactive()
+                            //     ->required()
+                            //     ->dehydrated(false) // DB-তে save হবে না
+                            //     ->helperText('Choose what type of file you want to upload.'),
+
+                            // PDF Upload (only when PDF is selected)
+                        
 
                             // PowerPoint Upload (only when PPT is selected)
                             Forms\Components\FileUpload::make('gallery')
@@ -122,9 +112,7 @@ class ProductResource extends Resource
                                     'application/vnd.ms-powerpoint', // .ppt
                                     'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
                                 ])
-                                ->maxSize(5120)
-                                ->visible(fn(callable $get) => $get('file_type') === 'ppt')
-                                ->columnSpanFull(),
+                                ->maxSize(5120),
                         ]),
                     Forms\Components\Tabs\Tab::make('SEO')
                         ->icon('heroicon-o-magnifying-glass')

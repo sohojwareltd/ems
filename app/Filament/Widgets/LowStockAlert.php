@@ -66,35 +66,35 @@ class LowStockAlert extends BaseWidget
                 Tables\Columns\TextColumn::make('stock')
                     ->label('Current Stock')
                     ->formatStateUsing(function ($record) {
-                        if ($record->hasVariants()) {
-                            $minStock = collect($record->variants)
-                                ->pluck('stock')
-                                ->filter()
-                                ->min();
-                            return $minStock ?? 0;
-                        }
+                        // if ($record->hasVariants()) {
+                        //     $minStock = collect($record->variants)
+                        //         ->pluck('stock')
+                        //         ->filter()
+                        //         ->min();
+                        //     return $minStock ?? 0;
+                        // }
                         return $record->stock;
                     })
                     ->sortable()
-                    ->color(function ($record) {
-                        $stock = $record->hasVariants() 
-                            ? collect($record->variants)->pluck('stock')->filter()->min() ?? 0
-                            : $record->stock;
-                        return $stock <= 5 ? 'danger' : 'warning';
-                    })
+                    // ->color(function ($record) {
+                    //     $stock = $record->hasVariants() 
+                    //         ? collect($record->variants)->pluck('stock')->filter()->min() ?? 0
+                    //         : $record->stock;
+                    //     return $stock <= 5 ? 'danger' : 'warning';
+                    // })
                     ->weight('bold'),
                 
                 Tables\Columns\TextColumn::make('price')
                     ->label('Price')
                     ->formatStateUsing(function ($record) {
-                        if ($record->hasVariants()) {
-                            $minPrice = $record->getMinPrice();
-                            $maxPrice = $record->getMaxPrice();
-                            if ($minPrice == $maxPrice) {
-                                return '$' . number_format($minPrice, 2);
-                            }
-                            return '$' . number_format($minPrice, 2) . ' - $' . number_format($maxPrice, 2);
-                        }
+                        // if ($record->hasVariants()) {
+                        //     $minPrice = $record->getMinPrice();
+                        //     $maxPrice = $record->getMaxPrice();
+                        //     if ($minPrice == $maxPrice) {
+                        //         return '$' . number_format($minPrice, 2);
+                        //     }
+                        //     return '$' . number_format($minPrice, 2) . ' - $' . number_format($maxPrice, 2);
+                        // }
                         return '$' . number_format($record->price, 2);
                     })
                     ->sortable(),
@@ -107,14 +107,14 @@ class LowStockAlert extends BaseWidget
                     ->label('Brand')
                     ->sortable(),
                 
-                Tables\Columns\IconColumn::make('has_variants')
-                    ->label('Type')
-                    ->boolean()
-                    ->trueIcon('heroicon-o-squares-2x2')
-                    ->falseIcon('heroicon-o-cube')
-                    ->trueColor('info')
-                    ->falseColor('gray')
-                    ->getStateUsing(fn ($record) => $record->hasVariants()),
+                // Tables\Columns\IconColumn::make('has_variants')
+                //     ->label('Type')
+                //     ->boolean()
+                //     ->trueIcon('heroicon-o-squares-2x2')
+                //     ->falseIcon('heroicon-o-cube')
+                //     ->trueColor('info')
+                //     ->falseColor('gray')
+                //     ->getStateUsing(fn ($record) => $record->hasVariants()),
                 
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Active')
