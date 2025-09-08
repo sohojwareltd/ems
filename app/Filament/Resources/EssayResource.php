@@ -43,34 +43,34 @@ class EssayResource extends Resource
                                 ->maxLength(255)
                                 ->helperText('Unique URL slug for the product. Auto-generated from the name.'),
 
-                            Forms\Components\Select::make('resource_id')
+                            Forms\Components\Select::make('resource_type_id')
                                 ->label('Resource')
                                 ->relationship('resource', 'title')
                                 ->searchable()
                                 ->required()
                                 ->helperText('Assign a resource for better organization.'),
-                             Forms\Components\Select::make('qualiification_id')
+                            Forms\Components\Select::make('qualiification_id')
                                 ->label('Qualiification')
                                 ->relationship('qualiification', 'title')
                                 ->searchable()
                                 ->required()
                                 ->helperText('Assign a qualiification for better organization.'),
-                             Forms\Components\Select::make('subject_id')
+                            Forms\Components\Select::make('subject_id')
                                 ->label('Subject')
                                 ->relationship('subject', 'title')
                                 ->searchable()
                                 ->required()
                                 ->helperText('Assign a subject for better organization.'),
-                             Forms\Components\Select::make('examboard_id')
+                            Forms\Components\Select::make('examboard_id')
                                 ->label('Examboard')
                                 ->relationship('examboard', 'title')
                                 ->searchable()
                                 ->required()
                                 ->helperText('Assign a examboard for better organization.'),
-                                
+
                             Forms\Components\Textarea::make('description')
                                 ->helperText('Detailed product description.'),
-                           
+
                             Forms\Components\Select::make('status')
                                 ->options([
                                     'draft' => 'Draft',
@@ -81,18 +81,34 @@ class EssayResource extends Resource
                                 ->required()
                                 ->helperText('Set the product status.')
                         ]),
-                   
+
                     Forms\Components\Tabs\Tab::make('Media')
                         ->icon('heroicon-o-photo')
                         ->schema([
                             // Thumbnail upload
+
                             Forms\Components\FileUpload::make('thumbnail')
-                               ->label('Thumbnail')
-                                ->directory('products/gallery/pdf')
-                                ->acceptedFileTypes(['image/*'])
+                                ->label('Thumbnail')
+                                ->image()
+                                ->nullable()
+                                ->directory('products/thumbnails')
+                                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
                                 ->maxSize(5120),
+
+
+                            Forms\Components\FileUpload::make('gallery')
+                                ->label('Gallery Images')
+                                ->image()
+                                ->multiple()
+                                ->directory('products/gallery')
+                                ->nullable()
+                                ->helperText('Additional images for the product gallery.')
+                                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
+                                ->maxSize(2048),
+
+
                             Forms\Components\FileUpload::make('file')
-                               ->label('PDF File')
+                                ->label('PDF File')
                                 ->directory('products/essay')
                                 ->acceptedFileTypes(['application/pdf'])
                                 ->required()
@@ -131,12 +147,12 @@ class EssayResource extends Resource
                 Tables\Columns\TextColumn::make('views')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('category_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('brand_id')
-                    ->numeric()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('category_id')
+                //     ->numeric()
+                //     ->sortable(),
+                // Tables\Columns\TextColumn::make('brand_id')
+                //     ->numeric()
+                //     ->sortable(),
                 Tables\Columns\TextColumn::make('thumbnail')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')

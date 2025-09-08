@@ -43,12 +43,37 @@ class ProductResource extends Resource
                                 ->helperText('Unique URL slug for the product. Auto-generated from the name.'),
                             Forms\Components\Textarea::make('description')
                                 ->helperText('Detailed product description.'),
-                            Forms\Components\Select::make('category_id')
-                                ->label('Category')
-                                ->relationship('category', 'name')
+                            // Forms\Components\Select::make('category_id')
+                            //     ->label('Category')
+                            //     ->relationship('category', 'name')
+                            //     ->searchable()
+                            //     ->nullable()
+                            //     ->helperText('Assign a category for better organization.'),
+                            Forms\Components\Select::make('resource_id')
+                                ->label('Resource')
+                                ->relationship('resource', 'title')
                                 ->searchable()
-                                ->nullable()
-                                ->helperText('Assign a category for better organization.'),
+                                ->required()
+                                ->helperText('Assign a resource for better organization.'),
+                             Forms\Components\Select::make('qualiification_id')
+                                ->label('Qualiification')
+                                ->relationship('qualiification', 'title')
+                                ->searchable()
+                                ->required()
+                                ->helperText('Assign a qualiification for better organization.'),
+                             Forms\Components\Select::make('subject_id')
+                                ->label('Subject')
+                                ->relationship('subject', 'title')
+                                ->searchable()
+                                ->required()
+                                ->helperText('Assign a subject for better organization.'),
+                             Forms\Components\Select::make('examboard_id')
+                                ->label('Examboard')
+                                ->relationship('examboard', 'title')
+                                ->searchable()
+                                ->required()
+                                ->helperText('Assign a examboard for better organization.'),
+
                             Forms\Components\Select::make('status')
                                 ->options([
                                     'draft' => 'Draft',
@@ -84,10 +109,23 @@ class ProductResource extends Resource
                         ->schema([
                             // Thumbnail upload
                             Forms\Components\FileUpload::make('thumbnail')
-                               ->label('Thumbnail')
-                                ->directory('products/gallery/pdf')
-                                ->acceptedFileTypes(['application/pdf'])
+                                ->label('Thumbnail')
+                                ->image()
+                                ->nullable()
+                                ->directory('products/thumbnails')
+                                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
                                 ->maxSize(5120),
+
+
+                            Forms\Components\FileUpload::make('gallery')
+                                ->label('Gallery Images')
+                                ->image()
+                                ->multiple()
+                                ->directory('products/gallery')
+                                ->nullable()
+                                ->helperText('Additional images for the product gallery.')
+                                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
+                                ->maxSize(2048),
 
                             // File Type Selector
                             // Forms\Components\Select::make('file_type')
@@ -102,17 +140,26 @@ class ProductResource extends Resource
                             //     ->helperText('Choose what type of file you want to upload.'),
 
                             // PDF Upload (only when PDF is selected)
-                        
 
+
+
+
+                            Forms\Components\FileUpload::make('pdf_file')
+                                ->label('Upload PDF File')
+                                ->directory('products/gallery/pdf')
+                                ->acceptedFileTypes(['application/pdf'])
+                                ->maxSize(5120)
+                                ->required(),
                             // PowerPoint Upload (only when PPT is selected)
-                            Forms\Components\FileUpload::make('gallery')
+                            Forms\Components\FileUpload::make('ppt_file')
                                 ->label('Upload PowerPoint File')
                                 ->directory('products/gallery/ppt')
                                 ->acceptedFileTypes([
                                     'application/vnd.ms-powerpoint', // .ppt
                                     'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
                                 ])
-                                ->maxSize(5120),
+                                ->maxSize(5120)
+                                ->required(),
                         ]),
                     Forms\Components\Tabs\Tab::make('SEO')
                         ->icon('heroicon-o-magnifying-glass')
@@ -144,7 +191,8 @@ class ProductResource extends Resource
             Tables\Columns\TextColumn::make('price')
                 ->label('Price')
                 ->sortable()
-                ->formatStateUsing(fn($state, $record) =>
+                ->formatStateUsing(
+                    fn($state, $record) =>
                     '<span class="inline-badge badge badge-success">$' . number_format($record->price, 2) . '</span>'
                 )
                 ->html()

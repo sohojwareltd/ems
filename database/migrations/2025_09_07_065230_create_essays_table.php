@@ -17,12 +17,13 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->bigInteger('views')->default(0);
-            $table->unsignedBigInteger('qualiification_id');
-            $table->unsignedBigInteger('subject_id');
-            $table->unsignedBigInteger('examboard_id');
-            $table->unsignedBigInteger('resource_type_id');
+            $table->unsignedBigInteger('qualiification_id')->nullable();
+            $table->unsignedBigInteger('subject_id')->nullable();
+            $table->unsignedBigInteger('examboard_id')->nullable();
+            $table->unsignedBigInteger('resource_type_id')->nullable();
             $table->string('thumbnail')->nullable();
-            $table->string('file');
+            $table->json('gallery')->nullable();
+            $table->string('file')->nullable();
             $table->enum('status', ['draft', 'active', 'archived'])->default('draft');
             $table->timestamp('published_at')->nullable();
             $table->json('tags')->nullable();

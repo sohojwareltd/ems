@@ -8,6 +8,13 @@ class Essay extends Model
 {
     protected $guarded = [];
 
+      protected $casts = [
+        'gallery' => 'array',
+        'tags' => 'array',
+        'options' => 'array',
+        'published_at' => 'datetime',
+    ];
+
 
 
     public function category()
@@ -38,5 +45,23 @@ class Essay extends Model
     public function examboard()
     {
         return $this->belongsTo(Examboard::class, 'examboard_id');
+    }
+
+
+       /**
+     * Get gallery images for frontend display
+     */
+    public function getGalleryUrlsAttribute(): array
+    {
+        if (!$this->gallery || !is_array($this->gallery)) {
+            return [];
+        }
+
+        return array_map(function ($image) {
+            if (filter_var($image, FILTER_VALIDATE_URL)) {
+                return $image;
+            }
+            return asset('storage/' . $image);
+        }, $this->gallery);
     }
 }

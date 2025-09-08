@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\SelfHealingSlug;
 
@@ -54,18 +55,39 @@ class Product extends Model
             }
             return asset('storage/' . $this->thumbnail);
         }
-        
+
         return 'https://via.placeholder.com/300x200?text=No+Image';
     }
-public function category()
-{
-    return $this->belongsTo(\App\Models\Category::class, 'category_id');
-}
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 
-public function brand()
-{
-    return $this->belongsTo(\App\Models\Brand::class, 'brand_id');
-}
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
+
+
+    public function resource()
+    {
+        return $this->belongsTo(Resource::class, 'resource_type_id');
+    }
+
+    public function qualiification()
+    {
+        return $this->belongsTo(Qualification::class, 'qualiification_id');
+    }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class, 'subject_id');
+    }
+
+    public function examboard()
+    {
+        return $this->belongsTo(Examboard::class, 'examboard_id');
+    }
 
     /**
      * Get gallery images for frontend display
@@ -76,7 +98,7 @@ public function brand()
             return [];
         }
 
-        return array_map(function($image) {
+        return array_map(function ($image) {
             if (filter_var($image, FILTER_VALIDATE_URL)) {
                 return $image;
             }

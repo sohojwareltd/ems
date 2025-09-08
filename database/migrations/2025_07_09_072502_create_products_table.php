@@ -19,8 +19,14 @@ return new class extends Migration
             $table->bigInteger('views')->default(0);
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('brand_id')->nullable();
+            $table->unsignedBigInteger('qualiification_id')->nullable();
+            $table->unsignedBigInteger('subject_id')->nullable();
+            $table->unsignedBigInteger('examboard_id')->nullable();
+            $table->unsignedBigInteger('resource_type_id')->nullable();
             $table->string('thumbnail')->nullable();
             $table->json('gallery')->nullable();
+            $table->string('pdf_file')->nullable();
+            $table->string('ppt_file')->nullable();
             $table->decimal('price', 10, 2)->default(0);
             $table->decimal('compare_at_price', 10, 2)->nullable();
             $table->decimal('cost_per_item', 10, 2)->nullable();
