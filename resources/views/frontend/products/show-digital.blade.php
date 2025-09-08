@@ -68,33 +68,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Trial Audio Files -->
-    @if(!empty($trialAudioFiles))
-        <div class="row mt-5">
-            <div class="col-12">
-                <h4 class="mb-3"><i class="bi bi-music-note-list"></i> Listen to Sample Tracks</h4>
-                <div class="list-group">
-                    @foreach($trialAudioFiles as $audio)
-                        <div class="list-group-item d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-2">
-                            <div>
-                                <strong>{{ $audio['audio_book_title'] }}</strong>
-                                <span class="text-muted ms-2">{{ $audio['track_title'] }}</span>
-                                @if($audio['duration'])
-                                    <span class="badge bg-secondary ms-2">{{ gmdate('i:s', $audio['duration']) }}</span>
-                                @endif
-                            </div>
-                            <audio controls style="width: 300px; max-width: 100%; margin-top: 0.5rem;">
-                                <source src="{{ asset('storage/' . $audio['file_url']) }}" type="audio/mpeg">
-                                Your browser does not support the audio element.
-                            </audio>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    @endif
-
     <!-- Related Products -->
     @if($relatedProducts->count() > 0)
         <div class="row mt-5">

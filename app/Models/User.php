@@ -164,48 +164,5 @@ class User extends Authenticatable implements FilamentUser
     }
 
 
-    public function audioBooks()
-    {
-        return $this->belongsToMany(AudioBook::class, 'audio_book_user')->withTimestamps()->withPivot('unlocked_at');
-    }
 
-    public function incrementAudioBookDownloadCount($audioBookId, $file)
-    {
-        $pivot = $this->audioBooks()->where('audio_book_id', $audioBookId)->first()?->pivot;
-        if (!$pivot) return 0;
-        $counts = $pivot->download_count ? json_decode($pivot->download_count, true) : [];
-        $counts[$file] = ($counts[$file] ?? 0) + 1;
-        $pivot->download_count = json_encode($counts);
-        $pivot->save();
-        return $counts[$file];
-    }
-
-    public function getAudioBookDownloadCount($audioBookId, $file)
-    {
-        $pivot = $this->audioBooks()->where('audio_book_id', $audioBookId)->first()?->pivot;
-        if (!$pivot) return 0;
-        $counts = $pivot->download_count ? json_decode($pivot->download_count, true) : [];
-        return $counts[$file] ?? 0;
-    }
-
-    /**
-     * Check if user has access to a specific audiobook
-     * 
-     * @param int $audioBookId
-     * @return bool
-     */
-    public function hasAudioBookAccess($audioBookId): bool
-    {
-        return $this->audioBooks()->where('audio_book_id', $audioBookId)->exists();
-    }
-
-    /**
-     * Get all audiobooks the user has access to
-     * 
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function getAccessibleAudioBooks()
-    {
-        return $this->audioBooks()->with('products')->get();
-    }
 }

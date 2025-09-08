@@ -391,37 +391,13 @@
                         <small class="text-muted">
                             <i class="bi bi-eye"></i> {{ $product->views ?? 0 }} views
                             <span class="mx-2">|</span>
-                            @if($product->hasVariants() && !empty($variants))
-                                <span class="badge bg-info">
-                                    <i class="bi bi-box"></i> SKU: <span id="variant-sku">{{ $variants[0]['sku'] }}</span>
-                                </span>
-                                <span class="badge bg-success ms-2">
-                                    <i class="bi bi-check-circle"></i> In Stock (<span id="variant-stock">{{ $variants[0]['stock'] }}</span> available)
-                                </span>
-                            @else
                                 <i class="bi bi-box"></i> SKU: {{ $product->sku }}
                                 @if($product->brand)
                                     <span class="mx-2">|</span>
                                     <i class="bi bi-star"></i> {{ $product->brand->name }}
                                 @endif
-                            @endif
                         </small>
                     </div>
-
-                    <!-- Stock Status -->
-                    @if($product->track_quantity && !$product->hasVariants())
-                        <div class="mb-3">
-                            @if($product->getStock() > 0)
-                                <span class="badge bg-success">
-                                    <i class="bi bi-check-circle"></i> In Stock ({{ $product->stock }} available)
-                                </span>
-                            @else
-                                <span class="badge bg-danger">
-                                    <i class="bi bi-x-circle"></i> Out of Stock
-                                </span>
-                            @endif
-                        </div>
-                    @endif
 
                     <!-- Description -->
                     <div class="mb-4">
@@ -429,46 +405,17 @@
                         <p class="text-muted">{{ $product->description ?: 'No description available.' }}</p>
                     </div>
 
-                    <!-- Product Variants -->
-                    @if($product->hasVariants() && !empty($variants))
-                        <div class="mb-4">
-                            <h6>Available Options</h6>
-                            <div class="variants-container">
-                                @foreach($variants as $index => $variant)
-                                    <div class="form-check variant-option mb-2">
-                                        <input class="form-check-input variant-radio" type="radio" 
-                                               name="selected_variant" 
-                                               id="variant_{{ $index }}" 
-                                               value="{{ $index }}"
-                                               data-sku="{{ $variant['sku'] }}"
-                                               data-price="{{ $variant['price'] }}"
-                                               data-stock="{{ $variant['stock'] }}"
-                                               data-variant='@json($variant)'
-                                               {{ $index === 0 ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="variant_{{ $index }}">
-                                            <span class="variant-label">{{ $variant['label'] }}</span>
-                                        </label>
-                                        <span class="variant-price">${{ number_format($variant['price'], 2) }}</span>
-                                        <span class="variant-checkmark">&#10003;</span>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <small class="text-muted">Select one variant to add to cart</small>
-                        </div>
-                    @endif
-
                     <!-- Add to Cart Form -->
                     <form id="add-to-cart-form" class="mb-4">
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label for="quantity" class="form-label">Quantity</label>
                                 <input type="number" class="form-control" id="quantity" value="1" min="1" 
-                                       max="{{ $product->track_quantity ? $product->getStock() : 999 }}">
+                                       max="1">
                             </div>
                             <div class="col-md-8 mb-3">
                                 <label class="form-label">&nbsp;</label>
-                                <button type="submit" class="btn btn-primary w-100 btn-lg" 
-                                        {{ $product->track_quantity && $product->getStock() <= 0 ? 'disabled' : '' }}>
+                                <button type="submit" class="btn btn-primary w-100 btn-lg">
                                     <i class="bi bi-cart-plus"></i> Add to Cart
                                 </button>
                             </div>
@@ -590,15 +537,6 @@
                 @endforeach
             @endif
             
-            // Add variant images
-            @if($product->hasVariants() && !empty($variants))
-                @foreach($variants as $index => $variant)
-                    @if($variant['image'])
-                        productGallery.images.push('{{ asset('storage/' . $variant['image']) }}');
-                    @endif
-                @endforeach
-            @endif
-            
             // Remove duplicates
             productGallery.images = [...new Set(productGallery.images)];
             
@@ -652,7 +590,7 @@
                 setActiveImage(0); // Show main product image
                 $('#variant-sku').text('');
                 $('#variant-stock').text('');
-                quantityInput.attr('max', {{ $product->getStock() }});
+                quantityInput.attr('max', 1);
                 quantityInput.val(1);
             } else {
                 // Single variant selected
@@ -772,12 +710,6 @@
             
             // Get selected variant
             const selectedVariant = $('.variant-radio:checked');
-            
-            if (@json($product->hasVariants()) && @json(!empty($variants)) && selectedVariant.length === 0) {
-                // If product has variants but none selected, show error
-                showToast('Please select a variant before adding to cart', 'warning');
-                return;
-            }
             
             // Show loading state
             button.html('Adding...');

@@ -1,11 +1,6 @@
 @props(['product'])
 <div class="product-card-premium h-100 d-flex flex-column position-relative">
-    <!-- Category Badge -->
-    @if($product->category && $product->category->name == 'Gift Boxes')
-        <span class="badge badge-premium position-absolute top-0 start-0 m-3"><i class="bi bi-gift me-1"></i>Gift Box</span>
-    @elseif($product->category && $product->category->name == 'Audiobooks')
-        <span class="badge badge-premium bg-info text-white position-absolute top-0 start-0 m-3"><i class="bi bi-headphones me-1"></i>Audiobook</span>
-    @endif
+
     <!-- Product Image -->
     <div class="premium-image-wrapper d-flex align-items-center justify-content-center bg-white rounded-top-4" style="width:100%;height:220px;overflow:hidden;">
        <a href="{{ route('products.show', $product) }}">

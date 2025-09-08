@@ -587,10 +587,7 @@
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i
                                             class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
-                                @if (Auth::user()->audioBooks()->count() > 0)
-                                    <li><a class="dropdown-item" href="{{ route('user.audiobooks') }}"><i
-                                                class="bi bi-headphones me-2"></i>My Audiobooks</a></li>
-                                @endif
+
                                 <li><a class="dropdown-item" href="{{ route('user.profile') }}"><i
                                             class="bi bi-person me-2"></i>Profile</a></li>
                                 <li><a class="dropdown-item" href="{{ route('user.orders.index') }}"><i
@@ -647,12 +644,6 @@
                         <a class="nav-link" href="{{ route('dashboard') }}"><i
                                 class="bi bi-speedometer2 me-2"></i>Dashboard</a>
                     </li>
-                    @if (Auth::user()->audioBooks()->count() > 0)
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('user.audiobooks') }}"><i
-                                    class="bi bi-headphones me-2"></i>My Audiobooks</a>
-                        </li>
-                    @endif
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('user.profile') }}"><i
                                 class="bi bi-person me-2"></i>Profile</a>
@@ -711,7 +702,7 @@
                         @else
                             <h4><i class="bi bi-book me-2"></i>{{ setting('store.name') }}</h4>
                         @endif
-                        <p class="mb-3">Your literary haven for physical books, audiobooks, and curated gift boxes.
+                        <p class="mb-3">Your literary haven for physical books, and curated gift boxes.
                             Discover the magic of reading with us.</p>
                         <div class="social-links">
                             <a href="{{ setting('store.facebook') }}" class="social-link me-2" title="Facebook">

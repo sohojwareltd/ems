@@ -145,45 +145,9 @@ class ProductController extends Controller
             $relatedProducts = $relatedProducts->merge($randomProducts);
         }
 
-        // Prepare variants data for the view
-        $variants = [];
-        if ($product->hasVariants() && !empty($product->variants)) {
-            foreach ($product->variants as $variant) {
-                $variants[] = [
-                    'sku' => $variant['sku'],
-                    'price' => $variant['price'],
-                    'stock' => $variant['stock'] ?? 0,
-                    'image' => $variant['image'] ?? null,
-                    'attributes' => $variant['attributes'] ?? [],
-                    'label' => implode(', ', array_values($variant['attributes'] ?? [])),
-                ];
-            }
-        }
-
-        // If product is digital, return a different view
-        if ($product->is_digital) {
-            // Fetch related audiobooks
-            $audioBooks = $product->audioBooks()->get();
-
-            // Collect all trial audio files from JSON column
-            $trialAudioFiles = [];
-            foreach ($audioBooks as $audioBook) {
-                foreach ($audioBook->audio_files ?? [] as $file) {
-                    if (!empty($file['trial'])) {
-                        $trialAudioFiles[] = [
-                            'audio_book_title' => $audioBook->title,
-                            'track_title' => $file['title'],
-                            'file_url' => $file['file'],
-                            'duration' => $file['duration'] ?? null,
-                        ];
-                    }
-                }
-            }
-
-            return view('frontend.products.show-digital', compact('product', 'relatedProducts', 'variants', 'trialAudioFiles'));
-        }
+        // return view('frontend.products.show-digital', compact('product', 'relatedProducts'));
 
         // Default (physical) product view
-        return view('frontend.products.show', compact('product', 'relatedProducts', 'variants'));
+        return view('frontend.products.show', compact('product', 'relatedProducts'));
     }
 } 

@@ -71,32 +71,6 @@ class MenuSeeder extends Seeder
                 'updated_at' => '2025-07-13 21:50:55'
             ],
             [
-                'id' => 2,
-                'menu_id' => 2,
-                'parent_id' => null,
-                'linkable_type' => null,
-                'linkable_id' => null,
-                'title' => 'Gift Boxes',
-                'url' => '/products?category=gift-boxes',
-                'target' => '_self',
-                'order' => 2,
-                'created_at' => '2025-07-13 21:51:28',
-                'updated_at' => '2025-07-13 21:51:28'
-            ],
-            [
-                'id' => 3,
-                'menu_id' => 2,
-                'parent_id' => null,
-                'linkable_type' => null,
-                'linkable_id' => null,
-                'title' => 'Audiobooks',
-                'url' => '/products?category=audiobooks',
-                'target' => '_self',
-                'order' => 3,
-                'created_at' => '2025-07-13 21:51:59',
-                'updated_at' => '2025-07-13 21:51:59'
-            ],
-            [
                 'id' => 4,
                 'menu_id' => 2,
                 'parent_id' => null,
@@ -201,32 +175,6 @@ class MenuSeeder extends Seeder
                 'updated_at' => '2025-07-13 22:00:35'
             ],
             [
-                'id' => 12,
-                'menu_id' => 4,
-                'parent_id' => null,
-                'linkable_type' => null,
-                'linkable_id' => null,
-                'title' => 'Audiobooks',
-                'url' => '/products?category=audiobooks',
-                'target' => '_self',
-                'order' => 3,
-                'created_at' => '2025-07-13 22:00:02',
-                'updated_at' => '2025-07-13 22:00:35'
-            ],
-            [
-                'id' => 13,
-                'menu_id' => 4,
-                'parent_id' => null,
-                'linkable_type' => null,
-                'linkable_id' => null,
-                'title' => 'Gift Boxes',
-                'url' => '/products?category=gift-boxes',
-                'target' => '_self',
-                'order' => 2,
-                'created_at' => '2025-07-13 22:00:27',
-                'updated_at' => '2025-07-13 22:00:35'
-            ],
-            [
                 'id' => 14,
                 'menu_id' => 4,
                 'parent_id' => null,
@@ -290,32 +238,6 @@ class MenuSeeder extends Seeder
                 'order' => 1,
                 'created_at' => '2025-07-13 22:02:57',
                 'updated_at' => '2025-07-13 22:02:57'
-            ],
-            [
-                'id' => 19,
-                'menu_id' => 5,
-                'parent_id' => null,
-                'linkable_type' => null,
-                'linkable_id' => null,
-                'title' => 'Gift Boxes',
-                'url' => '/products?category=gift-boxes',
-                'target' => '_self',
-                'order' => 2,
-                'created_at' => '2025-07-13 22:03:16',
-                'updated_at' => '2025-07-13 22:03:16'
-            ],
-            [
-                'id' => 20,
-                'menu_id' => 5,
-                'parent_id' => null,
-                'linkable_type' => null,
-                'linkable_id' => null,
-                'title' => 'Audiobooks',
-                'url' => '/products?category=audiobooks',
-                'target' => '_self',
-                'order' => 3,
-                'created_at' => '2025-07-13 22:03:28',
-                'updated_at' => '2025-07-13 22:03:28'
             ],
             [
                 'id' => 21,
