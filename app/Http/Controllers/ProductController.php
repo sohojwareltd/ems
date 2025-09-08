@@ -68,7 +68,7 @@ class ProductController extends Controller
 
         // Sort products
         $sort = $request->get('sort', 'name');
-        
+
         // Handle sorting with _desc suffix
         if (str_ends_with($sort, '_desc')) {
             $sort = str_replace('_desc', '', $sort);
@@ -76,7 +76,7 @@ class ProductController extends Controller
         } else {
             $direction = 'asc';
         }
-        
+
         switch ($sort) {
             case 'price':
                 $query->orderBy('price', $direction);
@@ -89,7 +89,7 @@ class ProductController extends Controller
                 break;
             case 'name':
             default:
-                $query->orderBy('name', $direction);
+                $query->latest();
                 break;
         }
 
@@ -135,7 +135,7 @@ class ProductController extends Controller
                 });
             })
             ->orderByRaw('
-                CASE 
+                CASE
                     WHEN category_id = ? AND brand_id = ? THEN 1
                     WHEN category_id = ? THEN 2
                     WHEN brand_id = ? THEN 3
@@ -153,7 +153,7 @@ class ProductController extends Controller
                 ->where('category_id', $product->category_id)
                 ->limit(4 - $relatedProducts->count())
                 ->get();
-            
+
             $relatedProducts = $relatedProducts->merge($additionalProducts);
         }
 
@@ -165,7 +165,7 @@ class ProductController extends Controller
                 ->inRandomOrder()
                 ->limit(4 - $relatedProducts->count())
                 ->get();
-            
+
             $relatedProducts = $relatedProducts->merge($randomProducts);
         }
 
@@ -174,4 +174,4 @@ class ProductController extends Controller
         // Default (physical) product view
         return view('frontend.products.show', compact('product', 'relatedProducts'));
     }
-} 
+}

@@ -17,12 +17,12 @@
         cursor: pointer;
         position: relative;
     }
-    
+
     .variant-option:hover {
         border-color: #007bff;
         background-color: #f8f9fa;
     }
-    
+
     .variant-checkmark {
         display: none;
         font-size: 1.3rem;
@@ -46,28 +46,28 @@
         display: flex;
         align-items: center;
     }
-    
+
     .variant-option .variant-price {
         font-weight: 600;
         color: #28a745;
         font-size: 1.1rem;
         margin-left: 16px;
     }
-    
+
     .variant-option input[type="radio"]:checked + .form-check-label {
         color: #222;
         font-weight: 700;
     }
-    
+
     .variant-option input[type="radio"]:checked ~ .variant-price {
         font-weight: 700;
         color: #218838;
     }
-    
+
     .variant-option input[type="radio"]:checked ~ .variant-checkmark {
         display: inline-block;
     }
-    
+
     .variant-option input[type="radio"]:checked ~ .form-check-label {
         color: #222;
         font-weight: 700;
@@ -77,35 +77,35 @@
         border-color: #b2dfdb;
         background: #e0f7fa;
     }
-    
+
     .variant-option input[type="radio"]:checked {
         border-color: #b2dfdb;
         background-color: #e0f7fa;
     }
-    
+
     .variant-option input[type="radio"]:focus {
         box-shadow: none;
     }
-    
+
     .variant-option .form-check-input[type="radio"]:checked {
         background-color: #007bff;
         border-color: #007bff;
     }
-    
+
     .variant-option .form-check-input:checked ~ .variant-option {
         border-color: #007bff;
         background-color: #e3f2fd;
     }
-    
+
     .variant-price {
         font-weight: 600;
         color: #28a745;
     }
-    
+
     .variant-label {
         font-weight: 500;
     }
-    
+
     .variants-container {
         max-height: 300px;
         overflow-y: auto;
@@ -115,7 +115,7 @@
     .product-gallery {
         position: relative;
     }
-    
+
     .main-image-container {
         position: relative;
         border-radius: 8px;
@@ -127,7 +127,7 @@
         align-items: center;
         justify-content: center;
     }
-    
+
     .main-image {
         width: 100%;
         height: 600px;
@@ -135,11 +135,11 @@
         transition: transform 0.3s ease;
         background: #f8f9fa;
     }
-    
+
     .main-image:hover {
         transform: scale(1.02);
     }
-    
+
     .thumbnail-gallery {
         margin-top: 15px;
         display: flex;
@@ -147,7 +147,7 @@
         overflow-x: auto;
         padding-bottom: 5px;
     }
-    
+
     .thumbnail-item {
         flex: 0 0 100px;
         height: 120px;
@@ -158,24 +158,24 @@
         transition: all 0.3s ease;
         background: #f8f9fa;
     }
-    
+
     .thumbnail-item:hover {
         border-color: #007bff;
         transform: translateY(-2px);
     }
-    
+
     .thumbnail-item.active {
         border-color: #007bff;
         box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
     }
-    
+
     .thumbnail-image {
         width: 100%;
         height: 100%;
         object-fit: contain;
         background: #f8f9fa;
     }
-    
+
     .gallery-overlay {
         position: absolute;
         top: 0;
@@ -190,12 +190,12 @@
         transition: opacity 0.3s ease;
         pointer-events: none;
     }
-    
+
     .main-image-container:hover .gallery-overlay {
         opacity: 1;
         pointer-events: auto;
     }
-    
+
     .gallery-overlay i {
         color: white;
         font-size: 2rem;
@@ -214,23 +214,23 @@
         align-items: center;
         justify-content: center;
     }
-    
+
     .lightbox.active {
         display: flex;
     }
-    
+
     .lightbox-content {
         position: relative;
         max-width: 90%;
         max-height: 90%;
     }
-    
+
     .lightbox-image {
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
     }
-    
+
     .lightbox-close {
         position: absolute;
         top: -40px;
@@ -241,7 +241,7 @@
         background: none;
         border: none;
     }
-    
+
     .lightbox-nav {
         position: absolute;
         top: 50%;
@@ -259,15 +259,15 @@
         justify-content: center;
         transition: background 0.3s ease;
     }
-    
+
     .lightbox-nav:hover {
         background: rgba(0, 0, 0, 0.8);
     }
-    
+
     .lightbox-prev {
         left: 20px;
     }
-    
+
     .lightbox-next {
         right: 20px;
     }
@@ -339,13 +339,13 @@
             <div class="product-gallery">
                 <!-- Main Image -->
                 <div class="main-image-container" id="mainImageContainer">
-                    <img src="{{ $product->image_url ?? 'https://via.placeholder.com/600x400?text=No+Image' }}" 
+                    <img src="{{ $product->image_url ?? 'https://via.placeholder.com/600x400?text=No+Image' }}"
                          class="main-image" id="mainImage" alt="{{ $product->name }}">
-                    
+
                     <div class="gallery-overlay">
                         <i class="bi bi-zoom-in"></i>
                     </div>
-                    
+
                     @if($product->discount_price)
                         <div class="position-absolute top-0 start-0 m-3">
                             <span class="badge bg-danger fs-6">
@@ -353,7 +353,7 @@
                             </span>
                         </div>
                     @endif
-                    
+
                     @if($product->is_featured)
                         <div class="position-absolute top-0 end-0 m-3">
                             <span class="badge bg-warning fs-6">
@@ -362,7 +362,7 @@
                         </div>
                     @endif
                 </div>
-                
+
                 <!-- Thumbnail Gallery -->
                 <div class="thumbnail-gallery" id="thumbnailGallery">
                     <!-- Thumbnails will be populated by JavaScript -->
@@ -375,7 +375,7 @@
             <div class="card">
                 <div class="card-body">
                     <h1 class="h3 mb-3">{{ $product->name }}</h1>
-                    
+
                     <!-- Price -->
                     <div class="mb-3">
                         @if($product->discount_price)
@@ -390,12 +390,6 @@
                     <div class="mb-3">
                         <small class="text-muted">
                             <i class="bi bi-eye"></i> {{ $product->views ?? 0 }} views
-                            <span class="mx-2">|</span>
-                                <i class="bi bi-box"></i> SKU: {{ $product->sku }}
-                                @if($product->brand)
-                                    <span class="mx-2">|</span>
-                                    <i class="bi bi-star"></i> {{ $product->brand->name }}
-                                @endif
                         </small>
                     </div>
 
@@ -408,12 +402,13 @@
                     <!-- Add to Cart Form -->
                     <form id="add-to-cart-form" class="mb-4">
                         <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label for="quantity" class="form-label">Quantity</label>
-                                <input type="number" class="form-control" id="quantity" value="1" min="1" 
-                                       max="1">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">&nbsp;</label>
+                                <a href="#" class="btn btn-primary w-100 btn-lg">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Preview
+                                </a>
                             </div>
-                            <div class="col-md-8 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label class="form-label">&nbsp;</label>
                                 <button type="submit" class="btn btn-primary w-100 btn-lg">
                                     <i class="bi bi-cart-plus"></i> Add to Cart
@@ -519,71 +514,71 @@
         initializeGallery();
         initializeVariantSelection();
         initializeLightbox();
-        
+
         // Variant selection handling
         $(document).on('change', '.variant-radio', function() {
             updateVariantDisplay();
         });
-        
+
         function initializeGallery() {
             // Start with product thumbnail
             const thumbnailUrl = '{{ $product->image_url ?? "https://via.placeholder.com/600x400?text=No+Image" }}';
             productGallery.images = [thumbnailUrl];
-            
+
             // Add gallery images
             @if($product->gallery_urls && count($product->gallery_urls) > 0)
                 @foreach($product->gallery_urls as $galleryImage)
                     productGallery.images.push('{{ $galleryImage }}');
                 @endforeach
             @endif
-            
+
             // Remove duplicates
             productGallery.images = [...new Set(productGallery.images)];
-            
+
             // Build thumbnail gallery
             buildThumbnailGallery();
         }
-        
+
         function buildThumbnailGallery() {
             const thumbnailGallery = $('#thumbnailGallery');
             thumbnailGallery.empty();
-            
+
             productGallery.images.forEach((image, index) => {
                 const thumbnailItem = $(`
                     <div class="thumbnail-item ${index === 0 ? 'active' : ''}" data-index="${index}">
                         <img src="${image}" alt="Product Image ${index + 1}" class="thumbnail-image">
                     </div>
                 `);
-                
+
                 thumbnailItem.on('click', function() {
                     setActiveImage(index);
                 });
-                
+
                 thumbnailGallery.append(thumbnailItem);
             });
         }
-        
+
         function setActiveImage(index) {
             productGallery.currentIndex = index;
             const imageUrl = productGallery.images[index];
-            
+
             // Update main image
             $('#mainImage').attr('src', imageUrl);
-            
+
             // Update thumbnail active state
             $('.thumbnail-item').removeClass('active');
             $(`.thumbnail-item[data-index="${index}"]`).addClass('active');
         }
-        
+
         function initializeVariantSelection() {
             // Initialize variant selection on page load
             updateVariantDisplay();
         }
-        
+
         function updateVariantDisplay() {
             const selectedVariant = $('.variant-radio:checked');
             const quantityInput = $('#quantity');
-            
+
             if (selectedVariant.length === 0) {
                 // No variant selected, show base product price and stock
                 $('.price').text('${{ number_format($product->price, 2) }}');
@@ -608,7 +603,7 @@
                     // Find variant image in gallery by constructing the full path
                     const variantImagePath = "{{ asset('storage/') }}/" + variantData.image;
                     const variantImageIndex = productGallery.images.findIndex(img => img === variantImagePath);
-                  
+
                     if (variantImageIndex !== -1) {
                         setActiveImage(variantImageIndex);
                     }
@@ -633,29 +628,29 @@
                 }
             }
         }
-        
+
         function initializeLightbox() {
             // Open lightbox on main image click
             $('#mainImageContainer').on('click', function() {
                 openLightbox(productGallery.currentIndex);
             });
-            
+
             // Close lightbox
             $('#lightboxClose, #lightbox').on('click', function(e) {
                 if (e.target === this) {
                     closeLightbox();
                 }
             });
-            
+
             // Navigation
             $('#lightboxPrev').on('click', function() {
                 navigateLightbox(-1);
             });
-            
+
             $('#lightboxNext').on('click', function() {
                 navigateLightbox(1);
             });
-            
+
             // Keyboard navigation
             $(document).on('keydown', function(e) {
                 if ($('#lightbox').hasClass('active')) {
@@ -673,65 +668,49 @@
                 }
             });
         }
-        
+
         function openLightbox(index) {
             productGallery.currentIndex = index;
             const imageUrl = productGallery.images[index];
-            
+
             $('#lightboxImage').attr('src', imageUrl);
             $('#lightbox').addClass('active');
             $('body').css('overflow', 'hidden');
         }
-        
+
         function closeLightbox() {
             $('#lightbox').removeClass('active');
             $('body').css('overflow', '');
         }
-        
+
         function navigateLightbox(direction) {
             let newIndex = productGallery.currentIndex + direction;
-            
+
             if (newIndex < 0) {
                 newIndex = productGallery.images.length - 1;
             } else if (newIndex >= productGallery.images.length) {
                 newIndex = 0;
             }
-            
+
             openLightbox(newIndex);
         }
-        
+
         // Add to cart form submission
         $(document).on('submit', '#add-to-cart-form', function(e) {
             e.preventDefault();
-            
-            const quantity = parseInt($('#quantity').val());
+
             const button = $(this).find('button[type="submit"]');
             const originalText = button.html();
-            
-            // Get selected variant
-            const selectedVariant = $('.variant-radio:checked');
-            
+
             // Show loading state
             button.html('Adding...');
             button.prop('disabled', true);
 
-            // Add selected variant to cart
-            let variantData = null;
-            if (selectedVariant.length > 0) {
-                variantData = selectedVariant.data('variant');
-            }
-            
-            addVariantToCart(variantData, quantity, button, originalText);
-        });
-        
-        function addVariantToCart(variantData, quantity, button, originalText) {
             $.ajax({
                 url: '{{ route("cart.add") }}',
                 method: 'POST',
                 data: {
                     product_id: {{ $product->id }},
-                    quantity: quantity,
-                    variant: variantData
                 },
                 success: function(response) {
                     if (response.success) {
@@ -752,13 +731,13 @@
                     button.prop('disabled', false);
                 }
             });
-        }
+        });
 
         // Add to cart function for related products
         window.addToCart = function(productId) {
             const button = event.target;
             const originalText = button.innerHTML;
-            
+
             // Show loading state
             button.innerHTML = 'Adding...';
             button.disabled = true;
@@ -794,7 +773,7 @@
         $(document).on('input', '#quantity', function() {
             const value = parseInt($(this).val());
             const max = parseInt($(this).attr('max'));
-            
+
             if (value > max) {
                 $(this).val(max);
             } else if (value < 1) {
@@ -819,4 +798,4 @@
         });
     });
 </script>
-@endpush 
+@endpush

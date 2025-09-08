@@ -14,7 +14,7 @@ use Carbon\Carbon;
 
 /**
  * CartService - Modern Shopping Cart Implementation
- * 
+ *
  * Features:
  * - Session-based cart for guests
  * - Database storage for logged-in users
@@ -24,7 +24,7 @@ use Carbon\Carbon;
  * - Shipping calculation
  * - Easy frontend integration
  * - Cart expiration management
- * 
+ *
  * @package App\Services
  */
 class CartService
@@ -86,7 +86,7 @@ class CartService
     protected function initializeSessionCart()
     {
         $this->cartId = Session::get('cart_id');
-        
+
         if (!$this->cartId) {
             $this->cartId = Str::uuid();
             Session::put('cart_id', $this->cartId);
@@ -94,7 +94,7 @@ class CartService
 
         $this->items = Session::get("cart_items_{$this->cartId}", []);
         $this->coupons = Session::get("cart_coupons_{$this->cartId}", []);
-        
+
         // Debug logging
         Log::info('Cart initialized', [
             'cart_id' => $this->cartId,
@@ -111,11 +111,11 @@ class CartService
     {
         if ($this->cart) {
             $this->items = [];
-            
+
             foreach ($this->cart->items as $item) {
                 // Create unique key based on product and variant
                 $itemKey = $this->getItemKey($item->product_id, $item->options ?? [], $item->variant);
-                
+
                 $this->items[$itemKey] = [
                     'product_id' => $item->product_id,
                     'product_name' => $item->product_name,
@@ -130,7 +130,7 @@ class CartService
                     'updated_at' => $item->updated_at,
                 ];
             }
-            
+
             // Load coupons from database
             if ($this->cart->coupon_code && $this->cart->coupon_data) {
                 $this->coupons[$this->cart->coupon_code] = $this->cart->coupon_data;
@@ -140,7 +140,7 @@ class CartService
 
     /**
      * Add product to cart
-     * 
+     *
      * @param int $productId
      * @param int $quantity
      * @param array $options
@@ -149,7 +149,7 @@ class CartService
     public function add($productId, $quantity = 1, $options = [], $variantData = null)
     {
         $product = Product::find($productId);
-        
+
         if (!$product) {
             return ['success' => false, 'message' => 'Product not found'];
         }
@@ -162,24 +162,24 @@ class CartService
 
         $isDigital = $product->is_digital ?? false;
 
-        if ($product->hasVariants() && $variantData) {
-            // Use the variant data directly from frontend
-            $variant = $variantData;
-            $sku = $variant['sku'];
-            $price = $variant['price'];
-            $productName = $product->name . ' - ' . implode(', ', array_values($variant['attributes']));
-        } elseif ($product->hasVariants() && !empty($options)) {
-            // Fallback to finding variant by options
-            $variant = $this->findVariant($product, $options);
-            
-            if (!$variant) {
-                return ['success' => false, 'message' => 'Selected variant not found'];
-            }
-            
-            $sku = $variant['sku'];
-            $price = $variant['price'];
-            $productName = $product->name . ' - ' . $this->formatVariantName($variant);
-        }
+        // if ($product->hasVariants() && $variantData) {
+        //     // Use the variant data directly from frontend
+        //     $variant = $variantData;
+        //     $sku = $variant['sku'];
+        //     $price = $variant['price'];
+        //     $productName = $product->name . ' - ' . implode(', ', array_values($variant['attributes']));
+        // } elseif ($product->hasVariants() && !empty($options)) {
+        //     // Fallback to finding variant by options
+        //     $variant = $this->findVariant($product, $options);
+
+        //     if (!$variant) {
+        //         return ['success' => false, 'message' => 'Selected variant not found'];
+        //     }
+
+        //     $sku = $variant['sku'];
+        //     $price = $variant['price'];
+        //     $productName = $product->name . ' - ' . $this->formatVariantName($variant);
+        // }
 
         // DIGITAL PRODUCT: Always quantity 1, skip stock checks
         if ($isDigital) {
@@ -198,7 +198,7 @@ class CartService
 
         // Create unique item key based on product and variant
         $itemKey = $this->getItemKey($productId, $options, $variant);
-        
+
         if (isset($this->items[$itemKey])) {
             // Update existing item
             if($product->is_digital){
@@ -225,9 +225,9 @@ class CartService
         }
 
         $this->saveCart();
-        
+
         return [
-            'success' => true, 
+            'success' => true,
             'message' => 'Product added to cart',
             'cart_count' => $this->getItemCount(),
             'cart_total' => $this->getSubtotal()
@@ -236,7 +236,7 @@ class CartService
 
     /**
      * Update product quantity
-     * 
+     *
      * @param int $productId
      * @param int $quantity
      * @param array $options
@@ -245,7 +245,7 @@ class CartService
     public function update($productId, $quantity, $options = [])
     {
         $itemKey = $this->getItemKey($productId, $options);
-        
+
         if (!isset($this->items[$itemKey])) {
             return ['success' => false, 'message' => 'Item not found in cart'];
         }
@@ -278,9 +278,9 @@ class CartService
         $this->items[$itemKey]['updated_at'] = Carbon::now();
 
         $this->saveCart();
-        
+
         return [
-            'success' => true, 
+            'success' => true,
             'message' => 'Cart updated',
             'cart_count' => $this->getItemCount(),
             'cart_total' => $this->getSubtotal(),
@@ -290,7 +290,7 @@ class CartService
 
     /**
      * Update cart item by item ID
-     * 
+     *
      * @param string $itemId
      * @param int $quantity
      * @return array
@@ -304,7 +304,7 @@ class CartService
 
         $item = $this->items[$itemId];
         $product = Product::find($item['product_id']);
-        
+
         if (!$product) {
             return ['success' => false, 'message' => 'Product not found'];
         }
@@ -316,7 +316,7 @@ class CartService
             if ($quantity <= 0) {
                 return $this->removeByItemId($itemId);
             }
-            
+
             // Check stock for variant products
             if ($product->track_quantity && $product->hasVariants() && $item['variant'] && isset($item['variant']['stock'])) {
                 if ($item['variant']['stock'] < $quantity) {
@@ -333,9 +333,9 @@ class CartService
         $this->items[$itemId]['updated_at'] = Carbon::now();
 
         $this->saveCart();
-        
+
         return [
-            'success' => true, 
+            'success' => true,
             'message' => 'Cart updated',
             'cart_count' => $this->getItemCount(),
             'cart_total' => $this->getSubtotal(),
@@ -345,7 +345,7 @@ class CartService
 
     /**
      * Remove product from cart
-     * 
+     *
      * @param int $productId
      * @param array $options
      * @param array|null $variant
@@ -354,14 +354,14 @@ class CartService
     public function remove($productId, $options = [], $variant = null)
     {
         $itemKey = $this->getItemKey($productId, $options, $variant);
-        
+
         if (isset($this->items[$itemKey])) {
             unset($this->items[$itemKey]);
             $this->saveCart();
         }
-        
+
         return [
-            'success' => true, 
+            'success' => true,
             'message' => 'Product removed from cart',
             'cart_count' => $this->getItemCount(),
             'cart_total' => $this->getSubtotal()
@@ -370,7 +370,7 @@ class CartService
 
     /**
      * Remove cart item by item ID
-     * 
+     *
      * @param string $itemId
      * @return array
      */
@@ -380,9 +380,9 @@ class CartService
             unset($this->items[$itemId]);
             $this->saveCart();
         }
-        
+
         return [
-            'success' => true, 
+            'success' => true,
             'message' => 'Product removed from cart',
             'cart_count' => $this->getItemCount(),
             'cart_total' => $this->getSubtotal()
@@ -391,7 +391,7 @@ class CartService
 
     /**
      * Clear entire cart
-     * 
+     *
      * @return array
      */
     public function clear()
@@ -399,9 +399,9 @@ class CartService
         $this->items = [];
         $this->coupons = [];
         $this->saveCart();
-        
+
         return [
-            'success' => true, 
+            'success' => true,
             'message' => 'Cart cleared',
             'cart_count' => 0,
             'cart_total' => 0
@@ -410,7 +410,7 @@ class CartService
 
     /**
      * Get cart items
-     * 
+     *
      * @return array
      */
     public function getItems()
@@ -420,7 +420,7 @@ class CartService
 
     /**
      * Get cart item count
-     * 
+     *
      * @return int
      */
     public function getItemCount()
@@ -430,7 +430,7 @@ class CartService
 
     /**
      * Get cart subtotal
-     * 
+     *
      * @return float
      */
     public function getSubtotal()
@@ -440,7 +440,7 @@ class CartService
 
     /**
      * Get cart total with tax and shipping
-     * 
+     *
      * @return float
      */
     public function getTotal()
@@ -449,13 +449,13 @@ class CartService
         $discount = $this->getDiscountTotal();
         $tax = $this->getTaxAmount();
         $shipping = $this->getShippingCost();
-        
+
         return $subtotal - $discount + $tax + $shipping;
     }
 
     /**
      * Add coupon to cart
-     * 
+     *
      * @param string $code
      * @return array
      */
@@ -484,20 +484,20 @@ class CartService
 
         $this->coupons[$code] = $coupon;
         $this->saveCart();
-        
+
         // Debug logging
         Log::info('Coupon applied', [
             'code' => $code,
             'coupons_count' => count($this->coupons),
             'cart_id' => $this->cartId,
         ]);
-        
+
         return ['success' => true, 'message' => 'Coupon applied successfully'];
     }
 
     /**
      * Remove coupon from cart
-     * 
+     *
      * @param string|null $code
      * @return array
      */
@@ -520,7 +520,7 @@ class CartService
 
     /**
      * Get discount total
-     * 
+     *
      * @return float
      */
     public function getDiscountTotal()
@@ -539,7 +539,7 @@ class CartService
 
     /**
      * Get discount total (alias for getDiscountTotal)
-     * 
+     *
      * @return float
      */
     public function getDiscount()
@@ -549,7 +549,7 @@ class CartService
 
     /**
      * Set tax rate
-     * 
+     *
      * @param float $rate
      */
     public function setTaxRate($rate)
@@ -559,7 +559,7 @@ class CartService
 
     /**
      * Get tax amount
-     * 
+     *
      * @return float
      */
     public function getTaxAmount()
@@ -571,7 +571,7 @@ class CartService
 
     /**
      * Get tax amount (alias for getTaxAmount)
-     * 
+     *
      * @return float
      */
     public function getTax()
@@ -581,7 +581,7 @@ class CartService
 
     /**
      * Set shipping cost
-     * 
+     *
      * @param float $cost
      */
     public function setShippingCost($cost)
@@ -591,7 +591,7 @@ class CartService
 
     /**
      * Get shipping cost
-     * 
+     *
      * @return float
      */
     public function getShippingCost()
@@ -601,7 +601,7 @@ class CartService
 
     /**
      * Get shipping cost (alias for getShippingCost)
-     * 
+     *
      * @return float
      */
     public function getShipping()
@@ -611,7 +611,7 @@ class CartService
 
     /**
      * Get cart summary
-     * 
+     *
      * @return array
      */
     public function getSummary()
@@ -630,7 +630,7 @@ class CartService
 
     /**
      * Get cart object
-     * 
+     *
      * @return Cart|null
      */
     public function getCart()
@@ -640,7 +640,7 @@ class CartService
 
     /**
      * Get coupon data
-     * 
+     *
      * @return array|null
      */
     public function getCoupon()
@@ -650,13 +650,13 @@ class CartService
 
     /**
      * Apply coupon to cart
-     * 
+     *
      * @param string $code
      * @return array
      */
     public function applyCoupon($code)
     {
-        
+
         return $this->addCoupon($code);
     }
 
@@ -668,7 +668,7 @@ class CartService
     protected function saveCart()
     {
         if ($this->user && $this->cart) {
-            
+
             $this->saveToDatabase();
         } else {
             $this->saveToSession();
@@ -682,7 +682,7 @@ class CartService
     {
         // Clear existing items
         $this->cart->items()->delete();
-        
+
         // Add new items
         foreach ($this->items as $item) {
             $this->cart->items()->create([
@@ -697,17 +697,17 @@ class CartService
                 'total' => $item['total'],
             ]);
         }
-        
+
         // Get coupon data
         $couponCode = null;
         $couponData = null;
-        
+
         if (!empty($this->coupons)) {
             $couponCode = array_keys($this->coupons)[0];
             $couponData = $this->coupons[$couponCode];
         }
 
-        
+
         // Update cart
         $this->cart->update([
             'subtotal' => $this->getSubtotal(),
@@ -726,10 +726,10 @@ class CartService
     {
         Session::put("cart_items_{$this->cartId}", $this->items);
         Session::put("cart_coupons_{$this->cartId}", $this->coupons);
-        
+
         // Ensure session is saved
         Session::save();
-        
+
         // Debug logging
         Log::info('Cart saved to session', [
             'cart_id' => $this->cartId,
@@ -741,7 +741,7 @@ class CartService
 
     /**
      * Get unique item key
-     * 
+     *
      * @param int $productId
      * @param array $options
      * @param array|null $variant
@@ -753,21 +753,21 @@ class CartService
         if ($variant && isset($variant['sku'])) {
             return $productId . '_' . $variant['sku'];
         }
-        
+
         // Fallback to options-based key
         return $productId . '_' . md5(serialize($options));
     }
 
     /**
      * Merge guest cart with user cart on login
-     * 
+     *
      * @param User $user
      */
     public static function mergeGuestCart(User $user)
     {
         $guestCartId = Session::get('cart_id');
         $guestItems = Session::get("cart_items_{$guestCartId}", []);
-        
+
         if (empty($guestItems)) {
             return;
         }
@@ -789,7 +789,7 @@ class CartService
         foreach ($guestItems as $item) {
             // Create unique key for comparison
             $itemKey = $item['product_id'] . '_' . ($item['variant']['sku'] ?? md5(serialize($item['options'] ?? [])));
-            
+
             $existingItem = $userCart->items()
                 ->where('product_id', $item['product_id'])
                 ->where('variant_sku', $item['variant']['sku'] ?? null)
@@ -826,14 +826,14 @@ class CartService
     public static function trackAbandonedCarts()
     {
         $threshold = Carbon::now()->subHours(24);
-        
+
         $abandonedCarts = Cart::where('status', 'active')
             ->where('updated_at', '<', $threshold)
             ->get();
 
         foreach ($abandonedCarts as $cart) {
             $cart->update(['status' => 'abandoned']);
-            
+
             // Send abandoned cart email
             if ($cart->user) {
                 // Implement email notification
@@ -844,7 +844,7 @@ class CartService
 
     /**
      * Get abandoned carts
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public static function getAbandonedCarts()
@@ -856,7 +856,7 @@ class CartService
 
     /**
      * Restore abandoned cart
-     * 
+     *
      * @param string $cartId
      * @return bool
      */
@@ -886,7 +886,7 @@ class CartService
 
     /**
      * Find variant by options
-     * 
+     *
      * @param Product $product
      * @param array $options
      * @return array|null
@@ -908,7 +908,7 @@ class CartService
 
     /**
      * Check if variant matches the given options
-     * 
+     *
      * @param array $variant
      * @param array $options
      * @return bool
@@ -927,41 +927,41 @@ class CartService
 
     /**
      * Format variant name for display
-     * 
+     *
      * @param array $variant
      * @return string
      */
     protected function formatVariantName($variant)
     {
         $parts = [];
-        
+
         // Common variant attributes
         $attributes = ['size', 'color', 'material', 'style', 'type'];
-        
+
         foreach ($attributes as $attr) {
             if (isset($variant[$attr])) {
                 $parts[] = ucfirst($attr) . ': ' . $variant[$attr];
             }
         }
-        
+
         // Add SKU if no other attributes found
         if (empty($parts) && isset($variant['sku'])) {
             $parts[] = 'SKU: ' . $variant['sku'];
         }
-        
+
         return implode(', ', $parts);
     }
 
     /**
      * Get available variants for a product
-     * 
+     *
      * @param int $productId
      * @return array
      */
     public function getProductVariants($productId)
     {
         $product = Product::find($productId);
-        
+
         if (!$product || !$product->hasVariants()) {
             return [];
         }
@@ -971,7 +971,7 @@ class CartService
 
     /**
      * Get variant by SKU
-     * 
+     *
      * @param int $productId
      * @param string $sku
      * @return array|null
@@ -979,7 +979,7 @@ class CartService
     public function getVariantBySku($productId, $sku)
     {
         $product = Product::find($productId);
-        
+
         if (!$product || !$product->hasVariants()) {
             return null;
         }
@@ -995,7 +995,7 @@ class CartService
 
     /**
      * Add product by variant SKU
-     * 
+     *
      * @param int $productId
      * @param string $variantSku
      * @param int $quantity
@@ -1004,7 +1004,7 @@ class CartService
     public function addByVariantSku($productId, $variantSku, $quantity = 1)
     {
         $variant = $this->getVariantBySku($productId, $variantSku);
-        
+
         if (!$variant) {
             return ['success' => false, 'message' => 'Variant not found'];
         }
@@ -1012,7 +1012,7 @@ class CartService
         // Convert variant to options
         $options = [];
         $variantAttributes = ['size', 'color', 'material', 'style', 'type'];
-        
+
         foreach ($variantAttributes as $attr) {
             if (isset($variant[$attr])) {
                 $options[$attr] = $variant[$attr];
@@ -1024,13 +1024,13 @@ class CartService
 
     /**
      * Convert cart items to order lines format
-     * 
+     *
      * @return array
      */
     public function toOrderLines()
     {
         $orderLines = [];
-        
+
         foreach ($this->items as $item) {
             $orderLines[] = [
                 'product_id' => $item['product_id'],
@@ -1043,13 +1043,13 @@ class CartService
                 'notes' => null,
             ];
         }
-        
+
         return $orderLines;
     }
 
     /**
      * Check if cart has items
-     * 
+     *
      * @return bool
      */
     public function hasItems()
@@ -1059,20 +1059,20 @@ class CartService
 
     /**
      * Get cart items with product information
-     * 
+     *
      * @return array
      */
     public function getItemsWithProducts()
     {
         $items = $this->getItems();
         $productIds = array_column($items, 'product_id');
-        
+
         $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
-        
+
         foreach ($items as &$item) {
             $item['product'] = $products->get($item['product_id']);
         }
-        
+
         return $items;
     }
-} 
+}

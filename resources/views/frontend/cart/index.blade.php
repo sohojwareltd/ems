@@ -40,7 +40,7 @@
                                         <!-- Product -->
                                         <td class="d-flex align-items-center gap-3 py-3">
                                             <img src="{{ $item['image_url'] ?? ($item['product']['image_url'] ?? 'https://via.placeholder.com/64x64?text=No+Image') }}"
-                                                 class="img-fluid rounded" 
+                                                 class="img-fluid rounded"
                                                  alt="{{ $item['product_name'] }}"
                                                  style="width: 56px; height: 56px; object-fit: cover;">
                                             <div>
@@ -52,8 +52,8 @@
                                         </td>
                                         <!-- Quantity -->
                                         <td class="text-center">
-                                            @php 
-                                                $isDigital = $item['product']['is_digital'] ?? false; 
+                                            @php
+                                                $isDigital = true;
                                                 $hasVariants = $item['product']['has_variants'] ?? false;
                                                 $variantStock = $item['variant']['stock'] ?? null;
                                                 $maxStock = $hasVariants && $variantStock ? $variantStock : ($item['product']['stock'] ?? 999);
@@ -106,8 +106,8 @@
                                     </button>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between mt-2">
-                                    @php 
-                                        $isDigital = $item['product']['is_digital'] ?? false; 
+                                    @php
+                                        $isDigital = $item['product']['is_digital'] ?? false;
                                         $hasVariants = $item['product']['has_variants'] ?? false;
                                         $variantStock = $item['variant']['stock'] ?? null;
                                         $maxStock = $hasVariants && $variantStock ? $variantStock : ($item['product']['stock'] ?? 999);
@@ -148,9 +148,9 @@
                                 <i class="bi bi-ticket-perforated me-2"></i>Apply Coupon
                             </h6>
                             <div class="input-group mb-2">
-                                <input type="text" 
-                                       class="form-control" 
-                                       id="couponCode" 
+                                <input type="text"
+                                       class="form-control"
+                                       id="couponCode"
                                        placeholder="Enter coupon code">
                                 <button class="btn btn-premium" id="applyCoupon">
                                     <i class="bi bi-check-lg"></i>
@@ -172,10 +172,6 @@
                             </div>
                             @endif
                             <div class="d-flex justify-content-between mb-2">
-                                <span class="text-muted">Shipping:</span>
-                                <span class="fw-bold">${{ number_format($shipping, 2) }}</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
                                 <span class="text-muted">Tax:</span>
                                 <span class="fw-bold">${{ number_format($tax, 2) }}</span>
                             </div>
@@ -188,11 +184,11 @@
 
                         <!-- Action Buttons -->
                         <div class="d-grid gap-2">
-                            <a href="{{ route('checkout.index') }}" 
+                            <a href="{{ route('checkout.index') }}"
                                class="btn btn-premium btn-lg fw-bold">
                                 <i class="bi bi-credit-card me-2"></i>Proceed to Checkout
                             </a>
-                            <a href="{{ route('products.index') }}" 
+                            <a href="{{ route('products.index') }}"
                                class="btn btn-outline-primary btn-lg">
                                 <i class="bi bi-arrow-left me-2"></i>Continue Shopping
                             </a>
@@ -364,13 +360,13 @@
             const itemId = $(this).data('item-id');
             const input = $(`.quantity-input[data-item-id="${itemId}"]`);
             let currentQty = parseInt(input.val());
-            
+
             if (action === 'increase') {
                 input.val(currentQty + 1);
             } else if (action === 'decrease' && currentQty > 1) {
                 input.val(currentQty - 1);
             }
-            
+
             updateQuantity(itemId, input.val());
         });
 
@@ -414,19 +410,19 @@
                     if (response.success) {
                         updateCartCount(response.cart_count);
                         updateSummary(response);
-                        
+
                         // Update the specific item's line total
                         if (response.cart_items && response.cart_items[itemId]) {
                             const item = response.cart_items[itemId];
                             const itemElement = $(`.cart-item-table-row[data-item-id="${itemId}"]`);
-                            
+
                             // Update the line total
                             itemElement.find('.fw-bold').text('$' + parseFloat(item.total).toFixed(2));
-                            
+
                             // Update the quantity input to ensure it matches
                             itemElement.find('.quantity-input').val(item.quantity);
                         }
-                        
+
                         showToast('Cart updated successfully', 'success');
                     } else {
                         showToast(response.message || 'Error updating cart', 'danger');
@@ -471,10 +467,10 @@
         function applyCoupon(couponCode) {
             const button = $('#applyCoupon');
             const originalText = button.html();
-            
+
             button.prop('disabled', true);
             button.html('<span class="spinner-border spinner-border-sm"></span>');
-            
+
             $.ajax({
                 url: '{{ route("cart.apply-coupon") }}',
                 method: 'POST',
@@ -544,4 +540,4 @@
     });
 </script>
 @endpush
-@endsection 
+@endsection

@@ -19,10 +19,10 @@ class CartController extends Controller
         $subtotal = $cart['subtotal'];
         $discount = $cart['discount'];
         $tax = $cart['tax'];
-        $shipping = $cart['shipping'];
+        // $shipping = $cart['shipping'];
         $total = $cart['total'];
- 
-        return view('frontend.cart.index', compact('cartItems', 'subtotal', 'discount', 'tax', 'shipping', 'total'));
+
+        return view('frontend.cart.index', compact('cartItems', 'subtotal', 'discount', 'tax', 'total'));
     }
 
     /**
@@ -30,24 +30,15 @@ class CartController extends Controller
      */
     public function add(Request $request): JsonResponse
     {
-        
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-            'variant' => 'nullable|array',
-            'options' => 'nullable|array',
-        ]);
-        
-       
+
+        $request->validate(['product_id' => 'required|exists:products,id']);
+
         try {
             $result = Cart::add(
-                $request->product_id,
-                $request->quantity,
-                $request->options ?? [],
-                $request->variant
+                $request->product_id
             );
 
-           
+
             if ($result['success']) {
                 return response()->json([
                     'success' => true,
@@ -85,7 +76,7 @@ class CartController extends Controller
             if ($result['success']) {
                 $cartSummary = Cart::getSummary();
                 $cartItems = Cart::getItemsWithProducts();
-                
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Cart updated successfully!',
@@ -127,7 +118,7 @@ class CartController extends Controller
 
             if ($result['success']) {
                 $cartSummary = Cart::getSummary();
-                
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Item removed from cart!',
@@ -189,7 +180,7 @@ class CartController extends Controller
 
             if ($result['success']) {
                 $cartSummary = Cart::getSummary();
-                
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Coupon applied successfully!',
@@ -249,4 +240,4 @@ class CartController extends Controller
             'cart_count' => \App\Facades\Cart::getItemCount(),
         ]);
     }
-} 
+}

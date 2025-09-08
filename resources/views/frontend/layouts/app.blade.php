@@ -32,9 +32,9 @@
 
     <style>
         :root {
-            --primary-color: #9B8B7A;
-            --primary-dark: #7A6B5A;
-            --secondary-color: #A8B5A0;
+            --primary-color: #00b22d;
+            --primary-dark: #0A4126;
+            --secondary-color: #a6f2b9;
             --accent-color: #D4C4B7;
             --success-color: #8BA892;
             --danger-color: #B87A7A;

@@ -71,6 +71,19 @@ class MenuSeeder extends Seeder
                 'updated_at' => '2025-07-13 21:50:55'
             ],
             [
+                'id' => 2,
+                'menu_id' => 2,
+                'parent_id' => null,
+                'linkable_type' => null,
+                'linkable_id' => null,
+                'title' => 'Model Essays',
+                'url' => '/model_essays',
+                'target' => '_self',
+                'order' => 1,
+                'created_at' => '2025-07-13 21:50:55',
+                'updated_at' => '2025-07-13 21:50:55'
+            ],
+            [
                 'id' => 4,
                 'menu_id' => 2,
                 'parent_id' => null,
@@ -175,6 +188,19 @@ class MenuSeeder extends Seeder
                 'updated_at' => '2025-07-13 22:00:35'
             ],
             [
+                'id' => 12,
+                'menu_id' => 4,
+                'parent_id' => null,
+                'linkable_type' => null,
+                'linkable_id' => null,
+                'title' => 'Model Essays',
+                'url' => '/model_essays',
+                'target' => '_self',
+                'order' => 1,
+                'created_at' => '2025-07-13 21:59:51',
+                'updated_at' => '2025-07-13 22:00:35'
+            ],
+            [
                 'id' => 14,
                 'menu_id' => 4,
                 'parent_id' => null,
@@ -234,6 +260,19 @@ class MenuSeeder extends Seeder
                 'linkable_id' => null,
                 'title' => 'Shop',
                 'url' => '/products',
+                'target' => '_self',
+                'order' => 1,
+                'created_at' => '2025-07-13 22:02:57',
+                'updated_at' => '2025-07-13 22:02:57'
+            ],
+            [
+                'id' => 19,
+                'menu_id' => 5,
+                'parent_id' => null,
+                'linkable_type' => null,
+                'linkable_id' => null,
+                'title' => 'Model Essays',
+                'url' => '/model_essays',
                 'target' => '_self',
                 'order' => 1,
                 'created_at' => '2025-07-13 22:02:57',
