@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Resource;
+use App\Models\Qualification;
+use App\Models\Subject;
+use App\Models\Examboard;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -14,7 +18,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Product::with(['category', 'brand'])->where('status', 'active');
+        $query = Product::with(['category', 'brand', 'resource', 'qualiification', 'subject', 'examboard'])->where('status', 'active');
 
         // Filter by category (by slug only)
         if ($request->has('category') && $request->category) {
@@ -26,6 +30,22 @@ class ProductController extends Controller
         // Filter by brand
         if ($request->has('brand') && $request->brand) {
             $query->where('brand_id', $request->brand);
+        }
+        // Filter by resource
+        if ($request->has('resource') && $request->resource) {
+            $query->where('resource_type_id', $request->resource);
+        }
+        // Filter by brand
+        if ($request->has('qualiification') && $request->qualiification) {
+            $query->where('qualiification_id', $request->qualiification);
+        }
+        // Filter by brand
+        if ($request->has('subject') && $request->subject) {
+            $query->where('subject_id', $request->subject);
+        }
+        // Filter by brand
+        if ($request->has('examboard') && $request->examboard) {
+            $query->where('examboard_id', $request->examboard);
         }
 
         // Search by name or description
@@ -76,6 +96,10 @@ class ProductController extends Controller
         $products = $query->paginate(12);
         $categories = Category::all();
         $brands = Brand::all();
+        $resource = Resource::all();
+        $qualiification = Qualification::all();
+        $subject = Subject::all();
+        $examboard = Examboard::all();
 
         // Get current category for display
         $currentCategory = null;
@@ -83,7 +107,7 @@ class ProductController extends Controller
             $currentCategory = Category::where('slug', $request->category)->first();
         }
 
-        return view('frontend.products.index', compact('products', 'categories', 'brands', 'currentCategory'));
+        return view('frontend.products.index', compact('products', 'categories', 'brands', 'currentCategory', 'resource', 'qualiification', 'subject', 'examboard'));
     }
 
     /**
