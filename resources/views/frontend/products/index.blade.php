@@ -25,8 +25,12 @@
                         </div>
                         <div class="card-body">
                             @include('frontend.products._filters', [
-                                'categories' => $categories,
-                                'brands' => $brands,
+                                // 'categories' => $categories,
+                                // 'brands' => $brands,
+                                'resources' => $resources,
+                                'qualiifications' => $qualiifications,
+                                'subjects' => $subjects,
+                                'examboards' => $examboards,
                             ])
                         </div>
                     </div>
@@ -50,8 +54,12 @@
                 </div>
                 <div class="offcanvas-body">
                     @include('frontend.products._filters', [
-                        'categories' => $categories,
-                        'brands' => $brands,
+                        // 'categories' => $categories,
+                        // 'brands' => $brands,
+                        'resources' => $resources,
+                        'qualiifications' => $qualiifications,
+                        'subjects' => $subjects,
+                        'examboards' => $examboards,
                     ])
                 </div>
             </div>

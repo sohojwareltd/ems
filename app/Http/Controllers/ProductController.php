@@ -96,10 +96,10 @@ class ProductController extends Controller
         $products = $query->paginate(12);
         $categories = Category::all();
         $brands = Brand::all();
-        $resource = Resource::all();
-        $qualiification = Qualification::all();
-        $subject = Subject::all();
-        $examboard = Examboard::all();
+        $resources = Resource::all();
+        $qualiifications = Qualification::all();
+        $subjects = Subject::all();
+        $examboards = Examboard::all();
 
         // Get current category for display
         $currentCategory = null;
@@ -107,7 +107,7 @@ class ProductController extends Controller
             $currentCategory = Category::where('slug', $request->category)->first();
         }
 
-        return view('frontend.products.index', compact('products', 'categories', 'brands', 'currentCategory', 'resource', 'qualiification', 'subject', 'examboard'));
+        return view('frontend.products.index', compact('products', 'categories', 'brands', 'currentCategory', 'resources', 'qualiifications', 'subjects', 'examboards'));
     }
 
     /**
