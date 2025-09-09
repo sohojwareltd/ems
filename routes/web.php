@@ -51,10 +51,10 @@ Route::post('/cart/remove-coupon', [CartController::class, 'removeCoupon'])->nam
 Route::get('/cart/count', [CartController::class, 'count']);
 
 // Checkout Routes
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
-Route::get('/checkout/order-details/{order}', [CheckoutController::class, 'orderDetails'])->name('checkout.order-details');
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+    Route::get('/checkout/order-details/{order}', [CheckoutController::class, 'orderDetails'])->name('checkout.order-details');
     Route::get('/checkout/confirmation/{order}', [CheckoutController::class, 'confirmation'])->name('checkout.confirmation');
     Route::get('/checkout/download-invoice/{order}', [CheckoutController::class, 'downloadInvoice'])->name('checkout.download-invoice');
 });
@@ -103,6 +103,9 @@ Route::middleware(['auth'])->group(function () {
     // Order Management
     Route::get('/orders', [UserController::class, 'orders'])->name('user.orders.index');
     Route::get('/orders/{order}', [UserController::class, 'showOrder'])->name('user.orders.show');
+    Route::get('/dashbord/products/{product}/download', [UserController::class, 'download'])
+        ->middleware('product.has.purchased')
+        ->name('user.products.download');
 
     Route::get('/dashboard/audiobooks', [\App\Http\Controllers\UserAudioBookController::class, 'index'])->name('user.audiobooks');
     Route::get('/dashboard/audiobooks/{audiobook}/stream', [\App\Http\Controllers\UserAudioBookController::class, 'stream'])->name('user.audiobooks.stream');

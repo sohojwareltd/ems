@@ -26,6 +26,8 @@ class Product extends Model
         'meta_description',
         'meta_keywords',
         'is_digital',
+        'pdf_file',
+        'ppt_file',
     ];
 
     protected $casts = [

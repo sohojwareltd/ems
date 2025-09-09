@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
+use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -102,5 +104,11 @@ class UserController extends Controller
         $order->load(['lines.product', 'discounts']);
         
         return view('user.orders.show', compact('order'));
+    }
+
+
+    public function download(Product $product)
+    {
+        return response()->download(Storage::path($product->ppt_file), $product->name . '.pptx');
     }
 }

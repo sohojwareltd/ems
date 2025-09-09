@@ -101,6 +101,7 @@
                                 </div>
                                 <div class="fw-semibold">${{ number_format($line->price * $line->quantity, 2) }}</div>
                             </div>
+                            <div class="mt-2"><a href="{{route('user.products.download', $line->product_id)}}" class="btn btn-success btn-sm">Download</a></div>
                         </div>
                     </div>
                     @endforeach

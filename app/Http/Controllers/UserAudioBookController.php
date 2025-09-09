@@ -44,7 +44,7 @@ class UserAudioBookController extends Controller
         if (!$user->audioBooks->contains($audiobook)) {
             abort(403);
         }
-        $file = $request->query('file');
+        $file = $request->query(key: 'file');
         if (!$file || !self::fileInAudioBook($audiobook, $file)) {
             abort(404);
         }

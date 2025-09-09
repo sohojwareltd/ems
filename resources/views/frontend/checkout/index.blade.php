@@ -126,13 +126,13 @@
                         </div>
                         <div class="card-body">
                             <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" id="same_as_billing" checked>
+                                <input class="form-check-input" type="checkbox" id="same_as_billing">
                                 <label class="form-check-label" for="same_as_billing">
                                     Same as billing address
                                 </label>
                             </div>
                             
-                            <div id="shipping-fields" style="display: none;">
+                            <div id="shipping-fields">
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="shipping_first_name" class="form-label">First Name *</label>
