@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             QualificationSeeder::class,
             RoleTableSeeder::class,
             UserTableSeeder::class,
-            EternaReadsSeeder::class, 
+            EternaReadsSeeder::class,
             // BrandSeeder::class,
             // CategorySeeder::class,
             // ProductSeeder::class,
@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             FaqSeeder::class,
             CountrySeeder::class,
             MenuSeeder::class,
+            PlanSeeder::class,
         ]);
     }
 }
