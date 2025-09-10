@@ -147,9 +147,9 @@
                 <!-- Products Grid -->
                 @if ($products->count() > 0)
                     <div class="row g-4" id="productsGrid">
-                        @foreach ($products as $product)
+                        @foreach ($products as $productwww)
                             <div class="col-md-6 col-lg-6 ">
-                                <x-essay-card :product="$product" />
+                                <x-essay-card :product="$productwww" />
                             </div>
                         @endforeach
                     </div>

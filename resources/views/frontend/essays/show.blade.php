@@ -339,7 +339,7 @@
             <div class="product-gallery">
                 <!-- Main Image -->
                 <div class="main-image-container" id="mainImageContainer">
-                    <img src="{{ $product->image_url ?? 'https://via.placeholder.com/600x400?text=No+Image' }}"
+                    <img src="{{ asset('storage/' . $product->thumbnail) }}"
                          class="main-image" id="mainImage" alt="{{ $product->name }}">
 
                     <div class="gallery-overlay">
@@ -377,14 +377,14 @@
                     <h1 class="h3 mb-3">{{ $product->name }}</h1>
 
                     <!-- Price -->
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         @if($product->discount_price)
                             <span class="price fs-2">${{ number_format($product->discount_price, 2) }}</span>
                             <span class="original-price fs-5 ms-2">${{ number_format($product->price, 2) }}</span>
                         @else
                             <span class="price fs-2">${{ number_format($product->price, 2) }}</span>
                         @endif
-                    </div>
+                    </div> --}}
 
                     <!-- Product Meta -->
                     <div class="mb-3">
@@ -521,23 +521,26 @@
         });
 
         function initializeGallery() {
-            // Start with product thumbnail
-            const thumbnailUrl = '{{ $product->image_url ?? "https://via.placeholder.com/600x400?text=No+Image" }}';
-            productGallery.images = [thumbnailUrl];
+    productGallery.images = [];
 
-            // Add gallery images
-            @if($product->gallery_urls && count($product->gallery_urls) > 0)
-                @foreach($product->gallery_urls as $galleryImage)
-                    productGallery.images.push('{{ $galleryImage }}');
-                @endforeach
-            @endif
+    // Add main thumbnail (always first image)
+    const thumbnailUrl = '{{ $product->thumbnail ? asset("storage/" . $product->thumbnail) : "https://via.placeholder.com/600x400?text=No+Image" }}';
+    productGallery.images.push(thumbnailUrl);
 
-            // Remove duplicates
-            productGallery.images = [...new Set(productGallery.images)];
+    // Add gallery images (if exists)
+    @if($product->gallery && count($product->gallery) > 0)
+        @foreach($product->gallery as $galleryImage)
+            productGallery.images.push('{{ asset("storage/" . $galleryImage) }}');
+        @endforeach
+    @endif
 
-            // Build thumbnail gallery
-            buildThumbnailGallery();
-        }
+    // Remove duplicates (thumbnail + gallery)
+    productGallery.images = [...new Set(productGallery.images)];
+
+    // Build thumbnail gallery
+    buildThumbnailGallery();
+}
+
 
         function buildThumbnailGallery() {
             const thumbnailGallery = $('#thumbnailGallery');

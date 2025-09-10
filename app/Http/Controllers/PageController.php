@@ -37,25 +37,25 @@ class PageController extends Controller
     {
         $data = $request->validate([
             'first_name' => 'required|string|max:255',
-            'last_name'  => 'required|string|max:255',
-            'email'      => 'required|email|max:255',
-            'phone'      => 'nullable|string|max:25',
-            'subject'    => 'required|string|max:255',
-            'message'    => 'required|string',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'nullable|string|max:25',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
             'newsletter' => 'nullable|in:on,true,1,0,false',
         ]);
 
         $data['newsletter'] = $request->has('newsletter');
-        
+
         $admins = User::where('role_id', 1)->get();
 
         foreach ($admins as $admin) {
-            Mail::to( setting('store.email', $admin->email))->send(new ContactFormNotification($data));
+            Mail::to(setting('store.email', $admin->email))->send(new ContactFormNotification($data));
         }
 
         return redirect()->back()->with('success', 'Your message has been sent successfully!');
     }
-    
+
     /**
      * Display the FAQ page
      */
@@ -63,9 +63,11 @@ class PageController extends Controller
     {
         $faqCategories = FaqCategory::active()
             ->ordered()
-            ->with(['activeFaqItems' => function ($query) {
-                $query->ordered();
-            }])
+            ->with([
+                'activeFaqItems' => function ($query) {
+                    $query->ordered();
+                }
+            ])
             ->get();
 
         return view('frontend.pages.faq', compact('faqCategories'));
@@ -75,11 +77,11 @@ class PageController extends Controller
     public function model(Request $request)
     {
 
-                $query = Essay::with(['category', 'brand', 'resource', 'qualiification', 'subject', 'examboard'])->where('status', 'active');
-
+        $query = Essay::with(['category', 'brand', 'resource', 'qualiification', 'subject', 'examboard'])->where('status', 'active');
+        // dd($query->get());
         // Filter by category (by slug only)
         if ($request->has('category') && $request->category) {
-            $query->whereHas('category', function($q) use ($request) {
+            $query->whereHas('category', function ($q) use ($request) {
                 $q->where('slug', $request->category);
             });
         }
@@ -108,10 +110,10 @@ class PageController extends Controller
         // Search by name or description
         if ($request->has('search') && $request->search) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhere('sku', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('sku', 'like', "%{$search}%");
             });
         }
 
@@ -165,55 +167,31 @@ class PageController extends Controller
         }
 
         return view('frontend.essays.index', compact('products', 'categories', 'brands', 'currentCategory', 'resources', 'qualiifications', 'subjects', 'examboards'));
-        
+
     }
 
 
-        public function show(Essay $product)
+    public function show(Essay $product)
     {
+        // Increase product view count
         $product->increment('views');
-        // Get related products - first try same category and brand, then same category, then same brand
-        $relatedProducts = Essay::where('status', 'active')
-            ->where('id', '!=', $product->id) // Exclude current product
-            ->where(function($query) use ($product) {
-                $query->where(function($q) use ($product) {
-                    // Same category and brand
-                    $q->where('category_id', $product->category_id)
-                      ->where('brand_id', $product->brand_id);
-                })->orWhere(function($q) use ($product) {
-                    // Same category only
-                    $q->where('category_id', $product->category_id)
-                      ->where('brand_id', '!=', $product->brand_id);
-                })->orWhere(function($q) use ($product) {
-                    // Same brand only
-                    $q->where('brand_id', $product->brand_id)
-                      ->where('category_id', '!=', $product->category_id);
-                });
+
+        // Load relations (no category, brand here)
+        $product->load(['resource', 'qualiification', 'subject', 'examboard']);
+
+        // Get related products - try subject, then examboard, then qualification
+        $relatedProducts = Essay::with(['subject', 'examboard', 'qualiification'])
+            ->where('status', 'active')
+            ->where('id', '!=', $product->id)
+            ->where(function ($query) use ($product) {
+                $query->where('subject_id', $product->subject_id)
+                    ->orWhere('examboard_id', $product->examboard_id)
+                    ->orWhere('qualiification_id', $product->qualiification_id);
             })
-            ->orderByRaw('
-                CASE
-                    WHEN category_id = ? AND brand_id = ? THEN 1
-                    WHEN category_id = ? THEN 2
-                    WHEN brand_id = ? THEN 3
-                    ELSE 4
-                END
-            ', [$product->category_id, $product->brand_id, $product->category_id, $product->brand_id])
             ->limit(4)
             ->get();
 
-        // If we don't have enough related products, get more from the same category
-        if ($relatedProducts->count() < 4) {
-            $additionalProducts = Essay::where('status', 'active')
-                ->where('id', '!=', $product->id)
-                ->whereNotIn('id', $relatedProducts->pluck('id'))
-                ->where('category_id', $product->category_id)
-                ->limit(4 - $relatedProducts->count())
-                ->get();
-
-            $relatedProducts = $relatedProducts->merge($additionalProducts);
-        }
-
-        // If still not enough, get random products
+        // Fill remaining slots with random products if not enough
         if ($relatedProducts->count() < 4) {
             $randomProducts = Essay::where('status', 'active')
                 ->where('id', '!=', $product->id)
@@ -225,9 +203,70 @@ class PageController extends Controller
             $relatedProducts = $relatedProducts->merge($randomProducts);
         }
 
-        // return view('frontend.products.show-digital', compact('product', 'relatedProducts'));
-
-        // Default (physical) product view
+        // Return product details page
         return view('frontend.essays.show', compact('product', 'relatedProducts'));
     }
+
+
+    // public function show(Essay $product)
+    // {
+    //     $product->increment('views');
+
+    //     $product->load(['category', 'brand', 'resource', 'qualiification', 'subject', 'examboard']);
+
+
+    //     $relatedProducts = Essay::with(['category', 'brand'])
+    //         ->where('status', 'active')
+    //         ->where('id', '!=', $product->id) 
+    //         ->where(function ($query) use ($product) {
+    //             $query->where(function ($q) use ($product) {
+
+    //                 $q->where('category_id', $product->category_id)
+    //                     ->where('brand_id', $product->brand_id);
+    //             })->orWhere(function ($q) use ($product) {
+
+    //                 $q->where('category_id', $product->category_id)
+    //                     ->where('brand_id', '!=', $product->brand_id);
+    //             })->orWhere(function ($q) use ($product) {
+
+    //                 $q->where('brand_id', $product->brand_id)
+    //                     ->where('category_id', '!=', $product->category_id);
+    //             });
+    //         })
+    //         ->orderByRaw('
+    //         CASE
+    //             WHEN category_id = ? AND brand_id = ? THEN 1
+    //             WHEN category_id = ? THEN 2
+    //             WHEN brand_id = ? THEN 3
+    //             ELSE 4
+    //         END
+    //     ', [$product->category_id, $product->brand_id, $product->category_id, $product->brand_id])
+    //         ->limit(4)
+    //         ->get();
+
+    //     if ($relatedProducts->count() < 4) {
+    //         $additionalProducts = Essay::where('status', 'active')
+    //             ->where('id', '!=', $product->id)
+    //             ->whereNotIn('id', $relatedProducts->pluck('id'))
+    //             ->where('category_id', $product->category_id)
+    //             ->limit(4 - $relatedProducts->count())
+    //             ->get();
+
+    //         $relatedProducts = $relatedProducts->merge($additionalProducts);
+    //     }
+
+    //     if ($relatedProducts->count() < 4) {
+    //         $randomProducts = Essay::where('status', 'active')
+    //             ->where('id', '!=', $product->id)
+    //             ->whereNotIn('id', $relatedProducts->pluck('id'))
+    //             ->inRandomOrder()
+    //             ->limit(4 - $relatedProducts->count())
+    //             ->get();
+
+    //         $relatedProducts = $relatedProducts->merge($randomProducts);
+    //     }
+
+    //     return view('frontend.essays.show', compact('product', 'relatedProducts'));
+    // }
+
 }

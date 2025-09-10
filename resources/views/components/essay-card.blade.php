@@ -1,10 +1,10 @@
-@props(['essay'])
+@props(['product'])
 <div class="product-card-premium h-100 d-flex flex-column position-relative">
 
     <!-- Product Image -->
     <div class="premium-image-wrapper d-flex align-items-center justify-content-center bg-white rounded-top-4" style="width:100%;height:220px;overflow:hidden;">
        <a href="{{ route('model.show', $product) }}">
-           <img src="{{ $product->image_url }}" class="premium-product-image" alt="{{ $product->name }}" style="max-width:100%;max-height:100%;object-fit:contain;display:block;">
+           <img src="{{ asset('storage/' . $product->thumbnail) }}" class="premium-product-image" alt="{{ $product->name }}" style="max-width:100%;max-height:100%;object-fit:contain;display:block;">
 
        </a>
     </div>
@@ -26,11 +26,15 @@
                     </span>
                 @endif
             </div>
-            <h5 class="premium-title mb-2"><a class="text-decoration-none" style="color: var(--primary-color);" href="{{ route('products.show', $product) }}">{{ $product->name }}</a></h5>
+            <h5 class="premium-title mb-2">
+                <a class="text-decoration-none" style="color: var(--primary-color);"
+                    href="{{ route('model.show', $product) }}">{{ $product->name }}
+                </a>
+            </h5>
             <p class="premium-desc text-muted mb-3">{{ Str::limit($product->description, 80) }}</p>
         </div>
         <div class="mt-auto">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            {{-- <div class="d-flex justify-content-between align-items-center mb-3">
                 @if(method_exists($product, 'hasVariants') && $product->hasVariants())
                     @php
                         $minPrice = $product->getMinPrice();
@@ -52,7 +56,7 @@
                         <span class="premium-original-price ms-2">${{ number_format($product->original_price, 2) }}</span>
                     @endif
                 @endif
-            </div>
+            </div> --}}
             {{-- @if($product->getStock() == 0 && !$product->is_digital)
                 <button class="btn btn-premium btn-add-to-cart w-100 py-2" disabled>
                     <i class="bi bi-cart-x me-2"></i> Out of Stock
