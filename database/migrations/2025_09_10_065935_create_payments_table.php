@@ -13,11 +13,18 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('subscription_id')->constrained();
-            $table->string('gateway_payment_id');
-            $table->string('amount');
-            $table->string('status');
+            $table->foreignId('subscription_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('stripe_payment_intent_id')->nullable(); // For tracking Stripe payment intents
+            $table->string('stripe_charge_id')->nullable(); // For tracking successful charges
+            $table->unsignedInteger('amount');
+            $table->string('currency', 3)->default('usd');
+            $table->string('status'); // requires_payment_method, requires_confirmation, requires_action, processing, requires_capture, canceled, succeeded
+            $table->string('type')->default('subscription'); // subscription, one_time
             $table->dateTime('paid_at')->nullable();
+            $table->dateTime('failed_at')->nullable();
+            $table->text('failure_reason')->nullable();
+            $table->json('metadata')->nullable();
             $table->timestamps();
         });
     }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\SubscriptionStatus;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -15,6 +16,12 @@ class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+
+    /**
+     * Cached active subscription to avoid multiple queries
+     */
+    protected $cachedActiveSubscription = null;
+    protected $activeSubscriptionLoaded = false;
 
 
     public const ROLE_CUSTOMER = 2;
@@ -41,6 +48,7 @@ class User extends Authenticatable implements FilamentUser
         'state',
         'zip',
         'country',
+        'stripe_customer_id',
     ];
 
     /**
@@ -93,6 +101,82 @@ class User extends Authenticatable implements FilamentUser
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Get the subscriptions for the user.
+     */
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    /**
+     * Get the payments for the user.
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    /**
+     * Get the user's active subscription.
+     */
+    public function activeSubscription()
+    {
+        if (!$this->activeSubscriptionLoaded) {
+            $this->cachedActiveSubscription = $this->subscriptions()
+                ->where('status', SubscriptionStatus::ACTIVE)
+                ->orWhere('status', SubscriptionStatus::TRIALING)
+                ->latest()
+                ->first();
+            $this->activeSubscriptionLoaded = true;
+        }
+
+        return $this->cachedActiveSubscription;
+    }
+
+    /**
+     * Clear the cached active subscription (useful when subscription status changes)
+     */
+    public function clearActiveSubscriptionCache(): void
+    {
+        $this->cachedActiveSubscription = null;
+        $this->activeSubscriptionLoaded = false;
+    }
+
+    /**
+     * Refresh the active subscription cache
+     */
+    public function refreshActiveSubscription()
+    {
+        $this->clearActiveSubscriptionCache();
+        return $this->activeSubscription();
+    }
+
+    /**
+     * Check if user has an active subscription.
+     */
+    public function hasActiveSubscription(): bool
+    {
+        return $this->activeSubscription() !== null;
+    }
+
+    /**
+     * Check if user is on trial.
+     */
+    public function isOnTrial(): bool
+    {
+        $subscription = $this->activeSubscription();
+        return $subscription && $subscription->isOnTrial();
+    }
+
+    /**
+     * Get the user's Stripe customer ID.
+     */
+    public function getStripeCustomerId(): ?string
+    {
+        return $this->stripe_customer_id;
     }
 
     /**

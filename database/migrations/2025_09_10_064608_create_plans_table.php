@@ -14,8 +14,14 @@ return new class extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('price');
-            $table->string('interval');
+            $table->text('description')->nullable();
+            $table->integer('price'); // Price in cents
+            $table->string('currency', 3)->default('usd');
+            $table->string('interval'); // month, year, week, day
+            $table->integer('interval_count')->default(1);
+            $table->integer('trial_period_days')->nullable();
+            $table->boolean('active')->default(true);
+            $table->json('features')->nullable(); // JSON array of features
             $table->timestamps();
         });
     }
