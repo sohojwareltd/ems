@@ -67,8 +67,10 @@
             <div class="col-md-8">
                 <!-- Active Filters Display -->
                 @if (request('search') ||
-                        request('category') ||
-                        request('brand') ||
+                        request('resource') ||
+                        request('qualiification') ||
+                        request('subject') ||
+                        request('examboard') ||
                         request('min_price') ||
                         request('max_price') ||
                         request('sort'))
@@ -83,22 +85,42 @@
                                             class="text-white text-decoration-none ms-1">×</a>
                                     </span>
                                 @endif
-                                @if (request('category'))
-                                    @php $category = $categories->firstWhere('slug', request('category')) @endphp
-                                    @if ($category)
+                                @if (request('qualiification'))
+                                    @php $qualiification = $qualiifications->firstWhere('id', request('qualiification')) @endphp
+                                    @if ($qualiification)
                                         <span class="badge bg-primary">
-                                            Category: {{ $category->name }}
-                                            <a href="{{ route('products.index', request()->except('category')) }}"
+                                            Qualiification: {{ $qualiification->title }}
+                                            <a href="{{ route('products.index', request()->except('qualiification')) }}"
                                                 class="text-white text-decoration-none ms-1">×</a>
                                         </span>
                                     @endif
                                 @endif
-                                @if (request('brand'))
-                                    @php $brand = $brands->find(request('brand')) @endphp
-                                    @if ($brand)
+                                @if (request('examboard'))
+                                    @php $examboard = $examboards->firstWhere('id', request('examboard')) @endphp
+                                    @if ($examboard)
                                         <span class="badge bg-primary">
-                                            Brand: {{ $brand->name }}
-                                            <a href="{{ route('products.index', request()->except('brand')) }}"
+                                            Exam Board: {{ $examboard->title }}
+                                            <a href="{{ route('products.index', request()->except('examboard')) }}"
+                                                class="text-white text-decoration-none ms-1">×</a>
+                                        </span>
+                                    @endif
+                                @endif
+                                @if (request('resource'))
+                                    @php $resource = $resources->firstWhere('id', request('resource')) @endphp
+                                    @if ($resource)
+                                        <span class="badge bg-primary">
+                                            Resource: {{ $resource->title }}
+                                            <a href="{{ route('products.index', request()->except('resource')) }}"
+                                                class="text-white text-decoration-none ms-1">×</a>
+                                        </span>
+                                    @endif
+                                @endif
+                                @if (request('subject'))
+                                    @php $subject = $subjects->firstWhere('id', request('subject')) @endphp
+                                    @if ($subject)
+                                        <span class="badge bg-primary">
+                                            Subject: {{ $subject->title }}
+                                            <a href="{{ route('products.index', request()->except('subject')) }}"
                                                 class="text-white text-decoration-none ms-1">×</a>
                                         </span>
                                     @endif

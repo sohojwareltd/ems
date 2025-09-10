@@ -328,7 +328,7 @@
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Products</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('products.index', ['category' => $product->category_id]) }}">{{ $product->category->name ?? 'Category' }}</a></li>
+            {{-- <li class="breadcrumb-item"><a href="{{ route('products.index', ['category' => $product->category_id]) }}">{{ $product->category->name ?? 'Category' }}</a></li> --}}
             <li class="breadcrumb-item active" aria-current="page">{{ $product->name }}</li>
         </ol>
     </nav>
@@ -431,16 +431,19 @@
 
                     <!-- Share -->
                     <div class="border-top pt-3">
-                        <h6>Share this product</h6>
+                        
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-outline-primary btn-sm">
-                                <i class="bi bi-facebook"></i> Facebook
+                           <a href="{{route('products.index', ['qualiification'=>$product->qualiification->id])}}" class="btn btn-outline-primary btn-sm">
+                                {{$product->qualiification->title ?? ''}}
                             </a>
-                            <a href="#" class="btn btn-outline-info btn-sm">
-                                <i class="bi bi-twitter"></i> Twitter
+                            <a href="{{route('products.index', ['examboard'=>$product->examboard->id])}}" class="btn btn-outline-info btn-sm">
+                                 {{$product->examboard->title ?? ''}}
                             </a>
-                            <a href="#" class="btn btn-outline-success btn-sm">
-                                <i class="bi bi-whatsapp"></i> WhatsApp
+                            <a href="{{route('products.index', ['resource'=>$product->resource->id])}}" class="btn btn-outline-success btn-sm">
+                                 {{$product->resource->title ?? ''}}
+                            </a>
+                            <a href="{{route('products.index', ['subject'=>$product->subject->id])}}" class="btn btn-outline-success btn-sm">
+                                 {{$product->subject->title ?? ''}}
                             </a>
                         </div>
                     </div>

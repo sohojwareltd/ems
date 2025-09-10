@@ -327,8 +327,8 @@
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Products</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('products.index', ['category' => $product->category_id]) }}">{{ $product->category->name ?? 'Category' }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('model.index') }}">Model Essays</a></li>
+            {{-- <li class="breadcrumb-item"><a href="{{ route('products.index', ['category' => $product->category_id]) }}">{{ $product->category->name ?? 'Category' }}</a></li> --}}
             <li class="breadcrumb-item active" aria-current="page">{{ $product->name }}</li>
         </ol>
     </nav>
@@ -443,7 +443,7 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 class="mb-0">
-                        <i class="bi bi-grid"></i> Related Products
+                        <i class="bi bi-grid"></i> Related Model Essays
                     </h3>
                     <div class="d-flex align-items-center gap-3">
                         <span class="text-muted">View:</span>

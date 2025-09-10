@@ -161,11 +161,12 @@ class PageController extends Controller
         $product->load(['resource', 'qualiification', 'subject', 'examboard']);
 
         // Get related products - try subject, then examboard, then qualification
-        $relatedProducts = Essay::with(['subject', 'examboard', 'qualiification'])
+        $relatedProducts = Essay::with(['subject', 'examboard', 'qualiification', 'resource'])
             ->where('status', 'active')
             ->where('id', '!=', $product->id)
             ->where(function ($query) use ($product) {
                 $query->where('subject_id', $product->subject_id)
+                    ->orWhere('resource_id', $product->resource_id)
                     ->orWhere('examboard_id', $product->examboard_id)
                     ->orWhere('qualiification_id', $product->qualiification_id);
             })
@@ -174,7 +175,8 @@ class PageController extends Controller
 
         // Fill remaining slots with random products if not enough
         if ($relatedProducts->count() < 4) {
-            $randomProducts = Essay::where('status', 'active')
+            $randomProducts = Essay::with(['subject', 'examboard', 'qualiification', 'resource'])
+                ->where('status', 'active')
                 ->where('id', '!=', $product->id)
                 ->whereNotIn('id', $relatedProducts->pluck('id'))
                 ->inRandomOrder()
