@@ -376,16 +376,7 @@
                 <div class="card-body">
                     <h1 class="h3 mb-3">{{ $product->name }}</h1>
 
-                    <!-- Price -->
-                    {{-- <div class="mb-3">
-                        @if($product->discount_price)
-                            <span class="price fs-2">${{ number_format($product->discount_price, 2) }}</span>
-                            <span class="original-price fs-5 ms-2">${{ number_format($product->price, 2) }}</span>
-                        @else
-                            <span class="price fs-2">${{ number_format($product->price, 2) }}</span>
-                        @endif
-                    </div> --}}
-
+                    
                     <!-- Product Meta -->
                     <div class="mb-3">
                         <small class="text-muted">
@@ -408,12 +399,7 @@
                                     <i class="fa-solid fa-magnifying-glass"></i> Preview
                                 </a>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">&nbsp;</label>
-                                <button type="submit" class="btn btn-primary w-100 btn-lg">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart
-                                </button>
-                            </div>
+                            
                         </div>
                     </form>
 
@@ -431,16 +417,18 @@
 
                     <!-- Share -->
                     <div class="border-top pt-3">
-                        <h6>Share this product</h6>
                         <div class="d-flex gap-2">
-                            <a href="#" class="btn btn-outline-primary btn-sm">
-                                <i class="bi bi-facebook"></i> Facebook
+                            <a href="{{route('model.index', ['qualiification'=>$product->qualiification->id])}}" class="btn btn-outline-primary btn-sm">
+                                {{$product->qualiification->title ?? ''}}
                             </a>
-                            <a href="#" class="btn btn-outline-info btn-sm">
-                                <i class="bi bi-twitter"></i> Twitter
+                            <a href="{{route('model.index', ['examboard'=>$product->examboard->id])}}" class="btn btn-outline-info btn-sm">
+                                 {{$product->examboard->title ?? ''}}
                             </a>
-                            <a href="#" class="btn btn-outline-success btn-sm">
-                                <i class="bi bi-whatsapp"></i> WhatsApp
+                            <a href="{{route('model.index', ['resource'=>$product->resource->id])}}" class="btn btn-outline-success btn-sm">
+                                 {{$product->resource->title ?? ''}}
+                            </a>
+                            <a href="{{route('model.index', ['subject'=>$product->subject->id])}}" class="btn btn-outline-success btn-sm">
+                                 {{$product->subject->title ?? ''}}
                             </a>
                         </div>
                     </div>

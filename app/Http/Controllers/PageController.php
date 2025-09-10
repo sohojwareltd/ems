@@ -78,18 +78,8 @@ class PageController extends Controller
     {
 
         $query = Essay::with(['category', 'brand', 'resource', 'qualiification', 'subject', 'examboard'])->where('status', 'active');
-        // dd($query->get());
-        // Filter by category (by slug only)
-        if ($request->has('category') && $request->category) {
-            $query->whereHas('category', function ($q) use ($request) {
-                $q->where('slug', $request->category);
-            });
-        }
+        
 
-        // Filter by brand
-        if ($request->has('brand') && $request->brand) {
-            $query->where('brand_id', $request->brand);
-        }
         // Filter by resource
         if ($request->has('resource') && $request->resource) {
             $query->where('resource_type_id', $request->resource);
@@ -112,19 +102,9 @@ class PageController extends Controller
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%")
-                    ->orWhere('sku', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
-
-        // Price range filter
-        if ($request->has('min_price') && $request->min_price) {
-            $query->where('price', '>=', $request->min_price);
-        }
-        if ($request->has('max_price') && $request->max_price) {
-            $query->where('price', '<=', $request->max_price);
-        }
-
         // Sort products
         $sort = $request->get('sort', 'name');
 
@@ -137,9 +117,6 @@ class PageController extends Controller
         }
 
         switch ($sort) {
-            case 'price':
-                $query->orderBy('price', $direction);
-                break;
             case 'newest':
                 $query->orderBy('created_at', 'desc');
                 break;
@@ -147,14 +124,18 @@ class PageController extends Controller
                 $query->orderBy('views', 'desc');
                 break;
             case 'name':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
             default:
                 $query->latest();
                 break;
         }
 
         $products = $query->paginate(12);
-        $categories = Category::all();
-        $brands = Brand::all();
+
         $resources = Resource::all();
         $qualiifications = Qualification::all();
         $subjects = Subject::all();
@@ -166,7 +147,7 @@ class PageController extends Controller
             $currentCategory = Category::where('slug', $request->category)->first();
         }
 
-        return view('frontend.essays.index', compact('products', 'categories', 'brands', 'currentCategory', 'resources', 'qualiifications', 'subjects', 'examboards'));
+        return view('frontend.essays.index', compact('products',  'currentCategory', 'resources', 'qualiifications', 'subjects', 'examboards'));
 
     }
 

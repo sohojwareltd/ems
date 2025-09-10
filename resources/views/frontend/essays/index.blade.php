@@ -24,7 +24,7 @@
                             </h5>
                         </div>
                         <div class="card-body">
-                            @include('frontend.products._filters', [
+                            @include('frontend.essays._filters', [
                                 // 'categories' => $categories,
                                 // 'brands' => $brands,
                                 'resources' => $resources,
@@ -53,7 +53,7 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
-                    @include('frontend.products._filters', [
+                    @include('frontend.essays._filters', [
                         // 'categories' => $categories,
                         // 'brands' => $brands,
                         'resources' => $resources,
@@ -66,11 +66,11 @@
             <!-- Main Content: Products -->
             <div class="col-md-8">
                 <!-- Active Filters Display -->
-                @if (request('search') ||
-                        request('category') ||
-                        request('brand') ||
-                        request('min_price') ||
-                        request('max_price') ||
+                @if (request('search') || 
+                        request('qualiification') || 
+                        request('examboard') || 
+                        request('resource') || 
+                        request('subject') ||
                         request('sort'))
                     <div class="row mb-4">
                         <div class="col-12">
@@ -79,51 +79,62 @@
                                 @if (request('search'))
                                     <span class="badge bg-primary">
                                         Search: "{{ request('search') }}"
-                                        <a href="{{ route('products.index', request()->except('search')) }}"
+                                        <a href="{{ route('model.index', request()->except('search')) }}"
                                             class="text-white text-decoration-none ms-1">×</a>
                                     </span>
                                 @endif
-                                @if (request('category'))
-                                    @php $category = $categories->firstWhere('slug', request('category')) @endphp
-                                    @if ($category)
+                                @if (request('qualiification'))
+                                    @php $qualiification = $qualiifications->firstWhere('id', request('qualiification')) @endphp
+                                    @if ($qualiification)
                                         <span class="badge bg-primary">
-                                            Category: {{ $category->name }}
-                                            <a href="{{ route('products.index', request()->except('category')) }}"
+                                            Qualiification: {{ $qualiification->title }}
+                                            <a href="{{ route('model.index', request()->except('qualiification')) }}"
                                                 class="text-white text-decoration-none ms-1">×</a>
                                         </span>
                                     @endif
                                 @endif
-                                @if (request('brand'))
-                                    @php $brand = $brands->find(request('brand')) @endphp
-                                    @if ($brand)
+                                @if (request('examboard'))
+                                    @php $examboard = $examboards->find(request('examboard')) @endphp
+                                    @if ($examboard)
                                         <span class="badge bg-primary">
-                                            Brand: {{ $brand->name }}
-                                            <a href="{{ route('products.index', request()->except('brand')) }}"
+                                            Exam Board: {{ $examboard->title }}
+                                            <a href="{{ route('model.index', request()->except('examboard')) }}"
                                                 class="text-white text-decoration-none ms-1">×</a>
                                         </span>
                                     @endif
                                 @endif
-                                @if (request('min_price') || request('max_price'))
-                                    <span class="badge bg-primary">
-                                        Price: ${{ request('min_price', '0') }} - ${{ request('max_price', '∞') }}
-                                        <a href="{{ route('products.index', request()->except(['min_price', 'max_price'])) }}"
-                                            class="text-white text-decoration-none ms-1">×</a>
-                                    </span>
+                                @if (request('resource'))
+                                    @php $resource = $resources->find(request('resource')) @endphp
+                                    @if ($resource)
+                                        <span class="badge bg-primary">
+                                            Resource: {{ $resource->title }}
+                                            <a href="{{ route('model.index', request()->except('resource')) }}"
+                                                class="text-white text-decoration-none ms-1">×</a>
+                                        </span>
+                                    @endif
+                                @endif
+                                @if (request('subject'))
+                                    @php $subject = $subjects->find(request('subject')) @endphp
+                                    @if ($subject)
+                                        <span class="badge bg-primary">
+                                            Subject: {{ $subject->title }}
+                                            <a href="{{ route('model.index', request()->except('subject')) }}"
+                                                class="text-white text-decoration-none ms-1">×</a>
+                                        </span>
+                                    @endif
                                 @endif
                                 @if (request('sort'))
                                     @php
                                         $sortLabels = [
                                             'name' => 'Name A-Z',
                                             'name_desc' => 'Name Z-A',
-                                            'price' => 'Price Low-High',
-                                            'price_desc' => 'Price High-Low',
                                             'newest' => 'Newest First',
                                             'popular' => 'Most Popular',
                                         ];
                                     @endphp
                                     <span class="badge bg-primary">
                                         Sort: {{ $sortLabels[request('sort')] ?? request('sort') }}
-                                        <a href="{{ route('products.index', request()->except('sort')) }}"
+                                        <a href="{{ route('model.index', request()->except('sort')) }}"
                                             class="text-white text-decoration-none ms-1">×</a>
                                     </span>
                                 @endif
@@ -169,7 +180,7 @@
                         </div>
                         <h4 class="text-muted mb-3">No products found</h4>
                         <p class="text-muted mb-4">Try adjusting your search criteria or browse our full collection.</p>
-                        <a href="{{ route('products.index') }}" class="btn btn-primary">
+                        <a href="{{ route('model.index') }}" class="btn btn-primary">
                             <i class="bi bi-arrow-clockwise me-2"></i>Clear Filters
                         </a>
                     </div>
@@ -180,14 +191,14 @@
 
     <!-- Filters Partial -->
     @push('partials')
-        @if (!View::exists('frontend.products._filters'))
+        @if (!View::exists('frontend.essays._filters'))
             @php
                 // Inline the filter form as a partial for DRYness
             @endphp
             @once
                 @push('partials')
                     <div id="_filters-partial" style="display:none">
-                        <form id="filterForm" method="GET" action="{{ route('products.index') }}">
+                        <form id="filterForm" method="GET" action="{{ route('model.index') }}">
                             <div class="row g-3">
                                 <!-- Search -->
                                 <div class="col-12">
@@ -263,7 +274,7 @@
                                         <button type="submit" class="btn btn-primary flex-fill">
                                             <i class="bi bi-search me-2"></i>Apply Filters
                                         </button>
-                                        <a href="{{ route('products.index') }}" class="btn btn-outline-secondary">
+                                        <a href="{{ route('model.index') }}" class="btn btn-outline-secondary">
                                             <i class="bi bi-arrow-clockwise me-2"></i>Clear
                                         </a>
                                     </div>

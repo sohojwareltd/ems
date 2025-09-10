@@ -13,16 +13,16 @@
         <div>
             <!-- Brand and Category -->
             <div class="d-flex align-items-center mb-2" style="gap: 0.75rem;">
-                @if($product->brand)
+                @if($product->qualiification)
                     <span class="text-muted small d-flex align-items-center" style="font-family: 'Playfair Display', serif; letter-spacing: 0.02em;">
                         <i class="bi bi-bookmark-star me-1" style="color: var(--primary-color);"></i>
-                        {{ $product->brand->name }}
+                        {{ $product->qualiification->title }}
                     </span>
                 @endif
-                @if($product->category)
+                @if($product->examboard)
                     <span class="text-muted small d-flex align-items-center" style="font-family: 'Playfair Display', serif; letter-spacing: 0.02em;">
                         <i class="bi bi-journal-bookmark me-1" style="color: var(--secondary-color);"></i>
-                        {{ $product->category->name }}
+                        {{ $product->examboard->title }}
                     </span>
                 @endif
             </div>
@@ -62,9 +62,9 @@
                     <i class="bi bi-cart-x me-2"></i> Out of Stock
                 </button>
             @elseif(method_exists($product, 'hasVariants') && $product->hasVariants()) --}}
-                <a href="{{ route('products.show', $product) }}" class="btn btn-premium btn-add-to-cart w-100 py-2">
+                {{-- <a href="{{ route('products.show', $product) }}" class="btn btn-premium btn-add-to-cart w-100 py-2">
                     <i class="bi bi-sliders me-2"></i> Select Options
-                </a>
+                </a> --}}
             {{-- @else
                 <button class="btn btn-premium btn-add-to-cart w-100 py-2" onclick="addToCart({{ $product->id }})">
                     <i class="bi bi-cart-plus me-2"></i> Add to Cart

@@ -2,7 +2,7 @@
     <div class="row g-3">
         <!-- Search -->
         <div class="col-12">
-            <label for="search" class="form-label">Search Products</label>
+            <label for="search" class="form-label">Search Model Essays</label>
             <div class="input-group">
                 <span class="input-group-text">
                     <i class="bi bi-search text-muted"></i>
@@ -91,24 +91,8 @@
                 <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest First</option>
                 <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Name A-Z</option>
                 <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Name Z-A</option>
-                <option value="price" {{ request('sort') == 'price' ? 'selected' : '' }}>Price Low-High</option>
-                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price High-Low</option>
                 <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Most Popular</option>
             </select>
-        </div>
-        <!-- Price Range -->
-        <div class="col-12">
-            <label class="form-label">Price Range</label>
-            <div class="row g-2">
-                <div class="col-6">
-                    <input type="number" class="form-control" id="min_price" name="min_price"
-                        value="{{ request('min_price') }}" placeholder="Min Price" min="0">
-                </div>
-                <div class="col-6">
-                    <input type="number" class="form-control" id="max_price" name="max_price"
-                        value="{{ request('max_price') }}" placeholder="Max Price" min="0">
-                </div>
-            </div>
         </div>
         <!-- Filter Actions -->
         <div class="col-12 d-flex align-items-end">
@@ -116,7 +100,7 @@
                 <button type="submit" class="btn btn-primary flex-fill">
                     <i class="bi bi-search me-2"></i>Apply Filters
                 </button>
-                <a href="{{ route('products.index') }}" class="btn btn-outline-secondary">
+                <a href="{{ route('model.index') }}" class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-clockwise me-2"></i>Clear
                 </a>
             </div>

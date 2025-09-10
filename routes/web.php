@@ -36,7 +36,7 @@ Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::post('/contact', [PageController::class, 'store'])->name('contact.store');
 Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 Route::get('/model-essays', [PageController::class, 'model'])->name('model.index');
-Route::get('/model-essays/{product}', [PageController::class, 'show'])->name('model.show');
+Route::get('/model-essays/{product:slug}', [PageController::class, 'show'])->name('model.show');
 
 // E-commerce Frontend Routes
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
