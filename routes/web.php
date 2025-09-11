@@ -55,6 +55,8 @@ Route::get('/cart/count', [CartController::class, 'count']);
 
 //subscription Routes
 Route::get('/subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions.index');
+Route::get('/subscriptions/payment/{id}', [SubscriptionController::class, 'subscriptionsPayment'])->name('subscriptions.payment');
+Route::post('/payment-method/{id}', [SubscriptionController::class, 'paymentMethod'])->name('payment.method');
 
 
 // Checkout Routes

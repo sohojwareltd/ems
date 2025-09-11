@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Plan;
+use App\Models\Subscription;
 
 class SubscriptionController extends Controller
 {
@@ -16,4 +17,66 @@ class SubscriptionController extends Controller
 
         return view('frontend.pages.subscriptions.index', compact('plans', 'months', 'years'));
     }
+
+    public function subscriptionsPayment($id)
+    {
+        $plan = Plan::findOrFail($id);
+
+        return view('frontend.pages.subscriptions.payment', compact('plan'));
+    }
+
+    public function paymentMethod(Request $request, $planId)
+    {
+        $plan = Plan::findOrFail($planId);
+        // dd ('ID PASS HOY');
+        // Validate inputs
+        // $request->validate([
+        //     'cardholder' => 'required|string|max:255',
+        //     'cardnumber' => 'required|string|min:16|max:19',
+        //     'expiry' => 'required|string',
+        //     'cvv' => 'required|string|min:3|max:4',
+        //     'gateway' => 'required|string',
+        //     'terms' => 'accepted',
+        // ]);
+
+        // Demo gateway subscription ID
+        $fakeGatewaySubscriptionId = 'SUB-' . strtoupper(uniqid());
+
+        // Save subscription
+        Subscription::create([
+            'user_id' => auth()->id() ?? 3, // Demo user
+            'plan_id' => $plan->id,
+            'gateway' => 'manual',
+            // 'gateway' => $request->gateway, 
+            'gateway_subscription_id' => $fakeGatewaySubscriptionId,
+            'status' => 'active',
+            'trial_ends_at' => $plan->trial_period_days
+                ? now()->addDays($plan->trial_period_days)
+                : null,
+            'starts_at' => now(),
+            'ends_at' => $plan->interval === 'monthly'
+                ? now()->addMonth()
+                : now()->addYear(),
+        ]);
+
+        // 1️⃣ Save Payment record (to payments table)
+        // $payment = Payment::create([
+        //     'user_id' => auth()->id() ?? 1,
+        //     'plan_id' => $plan->id,
+        //     'gateway' => $request->gateway,
+        //     'cardholder' => $request->cardholder,
+        //     'cardnumber' => $request->cardnumber,
+        //     'expiry' => $request->expiry,
+        //     'cvv' => $request->cvv,
+        //     'amount' => $plan->price,
+        //     'currency' => $plan->currency,
+        //     'status' => 'completed', // demo
+        // ]);
+        return ('Subscription completed successfully!');
+        // return redirect()->route('subscriptions.success')
+        //     ->with('success', 'Subscription completed successfully!')
+        //     ->with('plan_name', $plan->name);
+    }
+
+
 }
