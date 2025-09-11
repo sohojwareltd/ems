@@ -19,7 +19,7 @@ class PlanSeeder extends Seeder
                 'description' => 'Perfect for individuals getting started',
                 'price' => 9.99, // $9.99 in cents
                 'currency' => 'usd',
-                'interval' => 'month',
+                'interval' => 'monthly',
                 'interval_count' => 1,
                 'trial_period_days' => 7,
                 'active' => true,
@@ -35,7 +35,7 @@ class PlanSeeder extends Seeder
                 'description' => 'Best for professionals and small teams',
                 'price' => 19.99, // $19.99 in cents
                 'currency' => 'usd',
-                'interval' => 'month',
+                'interval' => 'monthly',
                 'interval_count' => 1,
                 'trial_period_days' => 14,
                 'active' => true,
@@ -53,7 +53,7 @@ class PlanSeeder extends Seeder
                 'description' => 'Designed for large organizations',
                 'price' => 49.99, // $49.99 in cents
                 'currency' => 'usd',
-                'interval' => 'month',
+                'interval' => 'monthly',
                 'interval_count' => 1,
                 'trial_period_days' => 30,
                 'active' => true,
@@ -72,7 +72,7 @@ class PlanSeeder extends Seeder
                 'description' => 'Basic plan billed annually with 2 months free',
                 'price' => 99.90, // $99.90 in cents (10 months price for 12 months)
                 'currency' => 'usd',
-                'interval' => 'year',
+                'interval' => 'yearly',
                 'interval_count' => 1,
                 'trial_period_days' => 7,
                 'active' => true,
@@ -89,7 +89,7 @@ class PlanSeeder extends Seeder
                 'description' => 'Pro plan billed annually with 2 months free',
                 'price' => 199.90, // $199.90 in cents (10 months price for 12 months)
                 'currency' => 'usd',
-                'interval' => 'year',
+                'interval' => 'yearly',
                 'interval_count' => 1,
                 'trial_period_days' => 14,
                 'active' => true,
@@ -108,7 +108,7 @@ class PlanSeeder extends Seeder
                 'description' => 'Free plan for testing and evaluation',
                 'price' => 0, // Free
                 'currency' => 'usd',
-                'interval' => 'month',
+                'interval' => 'monthly',
                 'interval_count' => 1,
                 'trial_period_days' => null,
                 'active' => true,
