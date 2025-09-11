@@ -166,7 +166,7 @@ class PageController extends Controller
             ->where('id', '!=', $product->id)
             ->where(function ($query) use ($product) {
                 $query->where('subject_id', $product->subject_id)
-                    ->orWhere('resource_id', $product->resource_id)
+                    ->orWhere('resource_type_id', $product->resource_type_id)
                     ->orWhere('examboard_id', $product->examboard_id)
                     ->orWhere('qualiification_id', $product->qualiification_id);
             })

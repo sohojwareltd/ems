@@ -8,6 +8,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\SubscriptionController;
 use App\Mail\NewOrderNotification;
 use App\Mail\OrderConfirmation;
 use App\Models\Order;
@@ -51,6 +52,10 @@ Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear')
 Route::post('/cart/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.apply-coupon');
 Route::post('/cart/remove-coupon', [CartController::class, 'removeCoupon'])->name('cart.remove-coupon');
 Route::get('/cart/count', [CartController::class, 'count']);
+
+//subscription Routes
+Route::get('/subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions.index');
+
 
 // Checkout Routes
 Route::group(['middleware' => 'auth'], function () {

@@ -35,15 +35,15 @@ class ProductController extends Controller
         if ($request->has('resource') && $request->resource) {
             $query->where('resource_type_id', $request->resource);
         }
-        // Filter by brand
+        // Filter by qualiification
         if ($request->has('qualiification') && $request->qualiification) {
             $query->where('qualiification_id', $request->qualiification);
         }
-        // Filter by brand
+        // Filter by subject
         if ($request->has('subject') && $request->subject) {
             $query->where('subject_id', $request->subject);
         }
-        // Filter by brand
+        // Filter by examboard
         if ($request->has('examboard') && $request->examboard) {
             $query->where('examboard_id', $request->examboard);
         }

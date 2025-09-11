@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Forms\Components\RichEditor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -26,13 +27,28 @@ class PlanResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                RichEditor::make('description')
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('price')
                     ->required()
                     ->numeric()
                     ->prefix('$'),
-                Forms\Components\TextInput::make('interval')
-                    ->required()
-                    ->maxLength(255),
+             
+
+                Forms\Components\Select::make('interval')
+                    ->options([
+                        'monthly' => 'Monthly',
+                        'yearly' => 'Yearly',
+                    ])
+                    ->default('Monthly')
+                    ->required(),
+            
+                Forms\Components\TextInput::make('trial_period_days')
+                    ->numeric()
+                    ->nullable(),
+                    
+                Forms\Components\Toggle::make('active')
+                    ->required(),
             ]);
     }
 
@@ -45,8 +61,18 @@ class PlanResource extends Resource
                 Tables\Columns\TextColumn::make('price')
                     ->money()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('currency')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('interval')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('interval_count')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('trial_period_days')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\IconColumn::make('active')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

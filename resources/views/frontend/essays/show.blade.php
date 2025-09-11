@@ -395,8 +395,8 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">&nbsp;</label>
-                                <a href="#" class="btn btn-primary w-100 btn-lg">
-                                    <i class="fa-solid fa-magnifying-glass"></i> Preview
+                                <a href="{{route('subscriptions.index')}}" class="btn btn-primary w-100 btn-lg">
+                                     Subscription
                                 </a>
                             </div>
                             
@@ -462,7 +462,7 @@
                 <div class="row" id="relatedProductsContainer">
                     @foreach($relatedProducts as $relatedProduct)
                         <div class="col-md-6 col-lg-3 mb-4 related-product-item">
-                            <x-product-card :product="$relatedProduct" />
+                            <x-essay-card :product="$relatedProduct" />
                         </div>
                     @endforeach
                 </div>
