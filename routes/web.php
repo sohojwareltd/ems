@@ -55,12 +55,13 @@ Route::get('/cart/count', [CartController::class, 'count']);
 
 //subscription Routes
 Route::get('/subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions.index');
-Route::get('/subscriptions/payment/{id}', [SubscriptionController::class, 'subscriptionsPayment'])->name('subscriptions.payment');
-Route::post('/payment-method/{id}', [SubscriptionController::class, 'paymentMethod'])->name('payment.method');
 
-
-// Checkout Routes
 Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('/subscriptions/payment/{id}', [SubscriptionController::class, 'subscriptionsPayment'])->name('subscriptions.payment');
+    Route::post('/payment-method/{id}', [SubscriptionController::class, 'paymentMethod'])->name('payment.method');
+
+    // Checkout Routes
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
     Route::get('/checkout/order-details/{order}', [CheckoutController::class, 'orderDetails'])->name('checkout.order-details');

@@ -29,16 +29,6 @@ class SubscriptionController extends Controller
     public function paymentMethod(Request $request, $planId)
     {
         $plan = Plan::findOrFail($planId);
-        // dd ('ID PASS HOY');
-        // Validate inputs
-        // $request->validate([
-        //     'cardholder' => 'required|string|max:255',
-        //     'cardnumber' => 'required|string|min:16|max:19',
-        //     'expiry' => 'required|string',
-        //     'cvv' => 'required|string|min:3|max:4',
-        //     'gateway' => 'required|string',
-        //     'terms' => 'accepted',
-        // ]);
 
         // Demo gateway subscription ID
         $fakeGatewaySubscriptionId = 'SUB-' . strtoupper(uniqid());
@@ -47,9 +37,8 @@ class SubscriptionController extends Controller
         Subscription::create([
             'user_id' => Auth::id() ?? 3, // Demo user
             'plan_id' => $plan->id,
-            'gateway' => 'manual',
             // 'gateway' => $request->gateway, 
-            'gateway_subscription_id' => $fakeGatewaySubscriptionId,
+            // 'gateway_subscription_id' => $fakeGatewaySubscriptionId,
             'status' => 'active',
             'trial_ends_at' => $plan->trial_period_days
                 ? now()->addDays($plan->trial_period_days)
