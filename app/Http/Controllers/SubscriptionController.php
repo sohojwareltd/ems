@@ -74,7 +74,7 @@ class SubscriptionController extends Controller
             'currency' => 'usd',
             // 'status' => 'active',
             // 'type' => $request->gateway,
-            // 'paid_at' => Carbon::now(),
+            'paid_at' => Carbon::now(),
             'failed_at' => null,
             'failure_reason' => null,
             'metadata' => json_encode([
