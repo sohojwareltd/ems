@@ -5,40 +5,40 @@
 @section('content')
     <style>
         /* * {
-                                margin: 0;
-                                padding: 0;
-                                box-sizing: border-box;
-                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                            }
+                                    margin: 0;
+                                    padding: 0;
+                                    box-sizing: border-box;
+                                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                }
 
-                            body {
-                                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-                                min-height: 100vh;
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                padding: 20px;
-                            }
+                                body {
+                                    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                                    min-height: 100vh;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    padding: 20px;
+                                } */
 
-                            .container {
-                                display: flex;
-                                flex-wrap: wrap;
-                                max-width: 1200px;
-                                background: white;
-                                border-radius: 15px;
-                                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-                                overflow: hidden;
-                            }
-                             */
+        .container_pay {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
         .plan-summary {
             flex: 1;
-            background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%);
+            background: linear-gradient(135deg, #00b22d 0%, #00b22d 100%);
             color: white;
             padding: 40px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            height: 770px;
+            min-height: 100%;
         }
 
         .payment-form {
@@ -83,7 +83,7 @@
             list-style: none;
         }
 
-        .plan-features li {
+        .plan-features  {
             margin-bottom: 12px;
             display: flex;
             align-items: center;
@@ -141,7 +141,7 @@
         }
 
         .form-control:focus {
-            border-color: #4776E6;
+            border-color: #00b22d;
             outline: none;
         }
 
@@ -171,11 +171,11 @@
         }
 
         .payment-method:hover {
-            border-color: #4776E6;
+            border-color: #00b22d;
         }
 
         .payment-method.active {
-            border-color: #4776E6;
+            border-color: #00b22d;
             background: #f0f4ff;
         }
 
@@ -206,7 +206,7 @@
         }
 
         .checkbox-group a {
-            color: #4776E6;
+            color: #00b22d;
             text-decoration: none;
         }
 
@@ -215,7 +215,7 @@
             padding: 16px;
             border: none;
             border-radius: 8px;
-            background: linear-gradient(90deg, #4776E6 0%, #8E54E9 100%);
+            background: linear-gradient(90deg, #00b22d 0%, #00b22d 100%);
             color: white;
             font-size: 1.1rem;
             font-weight: 600;
@@ -228,7 +228,7 @@
         }
 
         @media (max-width: 900px) {
-            .container {
+            .container_pay {
                 flex-direction: column;
             }
 
@@ -240,7 +240,7 @@
     </style>
 
 
-    <div class="container">
+    <div class="container_pay">
         <div class="row">
             <div class="col-sm-4">
 
@@ -248,19 +248,20 @@
                 <div class="plan-summary">
                     <div>
                         <div class="plan-header">
-                            <h2>Premium Plan</h2>
-                            <p>Get access to all premium features</p>
+                            <h2>{{$plan->name}}</h2>
+                            <p>Get access to all {{$plan->name}} features</p>
                         </div>
 
                         <div class="plan-details">
-                            <div class="plan-price">$ {{ $plan->price }} <span>/ {{ $plan->interval }} </span></div>
-                            <ul class="plan-features">
+                            <div class="plan-price">$ {{ $plan->price }} <span>/per month</span></div>
+                            <p class="plan-features">{{ $plan->description }}</p>
+                            {{-- <ul class="plan-features">
                                 <li><i class="fas fa-check"></i> Unlimited projects</li>
                                 <li><i class="fas fa-check"></i> 100GB storage</li>
                                 <li><i class="fas fa-check"></i> Premium support</li>
                                 <li><i class="fas fa-check"></i> Advanced analytics</li>
                                 <li><i class="fas fa-check"></i> Cancel anytime</li>
-                            </ul>
+                            </ul> --}}
                         </div>
                     </div>
 

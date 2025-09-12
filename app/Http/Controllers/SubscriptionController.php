@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Plan;
 use App\Models\Subscription;
+use Illuminate\Support\Facades\Auth;
 
 class SubscriptionController extends Controller
 {
@@ -44,7 +45,7 @@ class SubscriptionController extends Controller
 
         // Save subscription
         Subscription::create([
-            'user_id' => auth()->id() ?? 3, // Demo user
+            'user_id' => Auth::id() ?? 3, // Demo user
             'plan_id' => $plan->id,
             'gateway' => 'manual',
             // 'gateway' => $request->gateway, 
