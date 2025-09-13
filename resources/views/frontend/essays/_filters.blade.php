@@ -11,30 +11,7 @@
                     placeholder="Search by name, description, or SKU...">
             </div>
         </div>
-        {{-- <!-- Category Filter -->
-        <div class="col-12">
-            <label for="category" class="form-label">Category</label>
-            <select class="form-select" id="category" name="category">
-                <option value="">All Categories</option>
-                @foreach($categories as $category)
-                <option value="{{ $category->slug }}" {{ request('category')==$category->slug ? 'selected' : '' }}>
-                    {{ $category->name }}
-                </option>
-                @endforeach
-            </select>
-        </div>
-        <!-- Brand Filter -->
-        <div class="col-12">
-            <label for="brand" class="form-label">Brand</label>
-            <select class="form-select" id="brand" name="brand">
-                <option value="">All Brands</option>
-                @foreach($brands as $brand)
-                <option value="{{ $brand->id }}" {{ request('brand')==$brand->id ? 'selected' : '' }}>
-                    {{ $brand->name }}
-                </option>
-                @endforeach
-            </select>
-        </div> --}}
+   
 
         <!-- Resource Filter -->
         <div class="col-12">
