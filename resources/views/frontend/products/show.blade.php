@@ -433,16 +433,16 @@
                     <div class="border-top pt-3">
                         
                         <div class="d-flex gap-2">
-                           <a href="{{route('products.index', ['qualiification'=>$product->qualiification->id])}}" class="btn btn-outline-primary btn-sm">
+                           <a href="{{route('products.index', ['qualiification'=>$product->qualiification->id ?? ''])}}" class="btn btn-outline-primary btn-sm">
                                 {{$product->qualiification->title ?? ''}}
                             </a>
-                            <a href="{{route('products.index', ['examboard'=>$product->examboard->id])}}" class="btn btn-outline-info btn-sm">
+                            <a href="{{route('products.index', ['examboard'=>$product->examboard->id ?? ''])}}" class="btn btn-outline-info btn-sm">
                                  {{$product->examboard->title ?? ''}}
                             </a>
-                            <a href="{{route('products.index', ['resource'=>$product->resource->id])}}" class="btn btn-outline-success btn-sm">
+                            <a href="{{route('products.index', ['resource'=>$product->resource->id ?? ''])}}" class="btn btn-outline-success btn-sm">
                                  {{$product->resource->title ?? ''}}
                             </a>
-                            <a href="{{route('products.index', ['subject'=>$product->subject->id])}}" class="btn btn-outline-success btn-sm">
+                            <a href="{{route('products.index', ['subject'=>$product->subject->id ?? ''])}}" class="btn btn-outline-success btn-sm">
                                  {{$product->subject->title ?? ''}}
                             </a>
                         </div>
