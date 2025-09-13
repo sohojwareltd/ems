@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('stripe_charge_id')->nullable(); // For tracking successful charges
             $table->unsignedInteger('amount');
             $table->string('currency', 3)->default('usd');
-            $table->string('status'); // requires_payment_method, requires_confirmation, requires_action, processing, requires_capture, canceled, succeeded
+            $table->string('status')->nullable(); // requires_payment_method, requires_confirmation, requires_action, processing, requires_capture, canceled, succeeded
             $table->string('type')->default('subscription'); // subscription, one_time
             $table->dateTime('paid_at')->nullable();
             $table->dateTime('failed_at')->nullable();

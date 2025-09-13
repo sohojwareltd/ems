@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Laravel\Cashier\Subscription as CashierSubscription;
 
-class Subscription extends Model
+class Subscription extends CashierSubscription
 {
     protected $guarded = [];
 
@@ -63,8 +64,8 @@ class Subscription extends Model
     public function isOnTrial(): bool
     {
         return $this->status === SubscriptionStatus::TRIALING &&
-               $this->trial_ends_at &&
-               $this->trial_ends_at->isFuture();
+            $this->trial_ends_at &&
+            $this->trial_ends_at->isFuture();
     }
 
     /**

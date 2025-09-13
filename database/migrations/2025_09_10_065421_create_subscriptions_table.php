@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('plan_id')->constrained()->onDelete('cascade');
-            $table->string('status'); // incomplete, incomplete_expired, trialing, active, past_due, canceled, unpaid, paused
-            $table->unsignedInteger('amount');
+            // $table->foreignId('plan_id')->constrained()->onDelete('cascade');
+            // $table->string('status'); // incomplete, incomplete_expired, trialing, active, past_due, canceled, unpaid, paused
+            // $table->unsignedInteger('amount');
             $table->string('currency', 3)->default('usd');
             $table->dateTime('trial_starts_at')->nullable();
             $table->dateTime('trial_ends_at')->nullable();
-            $table->dateTime('starts_at');
+            $table->dateTime('starts_at')->nullable();
             $table->dateTime('ends_at')->nullable();
             $table->dateTime('canceled_at')->nullable();
             $table->json('metadata')->nullable();
