@@ -56,7 +56,7 @@ class SubscriptionController extends Controller
         ]);
     }
 
-   
+
 
     public function subscribe(Request $request, Plan $plan)
     {
@@ -99,28 +99,11 @@ class SubscriptionController extends Controller
             default => $trialEndsAt,
         };
 
-        // 5. Store subscription in DB
-        $subscriptionRecord = Subscription::create([
-            'user_id' => $user->id,
-            'plan_id' => $plan->id,
-            'status' => 'active',
-            'amount' => $plan->price,
-            'currency' => 'usd',
-            'trial_starts_at' => $startsAt,
-            'trial_ends_at' => $trialEndsAt,
-            'starts_at' => $startsAt,
-            'ends_at' => $endsAt,
-            'stripe_id' => $stripeSubscription->id,
-            'pm_type' => null,
-            'pm_last_four' => null,
-        ]);
 
-        // 6. Fetch payment method details from Stripe
         $pm = PaymentMethod::retrieve($request->payment_method);
 
-        // 7. Store payment data
         Payment::create([
-            'subscription_id' => $subscriptionRecord->id,
+            'subscription_id' => $stripeSubscription->id,
             'user_id' => $user->id,
             'stripe_payment_intent_id' => $stripeSubscription->latest_invoice->payment_intent ?? null,
             'stripe_charge_id' => null,
@@ -128,6 +111,7 @@ class SubscriptionController extends Controller
             'currency' => 'usd',
             'paid_at' => Carbon::now(),
             'failed_at' => null,
+            'status' => 'succeeded',
             'failure_reason' => null,
             'metadata' => json_encode([
                 'cardholder' => $pm->billing_details->name ?? null,
@@ -137,6 +121,8 @@ class SubscriptionController extends Controller
                 'expiry_year' => $pm->card->exp_year ?? null,
             ]),
         ]);
+        auth()->user()->update(['plan_id' => $plan->id]);
+
 
         return redirect()->route('dashboard')->with('success', 'Subscription and payment recorded successfully!');
     }

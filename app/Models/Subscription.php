@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Laravel\Cashier\Subscription as CashierSubscription;
 
-
-class Subscription extends Model
+class Subscription extends CashierSubscription
 {
     protected $guarded = [];
 
@@ -49,12 +49,7 @@ class Subscription extends Model
     {
         return $this->hasMany(Payment::class);
     }
-    // Add items() relationship
-    public function items()
-    {
-        // Suppose you have a SubscriptionItem model
-        return $this->hasMany(SubscriptionItem::class);
-    }
+
     /**
      * Check if the subscription is active
      */
