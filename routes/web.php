@@ -80,6 +80,10 @@ Route::get('/paypal/success', [PayPalController::class, 'success'])->name('paypa
 Route::get('/paypal/cancel', [PayPalController::class, 'cancel'])->name('paypal.cancel');
 Route::post('/paypal/webhook', [PayPalController::class, 'webhook'])->name('paypal.webhook');
 
+Route::get('/stripe/setup-intent', [SubscriptionController::class, 'getSetupIntent']);
+Route::post('/subscribe/{plan}', [SubscriptionController::class, 'subscribe'])->name('subscribe.create');
+
+
 // PayPal Test Route (remove in production)
 Route::get('/paypal/test', function () {
     $paypalService = new \App\Services\PayPalService();

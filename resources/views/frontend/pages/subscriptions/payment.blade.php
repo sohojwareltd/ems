@@ -5,20 +5,20 @@
 @section('content')
     <style>
         /* * {
-                                    margin: 0;
-                                    padding: 0;
-                                    box-sizing: border-box;
-                                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                                }
+                                                                                                margin: 0;
+                                                                                                padding: 0;
+                                                                                                box-sizing: border-box;
+                                                                                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                                                                                            }
 
-                                body {
-                                    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-                                    min-height: 100vh;
-                                    display: flex;
-                                    justify-content: center;
-                                    align-items: center;
-                                    padding: 20px;
-                                } */
+                                                                                            body {
+                                                                                                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                                                                                                min-height: 100vh;
+                                                                                                display: flex;
+                                                                                                justify-content: center;
+                                                                                                align-items: center;
+                                                                                                padding: 20px;
+                                                                                            } */
 
         .container_pay {
             display: flex;
@@ -83,7 +83,7 @@
             list-style: none;
         }
 
-        .plan-features  {
+        .plan-features {
             margin-bottom: 12px;
             display: flex;
             align-items: center;
@@ -248,8 +248,8 @@
                 <div class="plan-summary">
                     <div>
                         <div class="plan-header">
-                            <h2>{{$plan->name}}</h2>
-                            <p>Get access to all {{$plan->name}} features</p>
+                            <h2>{{ $plan->name }}</h2>
+                            <p>Get access to all {{ $plan->name }} features</p>
                         </div>
 
                         <div class="plan-details">
@@ -280,13 +280,13 @@
                         <p>Complete your subscription with your payment details</p>
                     </div>
 
-                    <form action="{{ route('payment.method', $plan->id) }}" method="post" id="payment-form">
+                    {{-- <form action="{{ route('payment.method', $plan->id) }}" method="post" id="payment-form">
                         @csrf
 
                         <div class="form-group">
                             <label for="cardholder">Cardholder Name</label>
-                            <input type="text" id="cardholder" name="cardholder" class="form-control" placeholder="John Doe"
-                                required>
+                            <input type="text" id="cardholder" name="cardholder" class="form-control"
+                                placeholder="John Doe" required>
                         </div>
 
                         <div class="form-group">
@@ -304,7 +304,8 @@
 
                             <div class="form-group">
                                 <label for="cvv">CVV</label>
-                                <input type="text" id="cvv" name="cvv" class="form-control" placeholder="123" required>
+                                <input type="text" id="cvv" name="cvv" class="form-control" placeholder="123"
+                                    required>
                             </div>
                         </div>
 
@@ -329,27 +330,36 @@
 
                         <div class="checkbox-group">
                             <input type="checkbox" id="terms" name="terms" required>
-                            <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy
+                            <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a
+                                    href="#">Privacy
                                     Policy</a></label>
                         </div>
 
                         <button type="submit" class="submit-button">Complete Subscription</button>
+                    </form> --}}
+
+                    <form id="subscription-form" action="{{ route('subscribe.create', $plan) }}" method="POST">
+                        @csrf
+                        <div id="payment-element"></div>
+                        <input type="hidden" name="payment_method" id="paymentmethod">
+                        <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
+                        <button type="submit" class="btn btn-primary mt-3">Subscribe</button>
                     </form>
 
                 </div>
             </div>
         </div>
     </div>
-
+    {{-- 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Payment method selection
             const paymentMethods = document.querySelectorAll('.payment-method');
             const gatewayInput = document.getElementById('gateway');
 
             paymentMethods.forEach(method => {
-                method.addEventListener('click', function () {
+                method.addEventListener('click', function() {
                     paymentMethods.forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
                     gatewayInput.value = this.getAttribute('data-gateway');
@@ -358,12 +368,12 @@
         });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Payment method selection
             const paymentMethods = document.querySelectorAll('.payment-method');
 
             paymentMethods.forEach(method => {
-                method.addEventListener('click', function () {
+                method.addEventListener('click', function() {
                     paymentMethods.forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
                 });
@@ -395,7 +405,7 @@
             // Format card number input
             const cardNumberInput = document.getElementById('cardnumber');
 
-            cardNumberInput.addEventListener('input', function (e) {
+            cardNumberInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
                 value = value.replace(/(\d{4})/g, '$1 ').trim();
                 e.target.value = value.substring(0, 19);
@@ -404,7 +414,7 @@
             // Format expiry date input
             const expiryInput = document.getElementById('expiry');
 
-            expiryInput.addEventListener('input', function (e) {
+            expiryInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
                 if (value.length > 2) {
                     value = value.substring(0, 2) + '/' + value.substring(2, 4);
@@ -412,6 +422,57 @@
                 e.target.value = value.substring(0, 5);
             });
         });
+    </script> --}}
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        const stripe = Stripe("{{ config('cashier.key') }}");
+
+        document.addEventListener("DOMContentLoaded", async function() {
+            const paymentMethodInput = document.getElementById("paymentmethod");
+            const form = document.getElementById('subscription-form');
+            const clientSecret = "{{ $clientSecret }}";
+
+            const elements = stripe.elements({
+                clientSecret,
+                paymentMethodCreation: 'manual',
+            });
+
+            const paymentElement = elements.create('payment');
+            paymentElement.mount('#payment-element');
+
+            // Enable button once payment element is fully mounted
+            const submitButton = document.querySelector('#subscription-form button[type="submit"]');
+            submitButton.addEventListener("click", async (e) => {
+                e.preventDefault();
+                elements.submit();
+                const {
+                    error,
+                    paymentMethod
+                } = await stripe.createPaymentMethod({
+                    elements,
+                    params: {
+                        billing_details: {
+                            name: document.getElementById("card-holder-name").value,
+                        },
+                    },
+                });
+                paymentMethodInput.value = paymentMethod.id;
+
+                form.submit();
+
+                if (error) {
+                    toastr.error(error.message || "Something went wrong. Try again.");
+                } else {
+
+                    document.getElementById('paymentmethod').value = paymentIntent.payment_method;
+                    toastr.success("Payment submitted successfully!");
+
+                    form.submit();
+                }
+            });
+        });
     </script>
+
+
 
 @endsection

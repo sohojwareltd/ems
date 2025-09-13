@@ -8,6 +8,12 @@ use App\Models\Subscription;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Payment;
 use Carbon\Carbon;
+use Stripe\PaymentIntent;
+use Stripe\Price;
+use Stripe\Product;
+use Stripe\Stripe;
+use Stripe\PaymentMethod;
+
 class SubscriptionController extends Controller
 {
     public function index()
@@ -20,72 +26,118 @@ class SubscriptionController extends Controller
         return view('frontend.pages.subscriptions.index', compact('months', 'years'));
     }
 
+    public function getSetupIntent()
+    {
+        return response()->json([
+            'clientSecret' => auth()->user()->createSetupIntent()->client_secret,
+        ]);
+    }
+
     public function subscriptionsPayment($id)
     {
         $plan = Plan::findOrFail($id);
+        $user = Auth::user();
 
-        return view('frontend.pages.subscriptions.payment', compact('plan'));
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $paymentIntent = PaymentIntent::create([
+            'amount' => $plan->price * 100, // price in cents
+            'currency' => 'eur',
+            'automatic_payment_methods' => ['enabled' => true],
+            'metadata' => [
+                'user_id' => $user->id,
+                'plan_id' => $plan->id,
+            ],
+        ]);
+
+        return view('frontend.pages.subscriptions.payment', [
+            'plan' => $plan,
+            'clientSecret' => $paymentIntent->client_secret,
+        ]);
     }
 
+   
 
-    public function paymentMethod(Request $request, $planId)
+    public function subscribe(Request $request, Plan $plan)
     {
-        $plan = Plan::findOrFail($planId);
+        $user = auth()->user();
 
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        $userId = Auth::id() ?? 3; // Demo user fallback
+        // 1. Create Product & Price
+        $product = Product::create(['name' => $plan->name]);
 
-        // Trial / start / end dates set করি
-        $now = Carbon::now();
-        $trialStartsAt = $now;
-        $trialEndsAt = $now->copy()->addDays(7); // Example: 7 days trial
-        $startsAt = $trialEndsAt;
-        $endsAt = $trialEndsAt->copy()->addMonth(); // Example: 1 month plan
+        $price = Price::create([
+            'unit_amount' => $plan->price * 100,
+            'currency' => 'usd',
+            'recurring' => ['interval' => $plan->interval],
+            'product' => $product->id,
+        ]);
 
-        // Subscription create
-        $subscription = Subscription::create([
-            'user_id' => $userId,
+        // 2. Attach payment method
+        $user->createOrGetStripeCustomer();
+        $user->updateDefaultPaymentMethod($request->payment_method);
+
+        // 3. Create Stripe subscription
+        $subscription = $user->newSubscription('default', $price->id);
+
+        if ($plan->trial_period_days > 0) {
+            $subscription->trialDays($plan->trial_period_days);
+        }
+
+        $stripeSubscription = $subscription->create($request->payment_method);
+
+        // 4. Calculate dates
+        $startsAt = now();
+        $trialEndsAt = $stripeSubscription->trial_end
+            ? Carbon::createFromTimestamp($stripeSubscription->trial_end)
+            : null;
+
+        $endsAt = match ($plan->interval) {
+            'month' => $trialEndsAt ?? $startsAt->copy()->addMonth(),
+            'year' => $trialEndsAt ?? $startsAt->copy()->addYear(),
+            default => $trialEndsAt,
+        };
+
+        // 5. Store subscription in DB
+        $subscriptionRecord = Subscription::create([
+            'user_id' => $user->id,
             'plan_id' => $plan->id,
             'status' => 'active',
             'amount' => $plan->price,
             'currency' => 'usd',
-            'trial_starts_at' => $trialStartsAt,
+            'trial_starts_at' => $startsAt,
             'trial_ends_at' => $trialEndsAt,
             'starts_at' => $startsAt,
             'ends_at' => $endsAt,
-            'canceled_at' => null,
-            'metadata' => json_encode([
-                'gateway' => $request->gateway,
-                'cardholder' => $request->cardholder,
-            ]),
+            'stripe_id' => $stripeSubscription->id,
+            'pm_type' => null,
+            'pm_last_four' => null,
         ]);
 
-        // Fake stripe IDs (demo purpose)
-        $fakeIntentId = 'pi_' . uniqid();
-        $fakeChargeId = 'ch_' . uniqid();
+        // 6. Fetch payment method details from Stripe
+        $pm = PaymentMethod::retrieve($request->payment_method);
 
-        // Payment create
+        // 7. Store payment data
         Payment::create([
-            'subscription_id' => $subscription->id,
-            'user_id' => $userId,
-            'stripe_payment_intent_id' => $fakeIntentId,
-            'stripe_charge_id' => $fakeChargeId,
+            'subscription_id' => $subscriptionRecord->id,
+            'user_id' => $user->id,
+            'stripe_payment_intent_id' => $stripeSubscription->latest_invoice->payment_intent ?? null,
+            'stripe_charge_id' => null,
             'amount' => $plan->price,
             'currency' => 'usd',
-            // 'status' => 'active',
-            // 'type' => $request->gateway,
             'paid_at' => Carbon::now(),
             'failed_at' => null,
             'failure_reason' => null,
             'metadata' => json_encode([
-                'cardholder' => $request->cardholder,
-                'last4' => substr($request->cardnumber, -4),
-                'expiry' => $request->expiry,
+                'cardholder' => $pm->billing_details->name ?? null,
+                'last4' => $pm->card->last4 ?? null,
+                'brand' => $pm->card->brand ?? null,
+                'expiry_month' => $pm->card->exp_month ?? null,
+                'expiry_year' => $pm->card->exp_year ?? null,
             ]),
         ]);
-        return('Subscription and Payment successfully created!');
-        // return redirect()->route('plans.index')->with('success', 'Subscription and Payment successfully created!');
+
+        return redirect()->route('dashboard')->with('success', 'Subscription and payment recorded successfully!');
     }
-
-
 }

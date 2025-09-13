@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
+
 class Subscription extends Model
 {
     protected $guarded = [];
@@ -48,7 +49,12 @@ class Subscription extends Model
     {
         return $this->hasMany(Payment::class);
     }
-
+    // Add items() relationship
+    public function items()
+    {
+        // Suppose you have a SubscriptionItem model
+        return $this->hasMany(SubscriptionItem::class);
+    }
     /**
      * Check if the subscription is active
      */
@@ -63,8 +69,8 @@ class Subscription extends Model
     public function isOnTrial(): bool
     {
         return $this->status === SubscriptionStatus::TRIALING &&
-               $this->trial_ends_at &&
-               $this->trial_ends_at->isFuture();
+            $this->trial_ends_at &&
+            $this->trial_ends_at->isFuture();
     }
 
     /**
