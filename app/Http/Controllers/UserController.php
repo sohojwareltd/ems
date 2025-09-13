@@ -106,6 +106,21 @@ class UserController extends Controller
         return view('user.orders.show', compact('order'));
     }
 
+    public function downloadOrder()
+    {
+        $user = Auth::user();
+        $orders = $user->orders()
+            
+            ->with(['lines.product'])
+            ->where('status', 'completed')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+      
+
+
+        return view('user.orders.download', compact('orders'));
+    }
+
 
     public function download(Product $product)
     {
