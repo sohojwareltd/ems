@@ -17,7 +17,7 @@ class SubscriptionController extends Controller
         $months = plan::where('interval', 'monthly')->where('active', true)->get();
         $years = plan::where('interval', 'yearly')->where('active', true)->get();
 
-        return view('frontend.pages.subscriptions.index', compact('plans', 'months', 'years'));
+        return view('frontend.pages.subscriptions.index', compact('months', 'years'));
     }
 
     public function subscriptionsPayment($id)
@@ -32,7 +32,7 @@ class SubscriptionController extends Controller
     {
         $plan = Plan::findOrFail($planId);
 
-      
+
         $userId = Auth::id() ?? 3; // Demo user fallback
 
         // Trial / start / end dates set করি
