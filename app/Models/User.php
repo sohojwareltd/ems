@@ -16,7 +16,7 @@ use Laravel\Cashier\Billable;
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable,Billable;
+    use HasFactory, Notifiable, Billable;
 
     /**
      * Cached active subscription to avoid multiple queries
@@ -110,6 +110,11 @@ class User extends Authenticatable implements FilamentUser
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
+    }
+
+    public function defaultSubscription()
+    {
+        return $this->hasOne(Subscription::class)->where('type', 'default');
     }
 
     /**
@@ -247,7 +252,4 @@ class User extends Authenticatable implements FilamentUser
 
         return $this->role->permissions;
     }
-
-
-
 }

@@ -67,6 +67,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/checkout/order-details/{order}', [CheckoutController::class, 'orderDetails'])->name('checkout.order-details');
     Route::get('/checkout/confirmation/{order}', [CheckoutController::class, 'confirmation'])->name('checkout.confirmation');
     Route::get('/checkout/download-invoice/{order}', [CheckoutController::class, 'downloadInvoice'])->name('checkout.download-invoice');
+    Route::post('/subscribe/{plan}', [SubscriptionController::class, 'subscribe'])->name('subscribe.create');
 });
 Route::get('/checkout/repay/{order}', [CheckoutController::class, 'repay'])->name('checkout.repay')->middleware('auth');
 Route::post('/checkout/apply-coupon', [CheckoutController::class, 'applyCoupon'])->name('checkout.apply-coupon');
@@ -81,7 +82,7 @@ Route::get('/paypal/cancel', [PayPalController::class, 'cancel'])->name('paypal.
 Route::post('/paypal/webhook', [PayPalController::class, 'webhook'])->name('paypal.webhook');
 
 Route::get('/stripe/setup-intent', [SubscriptionController::class, 'getSetupIntent']);
-Route::post('/subscribe/{plan}', [SubscriptionController::class, 'subscribe'])->name('subscribe.create');
+
 
 
 // PayPal Test Route (remove in production)
@@ -120,6 +121,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashbord/products/{product}/download', [UserController::class, 'download'])
         ->middleware('product.has.purchased')
         ->name('user.products.download');
+
+    Route::get('/dashboard/subscriptions', [SubscriptionController::class, 'subscriptions'])->name('user.subscription');
+    // Cancel a subscription
+    Route::post('/dashboard/subscription/{subscription}/cancel', [SubscriptionController::class, 'cancel'])->name('user.subscription.cancel');
+
+    // Set a subscription as default
+    Route::post('/dashboard/subscription/{subscription}/set-default', [SubscriptionController::class, 'setDefault'])->name('user.subscription.set-default');
 
     Route::get('/dashboard/audiobooks', [\App\Http\Controllers\UserAudioBookController::class, 'index'])->name('user.audiobooks');
     Route::get('/dashboard/audiobooks/{audiobook}/stream', [\App\Http\Controllers\UserAudioBookController::class, 'stream'])->name('user.audiobooks.stream');

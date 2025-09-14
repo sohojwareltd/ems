@@ -9,7 +9,7 @@ enum SubscriptionStatus: string
     case TRIALING = 'trialing';
     case ACTIVE = 'active';
     case PAST_DUE = 'past_due';
-    case CANCELED = 'canceled';
+    case CANCELED = 'cancelled';
     case UNPAID = 'unpaid';
     case PAUSED = 'paused';
 

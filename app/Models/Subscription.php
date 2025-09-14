@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Laravel\Cashier\Subscription as CashierSubscription;
 
-class Subscription extends CashierSubscription
+
+class Subscription extends Model
 {
     protected $guarded = [];
 
@@ -68,6 +68,13 @@ class Subscription extends CashierSubscription
             $this->trial_ends_at->isFuture();
     }
 
+    public function hasTrialEnded(): bool
+    {
+        return $this->status === SubscriptionStatus::TRIALING &&
+            $this->trial_ends_at &&
+            $this->trial_ends_at->isPast();
+    }
+
     /**
      * Check if the subscription is canceled
      */
@@ -110,5 +117,24 @@ class Subscription extends CashierSubscription
     public function isValid(): bool
     {
         return $this->isActive() || $this->isOnTrial();
+    }
+
+
+    public function daysUntilEnd(): ?int
+    {
+        return $this->ends_at ? now()->diffInDays($this->ends_at, false) : null;
+    }
+
+    public function isExpiringSoon(int $days = 3): bool
+    {
+        return $this->ends_at && $this->ends_at->isFuture() &&
+            now()->diffInDays($this->ends_at) <= $days;
+    }
+
+    // --- Default Helpers ---
+
+    public function isDefault(): bool
+    {
+        return $this->type === 'default';
     }
 }
