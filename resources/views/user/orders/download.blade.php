@@ -43,89 +43,41 @@
                 </div>
             </div>
             <div class="card-body p-0">
-                @if($orders->count() > 0)
+                @if($products->count() > 0)
                     <div class="table-responsive">
                         <table class="table table-hover mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th class="border-0">Order #</th>
-                                    <th class="border-0">Date</th>
-                                    <th class="border-0">Items</th>
-                                    <th class="border-0">Status</th>
-                                    <th class="border-0">Total</th>
+                                    
+                                    <th class="border-0">Name</th>
+                                    <th class="border-0">Qualification</th>
+                                    <th class="border-0">Resource</th>
+                                    <th class="border-0">Subject</th>
+                                    <th class="border-0">Exam Board</th>
                                     <th class="border-0">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($orders as $order)
-                                    <tr class="order-row" data-status="{{ $order->status }}">
+                                @foreach($products as $product)
+                                    <tr class="order-row" data-status="{{ $product->name }}">
                                         <td class="align-middle">
-                                            <span class="fw-semibold">#{{ $order->id }}</span>
+                                            <span class="fw-semibold">{{ $product->name }}</span>
+                                        </td>
+                                     
+                                        <td class="align-middle">
+                                            <span class="fw-semibold">{{ $product->qualiification->title }}</span>
                                         </td>
                                         <td class="align-middle">
-                                            <div>
-                                                <div class="fw-semibold">{{ $order->created_at->format('M d, Y') }}</div>
-                                                <small class="text-muted">{{ $order->created_at->format('g:i A') }}</small>
-                                            </div>
+                                            <span class="fw-semibold">{{ $product->resource->title }}</span>
                                         </td>
                                         <td class="align-middle">
-                                            <div class="d-flex align-items-center">
-                                                @if($order->lines->count() > 0)
-                                                    <div class="flex-shrink-0 me-2">
-                                                        @if($order->lines->first()->product && $order->lines->first()->product->image)
-                                                            <img src="{{ asset('storage/' . $order->lines->first()->product->image) }}"
-                                                                alt="{{ $order->lines->first()->product->name }}" class="rounded"
-                                                                style="width: 40px; height: 40px; object-fit: cover;">
-                                                        @else
-                                                            <div class="bg-light rounded d-flex align-items-center justify-content-center"
-                                                                style="width: 40px; height: 40px;">
-                                                                <i class="fas fa-box text-muted"></i>
-                                                            </div>
-                                                        @endif
-                                                    </div>
-                                                @endif
-                                                <div class="flex-grow-1">
-                                                    <div class="fw-semibold">{{ $order->lines->count() }} item(s)</div>
-                                                    @if($order->lines->count() > 0)
-                                                        <small
-                                                            class="text-muted">{{ $order->lines->first()->product->name ?? 'Product' }}</small>
-                                                        @if($order->lines->count() > 1)
-                                                            <small class="text-muted"> +{{ $order->lines->count() - 1 }} more</small>
-                                                        @endif
-                                                    @endif
-                                                </div>
-                                            </div>
+                                           <span class="fw-semibold">{{ $product->subject->title }}</span>
                                         </td>
                                         <td class="align-middle">
-                                            <span class="badge bg-{{ $order->status_color }}">{{ ucfirst($order->status) }}</span>
+                                            <span class="fw-semibold">{{ $product->examboard->title }}</span>
                                         </td>
                                         <td class="align-middle">
-                                            <div class="fw-semibold">${{ number_format($order->total, 2) }}</div>
-                                            @if($order->discount_amount > 0)
-                                                <small class="text-success">-${{ number_format($order->discount_amount, 2) }}
-                                                    discount</small>
-                                            @endif
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="btn-group btn-group-sm">
-
-                                                @foreach ($order->lines as $line)
-                                                <a href="{{route('user.products.download', $line->product_id)}}"
-                                                    class="btn btn-success btn-sm"><i class="fas fa-download"></i> Download</a>
-                                                    @endforeach
-                                                @if($order->tracking)
-                                                    <a href="#" class="btn btn-outline-info" title="Track Order" data-bs-toggle="modal"
-                                                        data-bs-target="#trackingModal{{ $order->id }}">
-                                                        <i class="fas fa-truck"></i>
-                                                    </a>
-                                                @endif
-                                                @if(in_array($order->payment_status, ['pending', 'failed']))
-                                                    <a href="{{ route('checkout.repay', $order) }}" class="btn btn-outline-warning"
-                                                        title="Repay">
-                                                        <i class="fas fa-credit-card"></i> Repay
-                                                    </a>
-                                                @endif
-                                            </div>
+                                            <a href="{{route('user.products.download', $product->id)}}" class="btn btn-success btn-sm"><i class="fas fa-download"></i> Download</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -134,15 +86,15 @@
                     </div>
 
                     <!-- Pagination -->
-                    @if($orders->hasPages())
+                    @if($products->hasPages())
                         <div class="card-footer bg-white border-0 py-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="text-muted">
-                                    Showing {{ $orders->firstItem() }} to {{ $orders->lastItem() }} of {{ $orders->total() }}
+                                    Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }}
                                     orders
                                 </div>
                                 <div>
-                                    {{ $orders->links() }}
+                                    {{ $products->links() }}
                                 </div>
                             </div>
                         </div>
@@ -150,8 +102,8 @@
                 @else
                     <div class="text-center py-5">
                         <i class="fas fa-box-open text-muted fs-1 mb-3"></i>
-                        <h5 class="text-muted">No orders found</h5>
-                        <p class="text-muted">You haven't placed any orders yet.</p>
+                        <h5 class="text-muted">No products found</h5>
+                        <p class="text-muted">You haven't placed any products yet.</p>
                         <a href="{{ route('products.index') }}" class="btn btn-primary">
                             <i class="fas fa-shopping-cart me-2"></i>Start Shopping
                         </a>
@@ -161,41 +113,8 @@
         </div>
     </div>
 
-    <!-- Tracking Modals -->
-    @foreach($orders as $order)
-        @if($order->tracking)
-            <div class="modal fade" id="trackingModal{{ $order->id }}" tabindex="-1">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">
-                                <i class="fas fa-truck me-2 text-primary"></i>
-                                Track Order #{{ $order->id }}
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Tracking Number</label>
-                                <p class="mb-0">{{ $order->tracking }}</p>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Shipping Method</label>
-                                <p class="mb-0">{{ $order->shipping_method ?? 'Standard Shipping' }}</p>
-                            </div>
-                            <div class="alert alert-info">
-                                <i class="fas fa-info-circle me-2"></i>
-                                Track your package using the tracking number above on the carrier's website.
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
-    @endforeach
+ 
+
 
     <style>
         .card {
