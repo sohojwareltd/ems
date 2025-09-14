@@ -159,39 +159,39 @@ class StoreSettings extends BaseSettings
                                         ->helperText('Your Facebook Pixel ID for tracking conversions.'),
                                 ]),
                         ]),
-                    Tabs\Tab::make('Payments')
-                        ->schema([
-                            Section::make('Payment Methods')
-                                ->description('Enable or disable payment methods for your store.')
-                                ->schema([
-                                    Toggle::make('payments.enable_stripe')
-                                        ->label('Enable Stripe')
-                                        ->helperText('Allow customers to pay using Stripe.'),
-                                    Toggle::make('payments.stripe_sandbox')
-                                        ->label('Enable Sandbox')
-                                        ->helperText('Enable Stripe Sandbox Mode.'),
-                                    TextInput::make('payments.stripe_key')
-                                        ->label('Stripe Public Key')
-                                        ->helperText('Your Stripe publishable key.'),
-                                    TextInput::make('payments.stripe_secret')
-                                        ->label('Stripe Secret Key')
+                    // Tabs\Tab::make('Payments')
+                    //     ->schema([
+                    //         Section::make('Payment Methods')
+                    //             ->description('Enable or disable payment methods for your store.')
+                    //             ->schema([
+                    //                 Toggle::make('payments.enable_stripe')
+                    //                     ->label('Enable Stripe')
+                    //                     ->helperText('Allow customers to pay using Stripe.'),
+                    //                 Toggle::make('payments.stripe_sandbox')
+                    //                     ->label('Enable Sandbox')
+                    //                     ->helperText('Enable Stripe Sandbox Mode.'),
+                    //                 TextInput::make('payments.stripe_key')
+                    //                     ->label('Stripe Public Key')
+                    //                     ->helperText('Your Stripe publishable key.'),
+                    //                 TextInput::make('payments.stripe_secret')
+                    //                     ->label('Stripe Secret Key')
                              
-                                        ->helperText('Your Stripe secret key.'),
-                                    Toggle::make('payments.enable_paypal')
-                                        ->label('Enable PayPal')
-                                        ->helperText('Allow customers to pay using PayPal.'),
-                                    Toggle::make('payments.paypal_sandbox')
-                                        ->label('Enable Sandbox')
-                                        ->helperText('Enable PayPal Sandbox Mode.'),
-                                    TextInput::make('payments.paypal_client_id')
-                                        ->label('PayPal Client ID')
-                                        ->helperText('Your PayPal client ID.'),
-                                    TextInput::make('payments.paypal_secret')
-                                        ->label('PayPal Secret')
+                    //                     ->helperText('Your Stripe secret key.'),
+                    //                 Toggle::make('payments.enable_paypal')
+                    //                     ->label('Enable PayPal')
+                    //                     ->helperText('Allow customers to pay using PayPal.'),
+                    //                 Toggle::make('payments.paypal_sandbox')
+                    //                     ->label('Enable Sandbox')
+                    //                     ->helperText('Enable PayPal Sandbox Mode.'),
+                    //                 TextInput::make('payments.paypal_client_id')
+                    //                     ->label('PayPal Client ID')
+                    //                     ->helperText('Your PayPal client ID.'),
+                    //                 TextInput::make('payments.paypal_secret')
+                    //                     ->label('PayPal Secret')
                                         
-                                        ->helperText('Your PayPal secret.'),
-                                ]),
-                        ]),
+                    //                     ->helperText('Your PayPal secret.'),
+                    //         ]),
+                    // ]),
                  
                    
                 ]),

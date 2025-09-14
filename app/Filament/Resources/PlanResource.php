@@ -37,8 +37,8 @@ class PlanResource extends Resource
 
                 Forms\Components\Select::make('interval')
                     ->options([
-                        'monthly' => 'Monthly',
-                        'yearly' => 'Yearly',
+                        'month' => 'Monthly',
+                        'year' => 'Yearly',
                     ])
                     ->default('Monthly')
                     ->required(),
