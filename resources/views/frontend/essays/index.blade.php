@@ -23,6 +23,17 @@
                 
                 <form id="filterForm" method="GET" action="{{ route('model.index') }}">
     <div class="row g-3">
+          <!-- Search -->
+        <div class="col-lg-6 col-md-12">
+            {{-- <label for="search" class="form-label">Search Model Essays</label> --}}
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="bi bi-search text-muted"></i>
+                </span>
+                <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}"
+                    placeholder="Search by name, description, or SKU...">
+            </div>
+        </div>
       
    
 
