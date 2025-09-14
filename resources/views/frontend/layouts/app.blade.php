@@ -593,6 +593,8 @@
                                 <li><a class="dropdown-item" href="{{ route('user.orders.index') }}"><i
                                             class="bi bi-bag me-2"></i>My Orders</a></li>
                                 <li>
+                                <li><a class="dropdown-item" href="{{route('user.orders.download')}}"><i class="fas fa-download"></i>  My Download</a></li>
+                                <li>
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li>

@@ -60,6 +60,12 @@ class Product extends Model
 
         return 'https://via.placeholder.com/300x200?text=No+Image';
     }
+
+
+    public function orderLines()
+    {
+        return $this->hasMany(OrderLine::class, );
+    }
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');

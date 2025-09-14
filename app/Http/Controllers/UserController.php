@@ -19,7 +19,7 @@ class UserController extends Controller
     public function dashboard()
     {
         $user = Auth::user();
-        
+
         // Get user statistics
         $stats = [
             'total_orders' => $user->orders()->count(),
@@ -49,7 +49,7 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
-        
+
         $request->validate([
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
@@ -62,7 +62,14 @@ class UserController extends Controller
         ]);
 
         $user->update($request->only([
-            'name', 'lastname',  'phone', 'address', 'city', 'state', 'zip', 'country'
+            'name',
+            'lastname',
+            'phone',
+            'address',
+            'city',
+            'state',
+            'zip',
+            'country'
         ]));
 
         return redirect()->route('user.profile')->with('success', 'Profile updated successfully!');
@@ -102,8 +109,20 @@ class UserController extends Controller
         }
 
         $order->load(['lines.product', 'discounts']);
-        
+
         return view('user.orders.show', compact('order'));
+    }
+
+    public function downloadOrder()
+    {
+        $products = Product::with('qualiification','subject', 'examboard', 'resource')
+            ->whereHas('orderLines.order', function ($query)  {
+                $query->where('user_id', Auth::id())
+                    ->where('status', 'completed');
+            })
+            ->paginate(15);
+
+        return view('user.orders.download', compact('products'));
     }
 
 

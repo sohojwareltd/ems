@@ -118,6 +118,7 @@ Route::middleware(['auth'])->group(function () {
     // Order Management
     Route::get('/orders', [UserController::class, 'orders'])->name('user.orders.index');
     Route::get('/orders/{order}', [UserController::class, 'showOrder'])->name('user.orders.show');
+    Route::get('/dashbord/download', [UserController::class, 'downloadOrder'])->name('user.orders.download');
     Route::get('/dashbord/products/{product}/download', [UserController::class, 'download'])
         ->middleware('product.has.purchased')
         ->name('user.products.download');
