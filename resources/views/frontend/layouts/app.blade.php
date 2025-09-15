@@ -591,9 +591,10 @@
                                 <li><a class="dropdown-item" href="{{ route('user.profile') }}"><i
                                             class="bi bi-person me-2"></i>Profile</a></li>
                                 <li><a class="dropdown-item" href="{{ route('user.orders.index') }}"><i
-                                            class="bi bi-bag me-2"></i>My Orders</a></li>
+                                            class="bi bi-bag me-2"></i>Orders</a></li>
                                 <li>
-                                <li><a class="dropdown-item" href="{{route('user.orders.download')}}"><i class="fas fa-download"></i>  My Download</a></li>
+                                <li><a class="dropdown-item" href="{{route('user.orders.download')}}"><i class="fas fa-download"></i>  Download</a></li>
+                                <li><a class="dropdown-item" href="{{route('user.subscription')}}"><i class="fa-regular fa-file"></i>  Subscriptions</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>

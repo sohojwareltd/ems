@@ -24,7 +24,7 @@
                 <form id="filterForm" method="GET" action="{{ route('model.index') }}">
     <div class="row g-3">
           <!-- Search -->
-        <div class="col-lg-6 col-md-12">
+        <div class="col-lg-4 col-md-4">
             {{-- <label for="search" class="form-label">Search Model Essays</label> --}}
             <div class="input-group">
                 <span class="input-group-text">
@@ -34,12 +34,14 @@
                     placeholder="Search by name, description, or SKU...">
             </div>
         </div>
+        
+        
       
    
 
 
         <!-- Qualiification Filter -->
-        <div class="col-lg-2 col-md-4">
+        <div class="col-lg-4 col-md-4">
             {{-- <label for="qualiification" class="form-label">Qualiification</label> --}}
             <select class="form-select" id="qualiification" name="qualiification">
                 <option value="">Qualiification</option>
@@ -51,7 +53,7 @@
             </select>
         </div>
         <!-- Subject Filter -->
-        <div class="col-lg-2 col-md-4">
+        <div class="col-lg-4 col-md-4">
             {{-- <label for="subject" class="form-label">Subject</label> --}}
             <select class="form-select" id="subject" name="subject">
                 <option value="">Subject</option>
@@ -63,7 +65,7 @@
             </select>
         </div>
         <!-- Examboard Filter -->
-        <div class="col-lg-2 col-md-4">
+        <div class="col-lg-4 col-md-4">
             {{-- <label for="examboard" class="form-label">Examboard</label> --}}
             <select class="form-select" id="examboard" name="examboard">
                 <option value="">Exam Board</option>
@@ -75,7 +77,7 @@
             </select>
         </div>
                 <!-- Resource Filter -->
-        <div class="col-lg-2 col-md-4">
+        <div class="col-lg-4 col-md-4">
             {{-- <label for="resource" class="form-label">Resource</label> --}}
             <select class="form-select" id="resource" name="resource">
                 <option value="">Resources</option>
@@ -87,7 +89,7 @@
             </select>
         </div>
         <!-- Sort -->
-        <div class="col-lg-2 col-md-4">
+        <div class="col-lg-4 col-md-4">
             {{-- <label for="sort" class="form-label">Sort By</label> --}}
             <select class="form-select" id="sort" name="sort">
                 <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest First</option>

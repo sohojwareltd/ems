@@ -395,9 +395,19 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">&nbsp;</label>
+                                    <!-- Auth::user()-?hasActiveSubscription-->
+                                @if (Auth::check() && Auth::user()->hasActiveSubscription())
+
+                                <a href="{{route('user.subscription')}}" class="btn btn-primary w-100 btn-lg">
+                                     View
+                                </a>
+                                @else
+                                <!-- Auth::user()-?hasActiveSubscription-->
                                 <a href="{{route('subscriptions.index')}}" class="btn btn-primary w-100 btn-lg">
                                      Subscription
                                 </a>
+                                @endif
+                                
                             </div>
                             
                         </div>
