@@ -35,9 +35,9 @@
             --primary-color: #00b22d;
             --primary-dark: #0A4126;
             --secondary-color: #a6f2b9;
-            --accent-color: #D4C4B7;
+            --accent-color: #00b22d;
             --success-color: #8BA892;
-            --danger-color: #B87A7A;
+            --danger-color: #0A4126;
             --warning-color: #D4B483;
             --info-color: #8BA8B5;
             --light-bg: #FAF9F7;

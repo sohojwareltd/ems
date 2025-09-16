@@ -167,7 +167,7 @@
                 </div>
             </div>
             <!-- Main Content: Products -->
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <!-- Active Filters Display -->
                 @if (request('search') || 
                         request('qualiification') || 
@@ -262,7 +262,7 @@
                 @if ($products->count() > 0)
                     <div class="row g-4" id="productsGrid">
                         @foreach ($products as $productwww)
-                            <div class="col-md-6 col-lg-6 ">
+                            <div class="col-md-6 col-lg-4 ">
                                 <x-essay-card :product="$productwww" />
                             </div>
                         @endforeach

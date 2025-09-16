@@ -396,7 +396,7 @@
                     <!-- Description -->
                     <div class="mb-4">
                         <h6>Description</h6>
-                        <p class="text-muted">{{ $product->description ?: 'No description available.' }}</p>
+                        <p class="text-muted">{!! $product->description ?: 'No description available.' !!}</p>
                     </div>
 
                     <!-- Add to Cart Form -->
