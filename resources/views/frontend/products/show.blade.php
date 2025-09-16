@@ -356,7 +356,7 @@
 
                     @if($product->is_featured)
                         <div class="position-absolute top-0 end-0 m-3">
-                            <span class="badge bg-warning fs-6">
+                            <span class=" custom-badge ">
                                 <i class="bi bi-star"></i> Featured
                             </span>
                         </div>
@@ -396,7 +396,7 @@
                     <!-- Description -->
                     <div class="mb-4">
                         <h6>Description</h6>
-                        <p class="text-muted">{{ $product->description ?: 'No description available.' }}</p>
+                        <p class="text-muted">{!! $product->description ?: 'No description available.' !!}</p>
                     </div>
 
                     <!-- Add to Cart Form -->
@@ -404,13 +404,13 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">&nbsp;</label>
-                                <a href="#" class="btn btn-primary w-100 btn-lg">
+                                <a href="{{route('pdf.view', $product->slug)}}" target="_blank" class="btn custom-btn w-100 btn-lg">
                                     <i class="fa-solid fa-magnifying-glass"></i> Preview
                                 </a>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">&nbsp;</label>
-                                <button type="submit" class="btn btn-primary w-100 btn-lg">
+                                <button type="submit" class="btn custom-btn-outline w-100 btn-lg">
                                     <i class="bi bi-cart-plus"></i> Add to Cart
                                 </button>
                             </div>
@@ -463,10 +463,10 @@
                     <div class="d-flex align-items-center gap-3">
                         <span class="text-muted">View:</span>
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-outline-primary btn-sm active" id="gridView">
+                            <button type="button" class="btn custome-btn-outline btn-sm active" id="gridView">
                                 <i class="bi bi-grid"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-primary btn-sm" id="listView">
+                            <button type="button" class="btn custom-btn-outline btn-sm" id="listView">
                                 <i class="bi bi-list"></i>
                             </button>
                         </div>

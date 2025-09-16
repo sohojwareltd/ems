@@ -226,7 +226,7 @@
 
             <div class="plan-price">${{ number_format($year->price) }}<span>/per year</span></div>
 
-            <p class="plan-features">{{ $year->description }}</p>
+            <p class="plan-features">{!! $year->description !!}</p>
 
             <button class="plan-button outline"><a href="{{ route('subscriptions.payment', $year->id) }}" class="text-decoration-none" style="color: #00b22d;">Get Started</a></button>
           </div>

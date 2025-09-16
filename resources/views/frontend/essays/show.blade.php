@@ -387,7 +387,7 @@
                     <!-- Description -->
                     <div class="mb-4">
                         <h6>Description</h6>
-                        <p class="text-muted">{{ $product->description ?: 'No description available.' }}</p>
+                        <p class="text-muted">{!! $product->description ?: 'No description available.' !!}</p>
                     </div>
 
                     <!-- Add to Cart Form -->
@@ -395,7 +395,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">&nbsp;</label>
-                                <a href="{{route('subscriptions.index')}}" class="btn btn-primary w-100 btn-lg">
+                                <a href="{{route('subscriptions.index')}}" class="btn custom-btn w-100 btn-lg">
                                      Subscription
                                 </a>
                             </div>
@@ -448,10 +448,10 @@
                     <div class="d-flex align-items-center gap-3">
                         <span class="text-muted">View:</span>
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-outline-primary btn-sm active" id="gridView">
+                            <button type="button" class="btn custom-btn-outline btn-sm active" id="gridView">
                                 <i class="bi bi-grid"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-primary btn-sm" id="listView">
+                            <button type="button" class="btn custom-btn-outline btn-sm" id="listView">
                                 <i class="bi bi-list"></i>
                             </button>
                         </div>

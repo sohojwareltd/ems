@@ -27,7 +27,7 @@
                 @endif
             </div>
             <h5 class="premium-title mb-2"><a class="text-decoration-none" style="color: var(--primary-color);" href="{{ route('products.show', $product) }}">{{ $product->name }}</a></h5>
-            <p class="premium-desc text-muted mb-3">{{ Str::limit($product->description, 80) }}</p>
+            <p class="premium-desc text-muted mb-3">{{ Str::limit(strip_tags($product->description), 80) }}</p>
         </div>
         <div class="mt-auto">
             <div class="d-flex justify-content-between align-items-center mb-3">

@@ -11,6 +11,7 @@ use App\Models\Qualification;
 use App\Models\Subject;
 use App\Models\Examboard;
 use App\Models\FaqCategory;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -251,5 +252,11 @@ class PageController extends Controller
 
     //     return view('frontend.essays.show', compact('product', 'relatedProducts'));
     // }
+
+    public function pdfView($slug)
+    {
+        $product = Product::where('slug', $slug)->firstOrFail();
+        return view('frontend.products.pdfview', compact('product'));
+    }
 
 }

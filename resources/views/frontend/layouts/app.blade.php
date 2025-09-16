@@ -9,6 +9,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,487 +31,7 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
-    <style>
-        :root {
-            --primary-color: #00b22d;
-            --primary-dark: #0A4126;
-            --secondary-color: #a6f2b9;
-            --accent-color: #D4C4B7;
-            --success-color: #8BA892;
-            --danger-color: #B87A7A;
-            --warning-color: #D4B483;
-            --info-color: #8BA8B5;
-            --light-bg: #FAF9F7;
-            --border-color: #E8E0D8;
-            --text-muted: #8A7F72;
-            --text-dark: #4A3F35;
-            --white: #FFFFFF;
-            --shadow-soft: 0 2px 8px rgba(155, 139, 122, 0.08);
-            --shadow-medium: 0 4px 16px rgba(155, 139, 122, 0.12);
-            --shadow-strong: 0 8px 32px rgba(155, 139, 122, 0.16);
-        }
-
-        * {
-            font-family: 'Inter', sans-serif;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 500;
-        }
-
-        body {
-            background-color: var(--white);
-            color: var(--text-dark);
-            line-height: 1.6;
-        }
-
-        /* Navigation */
-        .navbar {
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-            box-shadow: var(--shadow-soft);
-            padding: 1rem 0;
-        }
-
-        .navbar-brand {
-            font-family: 'Playfair Display', serif;
-            font-weight: 600;
-            font-size: 1.75rem;
-            color: var(--primary-color) !important;
-        }
-
-        .navbar-brand i {
-            color: var(--secondary-color);
-            margin-right: 0.5rem;
-        }
-
-        .nav-link {
-            font-weight: 500;
-            color: var(--text-dark) !important;
-            transition: all 0.3s ease;
-            border-radius: 8px;
-            padding: 0.5rem 1rem !important;
-            margin: 0 0.25rem;
-            position: relative;
-        }
-
-        .nav-link:hover {
-            color: var(--primary-color) !important;
-            background-color: rgba(155, 139, 122, 0.08);
-        }
-
-        .nav-link.active {
-            color: var(--primary-color) !important;
-            background-color: rgba(155, 139, 122, 0.12);
-        }
-
-        .cart-badge {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: var(--danger-color);
-            color: white;
-            border-radius: 50%;
-            padding: 0.2rem 0.4rem;
-            font-size: 0.7rem;
-            min-width: 18px;
-            text-align: center;
-            font-weight: 600;
-            box-shadow: var(--shadow-soft);
-        }
-
-        /* Product Cards */
-        .product-card {
-            transition: all 0.3s ease;
-            height: 100%;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: var(--shadow-soft);
-            background: var(--white);
-        }
-
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-medium);
-            border-color: var(--accent-color);
-        }
-
-        .product-image {
-            height: 280px;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .product-card:hover .product-image {
-            transform: scale(1.02);
-        }
-
-        .card-body {
-            padding: 1.5rem;
-        }
-
-        /* Buttons */
-        .btn {
-            border-radius: 8px;
-            font-weight: 500;
-            padding: 0.75rem 1.5rem;
-            transition: all 0.3s ease;
-            border: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary {
-            background: var(--primary-color);
-            color: var(--white);
-            box-shadow: var(--shadow-soft);
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-medium);
-        }
-
-        .btn-outline-primary {
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            background: transparent;
-        }
-
-        .btn-outline-primary:hover {
-            background: var(--primary-color);
-            color: var(--white);
-            transform: translateY(-1px);
-        }
-
-        .btn-success {
-            background: var(--success-color);
-            color: var(--white);
-        }
-
-        .btn-success:hover {
-            background: #7A9A82;
-            transform: translateY(-1px);
-        }
-
-        .btn-add-to-cart {
-            transition: all 0.3s ease;
-            border-radius: 8px;
-            font-weight: 500;
-        }
-
-        .btn-add-to-cart:hover {
-            transform: scale(1.02);
-        }
-
-        /* Typography and Text */
-        .price {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .original-price {
-            text-decoration: line-through;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            font-weight: 400;
-        }
-
-        .badge {
-            border-radius: 6px;
-            font-weight: 500;
-            padding: 0.4rem 0.6rem;
-            font-size: 0.75rem;
-        }
-
-        /* Alerts and Forms */
-        .alert {
-            border-radius: 8px;
-            border: none;
-            box-shadow: var(--shadow-soft);
-        }
-
-        .form-control {
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            padding: 0.75rem 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(155, 139, 122, 0.15);
-        }
-
-        .form-select {
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            padding: 0.75rem 1rem;
-        }
-
-        .form-select:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(155, 139, 122, 0.15);
-        }
-
-        /* Cards and Containers */
-        .card {
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            box-shadow: var(--shadow-soft);
-        }
-
-        .card-header {
-            border-bottom: 1px solid var(--border-color);
-            border-radius: 12px 12px 0 0 !important;
-            padding: 1.25rem 1.5rem;
-            background: var(--light-bg);
-        }
-
-        /* Dropdowns */
-        .dropdown-menu {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: var(--shadow-medium);
-        }
-
-        .dropdown-item {
-            border-radius: 6px;
-            margin: 2px 6px;
-            padding: 0.5rem 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .dropdown-item:hover {
-            background-color: rgba(155, 139, 122, 0.08);
-            color: var(--primary-color);
-        }
-
-        /* Section Headers */
-        .section-header {
-            background: var(--light-bg);
-            padding: 3rem 0;
-            margin-bottom: 3rem;
-            border-radius: 12px;
-        }
-
-        .section-title {
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-            font-family: 'Playfair Display', serif;
-        }
-
-        .section-subtitle {
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-
-        /* Hero Section */
-        .hero-section {
-            background: linear-gradient(135deg, var(--light-bg) 0%, rgba(168, 181, 160, 0.1) 100%);
-            padding: 4rem 0;
-        }
-
-        /* Quick Links */
-        .quick-link-card {
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            background: var(--white);
-            box-shadow: var(--shadow-soft);
-        }
-
-        .quick-link-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-medium);
-            border-color: var(--accent-color);
-        }
-
-        .quick-link-icon {
-            color: var(--primary-color);
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--text-dark);
-            color: var(--white);
-            padding: 3rem 0 2rem;
-            margin-top: 4rem;
-        }
-
-        .footer h5 {
-            color: var(--accent-color);
-            font-weight: 600;
-            margin-bottom: 1rem;
-            font-family: 'Playfair Display', serif;
-        }
-
-        .footer a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer a:hover {
-            color: var(--accent-color);
-        }
-
-        .social-links {
-            display: flex;
-            align-items: center;
-        }
-
-        .social-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: var(--white);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            background: var(--accent-color);
-            color: var(--text-dark) !important;
-            transform: translateY(-2px);
-        }
-
-        .footer-links li a {
-            transition: all 0.3s ease;
-            padding: 0.25rem 0;
-        }
-
-        .footer-links li a:hover {
-            color: var(--accent-color) !important;
-            transform: translateX(4px);
-        }
-
-        .newsletter-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .newsletter-section .form-control {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-
-        .newsletter-section .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .newsletter-section .form-control:focus {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: var(--accent-color);
-            color: white;
-        }
-
-        .newsletter-section .btn {
-            background: var(--accent-color);
-            border: none;
-            color: var(--text-dark);
-        }
-
-        .newsletter-section .btn:hover {
-            background: #C4B4A7;
-            transform: translateY(-1px);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .navbar-brand {
-                font-size: 1.5rem;
-            }
-
-            .product-card {
-                margin-bottom: 1.5rem;
-            }
-
-            .btn {
-                padding: 0.625rem 1.25rem;
-            }
-
-            .footer-main {
-                text-align: center;
-            }
-
-            .social-links {
-                justify-content: center;
-                margin-top: 1rem;
-            }
-
-            .newsletter-section .d-flex {
-                flex-direction: column;
-            }
-
-            .newsletter-section .btn {
-                margin-top: 1rem;
-            }
-
-            .hero-section {
-                padding: 2rem 0;
-            }
-
-            .section-header {
-                padding: 2rem 0;
-                margin-bottom: 2rem;
-            }
-        }
-
-        /* Loading and Animations */
-        .spinner-border-sm {
-            width: 1rem;
-            height: 1rem;
-        }
-
-        /* Custom toast */
-        .custom-toast {
-            z-index: 9999;
-        }
-
-        .custom-toast .alert {
-            border-radius: 8px;
-            box-shadow: var(--shadow-medium);
-        }
-
-        @media (max-width: 991.98px) {
-            .navbar {
-                padding: 0.5rem 0 !important;
-            }
-
-            .navbar-brand {
-                font-size: 1.2rem !important;
-            }
-
-            .navbar-brand .bi-book {
-                font-size: 1.5rem !important;
-            }
-
-            .navbar .cart-badge {
-                font-size: 0.8rem;
-                min-width: 16px;
-                top: -4px;
-                right: -4px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 
     @stack('styles')
     @vite('resources/js/app.js')
@@ -524,8 +45,10 @@
         <div class="container-fluid px-lg-5">
             <!-- Logo -->
             @if (setting('store.logo'))
-                <img src="{{ Storage::url(setting('store.logo')) }}" style="width:60px; height: auto;" alt="Logo"
-                    class="img-fluid">
+                <a href="{{ route('home') }}">
+                    <img src="{{ Storage::url(setting('store.logo')) }}" style="width:155px; height: auto;"
+                        alt="Logo" class="img-fluid">
+                </a>
             @else
                 <a class="navbar-brand d-flex align-items-center me-lg-5" href="{{ route('home') }}"
                     style="font-size: 2rem;">
@@ -593,7 +116,8 @@
                                 <li><a class="dropdown-item" href="{{ route('user.orders.index') }}"><i
                                             class="bi bi-bag me-2"></i>My Orders</a></li>
                                 <li>
-                                <li><a class="dropdown-item" href="{{route('user.orders.download')}}"><i class="fas fa-download"></i>  My Download</a></li>
+                                <li><a class="dropdown-item" href="{{ route('user.orders.download') }}"><i
+                                            class="fas fa-download"></i> My Download</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -778,7 +302,7 @@
             </div>
         </div>
 
-        <div class="container">
+        <div class="container mt-3">
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <p class="mb-0">&copy; {{ date('Y') }} Eterna Reads. All rights reserved.</p>
@@ -791,6 +315,11 @@
                 </div>
             </div>
         </div>
+
+        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', setting('store.phone')) }}" target="_blank"
+            class="whatsapp-float" aria-label="Chat on WhatsApp" title="Chat with us on WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
     </footer>
 
     <!-- jQuery -->

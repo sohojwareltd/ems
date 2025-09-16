@@ -113,7 +113,7 @@
         <!-- Filter Actions -->
         <div class="col-12 d-flex align-items-end">
             <div class="d-flex gap-2 w-100">
-                <button type="submit" class="btn btn-primary flex-fill">
+                <button type="submit" class="btn custom-btn flex-fill">
                     <i class="bi bi-search me-2"></i>Apply Filters
                 </button>
                 <a href="{{ route('products.index') }}" class="btn btn-outline-secondary">

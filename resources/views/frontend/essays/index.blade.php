@@ -1,120 +1,127 @@
 @extends('frontend.layouts.app')
 
 @section('title', 'Essays - Eterna Reads')
-@section('meta_description', 'Explore our collection of books, audiobooks, and gift boxes. Find your next great read or
+@section('meta_description',
+    'Explore our collection of books, audiobooks, and gift boxes. Find your next great read or
     the perfect gift for a book lover.')
 @section('meta_keywords', 'books, audiobooks, gift boxes, bookshop, online bookstore, reading, literature, book gifts')
 
 @section('content')
-<style>
-      @media (max-width: 768px) {
-           .filter_new{
-            display: none;
-           }
+    <style>
+        @media (max-width: 768px) {
+            .filter_new {
+                display: none;
+            }
         }
-
-</style>
+    </style>
     <div class="container py-5">
         <!-- Hero Section -->
         <div class="section-header text-center mb-5">
             <h1 class="section-title display-4 fw-bold">Discover Our Collection</h1>
             <p class="section-subtitle lead">Find the perfect books, audiobooks, and gift boxes for your reading journey</p>
             <div class="filter_new mt-4">
-                
+
                 <form id="filterForm" method="GET" action="{{ route('model.index') }}">
-    <div class="row g-3">
-          <!-- Search -->
-        <div class="col-lg-6 col-md-12">
-            {{-- <label for="search" class="form-label">Search Model Essays</label> --}}
-            <div class="input-group">
-                <span class="input-group-text">
-                    <i class="bi bi-search text-muted"></i>
-                </span>
-                <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}"
-                    placeholder="Search by name, description, or SKU...">
-            </div>
-        </div>
-      
-   
+                    <div class="row g-3">
+                        <!-- Search -->
+                        <div class="col-lg-6 col-md-12">
+                            {{-- <label for="search" class="form-label">Search Model Essays</label> --}}
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-search text-muted"></i>
+                                </span>
+                                <input type="text" class="form-control" id="search" name="search"
+                                    value="{{ request('search') }}" placeholder="Search by name, description, or SKU...">
+                            </div>
+                        </div>
 
 
-        <!-- Qualiification Filter -->
-        <div class="col-lg-2 col-md-4">
-            {{-- <label for="qualiification" class="form-label">Qualiification</label> --}}
-            <select class="form-select" id="qualiification" name="qualiification">
-                <option value="">Qualiification</option>
-                @foreach($qualiifications as $qualiification)
-                    <option value="{{ $qualiification->id }}" {{ request('qualiification') == $qualiification->id ? 'selected' : '' }}>
-                        {{ $qualiification->title }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-        <!-- Subject Filter -->
-        <div class="col-lg-2 col-md-4">
-            {{-- <label for="subject" class="form-label">Subject</label> --}}
-            <select class="form-select" id="subject" name="subject">
-                <option value="">Subject</option>
-                @foreach($subjects as $subject)
-                    <option value="{{ $subject->id }}" {{ request('subject') == $subject->id ? 'selected' : '' }}>
-                        {{ $subject->title }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-        <!-- Examboard Filter -->
-        <div class="col-lg-2 col-md-4">
-            {{-- <label for="examboard" class="form-label">Examboard</label> --}}
-            <select class="form-select" id="examboard" name="examboard">
-                <option value="">Exam Board</option>
-                @foreach($examboards as $examboard)
-                    <option value="{{ $examboard->id }}" {{ request('examboard') == $examboard->id ? 'selected' : '' }}>
-                        {{ $examboard->title }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-                <!-- Resource Filter -->
-        <div class="col-lg-2 col-md-4">
-            {{-- <label for="resource" class="form-label">Resource</label> --}}
-            <select class="form-select" id="resource" name="resource">
-                <option value="">Resources</option>
-                @foreach($resources as $resource)
-                    <option value="{{ $resource->id }}" {{ request('resource') == $resource->id ? 'selected' : '' }}>
-                        {{ $resource->title }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-        <!-- Sort -->
-        <div class="col-lg-2 col-md-4">
-            {{-- <label for="sort" class="form-label">Sort By</label> --}}
-            <select class="form-select" id="sort" name="sort">
-                <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest First</option>
-                <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Name A-Z</option>
-                <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Name Z-A</option>
-                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Most Popular</option>
-            </select>
-        </div>
-        <!-- Filter Actions -->
-        <div class="col-lg-2 col-md-4 d-flex align-items-end">
-            <div class="d-flex gap-2 w-100">
-                <button type="submit" class="btn btn-primary flex-fill">
-                    <i class="bi bi-search me-2"></i>
-                </button>
-                <a href="{{ route('model.index') }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-clockwise me-2"></i>Clear
-                </a>
-            </div>
-        </div>
-    </div>
-</form>
-                
+
+
+                        <!-- Qualiification Filter -->
+                        <div class="col-lg-2 col-md-4">
+                            {{-- <label for="qualiification" class="form-label">Qualiification</label> --}}
+                            <select class="form-select" id="qualiification" name="qualiification">
+                                <option value="">Qualiification</option>
+                                @foreach ($qualiifications as $qualiification)
+                                    <option value="{{ $qualiification->id }}"
+                                        {{ request('qualiification') == $qualiification->id ? 'selected' : '' }}>
+                                        {{ $qualiification->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <!-- Subject Filter -->
+                        <div class="col-lg-2 col-md-4">
+                            {{-- <label for="subject" class="form-label">Subject</label> --}}
+                            <select class="form-select" id="subject" name="subject">
+                                <option value="">Subject</option>
+                                @foreach ($subjects as $subject)
+                                    <option value="{{ $subject->id }}"
+                                        {{ request('subject') == $subject->id ? 'selected' : '' }}>
+                                        {{ $subject->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <!-- Examboard Filter -->
+                        <div class="col-lg-2 col-md-4">
+                            {{-- <label for="examboard" class="form-label">Examboard</label> --}}
+                            <select class="form-select" id="examboard" name="examboard">
+                                <option value="">Exam Board</option>
+                                @foreach ($examboards as $examboard)
+                                    <option value="{{ $examboard->id }}"
+                                        {{ request('examboard') == $examboard->id ? 'selected' : '' }}>
+                                        {{ $examboard->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <!-- Resource Filter -->
+                        <div class="col-lg-2 col-md-4">
+                            {{-- <label for="resource" class="form-label">Resource</label> --}}
+                            <select class="form-select" id="resource" name="resource">
+                                <option value="">Resources</option>
+                                @foreach ($resources as $resource)
+                                    <option value="{{ $resource->id }}"
+                                        {{ request('resource') == $resource->id ? 'selected' : '' }}>
+                                        {{ $resource->title }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <!-- Sort -->
+                        <div class="col-lg-2 col-md-4">
+                            {{-- <label for="sort" class="form-label">Sort By</label> --}}
+                            <select class="form-select" id="sort" name="sort">
+                                <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest First
+                                </option>
+                                <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Name A-Z</option>
+                                <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Name Z-A
+                                </option>
+                                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Most Popular
+                                </option>
+                            </select>
+                        </div>
+                        <!-- Filter Actions -->
+                        <div class="col-lg-2 col-md-4 d-flex align-items-end">
+                            <div class="d-flex gap-2 w-100">
+                                <button type="submit" class="btn custom-btn flex-fill">
+                                    <i class="bi bi-search me-2"></i>
+                                </button>
+                                <a href="{{ route('model.index') }}" class="btn custom-btn-outline flex-fill">
+                                    <i class="bi bi-arrow-clockwise me-2"></i>Clear
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
             </div>
         </div>
 
         <div class="row">
-            
+
             <!-- Sidebar Filters (Desktop) & Offcanvas (Mobile) -->
             {{-- <div class="col-md-4 mb-4 d-none d-md-block">
                 <div class="position-sticky" style="top: 90px;">
@@ -165,12 +172,12 @@
                 </div>
             </div>
             <!-- Main Content: Products -->
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <!-- Active Filters Display -->
-                @if (request('search') || 
-                        request('qualiification') || 
-                        request('examboard') || 
-                        request('resource') || 
+                @if (request('search') ||
+                        request('qualiification') ||
+                        request('examboard') ||
+                        request('resource') ||
                         request('subject') ||
                         request('sort'))
                     <div class="row mb-4">
@@ -260,7 +267,7 @@
                 @if ($products->count() > 0)
                     <div class="row g-4" id="productsGrid">
                         @foreach ($products as $productwww)
-                            <div class="col-md-6 col-lg-6 ">
+                            <div class="col-md-4 col-lg-4 ">
                                 <x-essay-card :product="$productwww" />
                             </div>
                         @endforeach

@@ -18,7 +18,7 @@
             <div class="col-md-4 mb-4 d-none d-md-block">
                 <div class="position-sticky" style="top: 90px;">
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header" style="background-color: var(--primary-dark); color: var(--white);">
                             <h5 class="mb-0">
                                 <i class="bi bi-funnel me-2"></i>Filters & Search
                             </h5>

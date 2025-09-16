@@ -254,7 +254,7 @@
 
                         <div class="plan-details">
                             <div class="plan-price">$ {{ $plan->price }} <span>/per month</span></div>
-                            <p class="plan-features">{{ $plan->description }}</p>
+                            <p class="plan-features">{!! $plan->description !!}</p>
                             {{-- <ul class="plan-features">
                                 <li><i class="fas fa-check"></i> Unlimited projects</li>
                                 <li><i class="fas fa-check"></i> 100GB storage</li>
@@ -343,7 +343,7 @@
                         <div id="payment-element"></div>
                         <input type="hidden" name="payment_method" id="paymentmethod">
                         <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
-                        <button type="submit" class="btn btn-primary mt-3">Subscribe</button>
+                        <button type="submit" class="btn custom-btn mt-3">Subscribe</button>
                     </form>
 
                 </div>
