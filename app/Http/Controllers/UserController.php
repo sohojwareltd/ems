@@ -113,7 +113,7 @@ class UserController extends Controller
         return view('user.orders.show', compact('order'));
     }
 
-    public function downloadOrder()
+    public function downloadOrder(Request $request)
     {
         $products = Product::with('qualiification','subject', 'examboard', 'resource')
             ->whereHas('orderLines.order', function ($query)  {
@@ -121,6 +121,16 @@ class UserController extends Controller
                     ->where('status', 'completed');
             })
             ->paginate(15);
+
+        
+
+             if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $products->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
 
         return view('user.orders.download', compact('products'));
     }

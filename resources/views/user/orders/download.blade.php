@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'My Orders - MyShop')
+@section('title', 'Download - MyShop')
 
 @section('content')
     <div class="container py-5">
@@ -20,6 +20,39 @@
                     </a>
                 </div>
             </div>
+        </div>
+        <div class="filter_new my-4">
+
+            <form id="filterForm" method="GET" action="{{ route('user.orders.download') }}">
+    <div class="row g-3">
+        <!-- Search -->
+        <div class="col-lg-9 col-md-7 col-sm-12">
+            <label for="search" class="form-label">Search Product</label>
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="bi bi-search text-muted"></i>
+                </span>
+                <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}"
+                    placeholder="Search by name, description, or SKU...">
+            </div>
+        </div>
+   
+
+    
+       
+        <!-- Filter Actions -->
+        <div class="col-lg-3 col-md-5 col-sm-12 d-flex align-items-end">
+            <div class="d-flex gap-2 w-100">
+                <button type="submit" class="btn btn-primary flex-fill">
+                    <i class="bi bi-search me-2"></i>Apply Filters
+                </button>
+                <a href="{{ route('user.orders.download') }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-clockwise me-2"></i>Clear
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
         </div>
 
         <!-- Orders List -->

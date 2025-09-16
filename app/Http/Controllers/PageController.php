@@ -106,6 +106,7 @@ class PageController extends Controller
                     ->orWhere('description', 'like', "%{$search}%");
             });
         }
+        
         // Sort products
         $sort = $request->get('sort', 'name');
 

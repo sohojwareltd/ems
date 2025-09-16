@@ -46,40 +46,41 @@ class EssayResource extends Resource
                             Forms\Components\Select::make('resource_type_id')
                                 ->label('Resource')
                                 ->relationship('resource', 'title')
-                                ->searchable()
+                                // ->searchable()
                                 ->required()
                                 ->helperText('Assign a resource for better organization.'),
                             Forms\Components\Select::make('qualiification_id')
                                 ->label('Qualiification')
                                 ->relationship('qualiification', 'title')
-                                ->searchable()
+                                // ->searchable()
                                 ->required()
                                 ->helperText('Assign a qualiification for better organization.'),
                             Forms\Components\Select::make('subject_id')
                                 ->label('Subject')
                                 ->relationship('subject', 'title')
-                                ->searchable()
+                                // ->searchable()
                                 ->required()
                                 ->helperText('Assign a subject for better organization.'),
                             Forms\Components\Select::make('examboard_id')
                                 ->label('Examboard')
                                 ->relationship('examboard', 'title')
-                                ->searchable()
+                                // ->searchable()
                                 ->required()
                                 ->helperText('Assign a examboard for better organization.'),
-
-                            Forms\Components\Textarea::make('description')
-                                ->helperText('Detailed product description.'),
-
+                                
                             Forms\Components\Select::make('status')
-                                ->options([
-                                    'draft' => 'Draft',
-                                    'active' => 'Active',
-                                    'archived' => 'Archived',
+                            ->options([
+                                'draft' => 'Draft',
+                                'active' => 'Active',
+                                'archived' => 'Archived',
                                 ])
                                 ->default('draft')
                                 ->required()
-                                ->helperText('Set the product status.')
+                                ->helperText('Set the product status.'),
+                                
+                            Forms\Components\RichEditor::make('description')
+                                ->required()
+                                ->columnSpanFull(),
                         ]),
 
                     Forms\Components\Tabs\Tab::make('Media')
@@ -140,47 +141,21 @@ class EssayResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('thumbnail')->label('Thumbnail')->size(40),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('views')
-                    ->numeric()
-                    ->sortable(),
                 // Tables\Columns\TextColumn::make('category_id')
                 //     ->numeric()
                 //     ->sortable(),
                 // Tables\Columns\TextColumn::make('brand_id')
                 //     ->numeric()
                 //     ->sortable(),
-                Tables\Columns\TextColumn::make('thumbnail')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('price')
-                    ->money()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('compare_at_price')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('cost_per_item')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('track_quantity')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('stock')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('status'),
-                Tables\Columns\TextColumn::make('published_at')
-                    ->dateTime()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
             ])
             ->filters([
                 //

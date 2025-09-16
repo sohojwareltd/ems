@@ -398,6 +398,8 @@
                                 <a href="{{route('subscriptions.index')}}" class="btn custom-btn w-100 btn-lg">
                                      Subscription
                                 </a>
+                                @endif
+                                
                             </div>
                             
                         </div>

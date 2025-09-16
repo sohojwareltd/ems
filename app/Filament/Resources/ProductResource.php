@@ -41,8 +41,12 @@ class ProductResource extends Resource
                                 ->required()
                                 ->maxLength(255)
                                 ->helperText('Unique URL slug for the product. Auto-generated from the name.'),
-                            Forms\Components\Textarea::make('description')
-                                ->helperText('Detailed product description.'),
+                            Forms\Components\TextInput::make('price')
+                                ->label('Price')
+                                ->numeric()
+                                ->required()
+                                ->prefix('$')
+                                ->helperText('Current selling price.'),
                             // Forms\Components\Select::make('category_id')
                             //     ->label('Category')
                             //     ->relationship('category', 'name')
@@ -52,25 +56,25 @@ class ProductResource extends Resource
                             Forms\Components\Select::make('resource_id')
                                 ->label('Resource')
                                 ->relationship('resource', 'title')
-                                ->searchable()
+                                // ->searchable()
                                 ->required()
                                 ->helperText('Assign a resource for better organization.'),
                              Forms\Components\Select::make('qualiification_id')
                                 ->label('Qualiification')
                                 ->relationship('qualiification', 'title')
-                                ->searchable()
+                                // ->searchable()
                                 ->required()
                                 ->helperText('Assign a qualiification for better organization.'),
                              Forms\Components\Select::make('subject_id')
                                 ->label('Subject')
                                 ->relationship('subject', 'title')
-                                ->searchable()
+                                // ->searchable()
                                 ->required()
                                 ->helperText('Assign a subject for better organization.'),
                              Forms\Components\Select::make('examboard_id')
                                 ->label('Examboard')
                                 ->relationship('examboard', 'title')
-                                ->searchable()
+                                // ->searchable()
                                 ->required()
                                 ->helperText('Assign a examboard for better organization.'),
 
@@ -82,28 +86,31 @@ class ProductResource extends Resource
                                 ])
                                 ->default('draft')
                                 ->required()
-                                ->helperText('Set the product status.')
+                                ->helperText('Set the product status.'),
+                                Forms\Components\RichEditor::make('description')
+                                    ->columnSpanFull()
+                                    ->helperText('Detailed product description.'),
                         ]),
-                    Forms\Components\Tabs\Tab::make('Pricing')
-                        ->icon('heroicon-o-currency-dollar')
-                        ->schema([
-                            Forms\Components\TextInput::make('price')
-                                ->label('Price')
-                                ->numeric()
-                                ->required()
-                                ->prefix('$')
-                                ->helperText('Current selling price.'),
-                            Forms\Components\TextInput::make('compare_at_price')
-                                ->label('Compare at Price')
-                                ->numeric()
-                                ->prefix('$')
-                                ->helperText('Original price for showing discounts.'),
-                            Forms\Components\TextInput::make('cost_per_item')
-                                ->label('Cost per Item')
-                                ->numeric()
-                                ->prefix('$')
-                                ->helperText('Internal cost for profit calculation.'),
-                        ]),
+                    // Forms\Components\Tabs\Tab::make('Pricing')
+                    //     ->icon('heroicon-o-currency-dollar')
+                    //     ->schema([
+                    //         Forms\Components\TextInput::make('price')
+                    //             ->label('Price')
+                    //             ->numeric()
+                    //             ->required()
+                    //             ->prefix('$')
+                    //             ->helperText('Current selling price.'),
+                    //         Forms\Components\TextInput::make('compare_at_price')
+                    //             ->label('Compare at Price')
+                    //             ->numeric()
+                    //             ->prefix('$')
+                    //             ->helperText('Original price for showing discounts.'),
+                    //         Forms\Components\TextInput::make('cost_per_item')
+                    //             ->label('Cost per Item')
+                    //             ->numeric()
+                    //             ->prefix('$')
+                    //             ->helperText('Internal cost for profit calculation.'),
+                    //     ]),
                     Forms\Components\Tabs\Tab::make('Media')
                         ->icon('heroicon-o-photo')
                         ->schema([
