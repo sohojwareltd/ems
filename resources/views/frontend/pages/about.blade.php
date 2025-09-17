@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
-                <h1 class="text-white display-4 fw-bold mb-3">About Eterna Reads</h1>
+                <h1 class="text-white display-4 fw-bold mb-3">About Economics Made Simple (EMS)</h1>
                 <p class="text-white lead mb-0">Our story, mission, and the team behind your literary haven</p>
             </div>
         </div>
@@ -23,7 +23,7 @@
                 <div class="story-content">
                     <h2 class="section-title mb-4">Our Story</h2>
                     <p class="lead mb-4">
-                        Eterna Reads was born from a simple yet powerful belief: that every person deserves access to 
+                        EMS was born from a simple yet powerful belief: that every person deserves access to 
                         exceptional books that inspire, educate, and entertain. What started as a small local bookstore 
                         has grown into a beloved literary destination for book lovers everywhere.
                     </p>
@@ -33,11 +33,11 @@
                         buy books – they wanted to build a community where readers could discover new worlds, share 
                         their love for literature, and find the perfect book for every moment.
                     </p>
-                    <p class="mb-4">
-                        Today, Eterna Reads continues to grow while staying true to our roots. We've expanded our 
+                    {{-- <p class="mb-4">
+                        Today, EMS continues to grow while staying true to our roots. We've expanded our 
                         offerings to include audiobooks, curated gift boxes, and literary merchandise, but our 
                         commitment to quality, community, and the love of reading remains unchanged.
-                    </p>
+                    </p> --}}
                 </div>
             </div>
             <div class="col-lg-6">
@@ -142,7 +142,7 @@
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="section-title mb-3">Meet Our Team</h2>
-            <p class="section-subtitle">The passionate individuals behind Eterna Reads</p>
+            <p class="section-subtitle">The passionate individuals behind EMS</p>
         </div>
         
         <div class="row g-4">
@@ -199,7 +199,7 @@
 <section class="why-choose-us py-5" style="background: var(--light-bg);">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="section-title mb-3">Why Choose Eterna Reads?</h2>
+            <h2 class="section-title mb-3">Why Choose EMS?</h2>
             <p class="section-subtitle">What makes us different from other bookstores</p>
         </div>
         

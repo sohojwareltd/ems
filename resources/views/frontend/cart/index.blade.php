@@ -59,7 +59,7 @@
                                                 $maxStock = $hasVariants && $variantStock ? $variantStock : ($item['product']['stock'] ?? 999);
                                             @endphp
                                             @if($isDigital)
-                                                <span class="badge bg-info text-dark">Digital Product (Qty: 1)</span>
+                                                <span class="badge custom-badge ">Digital Product (Qty: 1)</span>
                                             @else
                                             <div class="d-flex align-items-center justify-content-center gap-2">
                                                 <button class="btn btn-outline-secondary btn-sm quantity-btn px-2" data-action="decrease" data-item-id="{{ $itemKey }}"><i class="bi bi-dash"></i></button>
@@ -78,7 +78,7 @@
                                         </td>
                                         <!-- Remove -->
                                         <td class="text-end">
-                                            <button class="btn btn-link text-danger p-0 remove-item" data-item-id="{{ $itemKey }}" title="Remove item">
+                                            <button class="btn btn-link p-0 remove-item" style="color: var(--primary-color)" data-item-id="{{ $itemKey }}" title="Remove item">
                                                 <i class="bi bi-trash fs-5"></i>
                                             </button>
                                         </td>
@@ -152,7 +152,7 @@
                                        class="form-control"
                                        id="couponCode"
                                        placeholder="Enter coupon code">
-                                <button class="btn btn-premium" id="applyCoupon">
+                                <button class="btn btn-premium custom-btn" id="applyCoupon">
                                     <i class="bi bi-check-lg"></i>
                                 </button>
                             </div>
@@ -185,11 +185,11 @@
                         <!-- Action Buttons -->
                         <div class="d-grid gap-2">
                             <a href="{{ route('checkout.index') }}"
-                               class="btn btn-premium btn-lg fw-bold">
+                               class="btn custom-btn-outline btn-lg fw-bold">
                                 <i class="bi bi-credit-card me-2"></i>Proceed to Checkout
                             </a>
                             <a href="{{ route('products.index') }}"
-                               class="btn btn-outline-primary btn-lg">
+                               class="btn custom-btn btn-lg">
                                 <i class="bi bi-arrow-left me-2"></i>Continue Shopping
                             </a>
                         </div>

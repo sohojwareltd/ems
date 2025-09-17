@@ -228,8 +228,7 @@
                         @else
                             <h4><i class="bi bi-book me-2"></i>{{ setting('store.name') }}</h4>
                         @endif
-                        <p class="mb-3">Your literary haven for physical books, and curated gift boxes.
-                            Discover the magic of reading with us.</p>
+                        <p class="mb-3">{{ setting('store.footer_text') }}</p>
                         <div class="social-links">
                             <a href="{{ setting('store.facebook') }}" class="social-link me-2" title="Facebook">
                                 <i class="bi bi-facebook"></i>
@@ -305,7 +304,7 @@
         <div class="container mt-3">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0">&copy; {{ date('Y') }} Eterna Reads. All rights reserved.</p>
+                    <p class="mb-0">&copy; {{ date('Y') }} EMS. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <div class="footer-bottom-links">

@@ -37,8 +37,8 @@
                 <div class="col-lg-8 mb-4">
                     <!-- Billing Information -->
                     <div class="card mb-4">
-                        <div class="card-header">
-                            <h5 class="mb-0">
+                        <div class="card-header" style="background-color: var(--primary-dark);color: var(--white) !important;border-top-left-radius: 8px !important;border-top-right-radius: 8px !important;">
+                            <h5 class="mb-0" >
                                 <i class="bi bi-person"></i> Billing Information
                             </h5>
                         </div>
@@ -119,7 +119,7 @@
 
                     <!-- Shipping Information -->
                     <div class="card mb-4">
-                        <div class="card-header">
+                        <div class="card-header" style="background-color: var(--primary-dark);color: var(--white) !important;border-top-left-radius: 8px !important;border-top-right-radius: 8px !important;">
                             <h5 class="mb-0">
                                 <i class="bi bi-truck"></i> Shipping Information
                             </h5>
@@ -191,7 +191,7 @@
 
                     <!-- Payment Information -->
                     <div class="card mb-4">
-                        <div class="card-header">
+                        <div class="card-header" style="background-color: var(--primary-dark);color: var(--white) !important;border-top-left-radius: 8px !important;border-top-right-radius: 8px !important;">
                             <h5 class="mb-0">
                                 <i class="bi bi-credit-card"></i> Payment Information
                             </h5>
@@ -237,7 +237,7 @@
 
                     <!-- Order Notes -->
                     <div class="card mb-4">
-                        <div class="card-header">
+                        <div class="card-header" style="background-color: var(--primary-dark);color: var(--white) !important;border-top-left-radius: 8px !important;border-top-right-radius: 8px !important;">
                             <h5 class="mb-0">
                                 <i class="bi bi-chat-text"></i> Order Notes
                             </h5>
@@ -255,7 +255,7 @@
                 <!-- Order Summary -->
                 <div class="col-lg-4">
                     <div class="card sticky-top" style="top: 20px;">
-                        <div class="card-header">
+                        <div class="card-header" style="background-color: var(--primary-dark);color: var(--white) !important;border-top-left-radius: 8px !important;border-top-right-radius: 8px !important;">
                             <h5 class="mb-0">
                                 <i class="bi bi-calculator"></i> Order Summary
                             </h5>
@@ -334,7 +334,7 @@
                             <!-- Place Order Button -->
                             <div class="row">
                                 <div class="col-12 text-end">
-                                    <button type="submit" class="btn btn-primary btn-lg" id="place-order-btn">
+                                    <button type="submit" class="btn custom-btn btn-lg" id="place-order-btn">
                                         @if(!empty($isRepayment) && isset($order))
                                             Repay Now
                                         @else

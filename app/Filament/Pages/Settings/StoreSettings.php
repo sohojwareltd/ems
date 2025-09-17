@@ -74,6 +74,10 @@ class StoreSettings extends BaseSettings
                                     TextInput::make('store.twitter')
                                         ->label('Twitter Profile URL')
                                         ->helperText('Link to your Twitter/X profile.'),
+
+                                    Textarea::make('store.footer_text')
+                                        ->label('Footer Text')
+                                        ->helperText('Footer text displayed at the bottom of each page.'),
                                     // TextInput::make('store.currency')
                                     //     ->label('Store Currency')
                                     //     ->default('USD')
@@ -175,7 +179,7 @@ class StoreSettings extends BaseSettings
                     //                     ->helperText('Your Stripe publishable key.'),
                     //                 TextInput::make('payments.stripe_secret')
                     //                     ->label('Stripe Secret Key')
-                             
+
                     //                     ->helperText('Your Stripe secret key.'),
                     //                 Toggle::make('payments.enable_paypal')
                     //                     ->label('Enable PayPal')
@@ -188,15 +192,13 @@ class StoreSettings extends BaseSettings
                     //                     ->helperText('Your PayPal client ID.'),
                     //                 TextInput::make('payments.paypal_secret')
                     //                     ->label('PayPal Secret')
-                                        
+
                     //                     ->helperText('Your PayPal secret.'),
                     //         ]),
                     // ]),
-                 
-                   
+
+
                 ]),
         ];
     }
-
-
-} 
+}

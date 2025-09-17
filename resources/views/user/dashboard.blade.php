@@ -9,17 +9,17 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h1 class="h2 mb-1 fw-bold text-dark">
-                            <i class="fas fa-tachometer-alt me-2 text-primary"></i>
+                        <h1 class="h2 mb-1 fw-bold" style="color: var(--primary-color);">
+                            <i class="fas fa-tachometer-alt me-2 " ></i>
                             Dashboard
                         </h1>
                         <p class="text-muted mb-0">Welcome back, {{ Auth::user()->name }}!</p>
                     </div>
                     <div class="d-flex gap-2">
-                        <a href="{{ route('user.profile') }}" class="btn btn-outline-primary">
+                        <a href="{{ route('user.profile') }}" class="btn custom-btn-outline">
                             <i class="fas fa-user-edit me-2"></i>Edit Profile
                         </a>
-                        <a href="{{ route('user.orders.index') }}" class="btn btn-primary">
+                        <a href="{{ route('user.orders.index') }}" class="btn custom-btn">
                             <i class="fas fa-box-open me-2"></i>View Orders
                         </a>
                     </div>
@@ -32,9 +32,9 @@
             <div class="col-md-3 mb-3">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 rounded-circle mb-3"
+                        <div class="d-inline-flex align-items-center justify-content-center custom-badge rounded-circle mb-3"
                             style="width: 60px; height: 60px;">
-                            <i class="fas fa-shopping-bag text-primary fs-4"></i>
+                            <i class="fas fa-shopping-bag  fs-4"></i>
                         </div>
                         <h3 class="fw-bold text-dark mb-1">{{ $stats['total_orders'] ?? 0 }}</h3>
                         <p class="text-muted mb-0">Total Orders</p>
@@ -44,9 +44,9 @@
             <div class="col-md-3 mb-3">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 rounded-circle mb-3"
+                        <div class="d-inline-flex align-items-center justify-content-center custom-badge rounded-circle mb-3"
                             style="width: 60px; height: 60px;">
-                            <i class="fas fa-check-circle text-success fs-4"></i>
+                            <i class="fas fa-check-circle  fs-4"></i>
                         </div>
                         <h3 class="fw-bold text-dark mb-1">{{ $stats['completed_orders'] ?? 0 }}</h3>
                         <p class="text-muted mb-0">Completed</p>
@@ -56,9 +56,9 @@
             <div class="col-md-3 mb-3">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 rounded-circle mb-3"
+                        <div class="d-inline-flex align-items-center justify-content-center custom-badge rounded-circle mb-3"
                             style="width: 60px; height: 60px;">
-                            <i class="fas fa-clock text-warning fs-4"></i>
+                            <i class="fas fa-clock  fs-4"></i>
                         </div>
                         <h3 class="fw-bold text-dark mb-1">{{ $stats['pending_orders'] ?? 0 }}</h3>
                         <p class="text-muted mb-0">Pending</p>
@@ -68,9 +68,9 @@
             <div class="col-md-3 mb-3">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-info bg-opacity-10 rounded-circle mb-3"
+                        <div class="d-inline-flex align-items-center justify-content-center custom-badge rounded-circle mb-3"
                             style="width: 60px; height: 60px;">
-                            <i class="fas fa-dollar-sign text-info fs-4"></i>
+                            <i class="fas fa-dollar-sign  fs-4"></i>
                         </div>
                         <h3 class="fw-bold text-dark mb-1">${{ number_format($stats['total_spent'] ?? 0, 2) }}</h3>
                         <p class="text-muted mb-0">Total Spent</p>
@@ -85,11 +85,11 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-white border-0 py-3">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0 fw-bold text-dark">
-                                <i class="fas fa-history me-2 text-primary"></i>
+                            <h5 class="mb-0 fw-bold" style="color: var(--primary-color);">
+                                <i class="fas fa-history me-2 "></i>
                                 Recent Orders
                             </h5>
-                            <a href="{{ route('user.orders.index') }}" class="btn btn-sm btn-outline-primary">
+                            <a href="{{ route('user.orders.index') }}" class="btn btn-sm custom-btn-outline">
                                 View All
                             </a>
                         </div>
@@ -142,10 +142,10 @@
                             </div>
                         @else
                             <div class="text-center py-5">
-                                <i class="fas fa-box-open text-muted fs-1 mb-3"></i>
-                                <h5 class="text-muted">No orders yet</h5>
+                                <i class="fas fa-box-open fs-1 mb-3" style="color: var(--primary-color);"></i>
+                                <h5 class="" style="color: var(--primary-color);">No orders yet</h5>
                                 <p class="text-muted">Start shopping to see your orders here!</p>
-                                <a href="{{ route('products.index') }}" class="btn btn-primary">
+                                <a href="{{ route('products.index') }}" class="btn custom-btn">
                                     <i class="fas fa-shopping-cart me-2"></i>Start Shopping
                                 </a>
                             </div>
@@ -159,17 +159,17 @@
                 <!-- Profile Summary -->
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-header bg-white border-0 py-3">
-                        <h5 class="mb-0 fw-bold text-dark">
-                            <i class="fas fa-user me-2 text-primary"></i>
+                        <h5 class="mb-0 fw-bold " style="color: var(--primary-color);">
+                            <i class="fas fa-user me-2"></i>
                             Profile Summary
                         </h5>
                     </div>
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div class="flex-shrink-0">
-                                <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                                <div class="custom-badge rounded-circle d-flex align-items-center justify-content-center"
                                     style="width: 50px; height: 50px;">
-                                    <i class="fas fa-user text-primary"></i>
+                                    <i class="fas fa-user"></i>
                                 </div>
                             </div>
                             <div class="flex-grow-1 ms-3">
@@ -203,7 +203,7 @@
                     </div>
                     <div class="card-body">
                         <div class="d-grid gap-2">
-                            <a href="{{ route('user.profile') }}" class="btn btn-outline-primary text-start">
+                            <a href="{{ route('user.profile') }}" class="btn custom-btn-outline text-start">
                                 <i class="fas fa-user-edit me-2"></i>Edit Profile
                             </a>
                             <a href="{{ route('user.orders.index') }}" class="btn btn-outline-success text-start">

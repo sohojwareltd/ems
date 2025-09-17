@@ -9,13 +9,13 @@
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h1 class="h2 mb-1 fw-bold text-dark">
-                        <i class="fas fa-box-open me-2 text-primary"></i>
+                    <h1 class="h2 mb-1 fw-bold " style="color: var(--primary-color) !important;"> 
+                        <i class="fas fa-box-open me-2 "></i>
                         My Orders
                     </h1>
                     <p class="text-muted mb-0">View and track all your orders</p>
                 </div>
-                <a href="{{ route('dashboard') }}" class="btn btn-outline-primary">
+                <a href="{{ route('dashboard') }}" class="btn custom-btn-outline">
                     <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
                 </a>
             </div>
@@ -26,8 +26,8 @@
     <div class="card border-0 shadow-sm">
         <div class="card-header bg-white border-0 py-3">
             <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0 fw-bold text-dark">
-                    <i class="fas fa-list me-2 text-primary"></i>
+                <h5 class="mb-0 fw-bold " style="color: var(--primary-color);">
+                    <i class="fas fa-list me-2 "></i>
                     Order History
                 </h5>
                 <div class="d-flex gap-2">
@@ -148,10 +148,10 @@
                 @endif
             @else
                 <div class="text-center py-5">
-                    <i class="fas fa-box-open text-muted fs-1 mb-3"></i>
-                    <h5 class="text-muted">No orders found</h5>
+                    <i class="fas fa-box-open fs-1 mb-3" style="color: var(--primary-color);"></i>
+                    <h5 class="" style="color: var(--primary-color);">No orders found</h5>
                     <p class="text-muted">You haven't placed any orders yet.</p>
-                    <a href="{{ route('products.index') }}" class="btn btn-primary">
+                    <a href="{{ route('products.index') }}" class="btn custom-btn">
                         <i class="fas fa-shopping-cart me-2"></i>Start Shopping
                     </a>
                 </div>

@@ -9,13 +9,13 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h1 class="h2 mb-1 fw-bold text-dark">
-                            <i class="fas fa-user-edit me-2 text-primary"></i>
+                        <h1 class="h2 mb-1 fw-bold " style="color: var(--primary-color) !important;">
+                            <i class="fas fa-user-edit me-2 " style="color: var(--primary-color) !important;"></i>
                             Edit Profile
                         </h1>
                         <p class="text-muted mb-0">Update your personal information and account settings</p>
                     </div>
-                    <a href="{{ route('dashboard') }}" class="btn btn-outline-primary">
+                    <a href="{{ route('dashboard') }}" class="btn custom-btn-outline">
                         <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
                     </a>
                 </div>
@@ -47,9 +47,9 @@
             <!-- Profile Information -->
             <div class="col-lg-8 mb-4">
                 <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-white border-0 py-3">
-                        <h5 class="mb-0 fw-bold text-dark">
-                            <i class="fas fa-user me-2 text-primary"></i>
+                    <div class="card-header  border-0 py-3" style="background-color: var(--primary-dark);color:var(--white) !important;">
+                        <h5 class="mb-0 fw-bold ">
+                            <i class="fas fa-user me-2 "></i>
                             Personal Information
                         </h5>
                     </div>
@@ -147,7 +147,7 @@
                             </div>
 
                             <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn custom-btn">
                                     <i class="fas fa-save me-2"></i>Update Profile
                                 </button>
                             </div>
@@ -159,9 +159,9 @@
             <!-- Change Password -->
             <div class="col-lg-4 mb-4">
                 <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-white border-0 py-3">
-                        <h5 class="mb-0 fw-bold text-dark">
-                            <i class="fas fa-lock me-2 text-primary"></i>
+                    <div class="card-header border-0 py-3" style="background-color: var(--primary-dark);color:var(--white) !important;">
+                        <h5 class="mb-0 fw-bold ">
+                            <i class="fas fa-lock me-2 "></i>
                             Change Password
                         </h5>
                     </div>
@@ -196,7 +196,7 @@
                             </div>
 
                             <div class="d-grid">
-                                <button type="submit" class="btn btn-warning">
+                                <button type="submit" class="btn custom-btn">
                                     <i class="fas fa-key me-2"></i>Change Password
                                 </button>
                             </div>
@@ -206,9 +206,9 @@
 
                 <!-- Account Information -->
                 <div class="card border-0 shadow-sm mt-4">
-                    <div class="card-header bg-white border-0 py-3">
-                        <h5 class="mb-0 fw-bold text-dark">
-                            <i class="fas fa-info-circle me-2 text-primary"></i>
+                    <div class="card-header  border-0 py-3" style="background-color: var(--primary-dark);color:var(--white) !important;">
+                        <h5 class="mb-0 fw-bold ">
+                            <i class="fas fa-info-circle me-2 "></i>
                             Account Information
                         </h5>
                     </div>
@@ -222,11 +222,11 @@
                             <label class="form-label fw-semibold text-muted">Email Verified</label>
                             <p class="mb-0">
                                 @if ($user->email_verified_at)
-                                    <span class="badge bg-success">
+                                    <span class="badge custom-badge">
                                         <i class="fas fa-check me-1"></i>Verified
                                     </span>
                                 @else
-                                    <span class="badge bg-warning">
+                                    <span class="badge custom-badge">
                                         <i class="fas fa-exclamation-triangle me-1"></i>Not Verified
                                     </span>
                                 @endif
@@ -239,7 +239,7 @@
                         </div>
 
                         <div class="d-grid">
-                            <a href="{{ route('dashboard') }}" class="btn btn-outline-primary">
+                            <a href="{{ route('dashboard') }}" class="btn custom-btn-outline">
                                 <i class="fas fa-tachometer-alt me-2"></i>Back to Dashboard
                             </a>
                         </div>
