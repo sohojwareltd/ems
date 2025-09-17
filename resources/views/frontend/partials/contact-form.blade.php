@@ -97,7 +97,7 @@
                                     </div>
                                 </div>
                                 <div class="col-12 text-center">
-                                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                                    <button type="submit" class="btn custom-btn btn-lg px-5">
                                         <i class="bi bi-send me-2"></i>Send Message
                                     </button>
                                 </div>

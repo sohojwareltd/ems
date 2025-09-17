@@ -74,8 +74,24 @@ class CheckoutController extends Controller
         ]);
 
         try {
-            // Prepare checkout data
+            
             $checkoutData = $request->all();
+
+            $checkoutData['billing_address']['phone'] = '';
+            $checkoutData['billing_address']['address'] = '';
+            $checkoutData['billing_address']['city'] = '';
+            $checkoutData['billing_address']['state'] = '';
+            $checkoutData['billing_address']['zip'] = '';
+
+            $checkoutData['shipping_address'] = [
+                'first_name' => '',
+                'last_name' => '',
+                'address' => '',
+                'city' => '',
+                'state' => '',
+                'zip' => '',
+                'country' => '',
+            ];
 
 
             // Process checkout

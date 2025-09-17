@@ -65,14 +65,14 @@
                                        value="{{ old('billing_address.email', $user ? $user->email : '') }}">
                             </div>
                             
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <label for="billing_phone" class="form-label">Phone Number *</label>
                                 <input type="tel" class="form-control" id="billing_phone" 
                                        name="billing_address[phone]" required 
                                        value="{{ old('billing_address.phone', $user ? $user->phone : '') }}">
                             </div>
-                            
-                            <div class="mb-3">
+                             --}}
+                            {{-- <div class="mb-3">
                                 <label for="billing_address" class="form-label">Address *</label>
                                 <input type="text" class="form-control" id="billing_address" 
                                        name="billing_address[address]" required 
@@ -100,7 +100,7 @@
                                            name="billing_address[zip]" required 
                                            value="{{ old('billing_address.zip', $user ? $user->zip : '') }}">
                                 </div>
-                            </div>
+                            </div> --}}
                             
                             @php
                                 $countries = App\Models\Country::listCountries();
@@ -118,7 +118,7 @@
                     </div>
 
                     <!-- Shipping Information -->
-                    <div class="card mb-4">
+                    {{-- <div class="card mb-4">
                         <div class="card-header" style="background-color: var(--primary-dark);color: var(--white) !important;border-top-left-radius: 8px !important;border-top-right-radius: 8px !important;">
                             <h5 class="mb-0">
                                 <i class="bi bi-truck"></i> Shipping Information
@@ -187,7 +187,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- Payment Information -->
                     <div class="card mb-4">

@@ -131,7 +131,7 @@
                     </div>
 
                     <div class="mt-4">
-                        <a href="{{ route('faq') }}" class="btn btn-outline-primary btn-lg">
+                        <a href="{{ route('faq') }}" class="btn custom-btn btn-lg">
                             <i class="bi bi-question-circle me-2"></i>View All FAQs
                         </a>
                     </div>
