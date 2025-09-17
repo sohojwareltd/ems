@@ -319,8 +319,8 @@ class CheckoutService
 
         // Validate required fields
         $requiredFields = [
-            'billing_address' => ['first_name', 'last_name', 'email', 'phone', 'address', 'city', 'state', 'zip', 'country'],
-            'shipping_address' => ['first_name', 'last_name', 'address', 'city', 'state', 'zip', 'country']
+            'billing_address' => ['first_name', 'last_name', 'email', 'country'],
+           
         ];
 
         foreach ($requiredFields as $section => $fields) {

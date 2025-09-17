@@ -214,14 +214,14 @@
                                 <hr>
 
                                 <h6>Shipping Address</h6>
-                                <p class="mb-0">
+                                {{-- <p class="mb-0">
                                     {{ $order->shipping_address['first_name'] }}
                                     {{ $order->shipping_address['last_name'] }}<br>
                                     {{ $order->shipping_address['address'] }}<br>
                                     {{ $order->shipping_address['city'] }}, {{ $order->shipping_address['state'] }}
                                     {{ $order->shipping_address['zip'] }}<br>
                                     {{ App\Models\Country::where('code', $order->shipping_address['country'])->first()->name }}
-                                </p>
+                                </p> --}}
                             </div>
                         </div>
                     </div>
