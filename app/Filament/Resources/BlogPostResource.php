@@ -17,6 +17,9 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Set;
+use Illuminate\Support\Str;
+use Filament\Forms\Get;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use App\Models\BlogCategory;
@@ -38,12 +41,20 @@ class BlogPostResource extends Resource
             ->schema([
                 TextInput::make('title')
                     ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function (Get $get, Set $set, ?string $old, ?string $state) {
+                        if (($get('slug') ?? '') !== Str::slug($old)) {
+                            return;
+                        }
+
+                        $set('slug', Str::slug($state));
+                    })
                     ->maxLength(255),
                 TextInput::make('slug')
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
-                Select::make('category_id')
+                Select::make('blog_category_id')
                     ->label('Category')
                     ->relationship('category', 'name')
                     ->options(BlogCategory::pluck('name', 'id'))
@@ -65,9 +76,9 @@ class BlogPostResource extends Resource
                     ->label('Published')
                     ->onColor('success')
                     ->offColor('secondary')
-              
-                    ->default(fn ($record) => $record?->status === 'published')
-                    ->dehydrateStateUsing(fn ($state) => $state ? 'published' : 'draft')
+
+                    ->default(fn($record) => $record?->status === 'published')
+                    ->dehydrateStateUsing(fn($state) => $state ? 'published' : 'draft')
                     ->afterStateHydrated(function ($component, $state) {
                         $component->state($state === 'published');
                     }),

@@ -16,7 +16,6 @@ class BlogController extends Controller
         $query = BlogPost::with(['category', 'user'])
             ->published()
             ->orderBy('published_at', 'desc');
-
         // Filter by category
         if ($request->has('category')) {
             $category = BlogCategory::where('slug', $request->category)->first();
@@ -31,6 +30,8 @@ class BlogController extends Controller
         }
 
         $posts = $query->paginate(12);
+       
+
         $categories = BlogCategory::active()->ordered()->withCount('publishedPosts')->get();
 
         // Get featured post (first published post)
