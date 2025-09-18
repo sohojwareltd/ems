@@ -86,7 +86,7 @@
 
                             <!-- Submit Button -->
                             <div class="d-grid mb-4">
-                                <button type="submit" class="btn btn-primary btn-lg fw-semibold py-3 rounded-3">
+                                <button type="submit" class="btn custom-btn btn-lg fw-semibold py-3 rounded-3">
                                     <i class="fas fa-sign-in-alt me-2"></i>
                                     Sign In
                                 </button>

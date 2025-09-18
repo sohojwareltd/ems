@@ -26,7 +26,7 @@ class ChargeDefaultSubscriptions extends Command
 
     public function handle()
     {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey( setting('payments.stripe_secret', env('STRIPE_SECRET')));
         $users = User::whereHas('subscriptions', function ($q) {
             $q->where('type', 'default')
                 ->whereIn('status', [SubscriptionStatus::TRIALING->value, SubscriptionStatus::ACTIVE->value]);

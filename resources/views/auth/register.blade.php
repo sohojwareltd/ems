@@ -9,9 +9,9 @@
             <!-- Logo/Brand Section -->
             <div class="text-center mb-5">
                 <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle mb-4" style="width: 80px; height: 80px;">
-                    <i class="fas fa-user-plus text-primary" style="font-size: 2rem;"></i>
+                    <i class="fas fa-user-plus " style="font-size: 2rem;color:var(--primary-color);" ></i>
                 </div>
-                <h2 class="fw-bold text-dark mb-2">Join Our Community</h2>
+                <h2 class="fw-bold  mb-2" style="color:var(--primary-color);">Join Our Community</h2>
                 <p class="text-muted mb-0">Create your account and start shopping today</p>
             </div>
 
@@ -106,8 +106,8 @@
                                             Password
                                         </label>
                                         <button type="button" 
-                                                class="btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3" 
-                                                id="togglePassword">
+                                                class="btn btn-link position-absolute end-0 top-50  pe-3" 
+                                                id="togglePassword" style="transform: translateY(-78%) !important;">
                                             <i class="fas fa-eye text-muted" id="togglePasswordIcon"></i>
                                         </button>
                                     </div>
@@ -135,8 +135,8 @@
                                             Confirm Password
                                         </label>
                                         <button type="button" 
-                                                class="btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3" 
-                                                id="togglePasswordConfirm">
+                                                class="btn btn-link position-absolute end-0 top-50  pe-3" 
+                                                id="togglePasswordConfirm"  style="transform: translateY(-78%) !important;">
                                             <i class="fas fa-eye text-muted" id="togglePasswordConfirmIcon"></i>
                                         </button>
                                     </div>
@@ -163,7 +163,7 @@
 
                         <!-- Submit Button -->
                         <div class="d-grid mb-4">
-                            <button type="submit" class="btn btn-primary btn-lg fw-semibold py-3 rounded-3">
+                            <button type="submit" class="btn custom-btn btn-lg fw-semibold py-3 rounded-3">
                                 <i class="fas fa-user-plus me-2"></i>
                                 Create Account
                             </button>

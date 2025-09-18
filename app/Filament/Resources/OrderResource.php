@@ -71,7 +71,7 @@ class OrderResource extends Resource
             Forms\Components\Section::make('Addresses & Notes')
                 ->description('Enter shipping and billing addresses, and any special notes for the order.')
                 ->schema([
-                    Forms\Components\KeyValue::make('shipping_address')->label('Shipping Address')->helperText('Shipping address details.'),
+                    // Forms\Components\KeyValue::make('shipping_address')->label('Shipping Address')->helperText('Shipping address details.'),
                     Forms\Components\KeyValue::make('billing_address')->label('Billing Address')->helperText('Billing address details.'),
                     Forms\Components\Textarea::make('notes')->nullable()->helperText('Order notes or special instructions.')->columnSpanFull(),
                 ])->columns(2),
@@ -156,31 +156,31 @@ class OrderResource extends Resource
                 ->color('gray'),
             
             // Shipping Information
-            Tables\Columns\TextColumn::make('shipping_method')
-                ->label('Shipping')
-                ->badge()
-                ->color('blue')
-                ->icon('heroicon-o-truck'),
+            // Tables\Columns\TextColumn::make('shipping_method')
+            //     ->label('Shipping')
+            //     ->badge()
+            //     ->color('blue')
+            //     ->icon('heroicon-o-truck'),
             
-            Tables\Columns\TextColumn::make('tracking')
-                ->label('Tracking')
-                ->copyable()
-                ->icon('heroicon-o-qr-code')
-                ->placeholder('No tracking'),
+            // Tables\Columns\TextColumn::make('tracking')
+            //     ->label('Tracking')
+            //     ->copyable()
+            //     ->icon('heroicon-o-qr-code')
+            //     ->placeholder('No tracking'),
             
             // Location Information
-            Tables\Columns\TextColumn::make('shipping_address.city')
-                ->label('City')
-                ->getStateUsing(fn ($record) => $record->shipping_address['city'] ?? 'N/A')
-                ->searchable()
-                ->sortable()
-                ->icon('heroicon-o-map-pin'),
+            // Tables\Columns\TextColumn::make('shipping_address.city')
+            //     ->label('City')
+            //     ->getStateUsing(fn ($record) => $record->shipping_address['city'] ?? 'N/A')
+            //     ->searchable()
+            //     ->sortable()
+            //     ->icon('heroicon-o-map-pin'),
             
-            Tables\Columns\TextColumn::make('shipping_address.country')
-                ->label('Country')
-                ->getStateUsing(fn ($record) => $record->shipping_address['country'] ?? 'N/A')
-                ->searchable()
-                ->sortable(),
+            // Tables\Columns\TextColumn::make('shipping_address.country')
+            //     ->label('Country')
+            //     ->getStateUsing(fn ($record) => $record->shipping_address['country'] ?? 'N/A')
+            //     ->searchable()
+            //     ->sortable(),
             
             // Timestamps
             Tables\Columns\TextColumn::make('created_at')
@@ -242,17 +242,17 @@ class OrderResource extends Resource
                 ->label('Payment Method'),
 
             // Shipping Method Filters
-            Tables\Filters\SelectFilter::make('shipping_method')
-                ->options([
-                    'FedEx' => 'FedEx',
-                    'UPS' => 'UPS',
-                    'USPS' => 'USPS',
-                    'DHL' => 'DHL',
-                    'Standard Shipping' => 'Standard Shipping',
-                    'Express Shipping' => 'Express Shipping',
-                ])
-                ->multiple()
-                ->label('Shipping Method'),
+            // Tables\Filters\SelectFilter::make('shipping_method')
+            //     ->options([
+            //         'FedEx' => 'FedEx',
+            //         'UPS' => 'UPS',
+            //         'USPS' => 'USPS',
+            //         'DHL' => 'DHL',
+            //         'Standard Shipping' => 'Standard Shipping',
+            //         'Express Shipping' => 'Express Shipping',
+            //     ])
+            //     ->multiple()
+            //     ->label('Shipping Method'),
 
             // Date Filters
             Tables\Filters\Filter::make('created_at')
@@ -391,12 +391,12 @@ class OrderResource extends Resource
                     ->icon('heroicon-o-truck')
                     ->visible(fn ($record) => $record->status !== 'pending')
                     ->form([
-                        \Filament\Forms\Components\Select::make('shipping_method')
-                            ->label('Shipping Method')
-                            ->options(\App\Models\ShippingMethod::all()->pluck('name', 'name'))
-                            ->searchable()
-                            ->required()
-                            ->helperText('Select a shipping method for this order'),
+                        // \Filament\Forms\Components\Select::make('shipping_method')
+                        //     ->label('Shipping Method')
+                        //     ->options(\App\Models\ShippingMethod::all()->pluck('name', 'name'))
+                        //     ->searchable()
+                        //     ->required()
+                        //     ->helperText('Select a shipping method for this order'),
                         \Filament\Forms\Components\TextInput::make('tracking')
                             ->label('Tracking Number')
                             ->maxLength(255)

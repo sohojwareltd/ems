@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Eterna Reads - Your Literary Haven')
+@section('title', 'Payment - ' . $plan->name)
 
 @section('content')
     <style>
@@ -425,7 +425,8 @@
     </script> --}}
     <script src="https://js.stripe.com/v3/"></script>
     <script>
-        const stripe = Stripe("{{ config('cashier.key') }}");
+    const stripe = Stripe("{{ setting('payments.stripe_key', env('STRIPE_KEY')) }}");
+
 
         document.addEventListener("DOMContentLoaded", async function() {
             const paymentMethodInput = document.getElementById("paymentmethod");
