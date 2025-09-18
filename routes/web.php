@@ -202,3 +202,6 @@ Route::get('/test-order-confirmation/{order}', function (Order $order) {
     Mail::to('test@example.com')->send(new NewOrderNotification($order));
     return 'New order notification email sent!';
 })->name('test.order-confirmation');
+
+
+Route::get('/essay-pdf-read/{essay:slug}', [PageController::class, 'essayPdfView'])->middleware('auth')->name('essay.pdf.view');

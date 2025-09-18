@@ -396,7 +396,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">&nbsp;</label>
                                     @if (Auth::check() && Auth::user()->hasActiveSubscription())
-                                        <a href="{{ route('user.subscription') }}" class="btn custom-btn-outline w-100 btn-lg">
+                                        <a href="{{ route('essay.pdf.view',$product->slug) }}" class="btn custom-btn-outline w-100 btn-lg">
                                             View
                                         </a>
                                     @else

@@ -260,4 +260,14 @@ class PageController extends Controller
         return view('frontend.products.pdfview', compact('product'));
     }
 
+    public function essayPdfView($slug)
+    {
+        if(!auth()->user()->hasActiveSubscription()){
+            return abort(403, 'You must have an active subscription to access this content.');
+        }
+        $essay = Essay::where('slug', $slug)->firstOrFail();
+
+        return view('frontend.essays.pdfview', compact('essay'));
+    }
+
 }
