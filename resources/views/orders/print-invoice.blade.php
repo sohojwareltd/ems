@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice #{{ $order->id }} - Eterna Reads</title>
+    <title>Invoice #{{ $order->id }} - EMS</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -282,7 +282,7 @@
     <div class="invoice-main">
         <div class="invoice-header">
             <div class="header-left">
-                <div class="brand-title">Eterna Reads</div>
+                <div class="brand-title">EMS</div>
                 <div class="brand-contact">www.eternareads.com</div>
                 <div class="brand-contact">hello@eternareads.com</div>
                 <div class="brand-contact">+1 (555) 123-4567</div>

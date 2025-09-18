@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Invoice #{{ $order->id }} - Eterna Reads</title>
+    <title>Invoice #{{ $order->id }} - EMS</title>
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;
@@ -153,7 +153,7 @@
         <table class="invoice-header-table">
             <tr>
                 <td style="width:60%;">
-                    <div class="brand-title">{{ setting('store.name') ?? 'Eterna Reads' }}</div>
+                    <div class="brand-title">{{ setting('store.name') ?? 'EMS' }}</div>
                     <div class="brand-contact">{{ url('/') }}</div>
                     <div class="brand-contact">{{ setting('store.email') ?? 'hello@eternareads.com' }}</div>
                     <div class="brand-contact">{{ setting('store.phone') ?? '+1 (555) 123-4567' }}</div>

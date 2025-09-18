@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Eterna Reads - Your Literary Haven')
+@section('title', 'EMS - Your Literary Haven')
 
 @section('content')
 

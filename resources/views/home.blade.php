@@ -81,7 +81,7 @@
                                 Discover Your Next Great Read
                             </h1>
                             <p class="lead mb-4">
-                                Welcome to Eterna Reads, your literary haven for physical books, audiobooks, and curated
+                                Welcome to EMS, your literary haven for physical books, audiobooks, and curated
                                 gift boxes.
                                 Immerse yourself in stories that inspire, educate, and entertain.
                             </p>

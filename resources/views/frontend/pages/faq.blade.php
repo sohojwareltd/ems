@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'FAQ - Eterna Reads')
+@section('title', 'FAQ - EMS')
 
 @section('content')
 <!-- Page Header -->
@@ -123,16 +123,16 @@
                             <p class="mb-3">By accessing and using our website, you accept and agree to be bound by the terms and provision of this agreement.</p>
                             
                             <h3 class="h5 mb-3">Use License</h3>
-                            <p class="mb-3">Permission is granted to temporarily download one copy of the materials on Eterna Reads's website for personal, non-commercial transitory viewing only.</p>
+                            <p class="mb-3">Permission is granted to temporarily download one copy of the materials on EMS's website for personal, non-commercial transitory viewing only.</p>
                             
                             <h3 class="h5 mb-3">Disclaimer</h3>
-                            <p class="mb-3">The materials on Eterna Reads's website are provided on an 'as is' basis. Eterna Reads makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+                            <p class="mb-3">The materials on EMS's website are provided on an 'as is' basis. EMS makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
                             
                             <h3 class="h5 mb-3">Limitations</h3>
-                            <p class="mb-3">In no event shall Eterna Reads or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Eterna Reads's website.</p>
+                            <p class="mb-3">In no event shall EMS or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on EMS's website.</p>
                             
                             <h3 class="h5 mb-3">Revisions and Errata</h3>
-                            <p class="mb-0">The materials appearing on Eterna Reads's website could include technical, typographical, or photographic errors. Eterna Reads does not warrant that any of the materials on its website are accurate, complete or current.</p>
+                            <p class="mb-0">The materials appearing on EMS's website could include technical, typographical, or photographic errors. EMS does not warrant that any of the materials on its website are accurate, complete or current.</p>
                         </div>
                     </div>
                 </div>

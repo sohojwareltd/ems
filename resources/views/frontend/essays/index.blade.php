@@ -1,8 +1,8 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Essays - Eterna Reads')
+@section('title', 'Essays - EMS')
 @section('meta_description',
-    'Explore our collection of books, audiobooks, and gift boxes. Find your next great read or
+    'Explore our collection of books. Find your next great read or
     the perfect gift for a book lover.')
 @section('meta_keywords', 'books, audiobooks, gift boxes, bookshop, online bookstore, reading, literature, book gifts')
 
@@ -18,7 +18,7 @@
         <!-- Hero Section -->
         <div class="section-header text-center mb-5">
             <h1 class="section-title display-4 fw-bold">Discover Our Collection</h1>
-            <p class="section-subtitle lead">Find the perfect books, audiobooks, and gift boxes for your reading journey</p>
+            <p class="section-subtitle lead">Find the perfect books for your reading journey</p>
             <div class="filter_new mt-4">
 
                 <form id="filterForm" method="GET" action="{{ route('model.index') }}">

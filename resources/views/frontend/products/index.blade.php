@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Shop - Eterna Reads')
+@section('title', 'Shop - EMS')
 @section('meta_description', 'Explore our collection of books, audiobooks, and gift boxes. Find your next great read or
     the perfect gift for a book lover.')
 @section('meta_keywords', 'books, audiobooks, gift boxes, bookshop, online bookstore, reading, literature, book gifts')
