@@ -38,7 +38,7 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         $deviceAgent = $request->header('User-Agent');
-        $deviceName = $request->server('HTTP_USER_AGENT'); // or use custom device naming logic
+        $deviceName =$request->ip(); // or use custom device naming logic
         $sessionId = Session::getId();
 
         // Check if this device already registered
