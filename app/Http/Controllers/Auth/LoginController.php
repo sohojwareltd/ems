@@ -37,37 +37,37 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        $deviceAgent = $request->header('User-Agent');
-        $deviceName = $request->server('HTTP_USER_AGENT'); // or use custom device naming logic
-        $sessionId = Session::getId();
+        $deviceId = $request->cookie('device_id') ?? Str::uuid()->toString();
 
-        // Check if this device already registered
-        $existingDevice = $user->devices()
-            ->where('device_agent', $deviceAgent)
-            ->first();
+        $existingDevice = $user->devices()->where('device_id', $deviceId)->first();
 
-        if ($existingDevice) {
-            // Update session ID
-            $existingDevice->update(['session_id' => $sessionId]);
-        } else {
-            // Count how many devices are registered
-            if ($user->devices()->count() >= 2) {
+        if (!$existingDevice) {
+            if ($user->devices()->count() >= 3) {
                 auth()->logout();
                 Session::invalidate();
                 Session::regenerateToken();
 
                 return redirect()->route('login')->withErrors([
-                    'email' => 'You have reached the maximum number of allowed devices (2).',
+                    'email' => 'You are already logged in on 3 devices.',
                 ]);
             }
 
-            // Register new device
             $user->devices()->create([
-                'device_name' => $deviceName,
-                'device_agent' => $deviceAgent,
-                'session_id' => $sessionId,
+                'device_id' => $deviceId,
+                'device_agent' => $request->userAgent(),
+                'ip_address' => $request->ip(),
+                'session_id' => Session::getId(),
+            ]);
+        } else {
+            $existingDevice->update([
+                'session_id' => Session::getId(),
+                'ip_address' => $request->ip(),
+                'device_agent' => $request->userAgent()
             ]);
         }
+
+        // Ensure cookie is set
+        cookie()->queue('device_id', $deviceId, 525600); // 1 year
     }
     public function __construct()
     {

@@ -56,8 +56,8 @@
                                         Password
                                     </label>
                                     <button type="button"
-                                        class="btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3" style="margin-bottom: 5px;padding-bottom: 25px;"
-                                        id="togglePassword">
+                                        class="btn btn-link position-absolute end-0 top-50 translate-middle-y pe-3"
+                                        style="margin-bottom: 5px;padding-bottom: 25px;" id="togglePassword">
                                         <i class="fas fa-eye text-muted" id="togglePasswordIcon"></i>
                                     </button>
                                 </div>
@@ -177,4 +177,33 @@
             }
         }
     </style>
+
+    <script>
+        function getCookie(name) {
+            let value = "; " + document.cookie;
+            let parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+        }
+
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                let date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + value + expires + "; path=/";
+        }
+
+        function generateUUID() {
+            return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+            );
+        }
+
+        if (!getCookie('device_id')) {
+            setCookie('device_id', generateUUID(), 365);
+        }
+    </script>
+
 @endsection
