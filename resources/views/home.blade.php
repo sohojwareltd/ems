@@ -109,11 +109,11 @@
     @endif
 
     <!-- Quick Navigation Section -->
-    <section class="py-5">
+    <section class="py-5" id="courses">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-5 flex-column flex-md-row">
                 <div class="text-center text-md-start">
-                    <h2 class="section-title mb-2">Explore Edexcel IGCSE</h2>
+                    <h2 class="section-title mb-2">Select Your Course</h2>
                     <p class="section-subtitle mb-0 w-50">Welcome to our extensive catalog of model essays, carefully
                         curated by
                         our
@@ -125,23 +125,50 @@
                 </div>
             </div>
 
-            <div class="row g-4">
-                @foreach ($essays as $item)
-                    <div class="col-md-3 col-sm-6">
-                        <div class="quick-link-card text-center p-4 h-100">
-                            <div class="quick-link-icon mb-3">
-                                {{-- <i class="bi bi-file-earmark-text fs-1"></i> --}}
-                                <i class="fa-solid fa-book-open fs-1"></i>
-                            </div>
-                            <h4 class="h5 mb-3">{{ $item->subject?->title }}</h4>
-                            <p class="text-muted mb-3">{{ Str::limit($item->name, 100) }}</p>
-                            <a href="{{route('model.show', $item)}}" class="btn  custom-btn">Read More</a>
-                        </div>
+
+            <form action="{{ route('model.index') }}" method="get">
+                <div class="row justify-content-center">
+                    <div class="col-md-3 mb-3">
+                        <label for="stage">Stage</label>
+                        <select id="stage" name="stage" class="form-select">
+                            <option value="">Select Stage</option>
+                            <option value="gcse">GCSE</option>
+                            <option value="a_level">A Level</option>
+                            <!-- Add more stages if needed -->
+                        </select>
                     </div>
-                @endforeach
+                    @php
+                        $subjects = \App\Models\Subject::orderBy('title')->get();
+                        $examBoards = \App\Models\Examboard::orderBy('title')->get();
+                    @endphp
+
+                    <div class="col-md-3 mb-3">
+                        <label for="subject">Subject</label>
+                        <select id="subject" name="subject" class="form-select">
+                            <option value="">Select Subject</option>
+                            @foreach ($subjects as $subject)
+                                <option value="{{ $subject->id }}">{{ $subject->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label for="exam_board">Exam Board</label>
+                        <select id="exam_board" name="exam_board" class="form-select">
+                            @foreach ($examBoards as $examBoard)
+                                <option value="">Select Exam Board</option>
+                                <option value="{{ $examBoard->id }}">{{ $examBoard->title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 d-flex align-items-center">
+                        <button id="view-course-btn" type="submit" class="btn custom-btn mt-1 w-100 ">View Course</button>
+                    </div>
+                </div>
+            </form>
 
 
-            </div>
         </div>
     </section>
 
@@ -212,8 +239,8 @@
                         exclusive gift boxes</p>
                 </div>
                 <div class="mt-3 mt-md-0">
-                    <a href="{{ route('products.index') }}" class="text-decoration-none custome-text see-all-btn">See All <i
-                            class="fa-solid fa-arrow-right"></i></a>
+                    <a href="{{ route('products.index') }}" class="text-decoration-none custome-text see-all-btn">See All
+                        <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
 
