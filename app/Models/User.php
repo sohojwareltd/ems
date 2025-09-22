@@ -252,4 +252,8 @@ class User extends Authenticatable implements FilamentUser
 
         return $this->role->permissions;
     }
+    public function devices()
+    {
+        return $this->hasMany(UserDevice::class);
+    }
 }
