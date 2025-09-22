@@ -49,7 +49,7 @@ class LoginController extends Controller
                 Session::regenerateToken();
 
                 return redirect()->route('login')->withErrors([
-                    'email' => 'You are already logged in on 3 devices.',
+                    'email' => 'You are already logged in on 2 devices.',
                 ]);
             }
 
