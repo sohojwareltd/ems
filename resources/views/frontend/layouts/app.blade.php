@@ -73,13 +73,30 @@
             <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex" id="mainNavbar">
                 <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3 gap-2">
                     @foreach ($menu->menuItems as $item)
-                        <li class="nav-item">
-                            <a class="nav-link px-3 @if (url()->current() == asset($item->url)) active @endif"
-                                href="{{ asset($item->url) }}">
+                        <li class="nav-item dropdown {{ $item->children->isNotEmpty() ? 'dropdown' : '' }}">
+                            <a class="nav-link px-3 {{ url()->current() == asset($item->url) ? 'active' : '' }} 
+            {{ $item->children->isNotEmpty() ? 'dropdown-toggle' : '' }}"
+                                href="{{ $item->children->isNotEmpty() ? '#' : asset($item->url) }}"
+                                @if ($item->children->isNotEmpty()) data-bs-toggle="dropdown" role="button" aria-expanded="false" @endif>
                                 {{ $item->title }}
                             </a>
+
+                            {{-- Dropdown Menu --}}
+                            @if ($item->children->isNotEmpty())
+                                <ul class="dropdown-menu">
+                                    @foreach ($item->children as $child)
+                                        <li>
+                                            <a class="dropdown-item {{ url()->current() == asset($child->url) ? 'active' : '' }}"
+                                                href="{{ asset($child->url) }}">
+                                                {{ $child->title }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
                         </li>
                     @endforeach
+
 
                 </ul>
                 <!-- User/Cart Actions -->
@@ -116,8 +133,10 @@
                                 <li><a class="dropdown-item" href="{{ route('user.orders.index') }}"><i
                                             class="bi bi-bag me-2"></i>Orders</a></li>
                                 <li>
-                                <li><a class="dropdown-item" href="{{route('user.orders.download')}}"><i class="fas fa-download"></i>  Download</a></li>
-                                <li><a class="dropdown-item" href="{{route('user.subscription')}}"><i class="fa-regular fa-file"></i>  Subscriptions</a></li>
+                                <li><a class="dropdown-item" href="{{ route('user.orders.download') }}"><i
+                                            class="fas fa-download"></i> Download</a></li>
+                                <li><a class="dropdown-item" href="{{ route('user.subscription') }}"><i
+                                            class="fa-regular fa-file"></i> Subscriptions</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -126,7 +145,8 @@
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         <i class="bi bi-box-arrow-right me-2"></i>Logout
                                     </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        class="d-none">
                                         @csrf
                                     </form>
                                 </li>
