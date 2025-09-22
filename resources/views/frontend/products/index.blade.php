@@ -10,7 +10,7 @@
         <!-- Hero Section -->
         <div class="section-header text-center mb-5">
             <h1 class="section-title display-4 fw-bold">Discover Our Collection</h1>
-            <p class="section-subtitle lead">Find the perfect books, audiobooks, and gift boxes for your reading journey</p>
+            <p class="section-subtitle lead">Find the best resources, created by our teachers and examiners</p>
         </div>
 
         <div class="row">
