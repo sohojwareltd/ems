@@ -139,7 +139,7 @@
                     </div>
                     @php
                         $subjects = \App\Models\Subject::orderBy('title')->get();
-                        $examBoards = \App\Models\ExamBoard::orderBy('title')->get();
+                        $examBoards = \App\Models\Examboard::orderBy('title')->get();
                     @endphp
 
                     <div class="col-md-3 mb-3">
