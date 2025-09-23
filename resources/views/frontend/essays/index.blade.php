@@ -48,6 +48,10 @@
             transform: scale(1);
         }
     }
+
+    .whatsapp-float {
+        padding: 13px 15px !important;
+    }
 </style>
 @section('content')
 
