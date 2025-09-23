@@ -250,7 +250,7 @@
                                                     <div class="mt-2 d-flex justify-content-between align-items-center">
                                                         <div>
                                                             <strong>{{ $essay->name }}</strong><br>
-                                                            {{ $essay->description }}
+                                                            {{-- {{ $essay->description }} --}}
                                                         </div>
                                                         @if (Auth::check() && Auth::user()->hasActiveSubscription())
                                                             <div>
