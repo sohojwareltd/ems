@@ -36,7 +36,7 @@
                                                 @if ($slider->button_text && $slider->button_url)
                                                     <a href="{{ $slider->button_url }}"
                                                         class="btn btn-primary btn-lg me-3 mb-2 text-white"
-                                                        style="background-color: {{ $slider->button_color }}; border-color: {{ $slider->button_color }};">
+                                                        style="background-color: {{ $slider->button_color }}; border-color: {{ $slider->button_color }};z-index:1;">
                                                         {{ $slider->button_text }}
                                                     </a>
                                                 @endif
@@ -129,7 +129,7 @@
             <form action="{{ route('model.index') }}" method="get">
                 <div class="row justify-content-center">
                     <div class="col-md-3 mb-3">
-                        <label for="stage">Stage</label>
+                        <label class="form-label" for="stage">Stage</label>
                         <select id="stage" name="stage" class="form-select">
                             <option value="">Select Stage</option>
                             <option value="gcse">GCSE</option>
@@ -143,7 +143,7 @@
                     @endphp
 
                     <div class="col-md-3 mb-3">
-                        <label for="subject">Subject</label>
+                        <label class="form-label" for="subject">Subject</label>
                         <select id="subject" name="subject" class="form-select">
                             <option value="">Select Subject</option>
                             @foreach ($subjects as $subject)
@@ -153,7 +153,7 @@
                     </div>
 
                     <div class="col-md-3 mb-3">
-                        <label for="exam_board">Exam Board</label>
+                        <label class="form-label" for="exam_board">Exam Board</label>
                         <select id="exam_board" name="exam_board" class="form-select">
                             @foreach ($examBoards as $examBoard)
                                 <option value="">Select Exam Board</option>
@@ -162,7 +162,7 @@
                         </select>
                     </div>
 
-                    <div class="col-md-3 d-flex align-items-center">
+                    <div class="col-md-3 d-flex align-items-center mt-2">
                         <button id="view-course-btn" type="submit" class="btn custom-btn mt-1 w-100 ">View Course</button>
                     </div>
                 </div>
