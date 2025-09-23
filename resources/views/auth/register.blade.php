@@ -74,10 +74,30 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-12 mb-4">
+                                <div class="form-floating">
+                                    <input type="email"
+                                        class="form-control @error('email_confirmation') is-invalid @enderror"
+                                        id="email_confirmation" name="email_confirmation"
+                                        value="{{ old('email_confirmation') }}" placeholder="Confirm Email Address" required
+                                        autocomplete="email">
+                                    <label for="email_confirmation">
+                                        <i class="fas fa-envelope me-2 text-muted"></i>
+                                        Confirm Email Address
+                                    </label>
+                                    @error('email_confirmation')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+
+
                             <!-- Password Row -->
                             <div class="row">
                                 <div class="col-md-6 mb-4">
-                                    <label for="birthdate">
+                                    <label for="birthdate" class="form-label">
                                         <i class="fas fa-calendar-alt me-2 text-muted"></i>
                                         Date of Birth
                                     </label>
@@ -90,7 +110,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="col-md-6 mb-4">
+                                {{-- <div class="col-md-6 mb-4">
                                     <label for="stage">
                                         <i class="fas fa-graduation-cap me-2 text-muted"></i>
                                         Stage
@@ -108,13 +128,13 @@
                                             </div>
                                         @enderror
                                     </select>
-                                </div>
+                                </div> --}}
 
                                 @php
                                     $Country = App\Models\Country::all()->pluck('name')->toArray();
                                 @endphp
-                                <div class="col-md-12 mb-4">
-                                    <label for="country">
+                                <div class="col-md-6 mb-4">
+                                    <label for="country" class="form-label">
                                         <i class="fas fa-globe me-2 text-muted"></i>
                                         Country
                                     </label>

@@ -308,13 +308,17 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        <h6 class="mb-0"><i class="bi bi-envelope-open me-2"></i>Subscribe to our newsletter for
-                            book recommendations and updates!</h6>
+                        <h6 class="mb-0"><i class="bi bi-envelope-open me-2"></i>Subscribe to our newsletter</h6>
                     </div>
-                    <div class="col-md-6">
-                        <div class="d-flex">
-                            <input type="email" class="form-control me-2" placeholder="Enter your email">
-                            <button class="btn btn-primary">Subscribe</button>
+                    <div class="col-md-6 mt-2 mt-md-0">
+                        <div class="row">
+                            <div class="col-md-10">
+
+                                <input type="email" class="form-control w-100" placeholder="Enter your email">
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn custom-btn">Subscribe</button>
+                            </div>
                         </div>
                     </div>
                 </div>

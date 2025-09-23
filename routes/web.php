@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeEmail;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -107,7 +108,7 @@ Route::get('/blog/category/{slug}', [BlogController::class, 'category'])->name('
 Auth::routes();
 
 // User Dashboard Routes (Protected by auth middleware)
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 
@@ -205,3 +206,17 @@ Route::get('/test-order-confirmation/{order}', function (Order $order) {
 
 
 Route::get('/essay-pdf-read/{essay:slug}', [PageController::class, 'essayPdfView'])->middleware('auth')->name('essay.pdf.view');
+
+Route::get('/email/verify', function () {
+
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+
+    $request->fulfill();
+
+
+
+    return redirect('/dashboard');
+})->middleware(['auth', 'signed'])->name('verification.verify');
