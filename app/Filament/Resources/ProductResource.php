@@ -60,11 +60,11 @@ class ProductResource extends Resource
                                 ->required()
                                 ->helperText('Assign a resource for better organization.'),
                              Forms\Components\Select::make('qualiification_id')
-                                ->label('Qualiification')
+                                ->label('Qualification')
                                 ->relationship('qualiification', 'title')
                                 // ->searchable()
                                 ->required()
-                                ->helperText('Assign a qualiification for better organization.'),
+                                ->helperText('Assign a qualification for better organization.'),
                              Forms\Components\Select::make('subject_id')
                                 ->label('Subject')
                                 ->relationship('subject', 'title')

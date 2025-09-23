@@ -42,7 +42,7 @@
                         <div class="col-lg-2 col-md-4">
                             {{-- <label for="qualiification" class="form-label">Qualiification</label> --}}
                             <select class="form-select" id="qualiification" name="qualiification">
-                                <option value="">Qualiification</option>
+                                <option value="">Qualification</option>
                                 @foreach ($qualiifications as $qualiification)
                                     <option value="{{ $qualiification->id }}"
                                         {{ request('qualiification') == $qualiification->id ? 'selected' : '' }}>

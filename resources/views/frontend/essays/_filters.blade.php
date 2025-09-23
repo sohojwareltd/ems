@@ -27,9 +27,9 @@
         </div>
         <!-- Qualiification Filter -->
         <div class="col-12">
-            <label for="qualiification" class="form-label">Qualiification</label>
+            <label for="qualification" class="form-label">Qualification</label>
             <select class="form-select" id="qualiification" name="qualiification">
-                <option value="">All Qualiification</option>
+                <option value="">All Qualification</option>
                 @foreach($qualiifications as $qualiification)
                     <option value="{{ $qualiification->id }}" {{ request('qualiification') == $qualiification->id ? 'selected' : '' }}>
                         {{ $qualiification->title }}
