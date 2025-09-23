@@ -36,7 +36,7 @@
                                                 @if ($slider->button_text && $slider->button_url)
                                                     <a href="{{ $slider->button_url }}"
                                                         class="btn btn-primary btn-lg me-3 mb-2 text-white"
-                                                        style="background-color: {{ $slider->button_color }}; border-color: {{ $slider->button_color }};z-index:1;">
+                                                        style="background-color: {{ $slider->button_color }}; border-color: {{ $slider->button_color }};z-index:11;">
                                                         {{ $slider->button_text }}
                                                     </a>
                                                 @endif
