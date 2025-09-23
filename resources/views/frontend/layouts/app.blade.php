@@ -46,7 +46,7 @@
             <!-- Logo -->
             @if (setting('store.logo'))
                 <a href="{{ route('home') }}">
-                    <img src="{{ Storage::url(setting('store.logo')) }}" style="width:110px; height: auto;"
+                    <img src="{{ Storage::url(setting('store.logo')) }}" style="width:155px; height: auto;"
                         alt="Logo" class="img-fluid">
                 </a>
             @else
@@ -244,7 +244,7 @@
                     <div class="footer-brand">
                         @if (setting('store.footer_logo'))
                             <img src="{{ Storage::url(setting('store.footer_logo')) }}"
-                                style="width: 110px; height: auto;" alt="Logo" class="img-fluid">
+                                style="width: 155px; height: auto;" alt="Logo" class="img-fluid">
                         @else
                             <h4><i class="bi bi-book me-2"></i>{{ setting('store.name') }}</h4>
                         @endif
