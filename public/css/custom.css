@@ -538,3 +538,7 @@ body {
     border-color: var(--primary-color) !important;
     color: var(--primary-color) !important;
 }
+.dropdown-item.active, .dropdown-item:active{
+    background-color: var(--primary-color) !important;
+    color: var(--white) !important;
+}
