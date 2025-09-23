@@ -125,22 +125,26 @@
                 </div>
             </div>
 
-
+            @php
+                $subjects = \App\Models\Subject::orderBy('title')->get();
+                $examBoards = \App\Models\Examboard::orderBy('title')->get();
+                $qualifications = \App\Models\Qualification::orderBy('title')->get();
+            @endphp
             <form action="{{ route('model.index') }}" method="get">
                 <div class="row justify-content-center">
                     <div class="col-md-3 mb-3">
-                        <label class="form-label" for="stage">Stage</label>
-                        <select id="stage" name="stage" class="form-select">
-                            <option value="">Select Stage</option>
-                            <option value="gcse">GCSE</option>
-                            <option value="a_level">A Level</option>
+                        <label class="form-label" for="qualification">Qualification</label>
+                        <select id="qualification" name="qualification" class="form-select">
+                            <option value=""> All Qualification</option>
+                            @foreach ($qualifications as $item)
+                                <option value="{{ $item->id }}">{{ $item->title }}</option>
+                            @endforeach
+                            {{-- <option value="gcse">GCSE</option> --}}
+                        
                             <!-- Add more stages if needed -->
                         </select>
                     </div>
-                    @php
-                        $subjects = \App\Models\Subject::orderBy('title')->get();
-                        $examBoards = \App\Models\Examboard::orderBy('title')->get();
-                    @endphp
+
 
                     <div class="col-md-3 mb-3">
                         <label class="form-label" for="subject">Subject</label>
@@ -163,7 +167,8 @@
                     </div>
 
                     <div class="col-md-3 d-flex align-items-center mt-2">
-                        <button id="view-course-btn" type="submit" class="btn custom-btn mt-1 w-100 ">View Course</button>
+                        <button id="view-course-btn" type="submit" class="btn custom-btn mt-1 w-100 ">View
+                            Course</button>
                     </div>
                 </div>
             </form>

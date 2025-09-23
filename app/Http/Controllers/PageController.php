@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Mail\ContactFormNotification;
@@ -11,7 +12,9 @@ use App\Models\Qualification;
 use App\Models\Subject;
 use App\Models\Examboard;
 use App\Models\FaqCategory;
+use App\Models\PastPaper;
 use App\Models\Product;
+use App\Models\Topic;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -74,84 +77,60 @@ class PageController extends Controller
         return view('frontend.pages.faq', compact('faqCategories'));
     }
 
-
     public function model(Request $request)
     {
+        $tab = $request->get('tab', 'essays'); // default: essays
+        $view = $request->get('view', 'year'); // default: year
 
-        $query = Essay::with(['category', 'brand', 'resource', 'qualiification', 'subject', 'examboard'])->where('status', 'active');
-        
-
-        // Filter by resource
-        if ($request->has('resource') && $request->resource) {
-            $query->where('resource_type_id', $request->resource);
-        }
-        // Filter by brand
-        if ($request->has('qualiification') && $request->qualiification) {
-            $query->where('qualiification_id', $request->qualiification);
-        }
-        // Filter by brand
-        if ($request->has('subject') && $request->subject) {
-            $query->where('subject_id', $request->subject);
-        }
-        // Filter by brand
-        if ($request->has('examboard') && $request->examboard) {
-            $query->where('examboard_id', $request->examboard);
-        }
-
-        // Search by name or description
-        if ($request->has('search') && $request->search) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
-            });
-        }
-        
-        // Sort products
-        $sort = $request->get('sort', 'name');
-
-        // Handle sorting with _desc suffix
-        if (str_ends_with($sort, '_desc')) {
-            $sort = str_replace('_desc', '', $sort);
-            $direction = 'desc';
-        } else {
-            $direction = 'asc';
-        }
-
-        switch ($sort) {
-            case 'newest':
-                $query->orderBy('created_at', 'desc');
-                break;
-            case 'popular':
-                $query->orderBy('views', 'desc');
-                break;
-            case 'name':
-                $query->orderBy('name', 'asc');
-                break;
-            case 'name_desc':
-                $query->orderBy('name', 'desc');
-                break;
-            default:
-                $query->latest();
-                break;
-        }
-
-        $products = $query->paginate(12);
-
-        $resources = Resource::all();
-        $qualiifications = Qualification::all();
+        $filters = $request->only([
+            'years',
+            'months',
+            'marks',
+            'topic',
+            'qualification',
+            'subject',
+            'exam_board',
+            'search',
+        ]);
+        $topics = Topic::all();
+        $qualifications = Qualification::all();
+        $examBoards = Examboard::all();
         $subjects = Subject::all();
-        $examboards = Examboard::all();
 
-        // Get current category for display
-        $currentCategory = null;
-        if ($request->has('category') && $request->category) {
-            $currentCategory = Category::where('slug', $request->category)->first();
-        }
+        // Model Essays
+        $essays = Essay::with('topic')
+            ->filter($filters)
+            ->latest()
+            ->get();
 
-        return view('frontend.essays.index', compact('products',  'currentCategory', 'resources', 'qualiifications', 'subjects', 'examboards'));
+        $essaysByYear = $essays->groupBy('year');
+        $essaysByTopic = $essays->groupBy(fn($e) => optional($e->topic)->name ?? 'Unknown Topic');
 
+        // Past Papers
+        $papers = PastPaper::with('topic')
+            ->filter($filters)
+            ->latest()
+            ->get();
+
+        $papersByYear = $papers->groupBy('year');
+        $papersByTopic = $papers->groupBy(fn($p) => optional($p->topic)->name ?? 'Unknown Topic');
+
+        return view('frontend.essays.index', compact(
+            'tab',
+            'view',
+            'essaysByYear',
+            'essaysByTopic',
+            'papersByYear',
+            'papersByTopic',
+            'topics',
+            'qualifications',
+            'examBoards',
+            'subjects',
+        ));
     }
+
+
+
 
 
     public function show(Essay $product)
@@ -262,12 +241,11 @@ class PageController extends Controller
 
     public function essayPdfView($slug)
     {
-        if(!auth()->user()->hasActiveSubscription()){
+        if (!auth()->user()->hasActiveSubscription()) {
             return abort(403, 'You must have an active subscription to access this content.');
         }
         $essay = Essay::where('slug', $slug)->firstOrFail();
 
         return view('frontend.essays.pdfview', compact('essay'));
     }
-
 }

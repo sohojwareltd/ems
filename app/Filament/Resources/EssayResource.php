@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 use Illuminate\Support\Str;
@@ -50,11 +51,11 @@ class EssayResource extends Resource
                                 ->required()
                                 ->helperText('Assign a resource for better organization.'),
                             Forms\Components\Select::make('qualiification_id')
-                                ->label('Qualification')
+                                ->label('Qualiification')
                                 ->relationship('qualiification', 'title')
                                 // ->searchable()
                                 ->required()
-                                ->helperText('Assign a qualification for better organization.'),
+                                ->helperText('Assign a qualiification for better organization.'),
                             Forms\Components\Select::make('subject_id')
                                 ->label('Subject')
                                 ->relationship('subject', 'title')
@@ -67,45 +68,83 @@ class EssayResource extends Resource
                                 // ->searchable()
                                 ->required()
                                 ->helperText('Assign a examboard for better organization.'),
-                                
+
+
+                            // Forms\Components\RichEditor::make('description')
+                            //     ->required()
+                            //     ->columnSpanFull(),
+
+                            Forms\Components\Select::make('year')
+                                ->required()
+                                ->options([
+                                    '2019' => '2019',
+                                    '2020' => '2020',
+                                    '2021' => '2021',
+                                    '2022' => '2022',
+                                    '2023' => '2023',
+                                    '2024' => '2024',
+                                ])
+                                ->label('Year'),
+
+                            Forms\Components\Select::make('month')
+                                ->required()
+                                ->options([
+                                    'January' => 'January',
+                                    'June' => 'June',
+                                    'November' => 'November',
+                                ])
+                                ->label('Month'),
+
+                            Forms\Components\Select::make('marks')
+                                ->required()
+                                ->options([
+                                    '6' => '6 Marks',
+                                    '9' => '9 Marks',
+                                    '12' => '12 Marks',
+                                ])
+                                ->label('Marks'),
+
+                            Forms\Components\Select::make('topic_id')
+                                ->relationship('topic', 'name')
+                                ->searchable()
+                                ->required()
+                                ->label('Topic'),
+
                             Forms\Components\Select::make('status')
-                            ->options([
-                                'draft' => 'Draft',
-                                'active' => 'Active',
-                                'archived' => 'Archived',
+                                ->options([
+                                    'draft' => 'Draft',
+                                    'active' => 'Active',
+                                    'archived' => 'Archived',
                                 ])
                                 ->default('draft')
                                 ->required()
                                 ->helperText('Set the product status.'),
-                                
-                            Forms\Components\RichEditor::make('description')
-                                ->required()
-                                ->columnSpanFull(),
-                        ]),
 
+
+                        ]),
                     Forms\Components\Tabs\Tab::make('Media')
                         ->icon('heroicon-o-photo')
                         ->schema([
                             // Thumbnail upload
 
-                            Forms\Components\FileUpload::make('thumbnail')
-                                ->label('Thumbnail')
-                                ->image()
-                                ->nullable()
-                                ->directory('products/thumbnails')
-                                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
-                                ->maxSize(5120),
+                            // Forms\Components\FileUpload::make('thumbnail')
+                            //     ->label('Thumbnail')
+                            //     ->image()
+                            //     ->nullable()
+                            //     ->directory('products/thumbnails')
+                            //     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
+                            //     ->maxSize(5120),
 
 
-                            Forms\Components\FileUpload::make('gallery')
-                                ->label('Gallery Images')
-                                ->image()
-                                ->multiple()
-                                ->directory('products/gallery')
-                                ->nullable()
-                                ->helperText('Additional images for the product gallery.')
-                                ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
-                                ->maxSize(2048),
+                            // Forms\Components\FileUpload::make('gallery')
+                            //     ->label('Gallery Images')
+                            //     ->image()
+                            //     ->multiple()
+                            //     ->directory('products/gallery')
+                            //     ->nullable()
+                            //     ->helperText('Additional images for the product gallery.')
+                            //     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
+                            //     ->maxSize(2048),
 
 
                             Forms\Components\FileUpload::make('file')
@@ -114,22 +153,27 @@ class EssayResource extends Resource
                                 ->acceptedFileTypes(['application/pdf'])
                                 ->required()
                                 ->maxSize(5120),
+
+
+                            Forms\Components\FileUpload::make('ppt_file')
+                                ->label('PowerPoint File')
+                                ->directory('products/powerpoints'),
                         ]),
-                    Forms\Components\Tabs\Tab::make('SEO')
-                        ->icon('heroicon-o-magnifying-glass')
-                        ->schema([
-                            Forms\Components\TextInput::make('meta_title')
-                                ->label('Meta Title')
-                                ->maxLength(255),
-                            Forms\Components\Textarea::make('meta_description')
-                                ->label('Meta Description'),
-                            Forms\Components\TextInput::make('meta_keywords')
-                                ->label('Meta Keywords')
-                                ->maxLength(255),
-                            Forms\Components\TextInput::make('tags')
-                                ->label('Tags')
-                                ->helperText('Enter tags separated by commas.'),
-                        ]),
+                    // Forms\Components\Tabs\Tab::make('SEO')
+                    //     ->icon('heroicon-o-magnifying-glass')
+                    //     ->schema([
+                    //         Forms\Components\TextInput::make('meta_title')
+                    //             ->label('Meta Title')
+                    //             ->maxLength(255),
+                    //         Forms\Components\Textarea::make('meta_description')
+                    //             ->label('Meta Description'),
+                    //         Forms\Components\TextInput::make('meta_keywords')
+                    //             ->label('Meta Keywords')
+                    //             ->maxLength(255),
+                    //         Forms\Components\TextInput::make('tags')
+                    //             ->label('Tags')
+                    //             ->helperText('Enter tags separated by commas.'),
+                    //     ]),
                 ])
                 ->maxWidth('full')
                 ->columns(2)
@@ -141,10 +185,20 @@ class EssayResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('thumbnail')->label('Thumbnail')->size(40),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
+                Tables\Columns\TextColumn::make('year')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('month')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('marks')
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('topic.name')
+                    ->label('Topic')
+                    ->sortable()
                     ->searchable(),
                 // Tables\Columns\TextColumn::make('category_id')
                 //     ->numeric()
@@ -152,10 +206,7 @@ class EssayResource extends Resource
                 // Tables\Columns\TextColumn::make('brand_id')
                 //     ->numeric()
                 //     ->sortable(),
-                Tables\Columns\TextColumn::make('status'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable(),
+
             ])
             ->filters([
                 //
