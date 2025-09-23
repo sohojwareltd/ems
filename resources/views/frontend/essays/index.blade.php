@@ -219,7 +219,7 @@
                                                     <div class="mt-3 d-flex justify-content-between align-items-center">
                                                         <div>
                                                             <strong>{{ $essay->name }}</strong><br>
-                                                            {{ $essay->description }}
+                                                            {{-- {{ $essay->description }} --}}
                                                         </div>
                                                         <a href="{{ asset('storage/' . $essay->file) }}" target="_blank"
                                                             class="btn btn-sm btn-primary">Download</a>
