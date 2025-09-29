@@ -304,7 +304,7 @@
             </div>
         </div>
 
-        <div class="newsletter-section py-3">
+        <div class="newsletter-section py-3 mt-2">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-md-6">
