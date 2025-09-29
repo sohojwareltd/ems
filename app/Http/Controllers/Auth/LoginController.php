@@ -43,7 +43,7 @@ class LoginController extends Controller
         $existingDevice = $user->devices()->where('device_id', $deviceId)->first();
 
         if (!$existingDevice) {
-            if ($user->devices()->count() >= 2) {
+            if ($user->devices()->count() >= 1) {
                 auth()->logout();
                 Session::invalidate();
                 Session::regenerateToken();
