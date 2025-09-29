@@ -20,13 +20,17 @@
                             If you did not receive the email, click the button below to request another.
                         </p>
 
-                  
+
                         <div class="mt-4">
-                            <a href="{{ route('logout') }}"
+                            {{-- <a href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                 class="btn custom-btn">
                                 Logout
-                            </a>
+                            </a> --}}
+                            <form method="POST" action="{{ route('verification.send') }}">
+                                @csrf
+                                <button type="submit" class="btn btn-primary">Resend Verification Email</button>
+                            </form>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
