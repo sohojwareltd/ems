@@ -1,8 +1,24 @@
 <form id="filterForm" method="GET" action="{{ route('model.index') }}">
     <div class="row g-3">
+
+        @php
+            // Get current request query parameters except 'view'
+            $query = request()->except(['view']);
+        @endphp
+
+        <div class="btn-group mb-4" role="group" aria-label="View Toggle">
+            <a href="{{ route('model.index', array_merge($query, ['tab' => $tab, 'view' => 'year'])) }}"
+                class="btn custom-btn-outline {{ $view === 'year' ? 'active' : '' }}">
+                By Year
+            </a>
+            <a href="{{ route('model.index', array_merge($query, ['tab' => $tab, 'view' => 'topic'])) }}"
+                class="btn custom-btn-outline {{ $view === 'topic' ? 'active' : '' }}">
+                By Topic
+            </a>
+        </div>
         <!-- Search -->
         <div class="col-12">
-            <label class="form-label">Filter by Year</label>
+            <label class="form-label">Year</label>
             <div class="row">
                 @foreach (range(2019, 2024) as $year)
                     <div class="col-12">
@@ -20,7 +36,7 @@
         </div>
 
         <div class="col-12">
-            <label class="form-label">Filter by Month</label>
+            <label class="form-label">Month</label>
             <div class="row">
                 @php
                     $months = ['January', 'June', 'November'];
@@ -40,39 +56,41 @@
                 @endforeach
             </div>
         </div>
+        @if (request('tab') !== 'pastpapers')
 
-        <div class="col-12">
-            <label class="form-label">Filter by Marks</label>
-            <div class="row">
-                @php
-                    $marks = [6, 9, 12];
-                @endphp
+            <div class="col-12">
+                <label class="form-label">Marks</label>
+                <div class="row">
+                    @php
+                        $marks = [6, 9, 12];
+                    @endphp
 
-                @foreach ($marks as $mark)
-                    <div class="col-md-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="marks[]" value="{{ $mark }}"
-                                id="mark-{{ $mark }}"
-                                {{ in_array($mark, (array) request('marks')) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="mark-{{ $mark }}">
-                                {{ $mark }} Marks
-                            </label>
+                    @foreach ($marks as $mark)
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="marks[]"
+                                    value="{{ $mark }}" id="mark-{{ $mark }}"
+                                    {{ in_array($mark, (array) request('marks')) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="mark-{{ $mark }}">
+                                    {{ $mark }} Marks
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
-        </div>
-        <div class="col-12">
-            <label for="topics" class="form-label">Topics</label>
-            <select class="form-select" id="topics" name="topics">
-                <option value="">All Topics</option>
-                @foreach ($topics as $topic)
-                    <option value="{{ $topic->id }}" {{ request('topics') == $topic->id ? 'selected' : '' }}>
-                        {{ $topic->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+            <div class="col-12">
+                <label for="topics" class="form-label">Topics</label>
+                <select class="form-select" id="topics" name="topics">
+                    <option value="">All Topics</option>
+                    @foreach ($topics as $topic)
+                        <option value="{{ $topic->id }}" {{ request('topics') == $topic->id ? 'selected' : '' }}>
+                            {{ $topic->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
         {{-- <div class="col-12">
             <label for="qualifications" class="form-label">Qualifications</label>
             <select class="form-select" id="qualifications" name="qualification">

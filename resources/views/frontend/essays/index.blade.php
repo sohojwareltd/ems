@@ -169,7 +169,7 @@
                     @endphp
 
                     {{-- Main Tabs --}}
-                    <ul class="nav nav-tabs mb-4">
+                    <ul class="nav nav-tabs border-0 ">
                         <li class="nav-item">
                             <a class="nav-link {{ $tab === 'essays' ? 'active' : '' }}"
                                 href="{{ route('model.index', array_merge($query, ['tab' => 'essays', 'view' => $view])) }}">
@@ -185,21 +185,7 @@
                     </ul>
 
                     {{-- View Toggle (Shared by Both Tabs) --}}
-                    @php
-                        // Get current request query parameters except 'view'
-                        $query = request()->except(['view']);
-                    @endphp
-
-                    <div class="btn-group mb-4" role="group" aria-label="View Toggle">
-                        <a href="{{ route('model.index', array_merge($query, ['tab' => $tab, 'view' => 'year'])) }}"
-                            class="btn custom-btn-outline {{ $view === 'year' ? 'active' : '' }}">
-                            By Year
-                        </a>
-                        <a href="{{ route('model.index', array_merge($query, ['tab' => $tab, 'view' => 'topic'])) }}"
-                            class="btn custom-btn-outline {{ $view === 'topic' ? 'active' : '' }}">
-                            By Topic
-                        </a>
-                    </div>
+                 
 
                     {{-- Tab Content --}}
                     @if ($tab === 'essays')
