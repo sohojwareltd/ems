@@ -330,12 +330,12 @@
                 <div class="col-md-6">
                     <p class="mb-0">&copy; {{ date('Y') }} EMS. All rights reserved.</p>
                 </div>
-                <div class="col-md-6 text-md-end">
+                {{-- <div class="col-md-6 text-md-end">
                     <div class="footer-bottom-links">
                         <a href="{{ route('faq') }}#terms" class="me-3">Terms of Service</a>
                         <a href="{{ route('faq') }}#privacy">Privacy Policy</a>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
 
