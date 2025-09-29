@@ -1,6 +1,12 @@
 @extends('frontend.layouts.app')
 
 {{-- @section('title', 'Eterna Reads - Your Literary Haven') --}}
+<style>
+    #courses {
+        scroll-margin-top: 100px;
+        /* Adjust the value as needed */
+    }
+</style>
 
 @section('content')
     <!-- Hero Section with Carousel -->
@@ -140,7 +146,7 @@
                                 <option value="{{ $item->id }}">{{ $item->title }}</option>
                             @endforeach
                             {{-- <option value="gcse">GCSE</option> --}}
-                        
+
                             <!-- Add more stages if needed -->
                         </select>
                     </div>
