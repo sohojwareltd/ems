@@ -55,13 +55,13 @@
 </style>
 @section('content')
 
-    <div class="container py-5">
+    <div class="container">
         <!-- Hero Section -->
-        <div class="section-header text-center mb-5">
-            <h1 class="section-title display-4 fw-bold">Discover Our Collection</h1>
-            <p class="section-subtitle lead">Find the perfect books for your reading journey</p>
-
+        <div class="section-header text-center">
+            <h1 class="section-title display-4 fw-bold">GCSE/IGCSE Edexcel Economics</h1>
+            {{-- <p class="section-subtitle lead">Find the perfect books for your reading journey</p> --}}
         </div>
+
 
         <div class="row">
 

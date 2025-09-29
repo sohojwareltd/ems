@@ -73,7 +73,7 @@
                 @endforeach
             </select>
         </div>
-        <div class="col-12">
+        {{-- <div class="col-12">
             <label for="qualifications" class="form-label">Qualifications</label>
             <select class="form-select" id="qualifications" name="qualification">
                 <option value="">All Qualifications</option>
@@ -107,7 +107,7 @@
                     </option>
                 @endforeach
             </select>
-        </div>
+        </div> --}}
 
 
 

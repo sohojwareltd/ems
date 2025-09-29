@@ -120,14 +120,14 @@
             <div class="d-flex justify-content-between align-items-center mb-5 flex-column flex-md-row">
                 <div class="text-center text-md-start">
                     <h2 class="section-title mb-2">Select Your Course</h2>
-                    <p class="section-subtitle mb-0 w-50">Welcome to our extensive catalog of model essays, carefully
+                    {{-- <p class="section-subtitle mb-0 w-50">Welcome to our extensive catalog of model essays, carefully
                         curated by
                         our
-                        examiners. We are committed to providing you the best resources possible.</p>
+                        examiners. We are committed to providing you the best resources possible.</p> --}}
                 </div>
                 <div class="mt-3 mt-md-0">
-                    <a href="{{ route('model.index') }}" class="text-decoration-none custome-text see-all-btn">See All <i
-                            class="fa-solid fa-arrow-right"></i></a>
+                    {{-- <a href="{{ route('model.index') }}" class="text-decoration-none custome-text see-all-btn">See All <i
+                            class="fa-solid fa-arrow-right"></i></a> --}}
                 </div>
             </div>
 
@@ -141,7 +141,7 @@
                     <div class="col-md-3 mb-3">
                         <label class="form-label" for="qualification">Qualification</label>
                         <select id="qualification" name="qualification" class="form-select">
-                            <option value=""> All Qualification</option>
+                            <option value=""> Select Qualification</option>
                             @foreach ($qualifications as $item)
                                 <option value="{{ $item->id }}">{{ $item->title }}</option>
                             @endforeach
@@ -173,8 +173,9 @@
                     </div>
 
                     <div class="col-md-3 d-flex align-items-center mt-2">
-                        <button id="view-course-btn" type="submit" class="btn custom-btn mt-1 w-100 ">View
-                            Course</button>
+                        <button id="view-course-btn" type="submit" class="btn custom-btn mt-1 w-100" disabled>
+                            View Course
+                        </button>
                     </div>
                 </div>
             </form>
@@ -183,75 +184,18 @@
         </div>
     </section>
 
-    <!-- About Eterna Reads Section -->
-    <section class="py-5" style="background: var(--light-bg);">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-7 mb-3">
-                    <div class="about-content">
-                        <span class="custom-badge">Our Focus</span>
-                        <div class="row mt-2">
-                            <div class="col-12 col-md-10 col-lg-8">
-                                <h2 class="section-title mb-4">The future belongs to those who prepare for it today</h2>
-                            </div>
-                            <div class="col-12 col-md-8 col-lg-6">
-                                <p class="lead mb-4">
-                                    What are our pillars? What drives our decision-making? What does the future look like
-                                    for EMS?
-                                </p>
-                            </div>
-                        </div>
-
-
-                        <div class="about-stats row text-center">
-                            <div class="col-4">
-                                <div class="stat-item">
-                                    <p class="focus-btn focus-active">Maximising student outcomes</p>
-
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="stat-item">
-                                    <p class="focus-btn">Integrating education and technology</p>
-
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="stat-item">
-                                    <p class="focus-btn">Improving financial literacy throughout society</p>
-
-                                </div>
-                            </div>
-                        </div>
-                        <a href="{{ route('about') }}" class="btn custom-btn btn-lg mt-4">
-                            Learn More About Us
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    {{-- <div class="about-image text-center"> --}}
-                    <img src="{{ asset('images/about.jpg') }}" alt="About Eterna Reads"
-                        class="img-fluid w-100 rounded-3 shadow-lg" style="max-height: 400px; object-fit: cover;">
-                    {{-- </div> --}}
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Featured Products Section -->
+    <!-- Featured Products Section - moved up -->
     <section class="py-5">
         <div class="container">
-
-
             <div class="d-flex justify-content-between align-items-center mb-5 flex-column flex-md-row">
                 <div class="text-center text-md-start">
                     <h2 class="section-title mb-2">Featured Products</h2>
-                    <p class="section-subtitle mb-0 w-80">Discover our handpicked selection of must-read books and
-                        exclusive gift boxes</p>
+                    {{-- Subtitle removed as per request --}}
                 </div>
                 <div class="mt-3 mt-md-0">
-                    <a href="{{ route('products.index') }}" class="text-decoration-none custome-text see-all-btn">See All
-                        <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="{{ route('products.index') }}" class="text-decoration-none custome-text see-all-btn">
+                        See All <i class="fa-solid fa-arrow-right"></i>
+                    </a>
                 </div>
             </div>
 
@@ -271,12 +215,6 @@
                         </div>
                     @endforeach
                 </div>
-
-                {{-- <div class="text-center mt-5">
-                    <a href="{{ route('products.index') }}" class="btn btn-outline-primary btn-lg">
-                        <i class="bi bi-arrow-right me-2"></i>View All Products
-                    </a>
-                </div> --}}
             @else
                 <div class="text-center">
                     <div class="py-5">
@@ -288,6 +226,54 @@
             @endif
         </div>
     </section>
+
+    <!-- About Eterna Reads Section - moved down -->
+    <section class="py-5" style="background: var(--light-bg);">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-7 mb-3">
+                    <div class="about-content">
+                        <span class="custom-badge">Our Focus</span>
+                        <div class="row mt-2">
+                            <div class="col-12 col-md-10 col-lg-8">
+                                <h2 class="section-title mb-4">The future belongs to those who prepare for it today</h2>
+                            </div>
+                            <div class="col-12 col-md-8 col-lg-6">
+                                <p class="lead mb-4">
+                                    What are our pillars? What drives our decision-making? What does the future look like
+                                    for EMS?
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Updated focus items -->
+                        <div class="about-stats row text-center justify-content-center">
+                            <div class="col-md-12 d-flex justify-content-center">
+                                <div class="stat-item mx-2">
+                                    <p class="focus-btn focus-active text-center">Maximising student outcomes</p>
+                                </div>
+                                <div class="stat-item mx-2">
+                                    <p class="focus-btn text-center">Integrating education with technology</p>
+                                </div>
+                                <div class="stat-item mx-2">
+                                    <p class="focus-btn text-center">Improving financial literacy</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="{{ route('about') }}" class="btn custom-btn btn-lg mt-4">
+                            Learn More About Us
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <img src="{{ asset('images/about.jpg') }}" alt="About Eterna Reads"
+                        class="img-fluid w-100 rounded-3 shadow-lg" style="max-height: 400px; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </section>
+
 
     <!-- Testimonials Section -->
     {{-- @php
@@ -433,4 +419,26 @@
                 });
         }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const qualification = document.getElementById('qualification');
+            const subject = document.getElementById('subject');
+            const examBoard = document.getElementById('exam_board');
+            const viewButton = document.getElementById('view-course-btn');
+
+            function checkSelections() {
+                const isValid =
+                    qualification.value !== '' &&
+                    subject.value !== '' &&
+                    examBoard.value !== '';
+                viewButton.disabled = !isValid;
+            }
+
+            // Attach event listeners
+            qualification.addEventListener('change', checkSelections);
+            subject.addEventListener('change', checkSelections);
+            examBoard.addEventListener('change', checkSelections);
+        });
+    </script>
+
 @endsection

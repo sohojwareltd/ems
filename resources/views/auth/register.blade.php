@@ -1,6 +1,9 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Register - MyShop')
+@section('title', 'Register - EMS')
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
 
 @section('content')
     <div class="container py-5">
@@ -101,15 +104,16 @@
                                         <i class="fas fa-calendar-alt me-2 text-muted"></i>
                                         Date of Birth
                                     </label>
-                                    <input type="date" class="form-control @error('birthdate') is-invalid @enderror"
-                                        id="birthdate" name="birthdate" value="{{ old('birthdate') }}" required>
+                                    <input type="text"
+                                        class="form-control flatpickr-dob @error('birthdate') is-invalid @enderror"
+                                        id="birthdate" name="birthdate" value="{{ old('birthdate') }}"
+                                        placeholder="dd/mm/yyyy" required>
                                     @error('birthdate')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
                                     @enderror
                                 </div>
-
                                 {{-- <div class="col-md-6 mb-4">
                                     <label for="stage">
                                         <i class="fas fa-graduation-cap me-2 text-muted"></i>
@@ -164,7 +168,8 @@
                                                 <i class="fas fa-lock me-2 text-muted"></i>
                                                 Password
                                             </label>
-                                            <button type="button" class="btn btn-link position-absolute end-0 top-50  pe-3"
+                                            <button type="button"
+                                                class="btn btn-link position-absolute end-0 top-50  pe-3"
                                                 id="togglePassword" style="transform: translateY(-78%) !important;">
                                                 <i class="fas fa-eye text-muted" id="togglePasswordIcon"></i>
                                             </button>
@@ -370,4 +375,20 @@
             }
         }
     </style>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        flatpickr(".flatpickr-dob", {
+            dateFormat: "d/m/Y", // dd/mm/yyyy format
+            maxDate: "today", // Prevent future dates
+            defaultDate: "01/01/2000", // Optional starting point
+            altInput: true,
+            altFormat: "F j, Y",
+            disableMobile: "true", // Always use flatpickr even on mobile
+        });
+    </script>
+
+
 @endsection

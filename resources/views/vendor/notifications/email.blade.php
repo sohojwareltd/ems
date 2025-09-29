@@ -6,7 +6,7 @@
 
     # Hello {{ $user->name ?? '' }},
 
-    Thank you for signing up with **MyShop**!
+    Thank you for signing up with **EMS**!
     Please verify your email address to get started.
 
     <p style="text-align: center;">
@@ -20,7 +20,7 @@
     [{{ $actionUrl }}]({{ $actionUrl }})
 
     Thanks,
-    **The MyShop Team**
+    **The EMS Team**
 
     @slot('subcopy')
         If you did not create an account, no further action is required.
