@@ -7,7 +7,7 @@ use App\Models\Traits\SelfHealingSlug;
 
 class Product extends Model
 {
-    use SelfHealingSlug;
+    // use SelfHealingSlug;
 
     protected $fillable = [
         'name',
