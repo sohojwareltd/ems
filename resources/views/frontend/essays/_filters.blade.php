@@ -32,10 +32,12 @@
                 @endforeach
             </select>
 
-            <label class="form-label mt-2">Topics</label>
-            <select class="form-select topic-select">
-                <option value="">Select Topic</option>
-            </select>
+            @if (request('tab') !== 'pastpapers')
+                <label class="form-label mt-2">Topics</label>
+                <select class="form-select topic-select">
+                    <option value="">Select Topic</option>
+                </select>
+            @endif
         </div>
 
 
