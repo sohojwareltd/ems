@@ -3,7 +3,7 @@
 
     <!-- Product Image -->
     <div class="premium-image-wrapper d-flex align-items-center justify-content-center bg-white rounded-top-4" style="width:100%;height:220px;overflow:hidden;">
-       <a href="{{ route('products.show', $product) }}">
+       <a href="{{ route('products.show', $product->slug) }}">
            <img src="{{ $product->image_url }}" class="premium-product-image" alt="{{ $product->name }}" style="max-width:100%;max-height:100%;object-fit:contain;display:block;">
 
        </a>
@@ -26,7 +26,7 @@
                     </span>
                 @endif
             </div>
-            <h5 class="premium-title mb-2"><a class="text-decoration-none" style="color: var(--primary-color);" href="{{ route('products.show', $product) }}">{{ $product->name }}</a></h5>
+            <h5 class="premium-title mb-2"><a class="text-decoration-none" style="color: var(--primary-color);" href="{{ route('products.show', $product->slug) }}">{{ $product->name }}</a></h5>
             <p class="premium-desc text-muted mb-3">{{ Str::limit(strip_tags($product->description), 80) }}</p>
         </div>
         <div class="mt-auto">

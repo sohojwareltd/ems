@@ -44,7 +44,7 @@ Route::get('/pdf-read/{product:slug}', [PageController::class, 'pdfView'])->name
 
 // E-commerce Frontend Routes
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
 
 // Cart Routes
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

@@ -113,8 +113,9 @@ class ProductController extends Controller
     /**
      * Display the specified product
      */
-    public function show(Product $product)
+    public function show( $slug)
     {
+        $product = Product::where('slug', $slug)->firstOrFail();
         $product->increment('views');
         // Get related products - first try same category and brand, then same category, then same brand
         $relatedProducts = Product::where('status', 'active')
