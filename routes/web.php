@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeEmail;
+use App\Models\Topic;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
@@ -219,5 +220,9 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     return redirect('/dashboard');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
+Route::get('/get-topics-by-paper/{paperCodeId}', function ($paperCodeId) {
+    return response()->json(
+        Topic::where('paper_code_id', $paperCodeId)->select('id', 'name')->get()
+    );
+});
 Auth::routes(['verify' => true]);
-

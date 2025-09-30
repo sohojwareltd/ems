@@ -20,7 +20,7 @@ class TopicResource extends Resource
 {
 
 
-     protected static ?string $model = Topic::class;
+    protected static ?string $model = Topic::class;
     protected static ?string $navigationLabel = 'Topic';
     protected static ?string $navigationGroup = 'Catalogue';
     protected static ?int $navigationSort = 4;
@@ -33,9 +33,17 @@ class TopicResource extends Resource
                 ->live(onBlur: true)
                 ->afterStateUpdated(fn($state, callable $set) => $set('slug', Str::slug($state))),
 
+
+
             TextInput::make('slug')
                 ->required()
-                ->unique(ignoreRecord: true)
+                ->unique(ignoreRecord: true),
+            Forms\Components\Select::make('paper_code_id')
+                ->label('Paper Code')
+                ->relationship('paperCode', 'name')
+                // ->searchable()
+                ->required()
+                ->helperText('Assign a paper code for better organization.')
         ]);
     }
 

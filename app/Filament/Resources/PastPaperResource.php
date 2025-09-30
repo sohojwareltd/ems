@@ -68,30 +68,30 @@ class PastPaperResource extends Resource
                                     'June' => 'June',
                                     'November' => 'November',
                                 ]),
-
-                            Forms\Components\Select::make('topic_id')
-                                ->relationship('topic', 'name')
-                                ->label('Topic')
-                                ->required()
-                                ->searchable(),
+                            Forms\Components\Select::make('paper_code_id')
+                                ->relationship('paperCode', 'name')
+                                ->label('Paper Code')
+                                ->required(),
+                            // Forms\Components\Select::make('topic_id')
+                            //     ->relationship('topic', 'name')
+                            //     ->label('Topic')
+                            //     ->required()
+                            //     ->searchable(),
 
                             Forms\Components\Select::make('qualiification_id')
                                 ->relationship('qualiification', 'title')
                                 ->label('Qualification')
-                                ->required()
-                                ->searchable(),
+                                ->required(),
 
                             Forms\Components\Select::make('subject_id')
                                 ->relationship('subject', 'title')
                                 ->label('Subject')
-                                ->required()
-                                ->searchable(),
+                                ->required(),
 
                             Forms\Components\Select::make('examboard_id')
                                 ->relationship('examboard', 'title')
                                 ->label('Exam Board')
-                                ->required()
-                                ->searchable(),
+                                ->required(),
                             Forms\Components\Select::make('resource_type_id')
                                 ->label('Resource')
                                 ->relationship('resource', 'title')
@@ -127,9 +127,12 @@ class PastPaperResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('paperCode.name')
+                    ->label('Paper Code')
+                    ->searchable(),
                 TextColumn::make('year'),
                 TextColumn::make('month'),
-                TextColumn::make('topic.name')->label('Topic'),
+                // TextColumn::make('topic.name')->label('Topic'),
                 TextColumn::make('created_at')->date('d M Y'),
             ])
             ->actions([

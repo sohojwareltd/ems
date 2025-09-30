@@ -70,6 +70,12 @@ class Essay extends Model
         return $this->belongsTo(Topic::class);
     }
 
+
+    public function paperCode()
+    {
+        return $this->belongsTo(PaperCode::class);
+    }
+
     // ModelEssay.php or PastPaper.php
 
     // Shared scope for both models

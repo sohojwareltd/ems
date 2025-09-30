@@ -36,6 +36,10 @@ class PastPaper extends Model
     }
 
 
+    public function paperCode()
+    {
+        return $this->belongsTo(PaperCode::class);
+    }
     public function scopeFilter($query, $filters)
     {
         return $query

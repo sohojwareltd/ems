@@ -51,7 +51,7 @@ class EssayResource extends Resource
                                 ->required()
                                 ->helperText('Assign a resource for better organization.'),
                             Forms\Components\Select::make('qualiification_id')
-                                ->label('Qualiification')
+                                ->label('Qualification')
                                 ->relationship('qualiification', 'title')
                                 // ->searchable()
                                 ->required()
@@ -103,12 +103,27 @@ class EssayResource extends Resource
                                     '12' => '12 Marks',
                                 ])
                                 ->label('Marks'),
+                            Forms\Components\Select::make('paper_code_id')
+                                ->label('Paper Code')
+                                ->options(\App\Models\PaperCode::all()->pluck('name', 'id'))
+                                ->reactive()
+                                ->afterStateUpdated(fn(callable $set) => $set('topic_id', null))
+                                ->required(),
 
                             Forms\Components\Select::make('topic_id')
-                                ->relationship('topic', 'name')
-                                ->searchable()
+                                ->label('Topic')
                                 ->required()
-                                ->label('Topic'),
+                                ->options(function (callable $get) {
+                                    $paperCodeId = $get('paper_code_id');
+                                    if (!$paperCodeId) {
+                                        return [];
+                                    }
+
+                                    return \App\Models\Topic::where('paper_code_id', $paperCodeId)
+                                        ->pluck('name', 'id');
+                                })
+                                ->searchable()
+                                ->disabled(fn(callable $get) => !$get('paper_code_id')),
 
                             Forms\Components\Select::make('status')
                                 ->options([
@@ -186,6 +201,9 @@ class EssayResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('paperCode.name')
+                    ->label('Paper Code')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('year')
                     ->sortable(),

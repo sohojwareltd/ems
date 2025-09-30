@@ -6,7 +6,7 @@
             $query = request()->except(['view']);
         @endphp
 
-        <div class="btn-group mb-4" role="group" aria-label="View Toggle">
+        {{-- <div class="btn-group mb-4" role="group" aria-label="View Toggle">
             <a href="{{ route('model.index', array_merge($query, ['tab' => $tab, 'view' => 'year'])) }}"
                 class="btn custom-btn-outline {{ $view === 'year' ? 'active' : '' }}">
                 By Year
@@ -15,8 +15,32 @@
                 class="btn custom-btn-outline {{ $view === 'topic' ? 'active' : '' }}">
                 By Topic
             </a>
-        </div>
+        </div> --}}
         <!-- Search -->
+        @php
+            $paperCodes = \App\Models\PaperCode::orderBy('name')->get();
+        @endphp
+
+        <div class="col-12 topic-wrapper">
+            <label class="form-label">Paper Code</label>
+            <select class="form-select paper-code">
+                <option value="">Select Paper Code</option>
+                @foreach ($paperCodes as $paperCode)
+                    <option value="{{ $paperCode->id }}" {{ request('paper_code') == $paperCode->id ? 'selected' : '' }}>
+                        {{ $paperCode->name }}
+                    </option>
+                @endforeach
+            </select>
+
+            <label class="form-label mt-2">Topics</label>
+            <select class="form-select topic-select">
+                <option value="">Select Topic</option>
+            </select>
+        </div>
+
+
+        <!-- Repeat this div anywhere on the page if needed -->
+
         <div class="col-12">
             <label class="form-label">Year</label>
             <div class="row">
@@ -79,17 +103,7 @@
                     @endforeach
                 </div>
             </div>
-            <div class="col-12">
-                <label for="topics" class="form-label">Topics</label>
-                <select class="form-select" id="topics" name="topics">
-                    <option value="">All Topics</option>
-                    @foreach ($topics as $topic)
-                        <option value="{{ $topic->id }}" {{ request('topics') == $topic->id ? 'selected' : '' }}>
-                            {{ $topic->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+
         @endif
         {{-- <div class="col-12">
             <label for="qualifications" class="form-label">Qualifications</label>
@@ -142,4 +156,59 @@
 
 
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.topic-select').forEach(topicSelect => {
+                // Find the closest wrapper (optional) or parent element
+                const wrapper = topicSelect.closest('.topic-wrapper') || topicSelect.parentElement;
+
+                // Find the paper-code select within the same wrapper
+                const paperSelect = wrapper.querySelector('.paper-code');
+
+                if (!paperSelect) {
+                    console.warn('No paper-code select found for this topic-select');
+                    return;
+                }
+
+                // When paper code changes
+                paperSelect.addEventListener('change', function() {
+                    const paperCodeId = this.value;
+
+                    if (!paperCodeId) {
+                        topicSelect.innerHTML = '<option value="">Select Topic</option>';
+                        return;
+                    }
+
+                    topicSelect.innerHTML = '<option value="">Loading...</option>';
+
+                    fetch(`/get-topics-by-paper/${paperCodeId}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            let optionsHtml = '<option value="">Select Topic</option>';
+                            data.forEach(topic => {
+                                optionsHtml +=
+                                    `<option value="${topic.id}">${topic.name}</option>`;
+                            });
+                            topicSelect.innerHTML = optionsHtml;
+
+                            if (data.length === 1) topicSelect.value = data[0].id;
+                        })
+                        .catch(e => {
+                            console.error('Error loading topics:', e);
+                            topicSelect.innerHTML =
+                                '<option value="">Error loading topics</option>';
+                        });
+                });
+
+                // Load topics on page load if paper code is pre-selected
+                if (paperSelect.value) {
+                    paperSelect.dispatchEvent(new Event('change'));
+                }
+            });
+        });
+    </script>
+
+
+
+
 </form>
