@@ -86,6 +86,7 @@ class Essay extends Model
             ->when(!empty($filters['months']), fn($q) => $q->whereIn('month', $filters['months']))
             ->when(!empty($filters['marks']), fn($q) => $q->whereIn('marks', $filters['marks']))
             ->when(!empty($filters['topic']), fn($q) => $q->where('topic_id', $filters['topic']))
+            ->when(!empty($filters['paper_code']), fn($q) => $q->where('paper_code_id', $filters['paper_code']))
             ->when(!empty($filters['qualification']), fn($q) => $q->where('qualiification_id', $filters['qualification']))
             ->when(!empty($filters['subject']), fn($q) => $q->where('subject_id', $filters['subject']))
             ->when(!empty($filters['exam_board']), fn($q) => $q->where('examboard_id', $filters['exam_board']))

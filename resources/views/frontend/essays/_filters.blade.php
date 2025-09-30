@@ -23,7 +23,7 @@
 
         <div class="col-12 topic-wrapper">
             <label class="form-label">Paper Code</label>
-            <select class="form-select paper-code">
+            <select class="form-select paper-code" name="paper_code">
                 <option value="">Select Paper Code</option>
                 @foreach ($paperCodes as $paperCode)
                     <option value="{{ $paperCode->id }}" {{ request('paper_code') == $paperCode->id ? 'selected' : '' }}>
@@ -34,7 +34,7 @@
 
             @if (request('tab') !== 'pastpapers')
                 <label class="form-label mt-2">Topics</label>
-                <select class="form-select topic-select">
+                <select class="form-select topic-select" name="topic">
                     <option value="">Select Topic</option>
                 </select>
             @endif
@@ -107,6 +107,10 @@
             </div>
 
         @endif
+        <input type="hidden" name="qualification" value="{{ request('qualification') }}">
+        <input type="hidden" name="subject" value="{{ request('subject') }}">
+        <input type="hidden" name="subject" value="{{ request('subject') }}">
+        <input type="hidden" name="exam_board" value="{{ request('exam_board') }}">
         {{-- <div class="col-12">
             <label for="qualifications" class="form-label">Qualifications</label>
             <select class="form-select" id="qualifications" name="qualification">
