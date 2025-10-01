@@ -556,3 +556,7 @@ body {
     background-color: #d7dbdca2;
     border-radius: 10px;
 }
+.form-check-input:checked {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}

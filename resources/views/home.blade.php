@@ -165,8 +165,8 @@
                     <div class="col-md-3 mb-3">
                         <label class="form-label" for="exam_board">Exam Board</label>
                         <select id="exam_board" name="exam_board" class="form-select">
+                            <option value="">Select Exam Board</option>
                             @foreach ($examBoards as $examBoard)
-                                <option value="">Select Exam Board</option>
                                 <option value="{{ $examBoard->id }}">{{ $examBoard->title }}</option>
                             @endforeach
                         </select>

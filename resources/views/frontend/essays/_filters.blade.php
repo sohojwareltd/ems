@@ -47,7 +47,7 @@
             <label class="form-label">Year</label>
             <div class="row">
                 @foreach (range(2019, 2024) as $year)
-                    <div class="col-12">
+                    <div class="col-md-3">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="years[]" value="{{ $year }}"
                                 id="year-{{ $year }}"
@@ -69,7 +69,7 @@
                 @endphp
 
                 @foreach ($months as $month)
-                    <div class="col-md-12">
+                    <div class="col-md-4">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="months[]" value="{{ $month }}"
                                 id="month-{{ strtolower($month) }}"
@@ -92,7 +92,7 @@
                     @endphp
 
                     @foreach ($marks as $mark)
-                        <div class="col-md-12">
+                        <div class="col-md-4">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="marks[]"
                                     value="{{ $mark }}" id="mark-{{ $mark }}"
