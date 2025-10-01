@@ -169,9 +169,24 @@
             <ul class="navbar-nav mb-3">
                 @foreach ($mobileMenu->menuItems as $item)
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ asset($item->url) }}">{{ $item->title }}</a>
+                        <a class="nav-link" href="{{ asset($item->url) }}">
+                            {{ $item->title }}
+                        </a>
+
+                        @if ($item->children && $item->children->count())
+                            <ul class="submenu">
+                                @foreach ($item->children as $child)
+                                    <li>
+                                        <a class="nav-link" href="{{ asset($child->url) }}">
+                                            {{ $child->title }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
                     </li>
                 @endforeach
+
 
             </ul>
             <hr>
