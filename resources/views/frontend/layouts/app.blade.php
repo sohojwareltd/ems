@@ -168,16 +168,20 @@
         <div class="offcanvas-body">
             <ul class="navbar-nav mb-3">
                 @foreach ($mobileMenu->menuItems as $item)
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ asset($item->url) }}">
+                    @php $hasChildren = $item->children && $item->children->count(); @endphp
+
+                    <li class="nav-item {{ $hasChildren ? 'dropdown' : '' }}">
+                        <a class="nav-link {{ $hasChildren ? 'dropdown-toggle' : '' }}"
+                            href="{{ asset($item->url) }}"
+                            {{ $hasChildren ? 'data-bs-toggle=dropdown role=button aria-expanded=false' : '' }}>
                             {{ $item->title }}
                         </a>
 
-                        @if ($item->children && $item->children->count())
-                            <ul class="submenu">
+                        @if ($hasChildren)
+                            <ul class="dropdown-menu">
                                 @foreach ($item->children as $child)
                                     <li>
-                                        <a class="nav-link" href="{{ asset($child->url) }}">
+                                        <a class="dropdown-item" href="{{ asset($child->url) }}">
                                             {{ $child->title }}
                                         </a>
                                     </li>
