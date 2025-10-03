@@ -561,7 +561,7 @@ body {
     background-color: var(--primary-color) !important;
     border-color: var(--primary-color) !important;
 }
-#ordering,#payment,#products,#account {
+#ordering,#payment,#products,#account,#contact-form {
     scroll-margin-top: 100px;
     /* Adjust the value as needed */
 }

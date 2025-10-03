@@ -86,6 +86,7 @@ Route::get('/paypal/cancel', [PayPalController::class, 'cancel'])->name('paypal.
 Route::post('/paypal/webhook', [PayPalController::class, 'webhook'])->name('paypal.webhook');
 
 Route::get('/stripe/setup-intent', [SubscriptionController::class, 'getSetupIntent']);
+Route::get('/tuition', [PageController::class, 'tuition'])->name('tuition');
 
 
 

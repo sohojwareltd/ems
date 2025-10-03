@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Essay;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Contact;
 use App\Models\Resource;
 use App\Models\Qualification;
 use App\Models\Subject;
@@ -44,14 +45,15 @@ class PageController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:25',
-            // 'subject' => 'required|string|max:255',
+            'subject' => 'required|string|max:255',
             'message' => 'required|string',
-            'newsletter' => 'nullable|in:on,true,1,0,false',
+            // 'newsletter' => 'nullable|in:on,true,1,0,false',
         ]);
+        Contact::create($data);
 
-        $data['newsletter'] = $request->has('newsletter');
+        // $data['newsletter'] = $request->has('newsletter');
 
-        $admins = User::where('role_id', 1)->get();
+        // $admins = User::where('role_id', 1)->get();
 
         // foreach ($admins as $admin) {
         //     Mail::to(setting('store.email', $admin->email))->send(new ContactFormNotification($data));
@@ -247,5 +249,9 @@ class PageController extends Controller
         $essay = Essay::where('slug', $slug)->firstOrFail();
 
         return view('frontend.essays.pdfview', compact('essay'));
+    }
+    public function tuition()
+    {
+        return view('frontend.pages.tuition');
     }
 }

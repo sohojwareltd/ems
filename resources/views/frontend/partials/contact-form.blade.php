@@ -1,4 +1,4 @@
-<section class="contact-form py-5" style="background: var(--light-bg);">
+<section class="contact-form py-5" id="contact-form" style="background: var(--light-bg);">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
@@ -14,7 +14,7 @@
                             @csrf
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="first_name" class="form-label"> Name *</label>
+                                    <label for="first_name" class="form-label">First Name *</label>
                                     <input type="text" class="form-control @error('first_name') is-invalid @enderror"
                                         id="first_name" name="first_name" value="{{ old('first_name', auth()->user()->name ?? '') }}" required>
                                     @error('first_name')
@@ -45,36 +45,27 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                {{-- <div class="col-12">
-                                    <label for="subject" class="form-label">Subject *</label>
+                                <div class="col-12">
+                                    <label for="subject" class="form-label">Enquiry *</label>
                                     <select class="form-select @error('subject') is-invalid @enderror" id="subject"
                                         name="subject" required>
                                         <option value="">Select a subject</option>
                                         <option value="General Inquiry"
                                             {{ old('subject') == 'General Inquiry' ? 'selected' : '' }}>General Inquiry
                                         </option>
-                                        <option value="Book Recommendation"
-                                            {{ old('subject') == 'Book Recommendation' ? 'selected' : '' }}>Book
-                                            Recommendation</option>
-                                        <option value="Order Support"
+                                        <option value="Tuition"
+                                            {{ old('subject') == 'Tuition' ? 'selected' : '' }}>Tuition</option>
+                                        {{-- <option value="Order Support"
                                             {{ old('subject') == 'Order Support' ? 'selected' : '' }}>Order Support
-                                        </option>
-                                        <option value="Gift Box Inquiry"
-                                            {{ old('subject') == 'Gift Box Inquiry' ? 'selected' : '' }}>Gift Box
-                                            Inquiry</option>
-                                        <option value="Audiobook Support"
-                                            {{ old('subject') == 'Audiobook Support' ? 'selected' : '' }}>Audiobook
-                                            Support</option>
-                                        <option value="Partnership"
-                                            {{ old('subject') == 'Partnership' ? 'selected' : '' }}>Partnership
-                                        </option>
+                                        </option> --}}
+                                
                                         <option value="Other" {{ old('subject') == 'Other' ? 'selected' : '' }}>Other
                                         </option>
                                     </select>
                                     @error('subject')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                </div> --}}
+                                </div>
                                 <div class="col-12">
                                     <label for="message" class="form-label">Message *</label>
                                     <textarea class="form-control @error('message') is-invalid @enderror" id="message" name="message" rows="6"
@@ -83,7 +74,7 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="col-12">
+                                {{-- <div class="col-12">
                                     <div class="form-check">
                                         <input class="form-check-input @error('newsletter') is-invalid @enderror"
                                             type="checkbox" id="newsletter" name="newsletter"
@@ -95,7 +86,7 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-12 text-center">
                                     <button type="submit" class="btn custom-btn btn-lg px-5">
                                         <i class="bi bi-send me-2"></i>Send Message
