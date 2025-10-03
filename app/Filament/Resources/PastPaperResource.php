@@ -105,11 +105,11 @@ class PastPaperResource extends Resource
                     Tab::make('Media')
                         ->schema([
                             Forms\Components\FileUpload::make('file')
-                                ->label('PDF File')
+                                ->label('Question Paper')
                                 ->directory('pastpapers/pdf'),
 
                             Forms\Components\FileUpload::make('power_point')
-                                ->label('insert')
+                                ->label(' Examiner’s Report')
                                 ->directory('pastpapers/ppt'),
 
                             Forms\Components\FileUpload::make('mark')

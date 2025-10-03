@@ -15,7 +15,7 @@
         <div style="margin: 15px 0; font-size: 16px; color: #333;"><strong style="display: inline-block; min-width: 150px; color: #222;">Last Name:</strong> {{ $data['last_name'] }}</div>
         <div style="margin: 15px 0; font-size: 16px; color: #333;"><strong style="display: inline-block; min-width: 150px; color: #222;">Email:</strong> {{ $data['email'] }}</div>
         <div style="margin: 15px 0; font-size: 16px; color: #333;"><strong style="display: inline-block; min-width: 150px; color: #222;">Phone:</strong> {{ $data['phone'] ?? 'N/A' }}</div>
-        <div style="margin: 15px 0; font-size: 16px; color: #333;"><strong style="display: inline-block; min-width: 150px; color: #222;">Subject:</strong> {{ $data['subject'] }}</div>
+        {{-- <div style="margin: 15px 0; font-size: 16px; color: #333;"><strong style="display: inline-block; min-width: 150px; color: #222;">Subject:</strong> {{ $data['subject'] }}</div> --}}
         <div style="margin: 15px 0; font-size: 16px; color: #333;"><strong style="display: inline-block; min-width: 150px; color: #222;">Message:</strong><br><span style="display: block; margin-left: 150px;">{!! nl2br(e($data['message'])) !!}</span></div>
         <div style="margin: 15px 0; font-size: 16px; color: #104a6b;"><strong style="display: inline-block; min-width: 150px; color: #222;">Subscribed to Newsletter:</strong> {{ $data['newsletter'] ? 'Yes' : 'No' }}</div>
 

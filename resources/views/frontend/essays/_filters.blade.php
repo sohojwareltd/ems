@@ -22,11 +22,21 @@
         @endphp
 
         <div class="col-12 topic-wrapper">
-            <label class="form-label">Paper Code</label>
+            <label class="form-label">Paper</label>
+            <select class="form-select paper-code" name="paper">
+                <option value="">Select Paper</option>
+                @foreach ($papers as $paper)
+                    <option value="{{ $paper->id }}" {{ request('paper') == $paper->id ? 'selected' : '' }}>
+                        {{ $paper->name }}
+                    </option>
+                @endforeach
+            </select>
+            <label class="form-label mt-2">Paper Code</label>
             <select class="form-select paper-code" name="paper_code">
                 <option value="">Select Paper Code</option>
                 @foreach ($paperCodes as $paperCode)
-                    <option value="{{ $paperCode->id }}" {{ request('paper_code') == $paperCode->id ? 'selected' : '' }}>
+                    <option value="{{ $paperCode->id }}"
+                        {{ request('paper_code') == $paperCode->id ? 'selected' : '' }}>
                         {{ $paperCode->name }}
                     </option>
                 @endforeach
@@ -154,7 +164,8 @@
                 <button type="submit" class="btn custom-btn flex-fill">
                     <i class="bi bi-search me-2"></i>Apply Filters
                 </button>
-                <a href="{{ route('model.index',['qualification' => request('qualification'), 'subject' => request('subject'), 'exam_board' => request('exam_board')]) }}" class="btn btn-outline-secondary">
+                <a href="{{ route('model.index', ['qualification' => request('qualification'), 'subject' => request('subject'), 'exam_board' => request('exam_board')]) }}"
+                    class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-clockwise me-2"></i>Clear
                 </a>
             </div>
@@ -165,29 +176,54 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.topic-select').forEach(topicSelect => {
-                // Find the closest wrapper (optional) or parent element
                 const wrapper = topicSelect.closest('.topic-wrapper') || topicSelect.parentElement;
+                const paperCodeSelect = wrapper.querySelector('select[name="paper_code"]');
+                const paperSelect = wrapper.querySelector('select[name="paper"]');
 
-                // Find the paper-code select within the same wrapper
-                const paperSelect = wrapper.querySelector('.paper-code');
-
-                if (!paperSelect) {
-                    console.warn('No paper-code select found for this topic-select');
+                if (!paperCodeSelect || !paperSelect) {
+                    console.warn('Missing paper or paper_code select');
                     return;
                 }
 
-                // When paper code changes
+                // Fetch Paper Codes based on selected Paper
                 paperSelect.addEventListener('change', function() {
-                    const paperCodeId = this.value;
+                    const paperId = this.value;
+                    paperCodeSelect.innerHTML = '<option value="">Loading...</option>';
+                    topicSelect.innerHTML = '<option value="">Select Topic</option>';
 
-                    if (!paperCodeId) {
+                    if (!paperId) {
+                        paperCodeSelect.innerHTML = '<option value="">Select Paper Code</option>';
+                        return;
+                    }
+
+                    fetch(`/get-paper-codes-by-paper/${paperId}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            let options = '<option value="">Select Paper Code</option>';
+                            data.forEach(code => {
+                                options +=
+                                    `<option value="${code.id}">${code.name}</option>`;
+                            });
+                            paperCodeSelect.innerHTML = options;
+                        })
+                        .catch(err => {
+                            console.error('Error loading paper codes:', err);
+                            paperCodeSelect.innerHTML =
+                                '<option value="">Error loading paper codes</option>';
+                        });
+                });
+
+                // Fetch Topics based on selected Paper Code (already working in your setup)
+                paperCodeSelect.addEventListener('change', function() {
+                    const codeId = this.value;
+                    topicSelect.innerHTML = '<option value="">Loading...</option>';
+
+                    if (!codeId) {
                         topicSelect.innerHTML = '<option value="">Select Topic</option>';
                         return;
                     }
 
-                    topicSelect.innerHTML = '<option value="">Loading...</option>';
-
-                    fetch(`/get-topics-by-paper/${paperCodeId}`)
+                    fetch(`/get-topics-by-paper/${codeId}`)
                         .then(res => res.json())
                         .then(data => {
                             let optionsHtml = '<option value="">Select Topic</option>';
@@ -206,13 +242,16 @@
                         });
                 });
 
-                // Load topics on page load if paper code is pre-selected
+                // Auto-load on page load if paper or paper_code already selected
                 if (paperSelect.value) {
                     paperSelect.dispatchEvent(new Event('change'));
+                } else if (paperCodeSelect.value) {
+                    paperCodeSelect.dispatchEvent(new Event('change'));
                 }
             });
         });
     </script>
+
 
 
 

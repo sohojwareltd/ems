@@ -14,9 +14,9 @@
                             @csrf
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="first_name" class="form-label">First Name *</label>
+                                    <label for="first_name" class="form-label"> Name *</label>
                                     <input type="text" class="form-control @error('first_name') is-invalid @enderror"
-                                        id="first_name" name="first_name" value="{{ old('first_name') }}" required>
+                                        id="first_name" name="first_name" value="{{ old('first_name', auth()->user()->name ?? '') }}" required>
                                     @error('first_name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -24,7 +24,7 @@
                                 <div class="col-md-6">
                                     <label for="last_name" class="form-label">Last Name *</label>
                                     <input type="text" class="form-control @error('last_name') is-invalid @enderror"
-                                        id="last_name" name="last_name" value="{{ old('last_name') }}" required>
+                                        id="last_name" name="last_name" value="{{ old('last_name', auth()->user()->lastname ?? '') }}" required>
                                     @error('last_name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -32,7 +32,7 @@
                                 <div class="col-md-6">
                                     <label for="email" class="form-label">Email Address *</label>
                                     <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                        id="email" name="email" value="{{ old('email') }}" required>
+                                        id="email" name="email" value="{{ old('email', auth()->user()->email ?? '') }}" required>
                                     @error('email')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -40,12 +40,12 @@
                                 <div class="col-md-6">
                                     <label for="phone" class="form-label">Phone Number</label>
                                     <input type="tel" class="form-control @error('phone') is-invalid @enderror"
-                                        id="phone" name="phone" value="{{ old('phone') }}">
+                                        id="phone" name="phone" value="{{ old('phone', auth()->user()->phone ?? '') }}">
                                     @error('phone')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="col-12">
+                                {{-- <div class="col-12">
                                     <label for="subject" class="form-label">Subject *</label>
                                     <select class="form-select @error('subject') is-invalid @enderror" id="subject"
                                         name="subject" required>
@@ -74,7 +74,7 @@
                                     @error('subject')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="col-12">
                                     <label for="message" class="form-label">Message *</label>
                                     <textarea class="form-control @error('message') is-invalid @enderror" id="message" name="message" rows="6"

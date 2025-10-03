@@ -64,6 +64,7 @@
     $examBoardsMap = \App\Models\ExamBoard::pluck('title', 'id')->toArray();
     $subjectsMap = \App\Models\Subject::pluck('title', 'id')->toArray();
     $topicsMap = \App\Models\Topic::pluck('name', 'id')->toArray();
+    $papers = \App\Models\Paper::all();
 
     $qualification = $qualificationId ? $qualificationsMap[$qualificationId] ?? null : null;
     $examBoard = $examBoardId ? $examBoardsMap[$examBoardId] ?? null : null;
@@ -104,6 +105,7 @@
                         'qualifications' => $qualifications,
                         'examBoards' => $examBoards,
                         'subjects' => $subjects,
+                        'papers' => $papers,
                     ])
                 </div>
             </div>
@@ -121,6 +123,7 @@
                                 'qualifications' => $qualifications,
                                 'examBoards' => $examBoards,
                                 'subjects' => $subjects,
+                                'papers' => $papers,
                             ])
                         </div>
                     </div>
@@ -152,13 +155,13 @@
                                 @if (is_array($value))
                                     @foreach ($value as $v)
                                         <a href="{{ route('model.index', array_diff_key(request()->all(), [$key => '']) + [$key => array_diff((array) $value, [$v])]) }}"
-                                            class="badge bg-primary text-white text-decoration-none">
+                                            class="badge custom-badge  text-decoration-none">
                                             {{ ucfirst($key) }}: {{ $titles[$v] ?? $v }} <i class="bi bi-x ms-1"></i>
                                         </a>
                                     @endforeach
                                 @else
                                     <a href="{{ route('model.index', Arr::except(request()->all(), [$key])) }}"
-                                        class="badge bg-primary text-white text-decoration-none">
+                                        class="badge custom-badge  text-decoration-none">
                                         {{ ucfirst($key) }}: {{ $titles[$value] ?? $value }} <i class="bi bi-x ms-1"></i>
                                     </a>
                                 @endif

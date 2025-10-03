@@ -79,7 +79,7 @@
                             <div class="d-flex flex-wrap gap-2 align-items-center">
                                 <span class="text-muted">Active Filters:</span>
                                 @if (request('search'))
-                                    <span class="badge bg-primary">
+                                    <span class="badge custom-badge">
                                         Search: "{{ request('search') }}"
                                         <a href="{{ route('products.index', request()->except('search')) }}"
                                             class="text-white text-decoration-none ms-1">×</a>
@@ -88,7 +88,7 @@
                                 @if (request('qualiification'))
                                     @php $qualiification = $qualiifications->firstWhere('id', request('qualiification')) @endphp
                                     @if ($qualiification)
-                                        <span class="badge bg-primary">
+                                        <span class="badge custom-badge">
                                             Qualiification: {{ $qualiification->title }}
                                             <a href="{{ route('products.index', request()->except('qualiification')) }}"
                                                 class="text-white text-decoration-none ms-1">×</a>
@@ -98,7 +98,7 @@
                                 @if (request('examboard'))
                                     @php $examboard = $examboards->firstWhere('id', request('examboard')) @endphp
                                     @if ($examboard)
-                                        <span class="badge bg-primary">
+                                        <span class="badge custom-badge">
                                             Exam Board: {{ $examboard->title }}
                                             <a href="{{ route('products.index', request()->except('examboard')) }}"
                                                 class="text-white text-decoration-none ms-1">×</a>
@@ -108,7 +108,7 @@
                                 @if (request('resource'))
                                     @php $resource = $resources->firstWhere('id', request('resource')) @endphp
                                     @if ($resource)
-                                        <span class="badge bg-primary">
+                                        <span class="badge custom-badge">
                                             Resource: {{ $resource->title }}
                                             <a href="{{ route('products.index', request()->except('resource')) }}"
                                                 class="text-white text-decoration-none ms-1">×</a>
@@ -118,7 +118,7 @@
                                 @if (request('subject'))
                                     @php $subject = $subjects->firstWhere('id', request('subject')) @endphp
                                     @if ($subject)
-                                        <span class="badge bg-primary">
+                                        <span class="badge custom-badge">
                                             Subject: {{ $subject->title }}
                                             <a href="{{ route('products.index', request()->except('subject')) }}"
                                                 class="text-white text-decoration-none ms-1">×</a>
@@ -126,7 +126,7 @@
                                     @endif
                                 @endif
                                 @if (request('min_price') || request('max_price'))
-                                    <span class="badge bg-primary">
+                                    <span class="badge custom-badge">
                                         Price: ${{ request('min_price', '0') }} - ${{ request('max_price', '∞') }}
                                         <a href="{{ route('products.index', request()->except(['min_price', 'max_price'])) }}"
                                             class="text-white text-decoration-none ms-1">×</a>
@@ -143,7 +143,7 @@
                                             'popular' => 'Most Popular',
                                         ];
                                     @endphp
-                                    <span class="badge bg-primary">
+                                    <span class="badge custom-badge">
                                         Sort: {{ $sortLabels[request('sort')] ?? request('sort') }}
                                         <a href="{{ route('products.index', request()->except('sort')) }}"
                                             class="text-white text-decoration-none ms-1">×</a>
@@ -191,7 +191,7 @@
                         </div>
                         <h4 class="text-muted mb-3">No products found</h4>
                         <p class="text-muted mb-4">Try adjusting your search criteria or browse our full collection.</p>
-                        <a href="{{ route('products.index') }}" class="btn btn-primary">
+                        <a href="{{ route('products.index') }}" class="btn custom-btn">
                             <i class="bi bi-arrow-clockwise me-2"></i>Clear Filters
                         </a>
                     </div>

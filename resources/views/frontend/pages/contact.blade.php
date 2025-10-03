@@ -1,6 +1,9 @@
 @extends('frontend.layouts.app')
 
 @section('title', 'Contact Us - ' . setting('store.name', config('app.name')))
+<style>
+
+</style>
 
 @section('content')
     <!-- Page Header -->
@@ -24,7 +27,7 @@
                         <div class="contact-icon mb-3">
                             <i class="bi bi-geo-alt-fill fs-1" style="color: var(--primary-color);"></i>
                         </div>
-                        <h4 class="h5 mb-3">Visit Our Store</h4>
+                        <h4 class="h5 mb-3">Visit Us </h4>
                         <p class="text-muted mb-0">
                             {!! nl2br(e(setting('store.address', '123 Book Street\nLiterary City, LC 12345\nUnited States'))) !!}
                         </p>
@@ -33,11 +36,12 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="contact-card text-center p-4 bg-white rounded-3 shadow-sm h-100">
                         <div class="contact-icon mb-3">
-                            <i class="bi bi-telephone-fill fs-1" style="color: var(--secondary-color);"></i>
+                            <i class="fab fa-whatsapp fs-1"  style="color: var(--primary-color);"></i>
+                            {{-- <i class="bi bi-telephone-fill fs-1" style="color: var(--secondary-color);"></i> --}}
                         </div>
-                        <h4 class="h5 mb-3">Call Us</h4>
+                        <h4 class="h5 mb-3">WhatsApp Us</h4>
                         <p class="text-muted mb-0">
-                            <a href="tel:{{ preg_replace('/[^0-9+]/', '', setting('store.phone', '+1 (555) 123-4567')) }}" class="text-decoration-none">{{ setting('store.phone', '+1 (555) 123-4567') }}</a><br>
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9+]/', '', setting('store.phone', '+1 (555) 123-4567')) }}" class="text-decoration-none">{{ setting('store.phone', '+1 (555) 123-4567') }}</a><br>
                             {{ setting('store.hours_weekdays', 'Monday - Friday: 9AM - 6PM') }}<br>
                             {{ setting('store.hours_saturday', 'Saturday: 10AM - 4PM') }}
                         </p>
@@ -81,7 +85,7 @@
     @include('frontend.partials.contact-form')
 
     <!-- Map Section -->
-    <section class="map-section py-5">
+    {{-- <section class="map-section py-5">
         <div class="container">
             <div class="text-center mb-5">
                 <h2 class="section-title mb-3">Find Our Store</h2>
@@ -105,7 +109,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!-- FAQ Preview Section (Dynamic) -->
     @if(isset($faqPreview) && $faqPreview->count())
@@ -142,7 +146,7 @@
     @endif
 
     <!-- Store Hours Section -->
-    <section class="store-hours py-5" style="background: var(--light-bg);">
+    {{-- <section class="store-hours py-5" style="background: var(--light-bg);">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6">
@@ -181,12 +185,12 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
  
 
     <!-- Call to Action -->
-    <section class="cta-section py-5"
+    {{-- <section class="cta-section py-5"
         style="background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));">
         <div class="container">
             <div class="row justify-content-center">
@@ -204,5 +208,5 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 @endsection

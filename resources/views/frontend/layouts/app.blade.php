@@ -316,7 +316,7 @@
                         </div>
                         <div class="d-flex align-items-center mb-3">
                             <i class="bi bi-envelope me-2 text-info"></i>
-                            <span>{{ setting('store.email') }}</< /span>
+                            <span>{{ setting('store.email') }} </span>
                         </div>
                     </div>
                 </div>

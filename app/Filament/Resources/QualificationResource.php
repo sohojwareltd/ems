@@ -18,7 +18,7 @@ class QualificationResource extends Resource
     protected static ?string $model = Qualification::class;
     protected static ?string $navigationLabel = 'Qualifications';
     protected static ?string $navigationGroup = 'Catalogue';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 4;
 
     // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

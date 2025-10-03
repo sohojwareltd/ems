@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeEmail;
+use App\Models\Paper;
 use App\Models\Topic;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -35,8 +36,8 @@ Route::get('/', function () {
 })->name('home');
 // Static Pages
 Route::get('/about', [PageController::class, 'about'])->name('about');
-Route::get('/contact', [PageController::class, 'contact'])->name('contact');
-Route::post('/contact', [PageController::class, 'store'])->name('contact.store');
+Route::get('/contact', [PageController::class, 'contact'])->middleware('auth')->name('contact');
+Route::post('/contact', [PageController::class, 'store'])->middleware('auth')->name('contact.store');
 Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 Route::get('/model-essays', [PageController::class, 'model'])->name('model.index');
 Route::get('/model-essays/{product:slug}', [PageController::class, 'show'])->name('model.show');
@@ -225,4 +226,20 @@ Route::get('/get-topics-by-paper/{paperCodeId}', function ($paperCodeId) {
         Topic::where('paper_code_id', $paperCodeId)->select('id', 'name')->get()
     );
 });
+
+Route::get('/get-paper-codes-by-paper/{paperId}', function ($paperId) {
+    $paper = Paper::with('paperCode')->find($paperId);
+
+    if (!$paper || !$paper->paper_code_id) {
+        return response()->json([]);
+    }
+
+    return response()->json([
+        ['id' => $paper->paperCode->id, 'name' => $paper->paperCode->name],
+    ]);
+});
+
+
+
+
 Auth::routes(['verify' => true]);

@@ -44,7 +44,7 @@ class PageController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:25',
-            'subject' => 'required|string|max:255',
+            // 'subject' => 'required|string|max:255',
             'message' => 'required|string',
             'newsletter' => 'nullable|in:on,true,1,0,false',
         ]);
@@ -53,9 +53,9 @@ class PageController extends Controller
 
         $admins = User::where('role_id', 1)->get();
 
-        foreach ($admins as $admin) {
-            Mail::to(setting('store.email', $admin->email))->send(new ContactFormNotification($data));
-        }
+        // foreach ($admins as $admin) {
+        //     Mail::to(setting('store.email', $admin->email))->send(new ContactFormNotification($data));
+        // }
 
         return redirect()->back()->with('success', 'Your message has been sent successfully!');
     }
