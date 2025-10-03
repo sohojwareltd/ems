@@ -30,7 +30,7 @@ class PaperResource extends Resource
         return $form->schema([
             TextInput::make('name')
                 ->required()
-                ->live(debounce: 500)
+                ->live(onBlur: 500)
                 ->afterStateUpdated(
                     fn($state, callable $set) =>
                     $set('slug', Str::slug($state))
