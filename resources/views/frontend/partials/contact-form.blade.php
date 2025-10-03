@@ -74,19 +74,19 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                {{-- <div class="col-12">
+                                <div class="col-12">
                                     <div class="form-check">
                                         <input class="form-check-input @error('newsletter') is-invalid @enderror"
                                             type="checkbox" id="newsletter" name="newsletter"
                                             {{ old('newsletter') ? 'checked' : '' }}>
                                         <label class="form-check-label" for="newsletter">
-                                            Subscribe to our newsletter for book recommendations and updates
+                                           Subscribe to our newsletter
                                         </label>
                                         @error('newsletter')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                </div> --}}
+                                </div>
                                 <div class="col-12 text-center">
                                     <button type="submit" class="btn custom-btn btn-lg px-5">
                                         <i class="bi bi-send me-2"></i>Send Message

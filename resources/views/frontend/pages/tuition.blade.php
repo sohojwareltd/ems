@@ -142,7 +142,8 @@
     </style>
     <div class="container py-5">
         <div class="text-center pricing-header mb-4">
-            <h2>Tuition</h2>
+            <h2>Specialist Economics Tuition</h2>
+            <p class="section-subtitle lead">GCSE, IGCSE, A-Level, IAL & IB across all exam boards</p>
         </div>
 
         <div class="row g-4 mt-2">
