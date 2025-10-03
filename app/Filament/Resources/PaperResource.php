@@ -21,7 +21,7 @@ class PaperResource extends Resource
 {
     protected static ?string $model = Paper::class;
     protected static ?string $navigationGroup = 'Catalogue';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -41,10 +41,10 @@ class PaperResource extends Resource
                 ->disabled()
                 ->dehydrated(),
 
-            Select::make('paper_code_id')
-                ->label('Paper Code')
-                ->required()
-                ->relationship('paperCode', 'name'),
+            // Select::make('paper_code_id')
+            //     ->label('Paper Code')
+            //     ->required()
+            //     ->relationship('paperCode', 'name'),
         ]);
     }
 
@@ -53,7 +53,7 @@ class PaperResource extends Resource
         return $table->columns([
             TextColumn::make('name')->searchable()->sortable(),
             // TextColumn::make('slug')->searchable(),
-            TextColumn::make('paperCode.name')->label('Paper Code'),
+            // TextColumn::make('paperCode.name')->label('Paper Code'),
         ])
             ->filters([
                 //

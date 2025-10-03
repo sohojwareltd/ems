@@ -6,9 +6,11 @@ use App\Filament\Resources\PaperCodeResource\Pages;
 use App\Filament\Resources\PaperCodeResource\RelationManagers;
 use App\Models\PaperCode;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -20,7 +22,7 @@ class PaperCodeResource extends Resource
 
     protected static ?string $navigationLabel = 'Paper Codes';
     protected static ?string $navigationGroup = 'Catalogue';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
 
     public static function form(Form $form): Form
@@ -38,6 +40,11 @@ class PaperCodeResource extends Resource
                 ->required()
                 ->unique(ignoreRecord: true)
                 ->maxLength(255),
+
+            Select::make('paper_id')
+                ->label('Paper')
+                ->required()
+                ->relationship('paper', 'name'),
         ]);
     }
 
@@ -45,7 +52,8 @@ class PaperCodeResource extends Resource
     {
         return $table->columns([
             Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-            Tables\Columns\TextColumn::make('slug')->sortable()->searchable(),
+            TextColumn::make('paper.name')->label('Paper'),
+            // Tables\Columns\TextColumn::make('slug')->sortable()->searchable(),
             Tables\Columns\TextColumn::make('created_at')
                 ->date('d-m-Y'),
         ])

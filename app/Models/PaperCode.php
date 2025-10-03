@@ -12,8 +12,8 @@ class PaperCode extends Model
     {
         return $this->hasMany(Topic::class);
     }
-    public function papers()
+    public function paper()
     {
-        return $this->hasMany(Paper::class);
+        return $this->belongsTo(Paper::class);
     }
 }

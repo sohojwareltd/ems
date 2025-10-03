@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('papers', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->foreignId('paper_code_id')->nullable()->constrained()->onDelete('cascade');
-            $table->timestamps();
+        Schema::table('paper_codes', function (Blueprint $table) {
+            $table->bigInteger('paper_id')->nullable()->after('id')->index();
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('papers');
+        Schema::table('paper_codes', function (Blueprint $table) {
+            $table->dropColumn('paper_id');
+        });
     }
 };

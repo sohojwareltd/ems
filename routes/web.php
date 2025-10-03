@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeEmail;
 use App\Models\Paper;
+use App\Models\PaperCode;
 use App\Models\Topic;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -229,15 +230,9 @@ Route::get('/get-topics-by-paper/{paperCodeId}', function ($paperCodeId) {
 });
 
 Route::get('/get-paper-codes-by-paper/{paperId}', function ($paperId) {
-    $paper = Paper::with('paperCode')->find($paperId);
-
-    if (!$paper || !$paper->paper_code_id) {
-        return response()->json([]);
-    }
-
-    return response()->json([
-        ['id' => $paper->paperCode->id, 'name' => $paper->paperCode->name],
-    ]);
+       return response()->json(
+        PaperCode::where('paper_id', $paperId)->select('id', 'name')->get()
+    );
 });
 
 
