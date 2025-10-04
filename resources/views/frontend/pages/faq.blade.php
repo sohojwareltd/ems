@@ -98,73 +98,206 @@
                     <div id="privacy" class="faq-section mb-5">
                         <h2 class="section-title mb-4">
                             <i class="bi bi-shield-check me-2" style="color: var(--primary-color);"></i>
-                            Privacy Policy
+                            Privacy & Cookies Policy
                         </h2>
 
                         <div class="card border-0 shadow-sm">
                             <div class="card-body">
+                                <h3 class="h5 mb-3">Who We Are</h3>
+                                <p class="mb-3">ECONOMICS MADE SIMPLE LTD (“EMS”, “we”, “our”, “us”) is a UK-registered
+                                    limited company.
+                                    Data Controller: ECONOMICS MADE SIMPLE LTD. Contact: <a
+                                        href="mailto:info@economicsmadesimple.com">info@economicsmadesimple.com</a>.</p>
+
                                 <h3 class="h5 mb-3">Information We Collect</h3>
-                                <p class="mb-3">We collect information you provide directly to us, such as when you create
-                                    an account, place an order, or contact us. This may include your name, email address,
-                                    shipping address, and payment information.</p>
+                                <p class="mb-3">We collect information you provide directly, automatically from your
+                                    device, and via payment processors. This includes:</p>
+                                <ul class="mb-3">
+                                    <li>Identity: name, country, (optional) date of birth</li>
+                                    <li>Contact: email, phone</li>
+                                    <li>Account: username/email, hashed password, login history, settings</li>
+                                    <li>Transaction: purchases, plan, timestamps, last 4 digits of card</li>
+                                    <li>Technical: IP, device, browser, cookies, analytics</li>
+                                    <li>Communications: emails, support messages, preferences</li>
+                                </ul>
 
                                 <h3 class="h5 mb-3">How We Use Your Information</h3>
-                                <p class="mb-3">We use the information we collect to process your orders, communicate with
-                                    you about your orders, send you marketing materials (with your consent), and improve our
-                                    services.</p>
+                                <p class="mb-3">We process data based on UK GDPR lawful bases:</p>
+                                <ul class="mb-3">
+                                    <li>Account management, digital content delivery, support – Contract necessity</li>
+                                    <li>Payments, tax records – Legal obligation</li>
+                                    <li>Security, fraud prevention, service maintenance – Legitimate interests</li>
+                                    <li>Analytics – Consent via cookies</li>
+                                    <li>Marketing – Consent (or soft opt-in for existing customers)</li>
+                                </ul>
+
+                                <h3 class="h5 mb-3">Cookies & Tracking</h3>
+                                <p class="mb-3">We use cookies to enhance the site:</p>
+                                <ul class="mb-3">
+                                    <li>Essential – required for login, checkout, security (always on)</li>
+                                    <li>Analytics – understand usage (consent required)</li>
+                                    <li>Marketing – improve ads (consent required)</li>
+                                </ul>
+                                <p class="mb-3">Non-essential cookies are set only after you click “Accept”. You can
+                                    change your choice anytime via the site footer or your browser.</p>
 
                                 <h3 class="h5 mb-3">Information Sharing</h3>
-                                <p class="mb-3">We do not sell, trade, or otherwise transfer your personal information to
-                                    third parties except as described in our privacy policy or with your consent.</p>
+                                <p class="mb-3">We do not sell your data. Trusted processors include:</p>
+                                <ul class="mb-3">
+                                    <li>Payments: Stripe, PayPal</li>
+                                    <li>Hosting/analytics: Google services</li>
+                                    <li>Email (future): Mailchimp</li>
+                                    <li>Contracted developers/hosting providers under confidentiality agreements</li>
+                                </ul>
 
                                 <h3 class="h5 mb-3">Data Security</h3>
-                                <p class="mb-3">We implement appropriate security measures to protect your personal
-                                    information against unauthorized access, alteration, disclosure, or destruction.</p>
+                                <p class="mb-3">We use technical and organisational measures: HTTPS/TLS, hashed passwords,
+                                    role-based access, encrypted backups, 2FA, and regular security reviews.</p>
+
+                                <h3 class="h5 mb-3">Data Retention</h3>
+                                <p class="mb-3">We keep your data only as long as necessary:</p>
+                                <ul class="mb-3">
+                                    <li>Accounts: while active; deleted within 12 months if inactive</li>
+                                    <li>Financial records: 6 years (HMRC requirement)</li>
+                                    <li>Support messages: up to 24 months</li>
+                                    <li>Marketing lists: until unsubscribe or pruned</li>
+                                    <li>Cookies: per tool duration</li>
+                                </ul>
 
                                 <h3 class="h5 mb-3">Your Rights</h3>
-                                <p class="mb-0">You have the right to access, update, or delete your personal information.
-                                    You can also opt out of marketing communications at any time.</p>
+                                <p class="mb-3">You may access, update, or delete your data, restrict processing, object
+                                    to marketing, request data portability, and withdraw consent. Complaints can be made to
+                                    the UK ICO.</p>
+
+                                <h3 class="h5 mb-3">Children & Young People</h3>
+                                <p class="mb-3">Services are for teachers, parents, and older students. Under 18 should
+                                    use EMS with supervision. We do not knowingly collect data from under 13 without
+                                    consent.</p>
+
+                                <h3 class="h5 mb-3">Contact & Complaints</h3>
+                                <p class="mb-3">Email: <a
+                                        href="mailto:info@economicsmadesimple.com">info@economicsmadesimple.com</a><br>
+                                    Complaints: UK ICO – <a href="https://www.ico.org.uk" target="_blank">www.ico.org.uk</a>
+                                </p>
                             </div>
                         </div>
                     </div>
+
 
                     <!-- Terms of Service Section -->
                     <div id="terms" class="faq-section mb-5">
                         <h2 class="section-title mb-4">
                             <i class="bi bi-file-text me-2" style="color: var(--secondary-color);"></i>
-                            Terms of Service
+                            Terms & Conditions
                         </h2>
 
                         <div class="card border-0 shadow-sm">
                             <div class="card-body">
+                                <h3 class="h5 mb-3">Who We Are</h3>
+                                <p class="mb-3">ECONOMICS MADE SIMPLE LTD (“EMS”, “we”, “our”, “us”) is a UK-registered
+                                    limited company providing educational resources, subscriptions, and online tuition
+                                    worldwide. Contact: <a
+                                        href="mailto:info@economicsmadesimple.com">info@economicsmadesimple.com</a>.</p>
+
                                 <h3 class="h5 mb-3">Acceptance of Terms</h3>
-                                <p class="mb-3">By accessing and using our website, you accept and agree to be bound by
-                                    the terms and provision of this agreement.</p>
+                                <p class="mb-3">By accessing and using our website, purchasing our products, or using our
+                                    services, you accept and agree to be bound by these Terms & Conditions.</p>
 
-                                <h3 class="h5 mb-3">Use License</h3>
-                                <p class="mb-3">Permission is granted to temporarily download one copy of the materials on
-                                    EMS's website for personal, non-commercial transitory viewing only.</p>
+                                <h3 class="h5 mb-3">Eligibility & Accounts</h3>
+                                <ul class="mb-3">
+                                    <li>Provide accurate information and keep your password secure.</li>
+                                    <li>Accounts are for one person; password sharing is prohibited.</li>
+                                    <li>Users under 18 must have consent from a parent, guardian, or school.</li>
+                                </ul>
 
-                                <h3 class="h5 mb-3">Disclaimer</h3>
-                                <p class="mb-3">The materials on EMS's website are provided on an 'as is' basis. EMS makes
-                                    no warranties, expressed or implied, and hereby disclaims and negates all other
-                                    warranties including without limitation, implied warranties or conditions of
-                                    merchantability, fitness for a particular purpose, or non-infringement of intellectual
-                                    property or other violation of rights.</p>
+                                <h3 class="h5 mb-3">Products & Services</h3>
+                                <ul class="mb-3">
+                                    <li>Digital resources (PowerPoints, model essays, revision materials).</li>
+                                    <li>Subscription services with restricted online content.</li>
+                                    <li>Online tuition services.</li>
+                                    <li>Other digital learning tools added in the future.</li>
+                                </ul>
 
-                                <h3 class="h5 mb-3">Limitations</h3>
-                                <p class="mb-3">In no event shall EMS or its suppliers be liable for any damages
-                                    (including, without limitation, damages for loss of data or profit, or due to business
-                                    interruption) arising out of the use or inability to use the materials on EMS's website.
+                                <h3 class="h5 mb-3">Pricing, Taxes & Payment</h3>
+                                <p class="mb-3">Prices are in GBP unless stated. Taxes may apply. Payments are processed
+                                    by Stripe or PayPal. We do not store full card details. EMS and its processors are
+                                    authorised to take payment for purchases and renewals. Pricing or payment errors may be
+                                    corrected, with refunds if necessary.</p>
+
+                                <h3 class="h5 mb-3">Subscriptions & Auto-Renew</h3>
+                                <p class="mb-3">Subscriptions default to auto-renew. Cancelling stops future billing but
+                                    does not refund the current term. Access continues until the end of the paid period.</p>
+
+                                <h3 class="h5 mb-3">Refunds & Cancellations</h3>
+                                <ul class="mb-3">
+                                    <li>Digital Content: No refunds once accessed/downloaded.</li>
+                                    <li>Subscriptions: No refunds for current term; future renewals can be stopped anytime.
+                                    </li>
+                                    <li>Tuition: Non-refundable once booked unless EMS cancels; then refund or reschedule is
+                                        offered.</li>
+                                </ul>
+
+                                <h3 class="h5 mb-3">Licence & Intellectual Property</h3>
+                                <p class="mb-3">All EMS content is owned by EMS or its licensors. Personal licence is
+                                    non-exclusive and non-transferable for study or teaching preparation. Institutions must
+                                    purchase a separate licence for sharing content.</p>
+
+                                <h3 class="h5 mb-3">Acceptable Use</h3>
+                                <ul class="mb-3">
+                                    <li>Do not share logins or allow unauthorised access.</li>
+                                    <li>Do not copy, scrape, or bulk-download materials.</li>
+                                    <li>Do not remove watermarks or rights notices.</li>
+                                    <li>Do not use EMS to break laws or infringe rights.</li>
+                                </ul>
+
+                                <h3 class="h5 mb-3">Termination & Suspension</h3>
+                                <p class="mb-3">EMS may suspend or terminate your account for breaches of these Terms. No
+                                    refund is due if terminated for breach. Access may be disabled to protect intellectual
+                                    property.</p>
+
+                                <h3 class="h5 mb-3">Availability & Force Majeure</h3>
+                                <p class="mb-3">EMS aims for service availability but does not guarantee uninterrupted
+                                    access. We are not liable for failures caused by events beyond our control, including
+                                    outages, strikes, natural disasters, or legal changes.</p>
+
+                                <h3 class="h5 mb-3">Accuracy of Information</h3>
+                                <p class="mb-3">Materials may contain errors. EMS may update content without notice. This
+                                    does not remove mandatory legal rights.</p>
+
+                                <h3 class="h5 mb-3">Third-Party Services & Links</h3>
+                                <p class="mb-3">Our site may link to or use third-party services, which are subject to
+                                    their own terms. EMS is not responsible for third-party acts or omissions.</p>
+
+                                <h3 class="h5 mb-3">Limitation of Liability</h3>
+                                <p class="mb-3">EMS’s total liability is limited to the amount paid for the
+                                    product/service. EMS is not liable for exam results, downtime, data loss,
+                                    business/profit loss, or indirect/consequential losses, except where law cannot exclude
+                                    liability (death, personal injury, or fraud).</p>
+
+                                <h3 class="h5 mb-3">Indemnity</h3>
+                                <p class="mb-3">You agree to indemnify EMS against claims or losses arising from unlawful
+                                    use, breach of these Terms, or infringement of intellectual property or privacy rights.
                                 </p>
 
-                                <h3 class="h5 mb-3">Revisions and Errata</h3>
-                                <p class="mb-0">The materials appearing on EMS's website could include technical,
-                                    typographical, or photographic errors. EMS does not warrant that any of the materials on
-                                    its website are accurate, complete or current.</p>
+                                <h3 class="h5 mb-3">Privacy & Cookies</h3>
+                                <p class="mb-3">Your use of EMS is also governed by our <a href="#privacy">Privacy &
+                                        Cookies Policy</a>, which explains how we collect and use data.</p>
+
+                                <h3 class="h5 mb-3">Changes to Services & Terms</h3>
+                                <p class="mb-3">EMS may change or discontinue services and update these Terms. Continued
+                                    use after changes constitutes acceptance of the updated Terms.</p>
+
+                                <h3 class="h5 mb-3">Governing Law & Jurisdiction</h3>
+                                <p class="mb-3">These Terms are governed by the laws of England and Wales. Disputes are
+                                    resolved exclusively in the courts of England and Wales.</p>
+
+                                <h3 class="h5 mb-3">Contact</h3>
+                                <p class="mb-0">Email: <a
+                                        href="mailto:info@economicsmadesimple.com">info@economicsmadesimple.com</a></p>
                             </div>
                         </div>
                     </div>
+
 
                 </div>
             </div>

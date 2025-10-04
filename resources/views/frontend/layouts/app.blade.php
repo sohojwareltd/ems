@@ -364,6 +364,40 @@
         </a>
     </footer>
 
+    <!-- Cookie Consent Modal -->
+    <div class="modal fade" id="cookieConsentModal" tabindex="-1" aria-labelledby="cookieConsentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cookieConsentModalLabel">We Value Your Privacy</h5>
+                </div>
+                <div class="modal-body">
+                    <p>We use cookies to improve your experience, provide personalized content, and analyze our traffic.
+                        You can choose which cookies to accept.</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="analytics" id="analyticsCookies">
+                        <label class="form-check-label" for="analyticsCookies">
+                            Analytics / Performance Cookies
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="marketing" id="marketingCookies">
+                        <label class="form-check-label" for="marketingCookies">
+                            Marketing / Advertising Cookies
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="rejectCookies" class="btn btn-outline-secondary">Reject All</button>
+                    <button type="button" id="saveCookies" class="btn custom-btn">Save Preferences</button>
+                    <button type="button" id="acceptAllCookies" class="btn custom-btn-outline">Accept All</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -431,6 +465,55 @@
                 if (alert.parentNode) alert.remove();
             }, 3000);
         }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const consent = localStorage.getItem('cookieConsent');
+            const modal = new bootstrap.Modal(document.getElementById('cookieConsentModal'));
+
+            // Show modal if no consent
+            if (!consent) {
+                modal.show();
+            }
+
+            // Accept All
+            document.getElementById('acceptAllCookies').addEventListener('click', function() {
+                localStorage.setItem('cookieConsent', 'all');
+                enableCookies(['analytics', 'marketing']);
+                modal.hide();
+            });
+
+            // Save Custom Preferences
+            document.getElementById('saveCookies').addEventListener('click', function() {
+                const analytics = document.getElementById('analyticsCookies').checked;
+                const marketing = document.getElementById('marketingCookies').checked;
+                const consentData = {
+                    analytics: analytics,
+                    marketing: marketing
+                };
+                localStorage.setItem('cookieConsent', JSON.stringify(consentData));
+                enableCookies(Object.keys(consentData).filter(key => consentData[key]));
+                modal.hide();
+            });
+
+            // Reject All
+            document.getElementById('rejectCookies').addEventListener('click', function() {
+                localStorage.setItem('cookieConsent', 'rejected');
+                modal.hide();
+            });
+
+            // Example function to enable cookies
+            function enableCookies(types) {
+                if (types.includes('analytics')) {
+                    console.log('Enable analytics cookies');
+                    // Load Google Analytics or other scripts
+                }
+                if (types.includes('marketing')) {
+                    console.log('Enable marketing cookies');
+                    // Load marketing/tracking scripts
+                }
+            }
+        });
     </script>
     @stack('scripts')
 </body>
