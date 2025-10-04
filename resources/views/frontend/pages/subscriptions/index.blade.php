@@ -180,9 +180,9 @@
         .pricing-wrapper {
             grid-column-gap: 40px;
             grid-row-gap: 50px;
-            grid-template-rows: auto;
-            grid-template-columns: 1fr 1fr;
-            grid-auto-columns: 1fr;
+            /* grid-template-rows: auto; */
+            grid-template-columns: repeat(2, 1fr);
+            /* grid-auto-columns: 1fr; */
             /* align-items: center; */
             display: grid;
         }
@@ -478,7 +478,7 @@
         }
 
         .w-layout-blockcontainer {
-            max-width: 940px;
+            max-width: 740px;
             margin-left: auto;
             margin-right: auto;
             display: block;
@@ -698,176 +698,64 @@
                         <p class="paragraph-10">20% off</p>
                     </div>
                 </div>
-                <p class="p-17"><strong>4-Monthly</strong></p>
+                <p class="p-17"><strong>Monthly</strong></p>
                 <p class="p-17"><strong>Yearly</strong></p>
             </div>
         </div>
         <div class="container-3">
             <div class="pricing-wrapper">
-                <div id="w-node-_05512a31-f544-76da-064a-75e0b3a58023-836f1a9d"
-                    class="w-layout-blockcontainer container-4 w-container">
-                    <p class="paragraph-3"><strong>Join to get immediate access to our </strong><span
-                            class="highlight-dark"><strong>step-by-step, guided curriculum</strong></span><strong>,
-                            including:</strong></p>
-                    <ul role="list" class="pricing-feature-list w-list-unstyled">
-                        <li class="transformation-list-item-bordered">
-                            <div class="checkmark-green w-embed me-2"><i class="bi bi-check-circle" style="color: #00b22d"
-                                    aria-hidden="true"></i></div>
-                            <div class="standard-list-item">Diagnostic assessment of your learning, time management, focus,
-                                and skill acquisition habits</div>
-                        </li>
-                        <li class="transformation-list-item-bordered">
-                            <div class="checkmark-green w-embed me-2"><i class="bi bi-check-circle" style="color: #00b22d"
-                                    aria-hidden="true"></i>
-                            </div>
-                            <div class="standard-list-item">104 video lessons covering high-yield learning and
-                                self-management principles, organised in the ideal order and structure for efficient
-                                upskilling</div>
-                        </li>
-                        <li class="transformation-list-item-bordered">
-                            <div class="checkmark-green w-embed me-2"><i class="bi bi-check-circle" style="color: #00b22d"
-                                    aria-hidden="true"></i>
-                            </div>
-                            <div class="standard-list-item">Actionable techniques with step-by-step instructions to apply
-                                what you learn to your real content</div>
-                        </li>
-                        <li class="transformation-list-item-bordered">
-                            <div class="checkmark-green w-embed me-2"><i class="bi bi-check-circle" style="color: #00b22d"
-                                    aria-hidden="true"></i>
-                            </div>
-                            <div class="standard-list-item">Interactive quizzes and drills</div>
-                        </li>
-                        <li class="transformation-list-item-bordered">
-                            <div class="checkmark-green w-embed me-2"><i class="bi bi-check-circle" style="color: #00b22d"
-                                    aria-hidden="true"></i>
-                            </div>
-                            <div class="standard-list-item">Exclusive monthly interactive workshops with Dr.
-                                Justin&nbsp;Sung</div>
-                        </li>
-                        <li class="transformation-list-item-bordered">
-                            <div class="checkmark-green w-embed me-2"><i class="bi bi-check-circle" style="color: #00b22d"
-                                    aria-hidden="true"></i>
-                            </div>
-                            <div class="standard-list-item">50+ hours of previous workshops solving the most common problems
-                                from real learners, fully searchable with our AI-powered search engine</div>
-                        </li>
-                        <li class="transformation-list-item-bordered">
-                            <div class="checkmark-green w-embed me-2"><i class="bi bi-check-circle" style="color: #00b22d"
-                                    aria-hidden="true"></i>
-                            </div>
-                            <div class="standard-list-item">Dozens of sample learning systems, study schedules and
-                                subject-specific walkthroughs and examples</div>
-                        </li>
-                        <li class="transformation-list-item-bordered">
-                            <div class="checkmark-green w-embed me-2"><i class="bi bi-check-circle" style="color: #00b22d"
-                                    aria-hidden="true"></i>
-                            </div>
-                            <div class="standard-list-item">Global community of over 10,000 like-minded learners to keep you
-                                accountable</div>
-                        </li>
-                        <li class="transformation-list-item-bordered">
-                            <div class="checkmark-green w-embed me-2"><i class="bi bi-check-circle" style="color: #00b22d"
-                                    aria-hidden="true"></i>
-                            </div>
-                            <div class="standard-list-item">Support and feedback from expert coaches</div>
-                        </li>
-                    </ul>
-                </div>
-                <div id="w-node-ddd32dc0-2bdc-f1e0-106d-db04735ad834-836f1a9d" class="w-layout-blockcontainer w-container">
-                    @if ($months->isNotEmpty())
-                        @foreach ($months as $month)
-                            <div id="Annual-pricing-card"
-                                class="pricing-card featured-pricing w-node-_574b3d40-8b40-810a-3abf-631d6f677ea9-836f1a9d">
-                                <div class="w-layout-blockcontainer container-11 w-container">
-                                    <div data-w-id="553d4b10-9c88-50bb-c556-0d41f96d192c" style="opacity: 1; display: flex;"
-                                        class="w-layout-blockcontainer pricing-container w-container">
-                                        <div class="w-layout-blockcontainer annual-price-value-container w-container">
-                                            {{-- <div class="pricing-title-discount"><i class="bi bi-currency-euro"></i>507</div> --}}
-                                            <div class="pricing-title highlight-dark"><i class="bi bi-currency-euro"></i>
-                                                {{ number_format($month->price) }}
-                                            </div>
-                                        </div>
-                                        <div class="pricing-subtitle">Billed Yearly (Save 20%)<br>Cancel anytime.</div>
 
-                                        <a href="{{ route('subscriptions.payment', $month->id) }}" class="custom-btn btn">Get Started</a>
+
+                @foreach ($plans as $plan)
+                    <div id="Annual-pricing-card"
+                        class="pricing-card featured-pricing w-node-_574b3d40-8b40-810a-3abf-631d6f677ea9-836f1a9d">
+                        <div class="w-layout-blockcontainer container-11 w-container">
+                            <div data-w-id="553d4b10-9c88-50bb-c556-0d41f96d192c" style="opacity: 1; display: flex;"
+                                class="w-layout-blockcontainer pricing-container w-container">
+                                <div class="w-layout-blockcontainer annual-price-value-container w-container">
+                                    {{-- <div class="pricing-title-discount"><i class="bi bi-currency-euro"></i>507</div> --}}
+                                    <div class="pricing-title highlight-dark">£
+                                        {{ $plan->price }}
                                     </div>
                                 </div>
-                                <div class="pricing-divider"></div>
-                                <section>
-                                    <div class="container-3">
-                                        <div class="money-back-wrapper">
-                                            <div class="money-back-icon"><img width="80" loading="lazy" alt=""
-                                                    src="{{ asset('images/PHOTO1.png') }}" class="image"></div>
-                                            <div class="money-back-text">
-                                                <div class="explore-card-title highlight-yellow">Money-back guarantee</div>
-                                                <p class="margin-bottom-24px-2">If you aren’t 100% satisfied in the first
-                                                    30
-                                                    days,
-                                                    we’ll refund your entire payment. Read our <a
-                                                        href="#"
-                                                        data-wf-native-id-path="44a8fc3b-18b1-d53e-ecb1-45708abdf5b7"
-                                                        data-wf-ao-click-engagement-tracking="true"
-                                                        data-wf-element-id="44a8fc3b-18b1-d53e-ecb1-45708abdf5b7"
-                                                        target="_blank">terms and conditions</a>.</p>
-                                            </div>
-                                        </div>
+                                <div class="pricing-subtitle">
+                                    <ul class="plan-features">
+                                        {!! str_replace('<li>', '<li><i class="bi bi-check-circle-fill text-success me-2"></i>', $plan->description) !!}
+                                    </ul>
+
+                                </div>
+
+
+                                <a href="{{ route('subscriptions.payment', $plan->id) }}" class="custom-btn btn">Get
+                                    Started</a>
+                            </div>
+                        </div>
+                        <div class="pricing-divider"></div>
+                        <section>
+                            <div class="container-3">
+                                <div class="money-back-wrapper">
+                                    <div class="money-back-icon"><img width="80" loading="lazy" alt=""
+                                            src="{{ asset('images/PHOTO1.png') }}" class="image"></div>
+                                    <div class="money-back-text">
+                                        {{-- <div class="explore-card-title highlight-yellow">Money-back guarantee</div> --}}
+                                        <p class="margin-bottom-24px-2">If you aren’t 100% satisfied in the first
+                                            {{ $plan->trial_period_days }}
+                                            {{ $plan->interval }},
+                                            we’ll refund your entire payment. Read our <a href="#"
+                                                data-wf-native-id-path="44a8fc3b-18b1-d53e-ecb1-45708abdf5b7"
+                                                data-wf-ao-click-engagement-tracking="true"
+                                                data-wf-element-id="44a8fc3b-18b1-d53e-ecb1-45708abdf5b7"
+                                                target="_blank">terms and conditions</a>.</p>
                                     </div>
-                                </section>
-                                <div data-w-id="574b3d40-8b40-810a-3abf-631d6f677ecf" class="pricing-tag"
-                                    style="opacity: 1;">
-                                    <span class="highlight-dark">{{ $month->name }}</span>
                                 </div>
                             </div>
-                        @endforeach
-                    @endif
-                    @if ($years->isNotEmpty())
-                        @foreach ($years as $year)
-                            <div id="Annual-pricing-card"
-                                class="pricing-card featured-pricing w-node-_574b3d40-8b40-810a-3abf-631d6f677ea9-836f1a9d">
-                                <div class="w-layout-blockcontainer container-11 w-container">
-                                    <div data-w-id="553d4b10-9c88-50bb-c556-0d41f96d192c" style="opacity: 1; display: flex;"
-                                        class="w-layout-blockcontainer pricing-container w-container">
-                                        <div class="w-layout-blockcontainer annual-price-value-container w-container">
-                                            {{-- <div class="pricing-title-discount"><i class="bi bi-currency-euro"></i>507</div> --}}
-                                            <div class="pricing-title highlight-dark"><i class="bi bi-currency-euro"></i>
-                                                {{ number_format($year->price) }}
-                                            </div>
-                                        </div>
-                                        <div class="pricing-subtitle">Billed Yearly (Save 20%)<br>Cancel anytime.</div>
+                        </section>
+                        <div data-w-id="574b3d40-8b40-810a-3abf-631d6f677ecf" class="pricing-tag" style="opacity: 1;">
+                            <span class="highlight-dark">{{ $plan->name }}</span>
+                        </div>
+                    </div>
+                @endforeach
 
-                                        <a href="{{ route('subscriptions.payment', $year->id) }}" class="custom-btn btn">Get Started</a>
-                                    </div>
-                                </div>
-                                <div class="pricing-divider"></div>
-                                <section>
-                                    <div class="container-3">
-                                        <div class="money-back-wrapper">
-                                            <div class="money-back-icon"><img width="80" loading="lazy" alt=""
-                                                    src="{{ asset('images/PHOTO1.png') }}" class="image"></div>
-                                            <div class="money-back-text">
-                                                <div class="explore-card-title highlight-yellow">Money-back guarantee</div>
-                                                <p class="margin-bottom-24px-2">If you aren’t 100% satisfied in the first
-                                                   {{ $year->trial_period_days}}
-                                                    {{ $year->interval }},
-                                                    we’ll refund your entire payment. Read our <a
-                                                        href="#"
-                                                        data-wf-native-id-path="44a8fc3b-18b1-d53e-ecb1-45708abdf5b7"
-                                                        data-wf-ao-click-engagement-tracking="true"
-                                                        data-wf-element-id="44a8fc3b-18b1-d53e-ecb1-45708abdf5b7"
-                                                        target="_blank">terms and conditions</a>.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </section>
-                                <div data-w-id="574b3d40-8b40-810a-3abf-631d6f677ecf" class="pricing-tag"
-                                    style="opacity: 1;">
-                                    <span class="highlight-dark">{{ $year->name }}</span>
-                                </div>
-                            </div>
-                        @endforeach
-                    @endif
-
-                </div>
             </div>
         </div>
     </section>

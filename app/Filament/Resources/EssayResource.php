@@ -44,12 +44,12 @@ class EssayResource extends Resource
                                 ->maxLength(255)
                                 ->helperText('Unique URL slug for the product. Auto-generated from the name.'),
 
-                            Forms\Components\Select::make('resource_type_id')
-                                ->label('Resource')
-                                ->relationship('resource', 'title')
-                                // ->searchable()
-                                ->required()
-                                ->helperText('Assign a resource for better organization.'),
+                            // Forms\Components\Select::make('resource_type_id')
+                            //     ->label('Resource')
+                            //     ->relationship('resource', 'title')
+                            //     // ->searchable()
+                            //     ->required()
+                            //     ->helperText('Assign a resource for better organization.'),
                             Forms\Components\Select::make('qualiification_id')
                                 ->label('Qualification')
                                 ->relationship('qualiification', 'title')
@@ -171,7 +171,7 @@ class EssayResource extends Resource
 
 
                             Forms\Components\FileUpload::make('ppt_file')
-                                ->label('PowerPoint File')
+                                ->label('Zip File')
                                 ->directory('products/powerpoints'),
                         ]),
                     // Forms\Components\Tabs\Tab::make('SEO')

@@ -277,10 +277,7 @@
                                                             {{ $paper->name }}
                                                         </div>
                                                         <div class="d-flex gap-3">
-                                                            @if ($paper->power_point)
-                                                                <a href="{{ asset('storage/' . $paper->power_point) }}"
-                                                                    target="_blank">Insert</a>
-                                                            @endif
+
                                                             @if ($paper->file)
                                                                 <a href="{{ asset('storage/' . $paper->file) }}"
                                                                     target="_blank">Question paper</a>
@@ -288,6 +285,10 @@
                                                             @if ($paper->mark)
                                                                 <a href="{{ asset('storage/' . $paper->mark) }}"
                                                                     target="_blank">Mark scheme</a>
+                                                            @endif
+                                                            @if ($paper->power_point)
+                                                                <a href="{{ asset('storage/' . $paper->power_point) }}"
+                                                                    target="_blank">Examiner’s Report</a>
                                                             @endif
                                                         </div>
                                                     </li>
@@ -316,10 +317,7 @@
                                                         <div><strong>{{ $paper->month }} {{ $paper->year }}</strong>
                                                             {{ $paper->name }}</div>
                                                         <div class="d-flex gap-3">
-                                                            @if ($paper->power_point)
-                                                                <a href="{{ asset('storage/' . $paper->power_point) }}"
-                                                                    target="_blank">Insert</a>
-                                                            @endif
+
                                                             @if ($paper->file)
                                                                 <a href="{{ asset('storage/' . $paper->file) }}"
                                                                     target="_blank">Question paper</a>
@@ -327,6 +325,10 @@
                                                             @if ($paper->mark)
                                                                 <a href="{{ asset('storage/' . $paper->mark) }}"
                                                                     target="_blank">Mark scheme</a>
+                                                            @endif
+                                                            @if ($paper->power_point)
+                                                                <a href="{{ asset('storage/' . $paper->power_point) }}"
+                                                                    target="_blank">Examiner’s Report</a>
                                                             @endif
                                                         </div>
                                                     </div>

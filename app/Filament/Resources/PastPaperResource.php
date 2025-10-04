@@ -92,12 +92,12 @@ class PastPaperResource extends Resource
                                 ->relationship('examboard', 'title')
                                 ->label('Exam Board')
                                 ->required(),
-                            Forms\Components\Select::make('resource_type_id')
-                                ->label('Resource')
-                                ->relationship('resource', 'title')
-                                // ->searchable()
-                                ->required()
-                                ->helperText('Assign a resource for better organization.'),
+                            // Forms\Components\Select::make('resource_type_id')
+                            //     ->label('Resource')
+                            //     ->relationship('resource', 'title')
+                            //     // ->searchable()
+                            //     ->required()
+                            //     ->helperText('Assign a resource for better organization.'),
                         ])
                         ->columns(2),
 
@@ -107,14 +107,12 @@ class PastPaperResource extends Resource
                             Forms\Components\FileUpload::make('file')
                                 ->label('Question Paper')
                                 ->directory('pastpapers/pdf'),
-
-                            Forms\Components\FileUpload::make('power_point')
-                                ->label(' Examiner’s Report')
-                                ->directory('pastpapers/ppt'),
-
                             Forms\Components\FileUpload::make('mark')
                                 ->label('Mark Scheme')
                                 ->directory('pastpapers/mark'),
+                            Forms\Components\FileUpload::make('power_point')
+                                ->label(' Examiner’s Report')
+                                ->directory('pastpapers/ppt'),
                         ])
                         ->columns(2),
                 ])

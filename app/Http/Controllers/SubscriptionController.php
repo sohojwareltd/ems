@@ -21,10 +21,9 @@ class SubscriptionController extends Controller
     {
         // Fetch available subscription plans from the database
         // $plans = Plan::where('active', true)->get();
-        $months = plan::where('interval', 'month')->where('active', true)->get();
-        $years = plan::where('interval', 'year')->where('active', true)->get();
+        $plans = Plan::where('active', true)->get();
 
-        return view('frontend.pages.subscriptions.index', compact('months', 'years'));
+        return view('frontend.pages.subscriptions.index', compact('plans'));
     }
     public function subscriptions(Request $request)
     {
