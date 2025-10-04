@@ -39,6 +39,12 @@
             box-shadow: var(--shadow-medium);
         }
 
+        .card-standard .features li::before {
+            content: '✘';
+            background-color: #ea4e1d;
+            color: white;
+        }
+
         .card-header {
             font-weight: bold;
             font-size: 1.1rem;
@@ -57,9 +63,9 @@
 
         }
 
-        .card-pro  {
+        .card-pro {
             border: 1px solid #e41d71;
-   
+
         }
 
         .card-business .card-header {
@@ -96,8 +102,7 @@
             margin-top: 5px;
         }
 
-
-        .btn-choose {
+        . .btn-choose {
             border: none;
             padding: 12px 20px;
             font-weight: 500;
@@ -134,6 +139,21 @@
             background-color: #e41d71;
         }
 
+        .card-business li {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 2em;
+        }
+
+        .card-business {
+            counter-reset: step-counter;
+        }
+
+        .card-business li::before {
+            content: counter(step-counter) ".";
+
+        }
+
         @media (max-width: 768px) {
             .card-pricing {
                 margin-bottom: 20px;
@@ -155,7 +175,7 @@
                         <ul class="features text-start mt-3 p-2">
                             <li>Last-minute tutoring never works</li>
                             <li>Students disengage in dull sessions</li>
-                            <li>Lessons often lack structure or resources</li>
+                            <li>Lessons lack structure and resources</li>
                             <li>Parents are left in the dark on progress</li>
                         </ul>
                     </div>
@@ -168,13 +188,14 @@
                     <div class="card-header">The Solution</div>
                     <div class="card-body text-center">
                         <ul class="features text-start mt-3 p-2">
-                            <li>Tailored curriculum with a personalised roadmap</li>
-                            <li>Active learning, students work, think, and engage</li>
-                            <li>Early planning and long-term guidance, not quick fixes</li>
-                            <li>Free access to premium EMS exam resources</li>
+                            <li>Personalised curriculum and plan</li>
+                            <li>Interactive sessions to engage students</li>
+                            <li>Long term guidance, not quick fixes</li>
+                            <li>Access to premium EMS exam resources</li>
                             <li>Insider knowledge from real examiners</li>
-                            <li>Open communication between tutor, student, and parents</li>
+                            <li>Open and proactive communication</li>
                         </ul>
+
                     </div>
                 </div>
             </div>
@@ -184,15 +205,17 @@
                 <div class="card-pricing card-business h-100">
                     <div class="card-header">The Process</div>
                     <div class="card-body text-center">
-                        <ul class="features text-start mt-3 p-2">
-                            <li>Fill in the form below</li>
+                        <ol class="features text-start mt-3 p-2">
+                            <li>Complete enquiry form</li>
                             <li>Free consultation to set goals</li>
-                            <li>Baseline test leading to a personalised plan</li>
-                            <li>Structured course with homework, essays, and checkpoints</li>
-                            <li>Shared online folder for full transparency between student, tutor and parent</li>
+                            <li>Baseline tests to inform strategy</li>
+                            <li>Finalise individual course</li>
+                            <li>Online folder for full transparency</li>
                             <li>Regular reports and progress meetings</li>
-                        </ul>
-                        <a href="{{route('contact')}}#contact-form" class="btn btn-choose text-decoration-none ">Book today </a>
+                        </ol>
+                        <a href="{{ route('contact') }}#contact-form" class="btn btn-choose text-decoration-none">Book
+                            today</a>
+
                     </div>
                 </div>
             </div>

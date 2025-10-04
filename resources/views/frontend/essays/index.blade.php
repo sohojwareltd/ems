@@ -3,7 +3,8 @@
 @php use Illuminate\Support\Arr; @endphp
 
 @section('title', 'Essays - EMS')
-@section('meta_description', 'Explore our collection of books. Find your next great read or the perfect gift for a book
+@section('meta_description',
+    'Explore our collection of books. Find your next great read or the perfect gift for a book
     lover.')
 @section('meta_keywords', 'books, audiobooks, gift boxes, bookshop, online bookstore, reading, literature, book gifts')
 
@@ -64,7 +65,7 @@
     $examBoardsMap = \App\Models\ExamBoard::pluck('title', 'id')->toArray();
     $subjectsMap = \App\Models\Subject::pluck('title', 'id')->toArray();
     $topicsMap = \App\Models\Topic::pluck('name', 'id')->toArray();
-    $papers = \App\Models\Paper::all();
+    $papers = \App\Models\Paper::orderBy('name', 'asc')->get();
 
     $qualification = $qualificationId ? $qualificationsMap[$qualificationId] ?? null : null;
     $examBoard = $examBoardId ? $examBoardsMap[$examBoardId] ?? null : null;
