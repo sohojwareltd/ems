@@ -32,18 +32,19 @@ class TopicResource extends Resource
                 ->required()
                 ->live(onBlur: true)
                 ->afterStateUpdated(fn($state, callable $set) => $set('slug', Str::slug($state))),
-
-
-
             TextInput::make('slug')
                 ->required()
                 ->unique(ignoreRecord: true),
-            Forms\Components\Select::make('paper_code_id')
-                ->label('Paper Code')
-                ->relationship('paperCode', 'name')
-                // ->searchable()
+            Forms\Components\Select::make('paper_id')
+                ->label('Paper')
+                ->relationship('paper', 'name')
                 ->required()
-                ->helperText('Assign a paper code for better organization.')
+                ->helperText('Assign a paper for better organization.'),
+            Forms\Components\Select::make('subject_id')
+                ->label('Subject')
+                ->relationship('subject', 'title') // Uses the 'subject' relation and shows 'title'
+                ->required()
+                ->helperText('Assign a subject for better organization.'),
         ]);
     }
 
@@ -52,7 +53,15 @@ class TopicResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->searchable()->sortable(),
-                TextColumn::make('slug')->searchable()->sortable(),
+                // TextColumn::make('slug')->searchable()->sortable(),
+                     Tables\Columns\TextColumn::make('subject.title')
+                    ->label('Subject')
+                    ->sortable()
+                    ->searchable(),
+                     Tables\Columns\TextColumn::make('paper.name')
+                    ->label('Paper')
+                    ->sortable()
+                    ->searchable()
             ])
             ->filters([
                 //

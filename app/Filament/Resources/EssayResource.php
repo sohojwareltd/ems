@@ -103,9 +103,9 @@ class EssayResource extends Resource
                                     '12' => '12 Marks',
                                 ])
                                 ->label('Marks'),
-                            Forms\Components\Select::make('paper_code_id')
-                                ->label('Paper Code')
-                                ->options(\App\Models\PaperCode::all()->pluck('name', 'id'))
+                            Forms\Components\Select::make('paper_id')
+                                ->label('Paper')
+                                ->options(\App\Models\Paper::all()->pluck('name', 'id'))
                                 ->reactive()
                                 ->afterStateUpdated(fn(callable $set) => $set('topic_id', null))
                                 ->required(),
@@ -114,16 +114,16 @@ class EssayResource extends Resource
                                 ->label('Topic')
                                 ->required()
                                 ->options(function (callable $get) {
-                                    $paperCodeId = $get('paper_code_id');
-                                    if (!$paperCodeId) {
+                                    $paperId = $get('paper_id');
+                                    if (!$paperId) {
                                         return [];
                                     }
 
-                                    return \App\Models\Topic::where('paper_code_id', $paperCodeId)
+                                    return \App\Models\Topic::where('paper_id', $paperId)
                                         ->pluck('name', 'id');
                                 })
                                 ->searchable()
-                                ->disabled(fn(callable $get) => !$get('paper_code_id')),
+                                ->disabled(fn(callable $get) => !$get('paper_id')),
 
                             Forms\Components\Select::make('status')
                                 ->options([

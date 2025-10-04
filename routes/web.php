@@ -223,19 +223,27 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     return redirect('/dashboard');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
-Route::get('/get-topics-by-paper/{paperCodeId}', function ($paperCodeId) {
+// Route::get('/get-topics-by-paper/{paperCodeId}', function ($paperCodeId) {
+//     return response()->json(
+//         Topic::where('paper_code_id', $paperCodeId)->select('id', 'name')->get()
+//     );
+// });
+
+// Route::get('/get-paper-codes-by-paper/{paperId}', function ($paperId) {
+//        return response()->json(
+//         PaperCode::where('paper_id', $paperId)->select('id', 'name')->get()
+//     );
+// });
+
+
+Route::get('/get-topics-by-paper/{paperId}', function ($paperId) {
     return response()->json(
-        Topic::where('paper_code_id', $paperCodeId)->select('id', 'name')->get()
+        \App\Models\Topic::where('paper_id', $paperId)
+            ->select('id', 'name')
+            ->orderBy('name')
+            ->get()
     );
 });
-
-Route::get('/get-paper-codes-by-paper/{paperId}', function ($paperId) {
-       return response()->json(
-        PaperCode::where('paper_id', $paperId)->select('id', 'name')->get()
-    );
-});
-
-
 
 
 Auth::routes(['verify' => true]);

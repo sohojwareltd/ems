@@ -12,4 +12,14 @@ class Topic extends Model
     {
         return $this->belongsTo(PaperCode::class);
     }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
+
+    public function paper()
+    {
+        return $this->belongsTo(Paper::class);
+    }
 }
