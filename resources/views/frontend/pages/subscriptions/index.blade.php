@@ -691,15 +691,15 @@
         <h1 class="heading-2"><span class="">Pricing</span></h1>
         <div class="flex-wrap">
             <div class="switch-wrap">
-                <div class="percentage-wrap"><img loading="lazy"
+                {{-- <div class="percentage-wrap"><img loading="lazy"
                         src="https://cdn.prod.website-files.com/682d03999cd54259836f1a8e/683646e8e5ee0a1d4256228d_arrow.svg"
                         alt="" class="arrow-img">
                     <div class="percentage">
                         <p class="paragraph-10">20% off</p>
                     </div>
-                </div>
-                <p class="p-17"><strong>Monthly</strong></p>
-                <p class="p-17"><strong>Yearly</strong></p>
+                </div> --}}
+                {{-- <p class="p-17"><strong>Monthly</strong></p>
+                <p class="p-17"><strong>Yearly</strong></p> --}}
             </div>
         </div>
         <div class="container-3">
@@ -730,26 +730,26 @@
                                     Started</a>
                             </div>
                         </div>
-                        <div class="pricing-divider"></div>
-                        <section>
-                            <div class="container-3">
-                                <div class="money-back-wrapper">
-                                    <div class="money-back-icon"><img width="80" loading="lazy" alt=""
-                                            src="{{ asset('images/PHOTO1.png') }}" class="image"></div>
-                                    <div class="money-back-text">
+                        {{-- <div class="pricing-divider"></div> --}}
+                        {{-- <section> --}}
+                            {{-- <div class="container-3"> --}}
+                                {{-- <div class="money-back-wrapper"> --}}
+                                    {{-- <div class="money-back-icon"><img width="80" loading="lazy" alt=""
+                                            src="{{ asset('images/PHOTO1.png') }}" class="image"></div> --}}
+                                    {{-- <div class="money-back-text"> --}}
                                         {{-- <div class="explore-card-title highlight-yellow">Money-back guarantee</div> --}}
-                                        <p class="margin-bottom-24px-2">If you aren’t 100% satisfied in the first
+                                        {{-- <p class="margin-bottom-24px-2">If you aren’t 100% satisfied in the first
                                             {{ $plan->trial_period_days }}
                                             {{ $plan->interval }},
                                             we’ll refund your entire payment. Read our <a href="#"
                                                 data-wf-native-id-path="44a8fc3b-18b1-d53e-ecb1-45708abdf5b7"
                                                 data-wf-ao-click-engagement-tracking="true"
                                                 data-wf-element-id="44a8fc3b-18b1-d53e-ecb1-45708abdf5b7"
-                                                target="_blank">terms and conditions</a>.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+                                                target="_blank">terms and conditions</a>.</p> --}}
+                                    {{-- </div> --}}
+                                {{-- </div> --}}
+                            {{-- </div> --}}
+                        {{-- </section> --}}
                         <div data-w-id="574b3d40-8b40-810a-3abf-631d6f677ecf" class="pricing-tag" style="opacity: 1;">
                             <span class="highlight-dark">{{ $plan->name }}</span>
                         </div>

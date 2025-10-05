@@ -236,7 +236,17 @@
                                             <div class="accordion-body">
                                                 @foreach ($essays as $essay)
                                                     <div class="mt-2 d-flex justify-content-between align-items-center">
-                                                        <div><strong>{{ $essay->name }}</strong></div>
+
+                                                        <div>
+                                                            @if (Auth::check() && Auth::user()->hasActiveSubscription())
+                                                                <strong>{{ $essay->name }}</strong>
+                                                            @else
+                                                                <strong>
+                                                                    <a
+                                                                        href="{{ route('subscriptions.index') }}">{{ $essay->name }}</a>
+                                                                </strong>
+                                                            @endif
+                                                        </div>
                                                         @if (Auth::check() && Auth::user()->hasActiveSubscription())
                                                             <div class="d-flex gap-2">
                                                                 <a href="{{ asset('storage/' . $essay->file) }}"
