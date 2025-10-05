@@ -28,6 +28,7 @@ class Product extends Model
         'is_digital',
         'pdf_file',
         'ppt_file',
+        'zip_file',
     ];
 
     protected $casts = [

@@ -20,6 +20,7 @@ use App\Models\Paper;
 use App\Models\PaperCode;
 use App\Models\Topic;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -223,27 +224,28 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     return redirect('/dashboard');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
-// Route::get('/get-topics-by-paper/{paperCodeId}', function ($paperCodeId) {
-//     return response()->json(
-//         Topic::where('paper_code_id', $paperCodeId)->select('id', 'name')->get()
-//     );
-// });
+Route::get('/get-topics-by-paper/{paperId}/{subjectId}', function ($paperId, $subjectId) {
 
-// Route::get('/get-paper-codes-by-paper/{paperId}', function ($paperId) {
-//        return response()->json(
-//         PaperCode::where('paper_id', $paperId)->select('id', 'name')->get()
-//     );
-// });
-
-
-Route::get('/get-topics-by-paper/{paperId}', function ($paperId) {
     return response()->json(
-        \App\Models\Topic::where('paper_id', $paperId)
-            ->select('id', 'name')
-            ->orderBy('name')
-            ->get()
+        Topic::where('paper_id', $paperId)->where('subject_id', $subjectId)->select('id', 'name')->get()
     );
 });
+
+Route::get('/get-paper-codes-by-paper/{paperId}', function ($paperId) {
+       return response()->json(
+        PaperCode::where('paper_id', $paperId)->select('id', 'name')->get()
+    );
+});
+
+
+// Route::get('/get-topics-by-paper/{paperId}', function ($paperId) {
+//     return response()->json(
+//         \App\Models\Topic::where('paper_id', $paperId)
+//             ->select('id', 'name')
+//             ->orderBy('name')
+//             ->get()
+//     );
+// });
 
 
 Auth::routes(['verify' => true]);

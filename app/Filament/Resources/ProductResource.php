@@ -59,19 +59,19 @@ class ProductResource extends Resource
                                 // ->searchable()
                                 ->required()
                                 ->helperText('Assign a resource for better organization.'),
-                             Forms\Components\Select::make('qualiification_id')
+                            Forms\Components\Select::make('qualiification_id')
                                 ->label('Qualification')
                                 ->relationship('qualiification', 'title')
                                 // ->searchable()
                                 ->required()
                                 ->helperText('Assign a qualification for better organization.'),
-                             Forms\Components\Select::make('subject_id')
+                            Forms\Components\Select::make('subject_id')
                                 ->label('Subject')
                                 ->relationship('subject', 'title')
                                 // ->searchable()
                                 ->required()
                                 ->helperText('Assign a subject for better organization.'),
-                             Forms\Components\Select::make('examboard_id')
+                            Forms\Components\Select::make('examboard_id')
                                 ->label('Examboard')
                                 ->relationship('examboard', 'title')
                                 // ->searchable()
@@ -87,9 +87,9 @@ class ProductResource extends Resource
                                 ->default('draft')
                                 ->required()
                                 ->helperText('Set the product status.'),
-                                Forms\Components\RichEditor::make('description')
-                                    ->columnSpanFull()
-                                    ->helperText('Detailed product description.'),
+                            Forms\Components\RichEditor::make('description')
+                                ->columnSpanFull()
+                                ->helperText('Detailed product description.'),
                         ]),
                     // Forms\Components\Tabs\Tab::make('Pricing')
                     //     ->icon('heroicon-o-currency-dollar')
@@ -152,21 +152,22 @@ class ProductResource extends Resource
 
 
                             Forms\Components\FileUpload::make('pdf_file')
-                                ->label('Upload PDF File')
+                                ->label('PDF File')
                                 ->directory('products/gallery/pdf')
-                                ->acceptedFileTypes(['application/pdf'])
-                                ->maxSize(5120)
-                                ->required(),
+                                ->acceptedFileTypes(['application/pdf']),
                             // PowerPoint Upload (only when PPT is selected)
                             Forms\Components\FileUpload::make('ppt_file')
-                                ->label('Upload PowerPoint File')
+                                ->label('PPT File')
                                 ->directory('products/gallery/ppt')
                                 ->acceptedFileTypes([
                                     'application/vnd.ms-powerpoint', // .ppt
                                     'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
-                                ])
-                                ->maxSize(5120)
-                                ->required(),
+                                ]),
+
+
+                            Forms\Components\FileUpload::make('zip_file')
+                                ->label('Zip File')
+                                ->directory('products/gallery/zip'),
                         ]),
                     Forms\Components\Tabs\Tab::make('SEO')
                         ->icon('heroicon-o-magnifying-glass')

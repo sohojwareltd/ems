@@ -19,7 +19,7 @@ use Illuminate\Support\Str;
 class PaperCodeResource extends Resource
 {
     protected static ?string $model = PaperCode::class;
-    protected static bool $shouldRegisterNavigation = false;
+    // protected static bool $shouldRegisterNavigation = false;
 
     protected static ?string $navigationLabel = 'Paper Codes';
     protected static ?string $navigationGroup = 'Catalogue';

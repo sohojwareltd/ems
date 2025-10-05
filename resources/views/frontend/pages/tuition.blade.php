@@ -191,7 +191,7 @@
                             <li>Personalised curriculum and plan</li>
                             <li>Interactive sessions to engage students</li>
                             <li>Long term guidance, not quick fixes</li>
-                            <li>Access to premium EMS exam resources</li>
+                            <li>Access to premium exam resources</li>
                             <li>Insider knowledge from real examiners</li>
                             <li>Open and proactive communication</li>
                         </ul>

@@ -103,27 +103,37 @@ class EssayResource extends Resource
                                     '12' => '12 Marks',
                                 ])
                                 ->label('Marks'),
-                            Forms\Components\Select::make('paper_id')
-                                ->label('Paper')
-                                ->options(\App\Models\Paper::all()->pluck('name', 'id'))
-                                ->reactive()
-                                ->afterStateUpdated(fn(callable $set) => $set('topic_id', null))
+                            // Forms\Components\Select::make('paper_code_id')
+                            //     ->label('Paper Code')
+                            //     ->options(\App\Models\Paper::all()->pluck('name', 'id'))
+                            //     ->reactive()
+                            //     ->afterStateUpdated(fn(callable $set) => $set('topic_id', null))
+                            //     ->required(),
+
+                            // Forms\Components\Select::make('topic_id')
+                            //     ->label('Topic')
+                            //     ->required()
+                            //     ->options(function (callable $get) {
+                            //         $paperId = $get('paper_code_id');
+                            //         if (!$paperId) {
+                            //             return [];
+                            //         }
+
+                            //         return \App\Models\Topic::where('paper_code_id', $paperId)
+                            //             ->pluck('name', 'id');
+                            //     })
+                            //     ->searchable()
+                            //     ->disabled(fn(callable $get) => !$get('paper_code_id')),
+
+                            Forms\Components\Select::make('paper_code_id')
+                                ->label('Paper Code')
+                                ->relationship('paperCode', 'name')
                                 ->required(),
 
                             Forms\Components\Select::make('topic_id')
                                 ->label('Topic')
-                                ->required()
-                                ->options(function (callable $get) {
-                                    $paperId = $get('paper_id');
-                                    if (!$paperId) {
-                                        return [];
-                                    }
-
-                                    return \App\Models\Topic::where('paper_id', $paperId)
-                                        ->pluck('name', 'id');
-                                })
-                                ->searchable()
-                                ->disabled(fn(callable $get) => !$get('paper_id')),
+                                ->relationship('topic', 'name')
+                                ->required(),
 
                             Forms\Components\Select::make('status')
                                 ->options([

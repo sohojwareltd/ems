@@ -31,7 +31,7 @@
                     </option>
                 @endforeach
             </select>
-            {{-- <label class="form-label mt-2">Paper Code</label>
+            <label class="form-label mt-2">Paper Code</label>
             <select class="form-select paper-code" name="paper_code">
                 <option value="">Select Paper Code</option>
                 @foreach ($paperCodes as $paperCode)
@@ -40,7 +40,7 @@
                         {{ $paperCode->name }}
                     </option>
                 @endforeach
-            </select> --}}
+            </select>
 
             @if (request('tab') !== 'pastpapers')
                 <label class="form-label mt-2">Topics</label>
@@ -177,52 +177,84 @@
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.topic-select').forEach(topicSelect => {
                 const wrapper = topicSelect.closest('.topic-wrapper') || topicSelect.parentElement;
+                const paperCodeSelect = wrapper.querySelector('select[name="paper_code"]');
                 const paperSelect = wrapper.querySelector('select[name="paper"]');
 
-                if (!paperSelect || !topicSelect) {
-                    console.warn('Missing paper select or topic select');
+                if (!paperCodeSelect || !paperSelect) {
+                    console.warn('Missing paper or paper_code select');
                     return;
                 }
 
-                // Fetch Topics based on selected Paper
+                // Fetch Paper Codes based on selected Paper
                 paperSelect.addEventListener('change', function() {
                     const paperId = this.value;
-                    topicSelect.innerHTML = '<option value="">Loading...</option>';
+                    paperCodeSelect.innerHTML = '<option value="">Loading...</option>';
+                    topicSelect.innerHTML = '<option value="">Select Topic</option>';
 
                     if (!paperId) {
+                        paperCodeSelect.innerHTML = '<option value="">Select Paper Code</option>';
+                        return;
+                    }
+                    const selectedPaperCode = "{{ request('paper_code') }}";
+                    fetch(`/get-paper-codes-by-paper/${paperId}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            let options = '<option value="">Select Paper Code</option>';
+                            data.forEach(code => {
+                                  const selected = selectedPaperCode == code.id ?
+                                    'selected' : '';
+                                options +=
+                                    `<option value="${code.id}" ${selected}>${code.name}</option>`;
+                            });
+                            paperCodeSelect.innerHTML = options;
+                        })
+                        .catch(err => {
+                            console.error('Error loading paper codes:', err);
+                            paperCodeSelect.innerHTML =
+                                '<option value="">Error loading paper codes</option>';
+                        });
+                });
+
+                // Fetch Topics based on selected Paper Code (already working in your setup)
+                paperSelect.addEventListener('change', function() {
+                    const codeId = this.value;
+                    topicSelect.innerHTML = '<option value="">Loading...</option>';
+
+                    if (!codeId) {
                         topicSelect.innerHTML = '<option value="">Select Topic</option>';
                         return;
                     }
-
-                    fetch(`/get-topics-by-paper/${paperId}`)
+                    const selectedTopic = "{{ request('topic') }}";
+                    fetch(`/get-topics-by-paper/${codeId}/{{ request('subject') }}`)
                         .then(res => res.json())
                         .then(data => {
                             let optionsHtml = '<option value="">Select Topic</option>';
                             data.forEach(topic => {
+                                const selected = selectedTopic == topic.id ?
+                                    'selected' : '';
                                 optionsHtml +=
-                                    `<option value="${topic.id}">${topic.name}</option>`;
+                                    `<option value="${topic.id}" ${selected}>${topic.name}</option>`;
                             });
                             topicSelect.innerHTML = optionsHtml;
 
-                            // Auto-select topic if only one exists
                             if (data.length === 1) topicSelect.value = data[0].id;
                         })
-                        .catch(err => {
-                            console.error('Error loading topics:', err);
+                        .catch(e => {
+                            console.error('Error loading topics:', e);
                             topicSelect.innerHTML =
                                 '<option value="">Error loading topics</option>';
                         });
                 });
 
-                // Auto-load topics if a paper is already selected
+                // Auto-load on page load if paper or paper_code already selected
                 if (paperSelect.value) {
                     paperSelect.dispatchEvent(new Event('change'));
+                } else if (paperCodeSelect.value) {
+                    paperCodeSelect.dispatchEvent(new Event('change'));
                 }
             });
         });
     </script>
-
-
 
 
 
