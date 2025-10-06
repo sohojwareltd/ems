@@ -164,36 +164,40 @@ class StoreSettings extends BaseSettings
                                 ]),
                         ]),
                     Tabs\Tab::make('Payments')
+                     ->visible(false)
                         ->schema([
                             Section::make('Payment Methods')
                                 ->description('Enable or disable payment methods for your store.')
                                 ->schema([
                                     Toggle::make('payments.enable_stripe')
                                         ->label('Enable Stripe')
+                                         ->visible(false)
                                         ->helperText('Allow customers to pay using Stripe.'),
                                     Toggle::make('payments.stripe_sandbox')
                                         ->label('Enable Sandbox')
-                                        ->helperText('Enable Stripe Sandbox Mode.'),
+                                        ->helperText('Enable Stripe Sandbox Mode.')
+                                         ->visible(false),
                                     TextInput::make('payments.stripe_key')
                                         ->label('Stripe Public Key')
-                                        ->helperText('Your Stripe publishable key.'),
+                                        ->helperText('Your Stripe publishable key.')->visible(false),
                                     TextInput::make('payments.stripe_secret')
                                         ->label('Stripe Secret Key')
 
-                                        ->helperText('Your Stripe secret key.'),
+                                        ->helperText('Your Stripe secret key.')
+                                         ->visible(false),
                                     Toggle::make('payments.enable_paypal')
                                         ->label('Enable PayPal')
-                                        ->helperText('Allow customers to pay using PayPal.'),
+                                        ->helperText('Allow customers to pay using PayPal.')->visible(false),
                                     Toggle::make('payments.paypal_sandbox')
                                         ->label('Enable Sandbox')
-                                        ->helperText('Enable PayPal Sandbox Mode.'),
+                                        ->helperText('Enable PayPal Sandbox Mode.')->visible(false),
                                     TextInput::make('payments.paypal_client_id')
                                         ->label('PayPal Client ID')
-                                        ->helperText('Your PayPal client ID.'),
+                                        ->helperText('Your PayPal client ID.')->visible(false),
                                     TextInput::make('payments.paypal_secret')
                                         ->label('PayPal Secret')
 
-                                        ->helperText('Your PayPal secret.'),
+                                        ->helperText('Your PayPal secret.')->visible(false),
                             ]),
                     ]),
 
