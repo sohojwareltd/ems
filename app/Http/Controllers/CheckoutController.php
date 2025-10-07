@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Facades\Checkout;
 use App\Facades\Cart;
+use App\Models\Order;
+use App\Services\CheckoutService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Stripe\Stripe;
+use Laravel\Cashier\Exceptions\PaymentActionRequired;
+use Exception;
+use Stripe\PaymentIntent;
 
 class CheckoutController extends Controller
 {
@@ -45,106 +51,73 @@ class CheckoutController extends Controller
     /**
      * Process checkout
      */
-    public function process(Request $request)
+    public function process(Request $request, CheckoutService $checkoutService)
     {
-
-
         // Validate request
         $request->validate([
             'billing_address.first_name' => 'required|string|max:255',
             'billing_address.last_name' => 'required|string|max:255',
             'billing_address.email' => 'required|email',
-           
+
             'billing_address.country' => 'required|string|max:255',
-           
-            'payment_method' => 'required|string|in:stripe,paypal',
-            'payment_token' => 'required|string',
             'coupon_code' => 'nullable|string|max:50',
             'notes' => 'nullable|string|max:1000',
         ]);
+        $validatedData = $request->all();
+        $validatedData['notes'] = $request->input('notes', '');
 
-        try {
-            
-            $checkoutData = $request->all();
+        $order = $checkoutService->createOrder($validatedData);
 
-            $checkoutData['billing_address']['phone'] = '';
-            $checkoutData['billing_address']['address'] = '';
-            $checkoutData['billing_address']['city'] = '';
-            $checkoutData['billing_address']['state'] = '';
-            $checkoutData['billing_address']['zip'] = '';
-
-            $checkoutData['shipping_address'] = [
-                'first_name' => '',
-                'last_name' => '',
-                'address' => '',
-                'city' => '',
-                'state' => '',
-                'zip' => '',
-                'country' => '',
-            ];
+        return redirect()->route('checkout.payment', $order->id);
+    }
 
 
-            // Process checkout
-            $result = Checkout::processCheckout($checkoutData, $request->payment_method);
-
-            // Ensure result has the expected structure
-            if (!is_array($result) || !isset($result['success'])) {
-                Log::error('Invalid checkout result structure', [
-                    'result' => $result,
-                    'user_id' => Auth::id(),
-                    'request_data' => $request->all()
-                ]);
-
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Checkout processing failed due to invalid response.'
-                ], 500);
-            }
-
-            if ($result['success']) {
-                Log::info('Checkout successful', [
-                    'order_id' => $result['order_id'] ?? 'unknown',
-                    'order_number' => $result['order_number'] ?? 'unknown',
-                    'user_id' => Auth::id()
-                ]);
-
-                // Check if PayPal redirect is required
-                if (isset($result['redirect_required']) && $result['redirect_required']) {
-                    return response()->json([
-                        'success' => true,
-                        'order_id' => $result['order_id'] ?? null,
-                        'order_number' => $result['order_number'] ?? null,
-                        'message' => $result['message'] ?? 'Order placed successfully!',
-                        'redirect_required' => true,
-                        'redirect_url' => $result['redirect_url'] ?? null
-                    ]);
-                }
-
-                return response()->json([
-                    'success' => true,
-                    'order_id' => $result['order_id'] ?? null,
-                    'order_number' => $result['order_number'] ?? null,
-                    'message' => $result['message'] ?? 'Order placed successfully!',
-                    'redirect_url' => route('checkout.order-details', $result['order_id'] ?? 0)
-                ]);
-            }
-
-            return response()->json([
-                'success' => false,
-                'message' => $result['message'] ?? 'Checkout failed. Please try again.'
-            ], 400);
-        } catch (\Exception $e) {
-            Log::error('Checkout failed', [
-                'error' => $e->getMessage(),
-                'user_id' => Auth::id(),
-                'request_data' => $request->all()
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'An unexpected error occurred. Please try again.'
-            ], 500);
+    public function payment(Order $order)
+    {
+        if (auth()->id() !== $order->user_id) {
+            return redirect()->route('home')->with('error', 'You are not authorized to view this order.');
         }
+
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $amount = intval($order->total * 100);
+
+        $intent = \Stripe\PaymentIntent::create([
+            'amount' => $amount,
+            'currency' => 'usd',
+            'customer' => auth()->user()->createOrGetStripeCustomer()->id,
+            'automatic_payment_methods' => [
+                'enabled' => true,
+                'allow_redirects' => 'never', // ✅ Block redirect methods (e.g. iDEAL)
+            ],
+            'metadata' => [
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+            ],
+        ]);
+
+        $clientSecret = $intent->client_secret;
+
+        return view('frontend.checkout.payment', compact('order', 'clientSecret'));
+    }
+
+
+    public function paymentProcess(Request $request, Order $order)
+    {
+        
+        $request->validate([
+            'payment_method' => 'required',
+        ]);
+        $paymentMethod = $request->input('payment_method');
+        $order->update([
+            'payment_status' => 'paid',
+            'status' => 'completed',
+            'payment_method' => 'stripe',
+            'payment_intent_id' => $paymentMethod,
+        ]);
+
+        return redirect()->route('checkout.confirmation', $order->id)
+            ->with('success', 'Payment completed successfully!');
     }
 
     /**

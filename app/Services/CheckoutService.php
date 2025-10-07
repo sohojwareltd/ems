@@ -525,8 +525,10 @@ class CheckoutService
      * @param array $checkoutData
      * @return Order
      */
-    protected function createOrder($checkoutData)
+    public function createOrder($checkoutData)
     {
+   
+     
         $cart = Cart::getSummary();
 
         // Prepare addresses
@@ -534,25 +536,12 @@ class CheckoutService
             'first_name' => $checkoutData['billing_address']['first_name'],
             'last_name' => $checkoutData['billing_address']['last_name'],
             'email' => $checkoutData['billing_address']['email'],
-            'phone' => $checkoutData['billing_address']['phone'],
-            'address' => $checkoutData['billing_address']['address'],
-            'city' => $checkoutData['billing_address']['city'],
-            'state' => $checkoutData['billing_address']['state'],
-            'zip' => $checkoutData['billing_address']['zip'],
+            
             'country' => $checkoutData['billing_address']['country']
             // 'country' => 'Bharat'
         ];
-
-        $shippingAddress = [
-            'first_name' => $checkoutData['shipping_address']['first_name'],
-            'last_name' => $checkoutData['shipping_address']['last_name'],
-            'address' => $checkoutData['shipping_address']['address'],
-            'city' => $checkoutData['shipping_address']['city'],
-            'state' => $checkoutData['shipping_address']['state'],
-            'zip' => $checkoutData['shipping_address']['zip'],
-            'country' => $checkoutData['shipping_address']['country']
-            // 'country' => 'Bharat'
-        ];
+ 
+ 
 
         // Get coupon information
         $coupon = Cart::getCoupon();
@@ -585,8 +574,7 @@ class CheckoutService
             'shipping_amount' => $cart['shipping'],
             'discount_amount' => $cart['discount'],
             'total' => $cart['total'],
-            'currency' => 'USD',
-            'shipping_address' => $shippingAddress,
+            'currency' => 'GBP',
             'billing_address' => $billingAddress,
             'notes' => $checkoutData['notes'] ?? null,
             'shipping_method' => null, // Will be set by admin

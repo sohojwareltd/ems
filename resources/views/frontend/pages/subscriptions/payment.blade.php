@@ -4,22 +4,6 @@
 
 @section('content')
     <style>
-        /* * {
-                                                                                                margin: 0;
-                                                                                                padding: 0;
-                                                                                                box-sizing: border-box;
-                                                                                                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                                                                                            }
-
-                                                                                            body {
-                                                                                                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-                                                                                                min-height: 100vh;
-                                                                                                display: flex;
-                                                                                                justify-content: center;
-                                                                                                align-items: center;
-                                                                                                padding: 20px;
-                                                                                            } */
-
         .container_pay {
             display: flex;
             flex-wrap: wrap;
