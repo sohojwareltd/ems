@@ -124,7 +124,7 @@
                                                 <h6 class="mb-0">{{ $line->product->name }}</h6>
                                                 <small class="text-muted">Qty: {{ $line->quantity }}</small>
                                             </div>
-                                            <span>${{ number_format($line->price, 2) }}</span>
+                                            <span>£{{ number_format($line->price, 2) }}</span>
                                         </div>
                                     @endforeach
                                 @else
@@ -134,7 +134,7 @@
                                                 <h6 class="mb-0">{{ $item['product_name'] }}</h6>
                                                 <small class="text-muted">Qty: {{ $item['quantity'] }}</small>
                                             </div>
-                                            <span>${{ number_format($item['total'], 2) }}</span>
+                                            <span>£{{ number_format($item['total'], 2) }}</span>
                                         </div>
                                     @endforeach
                                 @endif
@@ -145,33 +145,33 @@
                                 @if (!empty($isRepayment) && isset($order))
                                     <div class="d-flex justify-content-between mb-2">
                                         <span>Subtotal:</span>
-                                        <span>${{ number_format($order->subtotal, 2) }}</span>
+                                        <span>£{{ number_format($order->subtotal, 2) }}</span>
                                     </div>
                                 @else
                                     <div class="d-flex justify-content-between mb-2">
                                         <span>Subtotal:</span>
-                                        <span>${{ number_format($cart['subtotal'], 2) }}</span>
+                                        <span>£{{ number_format($cart['subtotal'], 2) }}</span>
                                     </div>
                                 @endif
 
                                 @if ($cart['tax'] > 0)
                                     <div class="d-flex justify-content-between mb-2">
                                         <span>Tax:</span>
-                                        <span>${{ number_format($cart['tax'], 2) }}</span>
+                                        <span>£{{ number_format($cart['tax'], 2) }}</span>
                                     </div>
                                 @endif
 
                                 @if ($cart['shipping'] > 0)
                                     <div class="d-flex justify-content-between mb-2">
                                         <span>Shipping:</span>
-                                        <span>${{ number_format($cart['shipping'], 2) }}</span>
+                                        <span>£{{ number_format($cart['shipping'], 2) }}</span>
                                     </div>
                                 @endif
 
                                 @if ($cart['discount'] > 0)
                                     <div class="d-flex justify-content-between mb-2 text-success">
                                         <span>Discount:</span>
-                                        <span>-${{ number_format($cart['discount'], 2) }}</span>
+                                        <span>-£{{ number_format($cart['discount'], 2) }}</span>
                                     </div>
                                 @endif
 
@@ -180,9 +180,9 @@
                                 <div class="d-flex justify-content-between mb-3">
                                     <strong>Total:</strong>
                                     @if (!empty($isRepayment) && isset($order))
-                                        <strong class="price fs-5">${{ number_format($order->total, 2) }}</strong>
+                                        <strong class="price fs-5">£{{ number_format($order->total, 2) }}</strong>
                                     @else
-                                        <strong class="price fs-5">${{ number_format($cart['total'], 2) }}</strong>
+                                        <strong class="price fs-5">£{{ number_format($cart['total'], 2) }}</strong>
                                     @endif
                                 </div>
 

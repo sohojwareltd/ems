@@ -67,6 +67,8 @@ class CheckoutController extends Controller
         $validatedData['notes'] = $request->input('notes', '');
 
         $order = $checkoutService->createOrder($validatedData);
+         Cart::clear();
+         session()->forget('coupon');
 
         return redirect()->route('checkout.payment', $order->id);
     }

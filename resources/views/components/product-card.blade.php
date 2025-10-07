@@ -38,18 +38,18 @@
                     @endphp
                     <span class="premium-price">
                         @if($minPrice == $maxPrice)
-                            ${{ number_format($minPrice, 2) }}
+                            {{ number_format($minPrice, 2) }}
                         @else
-                            ${{ number_format($minPrice, 2) }} - ${{ number_format($maxPrice, 2) }}
+                            £{{ number_format($minPrice, 2) }} - £{{ number_format($maxPrice, 2) }}
                         @endif
                     </span>
                     @if($product->original_price && $product->original_price > $minPrice)
-                        <span class="premium-original-price ms-2">${{ number_format($product->original_price, 2) }}</span>
+                        <span class="premium-original-price ms-2">£{{ number_format($product->original_price, 2) }}</span>
                     @endif
                 @else
-                    <span class="premium-price">${{ number_format($product->price, 2) }}</span>
+                    <span class="premium-price">£{{ number_format($product->price, 2) }}</span>
                     @if($product->original_price && $product->original_price > $product->price)
-                        <span class="premium-original-price ms-2">${{ number_format($product->original_price, 2) }}</span>
+                        <span class="premium-original-price ms-2">£{{ number_format($product->original_price, 2) }}</span>
                     @endif
                 @endif
             </div>

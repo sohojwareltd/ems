@@ -99,18 +99,18 @@
                                     <span class="badge bg-{{ $order->status_color }}">{{ ucfirst($order->status) }}</span>
                                 </td>
                                 <td class="align-middle">
-                                    <div class="fw-semibold">${{ number_format($order->total, 2) }}</div>
+                                    <div class="fw-semibold">£{{ number_format($order->total, 2) }}</div>
                                     @if($order->discount_amount > 0)
-                                        <small class="text-success">-${{ number_format($order->discount_amount, 2) }} discount</small>
+                                        <small class="text-success">-£{{ number_format($order->discount_amount, 2) }} discount</small>
                                     @endif
                                 </td>
                                 <td class="align-middle">
                                     <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('user.orders.show', $order) }}" class="btn btn-outline-primary" 
+                                        <a href="{{ route('user.orders.show', $order) }}" class="btn custom-btn-outline" 
                                            title="View Details">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('orders.print-invoice', $order) }}" class="btn btn-outline-secondary" 
+                                        <a href="{{ route('orders.print-invoice', $order) }}" class="btn custom-btn-outline" 
                                            target="_blank" title="Print Invoice">
                                             <i class="fas fa-print"></i>
                                         </a>
@@ -121,7 +121,7 @@
                                             </a>
                                         @endif
                                         @if(in_array($order->payment_status, ['pending', 'failed']))
-                                            <a href="{{ route('checkout.repay', $order) }}" class="btn btn-outline-warning" title="Repay">
+                                            <a href="{{ route('checkout.payment', $order) }}" class="btn btn-outline-warning" title="Repay">
                                                 <i class="fas fa-credit-card"></i> Repay
                                             </a>
                                         @endif

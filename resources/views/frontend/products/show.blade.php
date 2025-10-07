@@ -379,10 +379,10 @@
                     <!-- Price -->
                     <div class="mb-3">
                         @if($product->discount_price)
-                            <span class="price fs-2">${{ number_format($product->discount_price, 2) }}</span>
-                            <span class="original-price fs-5 ms-2">${{ number_format($product->price, 2) }}</span>
+                            <span class="price fs-2">£{{ number_format($product->discount_price, 2) }}</span>
+                            <span class="original-price fs-5 ms-2">£{{ number_format($product->price, 2) }}</span>
                         @else
-                            <span class="price fs-2">${{ number_format($product->price, 2) }}</span>
+                            <span class="price fs-2">£{{ number_format($product->price, 2) }}</span>
                         @endif
                     </div>
 
@@ -584,7 +584,7 @@
 
             if (selectedVariant.length === 0) {
                 // No variant selected, show base product price and stock
-                $('.price').text('${{ number_format($product->price, 2) }}');
+                $('.price').text('£{{ number_format($product->price, 2) }}');
                 setActiveImage(0); // Show main product image
                 $('#variant-sku').text('');
                 $('#variant-stock').text('');
@@ -598,7 +598,7 @@
                 const isOutOfStock = {{ $product->track_quantity ? 'true' : 'false' }} && stock <= 0;
 
                 // Update price display
-                $('.price').text('$' + price.toFixed(2));
+                $('.price').text('£' + price.toFixed(2));
 
                 // Update product image if variant has a specific image
                 const variantData = selectedVariant.data('variant');

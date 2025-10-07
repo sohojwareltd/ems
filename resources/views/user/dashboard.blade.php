@@ -70,9 +70,9 @@
                     <div class="card-body text-center">
                         <div class="d-inline-flex align-items-center justify-content-center custom-badge rounded-circle mb-3"
                             style="width: 60px; height: 60px;">
-                            <i class="fas fa-dollar-sign  fs-4"></i>
+                            <i class="fas fa-pound-sign  fs-4"></i>
                         </div>
-                        <h3 class="fw-bold text-dark mb-1">${{ number_format($stats['total_spent'] ?? 0, 2) }}</h3>
+                        <h3 class="fw-bold text-dark mb-1">£{{ number_format($stats['total_spent'] ?? 0, 2) }}</h3>
                         <p class="text-muted mb-0">Total Spent</p>
                     </div>
                 </div>
@@ -121,7 +121,7 @@
                                                         class="badge bg-{{ $order->status_color }}">{{ ucfirst($order->status) }}</span>
                                                 </td>
                                                 <td class="align-middle fw-semibold">
-                                                    ${{ number_format($order->total, 2) }}
+                                                    £{{ number_format($order->total, 2) }}
                                                 </td>
                                                 <td class="align-middle">
                                                     <div class="btn-group btn-group-sm">

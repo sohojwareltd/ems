@@ -70,11 +70,11 @@
                                         </td>
                                         <!-- Price -->
                                         <td class="text-end">
-                                            <div class="fw-semibold" style="font-size: 1rem;">${{ number_format($item['price'], 2) }}</div>
+                                            <div class="fw-semibold" style="font-size: 1rem;">£{{ number_format($item['price'], 2) }}</div>
                                         </td>
                                         <!-- Total -->
                                         <td class="text-end">
-                                            <div class="fw-bold" style="font-size: 1.1rem; color: var(--primary-color);">${{ number_format($item['total'], 2) }}</div>
+                                            <div class="fw-bold" style="font-size: 1.1rem; color: var(--primary-color);">£{{ number_format($item['total'], 2) }}</div>
                                         </td>
                                         <!-- Remove -->
                                         <td class="text-end">
@@ -163,22 +163,22 @@
                         <div class="summary-details premium-summary-details">
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="text-muted">Subtotal:</span>
-                                <span class="fw-bold">${{ number_format($subtotal, 2) }}</span>
+                                <span class="fw-bold">£{{ number_format($subtotal, 2) }}</span>
                             </div>
                             @if($discount > 0)
                             <div class="d-flex justify-content-between mb-2 text-success">
                                 <span>Discount:</span>
-                                <span class="fw-bold">-${{ number_format($discount, 2) }}</span>
+                                <span class="fw-bold">-£{{ number_format($discount, 2) }}</span>
                             </div>
                             @endif
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="text-muted">Tax:</span>
-                                <span class="fw-bold">${{ number_format($tax, 2) }}</span>
+                                <span class="fw-bold">£{{ number_format($tax, 2) }}</span>
                             </div>
                             <hr class="my-3">
                             <div class="d-flex justify-content-between mb-4">
                                 <span class="fw-bold fs-5" style="font-family: 'Playfair Display', serif;">Total:</span>
-                                <span class="fw-bold fs-4 price premium-price" style="font-family: 'Playfair Display', serif; color: var(--primary-color);">${{ number_format($total, 2) }}</span>
+                                <span class="fw-bold fs-4 price premium-price" style="font-family: 'Playfair Display', serif; color: var(--primary-color);">£{{ number_format($total, 2) }}</span>
                             </div>
                         </div>
 
