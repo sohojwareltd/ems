@@ -197,7 +197,6 @@
                         @if ($view === 'topic')
                             <div class="accordion" id="essaysByTopic">
                                 @foreach ($essaysByTopic as $topicName => $essays)
-                                
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingEssayTopic-{{ Str::slug($topicName) }}">
                                             <button class="accordion-button collapsed" type="button"
@@ -250,10 +249,12 @@
                                                         </div>
                                                         @if (Auth::check() && Auth::user()->hasActiveSubscription())
                                                             <div class="d-flex gap-2">
-                                                                <a href="{{ asset('storage/' . $essay->file) }}"
+                                                                <a href="{{ route('essay.pdf.view', $essay->slug) }}"
                                                                     target="_blank">See PDF</a>
-                                                                <a href="{{ asset('storage/' . $essay->file) }}"
-                                                                    download>Download PowerPoint</a>
+                                                                @if ($essay->ppt_file)
+                                                                    <a href="{{ asset('storage/' . $essay->ppt_file) }}"
+                                                                        download>Download Documents</a>
+                                                                @endif
                                                             </div>
                                                         @else
                                                             <div class="unloack-overly"></div>

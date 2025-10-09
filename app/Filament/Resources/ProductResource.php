@@ -10,6 +10,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ResourcePermissionTrait;
+use Filament\Forms\Components\Toggle;
 use Illuminate\Support\Str;
 
 class ProductResource extends Resource
@@ -87,6 +88,10 @@ class ProductResource extends Resource
                                 ->default('draft')
                                 ->required()
                                 ->helperText('Set the product status.'),
+                            Toggle::make('is_featured')
+                                ->label('Featured Product')
+                                ->helperText('Mark this product as featured on the homepage or spotlight areas.')
+                                ->default(false),
                             Forms\Components\RichEditor::make('description')
                                 ->columnSpanFull()
                                 ->helperText('Detailed product description.'),

@@ -29,6 +29,7 @@ class Product extends Model
         'pdf_file',
         'ppt_file',
         'zip_file',
+        'is_featured',
     ];
 
     protected $casts = [
