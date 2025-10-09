@@ -93,6 +93,7 @@ class PageController extends Controller
             'subject',
             'exam_board',
             'search',
+            'paper_code'
         ]);
         $topics = Topic::all();
         $qualifications = Qualification::all();
