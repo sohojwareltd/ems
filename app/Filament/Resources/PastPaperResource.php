@@ -92,6 +92,10 @@ class PastPaperResource extends Resource
                                 ->relationship('examboard', 'title')
                                 ->label('Exam Board')
                                 ->required(),
+                            Forms\Components\Select::make('paper_id')
+                                ->relationship('paper', 'name')
+                                ->label('Paper')
+                                ->required(),
                             // Forms\Components\Select::make('resource_type_id')
                             //     ->label('Resource')
                             //     ->relationship('resource', 'title')
