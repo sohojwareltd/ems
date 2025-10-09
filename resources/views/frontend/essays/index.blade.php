@@ -197,6 +197,7 @@
                         @if ($view === 'topic')
                             <div class="accordion" id="essaysByTopic">
                                 @foreach ($essaysByTopic as $topicName => $essays)
+                                
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingEssayTopic-{{ Str::slug($topicName) }}">
                                             <button class="accordion-button collapsed" type="button"
