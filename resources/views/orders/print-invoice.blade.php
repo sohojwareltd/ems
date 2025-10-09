@@ -1,27 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice #{{ $order->id }} - EMS</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
     <style>
         :root {
-            --primary-color: #9B8B7A;
-            --secondary-color: #A8B5A0;
-            --accent-color: #D4C4B7;
-            --success-color: #8BA892;
-            --danger-color: #B87A7A;
-            --warning-color: #D4B483;
-            --info-color: #8BA8B5;
-            --light-bg: #FAF9F7;
-            --border-color: #E8E0D8;
-            --text-muted: #8A7F72;
-            --text-dark: #4A3F35;
-            --white: #FFFFFF;
+            --primary-color: #00b22d;
+            --primary-dark: #19390b;
+            --secondary-color: #a6f2b9;
+            --accent-color: #d4c4b7;
+            --success-color: #8ba892;
+            --danger-color: #b87a7a;
+            --warning-color: #d4b483;
+            --info-color: #8ba8b5;
+            --light-bg: #faf9f7;
+            --border-color: #e8e0d8;
+            --text-muted: #8a7f72;
+            --text-dark: #4a3f35;
+            --white: #ffffff;
+            --shadow-soft: 0 2px 8px rgba(155, 139, 122, 0.08);
+            --shadow-medium: 0 4px 16px rgba(155, 139, 122, 0.12);
+            --shadow-strong: 0 8px 32px rgba(155, 139, 122, 0.16);
         }
-        html, body {
+
+        html,
+        body {
             background: var(--light-bg);
             color: var(--text-dark);
             font-family: 'Inter', sans-serif;
@@ -30,15 +39,17 @@
             margin: 0;
             padding: 0;
         }
+
         .invoice-main {
             max-width: 800px;
             margin: 40px auto;
             background: var(--white);
             border-radius: 18px;
-            box-shadow: 0 2px 16px rgba(155,139,122,0.10);
+            box-shadow: 0 2px 16px rgba(155, 139, 122, 0.10);
             border: 1px solid var(--border-color);
             padding: 0 0 32px 0;
         }
+
         .invoice-header {
             display: flex;
             justify-content: space-between;
@@ -48,9 +59,11 @@
             background: var(--light-bg);
             border-radius: 18px 18px 0 0;
         }
+
         .header-left {
             max-width: 60%;
         }
+
         .brand-title {
             font-family: 'Playfair Display', serif;
             font-size: 2.1rem;
@@ -58,65 +71,79 @@
             letter-spacing: 1px;
             margin-bottom: 0.2em;
         }
+
         .brand-contact {
             color: var(--text-muted);
             font-size: 1em;
             margin-bottom: 0.2em;
         }
+
         .header-right {
             text-align: right;
             font-size: 1em;
             color: var(--text-muted);
         }
+
         .header-right .business-address {
             margin-bottom: 0.2em;
         }
+
         .header-right .tax-id {
             font-size: 0.97em;
         }
+
         .invoice-card {
             margin: 32px 48px 0 48px;
             background: var(--white);
             border-radius: 14px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 1px 6px rgba(155,139,122,0.06);
+            box-shadow: 0 1px 6px rgba(155, 139, 122, 0.06);
             padding: 0;
         }
+
         .invoice-meta {
             display: grid;
             grid-template-columns: 1.5fr 1fr 1fr;
             gap: 32px;
             padding: 32px 32px 0 32px;
         }
+
         .meta-block {
             font-size: 1em;
         }
+
         .meta-block strong {
             font-weight: 600;
             color: var(--primary-color);
         }
+
         .meta-block .meta-label {
             color: var(--text-muted);
             font-size: 0.97em;
         }
+
         .meta-block .meta-value {
             font-weight: 600;
             color: var(--text-dark);
             font-size: 1.05em;
         }
+
         .meta-block .meta-accent {
             color: var(--primary-color);
             font-size: 1.3em;
             font-weight: 700;
         }
+
         .meta-block .meta-right {
             text-align: right;
         }
+
         .invoice-table {
             width: 100%;
             border-collapse: collapse;
             margin: 32px 0 0 0;
         }
+
         .invoice-table th {
             font-family: 'Inter', sans-serif;
             font-size: 0.98em;
@@ -127,6 +154,7 @@
             padding: 12px 8px;
             text-align: left;
         }
+
         .invoice-table td {
             padding: 12px 8px;
             font-size: 1em;
@@ -134,53 +162,65 @@
             border-bottom: 1px solid var(--border-color);
             vertical-align: top;
         }
+
         .invoice-table tr:last-child td {
             border-bottom: none;
         }
+
         .item-name {
             font-weight: 600;
             color: var(--primary-color);
             font-family: 'Playfair Display', serif;
         }
+
         .item-desc {
             color: var(--text-muted);
             font-size: 0.97em;
         }
+
         .text-right {
             text-align: right;
         }
+
         .summary {
             margin: 24px 48px 0 0;
             float: right;
             min-width: 260px;
         }
+
         .summary-table {
             width: 100%;
         }
+
         .summary-table td {
             padding: 7px 0;
             font-size: 1em;
         }
+
         .summary-table .label {
             color: var(--text-muted);
             font-weight: 500;
         }
+
         .summary-table .value {
             text-align: right;
             color: var(--primary-color);
             font-weight: 600;
         }
+
         .summary-table .total-row {
             font-size: 1.2em;
             font-weight: 700;
             color: var(--primary-color);
         }
+
         .thanks {
             margin: 48px 48px 0 48px;
             font-weight: 600;
             color: var(--primary-color);
             font-size: 1.05em;
         }
+
         .terms {
             margin: 32px 48px 0 48px;
             color: var(--text-muted);
@@ -188,30 +228,42 @@
             border-top: 1px solid var(--border-color);
             padding-top: 16px;
         }
+
         @media (max-width: 900px) {
-            .invoice-main, .invoice-header, .invoice-card, .thanks, .terms {
+
+            .invoice-main,
+            .invoice-header,
+            .invoice-card,
+            .thanks,
+            .terms {
                 margin-left: 0 !important;
                 margin-right: 0 !important;
                 padding-left: 16px !important;
                 padding-right: 16px !important;
             }
+
             .invoice-meta {
                 grid-template-columns: 1fr;
                 gap: 18px;
                 padding: 24px 0 0 0;
             }
+
             .summary {
                 margin-right: 0;
             }
         }
+
         @media print {
-            html, body {
+
+            html,
+            body {
                 background: #fff !important;
                 color: #222 !important;
                 font-size: 12px;
                 margin: 0 !important;
                 padding: 0 !important;
             }
+
             .invoice-main {
                 box-shadow: none !important;
                 border: none !important;
@@ -221,6 +273,7 @@
                 width: 100% !important;
                 max-width: 100% !important;
             }
+
             .invoice-header {
                 border-radius: 0 !important;
                 background: #fff !important;
@@ -230,7 +283,11 @@
                 color-adjust: exact;
                 padding: 24px 16px 12px 16px !important;
             }
-            .invoice-card, .summary, .thanks, .terms {
+
+            .invoice-card,
+            .summary,
+            .thanks,
+            .terms {
                 background: #fff !important;
                 box-shadow: none !important;
                 border-radius: 0 !important;
@@ -238,27 +295,45 @@
                 margin: 0 !important;
                 padding: 0 16px !important;
             }
-            .invoice-meta, .summary-table, .invoice-table {
+
+            .invoice-meta,
+            .summary-table,
+            .invoice-table {
                 width: 100% !important;
                 max-width: 100% !important;
                 padding: 0 !important;
             }
-            .invoice-table th, .invoice-table td {
+
+            .invoice-table th,
+            .invoice-table td {
                 background: #fff !important;
                 color: #222 !important;
                 border-color: #ccc !important;
                 -webkit-print-color-adjust: exact;
                 color-adjust: exact;
             }
-            .print-button, .no-print, nav, .pagination, .footer, .header-right .tax-id {
+
+            .print-button,
+            .no-print,
+            nav,
+            .pagination,
+            .footer,
+            .header-right .tax-id {
                 display: none !important;
             }
-            .brand-title, .item-name, .thanks {
+
+            .brand-title,
+            .item-name,
+            .thanks {
                 color: #222 !important;
             }
-            .meta-block .meta-accent, .summary-table .total-row, .summary-table .value {
+
+            .meta-block .meta-accent,
+            .summary-table .total-row,
+            .summary-table .value {
                 color: #222 !important;
             }
+
             .terms {
                 border-top: 1px solid #ccc !important;
                 color: #555 !important;
@@ -272,17 +347,24 @@
                 window.print();
             }, 1200);
         };
+
         function printInvoice() {
             window.print();
         }
     </script>
 </head>
+
 <body>
-    <button onclick="printInvoice()" class="print-button no-print" style="position:fixed;top:24px;right:24px;background:var(--primary-color);color:var(--white);border:none;padding:12px 28px;border-radius:8px;cursor:pointer;font-size:1em;font-family:'Inter',sans-serif;font-weight:600;box-shadow:0 4px 12px rgba(155,139,122,0.10);transition:all 0.3s cubic-bezier(.4,0,.2,1);z-index:1000;">🖨️ Print Invoice</button>
+    <button onclick="printInvoice()" class="print-button no-print"
+        style="position:fixed;top:24px;right:24px;background:var(--primary-color);color:var(--white);border:none;padding:12px 28px;border-radius:8px;cursor:pointer;font-size:1em;font-family:'Inter',sans-serif;font-weight:600;box-shadow:0 4px 12px rgba(155,139,122,0.10);transition:all 0.3s cubic-bezier(.4,0,.2,1);z-index:1000;">🖨️
+        Print Invoice</button>
     <div class="invoice-main">
         <div class="invoice-header">
             <div class="header-left">
-                <div class="brand-title">EMS</div>
+                <div class="brand-title">
+                    <img src="{{ Storage::url(setting('store.logo')) }}" style="width:155px; height: auto;"
+                        alt="Logo" class="img-fluid">
+                </div>
                 <div class="brand-contact">www.eternareads.com</div>
                 <div class="brand-contact">hello@eternareads.com</div>
                 <div class="brand-contact">+1 (555) 123-4567</div>
@@ -299,7 +381,8 @@
                     <div class="meta-label">Billed to,</div>
                     <div class="meta-value"><strong>{{ $order->user->name ?? 'Guest Customer' }}</strong></div>
                     <div class="meta-label">{{ $order->shipping_address['address_line_1'] ?? '' }}</div>
-                    <div class="meta-label">{{ $order->shipping_address['city'] ?? '' }}, {{ $order->shipping_address['country'] ?? '' }}</div>
+                    <div class="meta-label">{{ $order->shipping_address['city'] ?? '' }},
+                        {{ $order->shipping_address['country'] ?? '' }}</div>
                     <div class="meta-label">{{ $order->shipping_address['phone'] ?? '' }}</div>
                 </div>
                 <div class="meta-block">
@@ -337,7 +420,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($order->lines as $line)
+                    @foreach ($order->lines as $line)
                         <tr>
                             <td>
                                 <div class="item-name">{{ $line->product_name }}</div>
@@ -356,7 +439,7 @@
                         <td class="label">Subtotal</td>
                         <td class="value">${{ number_format($order->subtotal ?? $order->total, 2) }}</td>
                     </tr>
-                    @if($order->total_discount > 0)
+                    @if ($order->total_discount > 0)
                         <tr>
                             <td class="label">Discounts</td>
                             <td class="value">-${{ number_format($order->total_discount, 2) }}</td>
@@ -376,4 +459,5 @@
         </div>
     </div>
 </body>
-</html> 
+
+</html>
