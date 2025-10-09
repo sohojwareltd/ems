@@ -46,7 +46,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-12">
-                                    <label for="subject" class="form-label">Enquiry *</label>
+                                    <label for="subject" class="form-label">Inquiry *</label>
                                     <select class="form-select @error('subject') is-invalid @enderror" id="subject"
                                         name="subject" required>
                                         <option value="">Select a subject</option>

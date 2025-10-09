@@ -314,7 +314,7 @@
                         need.</p>
 
                     <div class="row g-4">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="support-option">
                                 <i class="bi bi-envelope-fill fs-1 mb-3" style="color: var(--primary-color);"></i>
                                 <h4 class="h5 mb-2">Email Us</h4>
@@ -323,22 +323,22 @@
                                     Email</a>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="support-option">
                                 <i class="bi bi-telephone-fill fs-1 mb-3" style="color: var(--secondary-color);"></i>
-                                <h4 class="h5 mb-2">Call Us</h4>
+                                <h4 class="h5 mb-2">WhatsApp Us</h4>
                                 <p class="text-muted small mb-2">Speak with our team directly</p>
                                 <a href="tel:+15551234567" class="btn custom-btn-outline btn-sm">Call Now</a>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <div class="support-option">
                                 <i class="bi bi-chat-fill fs-1 mb-3" style="color: var(--success-color);"></i>
                                 <h4 class="h5 mb-2">Live Chat</h4>
                                 <p class="text-muted small mb-2">Chat with us in real-time</p>
                                 <a href="{{ route('contact') }}" class="btn custom-btn-outline btn-sm">Start Chat</a>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

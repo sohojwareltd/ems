@@ -35,6 +35,18 @@
 
     @stack('styles')
     @vite('resources/js/app.js')
+
+    <style>
+        .dropdown-item {
+            margin-left: 0px !important;
+            margin-right: 0px !important;
+        }
+
+        .dropdown-item:hover {
+            color: var(--primary-color) !important;
+            background-color: rgba(155, 139, 122, 0.08) !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -135,8 +147,9 @@
                                 <li>
                                 <li><a class="dropdown-item" href="{{ route('user.orders.download') }}"><i
                                             class="fas fa-download"></i> Download</a></li>
-                                <li><a class="dropdown-item" href="{{ route('user.subscription') }}"><i
-                                            class="fa-regular fa-file"></i> Subscriptions</a></li>
+                                <li><a class="dropdown-item btn btn-outline-dark"
+                                        href="{{ route('user.subscription') }}"><i class="fa-regular fa-file"></i>
+                                        Subscriptions</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>

@@ -9,7 +9,7 @@
     <div class="container py-5">
         <!-- Hero Section -->
         <div class="section-header text-center mb-5">
-            <h1 class="section-title display-4 fw-bold">Discover Our Collection</h1>
+            <h1 class="section-title display-4 fw-bold">Explore Our Collection</h1>
             <p class="section-subtitle lead">Find the best resources, created by our teachers and examiners</p>
         </div>
 
