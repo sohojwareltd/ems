@@ -144,6 +144,11 @@ class EssayResource extends Resource
                                 ->default('draft')
                                 ->required()
                                 ->helperText('Set the product status.'),
+                            Forms\Components\Select::make('paper_id')
+                                ->label('Paper')
+                                ->relationship('paper', 'name')
+                                ->required()
+                                ->helperText('Associate the essay with a specific paper.'),
 
 
                         ]),

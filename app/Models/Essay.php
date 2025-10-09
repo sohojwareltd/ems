@@ -47,6 +47,10 @@ class Essay extends Model
         return $this->belongsTo(Examboard::class, 'examboard_id');
     }
 
+    public function paper()
+    {
+        return $this->belongsTo(Paper::class, 'paper_id');
+    }
 
     /**
      * Get gallery images for frontend display
