@@ -130,9 +130,12 @@ class EssayResource extends Resource
                                 ->relationship('paperCode', 'name')
                                 ->required(),
 
-                            Forms\Components\Select::make('topic_id')
-                                ->label('Topic')
-                                ->relationship('topic', 'name')
+                            Forms\Components\Select::make('topics')
+                                ->label('Topics')
+                                ->multiple()
+                                ->relationship('topics', 'name')
+                                ->preload()
+                                ->searchable()
                                 ->required(),
 
                             Forms\Components\Select::make('status')

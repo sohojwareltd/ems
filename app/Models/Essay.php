@@ -52,6 +52,13 @@ class Essay extends Model
         return $this->belongsTo(Paper::class, 'paper_id');
     }
 
+    public function topics()
+    {
+        return $this->belongsToMany(Topic::class, 'essay_topic', 'essay_id', 'topic_id')
+            ->withTimestamps();
+    }
+
+
     /**
      * Get gallery images for frontend display
      */
@@ -85,13 +92,17 @@ class Essay extends Model
     // Shared scope for both models
     public function scopeFilter($query, $filters)
     {
-       
-       
+
+
         return $query
             ->when(!empty($filters['years']), fn($q) => $q->whereIn('year', $filters['years']))
             ->when(!empty($filters['months']), fn($q) => $q->whereIn('month', $filters['months']))
             ->when(!empty($filters['marks']), fn($q) => $q->whereIn('marks', $filters['marks']))
-            ->when(!empty($filters['topic']), fn($q) => $q->where('topic_id', $filters['topic']))
+            ->when(!empty($filters['topics']), function ($q) use ($filters) {
+                $q->whereHas('topics', function ($subQuery) use ($filters) {
+                    $subQuery->whereIn('topics.id', (array) $filters['topics']);
+                });
+            })
             ->when(!empty($filters['paper_code']), fn($q) => $q->where('paper_code_id', $filters['paper_code']))
             ->when(!empty($filters['qualification']), fn($q) => $q->where('qualiification_id', $filters['qualification']))
             ->when(!empty($filters['subject']), fn($q) => $q->where('subject_id', $filters['subject']))

@@ -22,4 +22,11 @@ class Topic extends Model
     {
         return $this->belongsTo(Paper::class);
     }
+
+    public function essays()
+{
+    return $this->belongsToMany(Essay::class, 'essay_topic', 'topic_id', 'essay_id')
+        ->withTimestamps();
+}
+
 }

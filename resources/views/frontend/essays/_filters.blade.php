@@ -20,7 +20,6 @@
         @php
             $paperCodes = \App\Models\PaperCode::orderBy('name')->get();
         @endphp
-
         <div class="col-12 topic-wrapper">
             <label class="form-label">Paper</label>
             <select class="form-select paper-code" name="paper">
@@ -42,13 +41,32 @@
                 @endforeach
             </select>
 
-            @if (request('tab') !== 'pastpapers')
+            {{-- @if (request('tab') !== 'pastpapers')
                 <label class="form-label mt-2">Topics</label>
                 <select class="form-select topic-select" name="topic">
                     <option value="">Select Topic</option>
                 </select>
-            @endif
+            @endif --}}
         </div>
+        @if (request('tab') !== 'pastpapers')
+            <div class="col-12">
+                <label class="form-label">Topics</label>
+                <div class="row">
+                    @foreach ($topics as $topic)
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="topics[]"
+                                    value="{{ $topic->id }}" id="topic-{{ $topic->id }}"
+                                    {{ in_array($topic->id, (array) request('topics')) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="topic-{{ $topic->id }}">
+                                    {{ $topic->name }}
+                                </label>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
 
 
         <!-- Repeat this div anywhere on the page if needed -->
@@ -164,7 +182,7 @@
                 <button type="submit" class="btn custom-btn flex-fill">
                     <i class="bi bi-search me-2"></i>Apply Filters
                 </button>
-                <a href="{{ route('model.index', ['qualification' => request('qualification'), 'subject' => request('subject'), 'exam_board' => request('exam_board'),'tab' => request('tab')]) }}"
+                <a href="{{ route('model.index', ['qualification' => request('qualification'), 'subject' => request('subject'), 'exam_board' => request('exam_board'), 'tab' => request('tab')]) }}"
                     class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-clockwise me-2"></i>Clear
                 </a>

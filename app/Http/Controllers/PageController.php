@@ -88,7 +88,7 @@ class PageController extends Controller
             'years',
             'months',
             'marks',
-            'topic',
+            'topics',
             'qualification',
             'subject',
             'exam_board',
@@ -101,7 +101,7 @@ class PageController extends Controller
         $subjects = Subject::all();
         
         // Model Essays
-        $essays = Essay::with('topic')
+        $essays = Essay::with('topics')
         ->filter($filters)
         ->latest()
         ->get();
