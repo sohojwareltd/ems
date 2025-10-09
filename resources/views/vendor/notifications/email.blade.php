@@ -1,7 +1,7 @@
 @component('mail::message')
     {{-- Logo --}}
     <div style="text-align: center; margin-bottom: 20px;">
-        <img src="{{ asset('images/logo.png') }}" alt="MyShop Logo" height="60">
+        <img src="{{ Storage::url(setting('store.logo')) }}" alt="MyShop Logo" height="60">
     </div>
 
     # Hello {{ $user->name ?? '' }},
@@ -15,9 +15,9 @@
             Email Address</a>
     </p>
 
-    If you're having trouble clicking the button, copy and paste the URL below into your web browser:
+    {{-- If you're having trouble clicking the button, copy and paste the URL below into your web browser:
 
-    [{{ $actionUrl }}]({{ $actionUrl }})
+    [{{ $actionUrl }}]({{ $actionUrl }}) --}}
 
     Thanks,
     **The EMS Team**
