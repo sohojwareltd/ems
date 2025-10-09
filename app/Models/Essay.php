@@ -81,7 +81,7 @@ class Essay extends Model
     // Shared scope for both models
     public function scopeFilter($query, $filters)
     {
-        
+       
        
         return $query
             ->when(!empty($filters['years']), fn($q) => $q->whereIn('year', $filters['years']))

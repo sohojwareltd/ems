@@ -99,15 +99,16 @@ class PageController extends Controller
         $qualifications = Qualification::all();
         $examBoards = Examboard::all();
         $subjects = Subject::all();
-
+        
         // Model Essays
         $essays = Essay::with('topic')
-            ->filter($filters)
-            ->latest()
-            ->get();
-
+        ->filter($filters)
+        ->latest()
+        ->get();
+        
         $essaysByYear = $essays->groupBy('year');
         $essaysByTopic = $essays->groupBy(fn($e) => optional($e->topic)->name ?? 'Unknown Topic');
+      
 
         // Past Papers
         $papers = PastPaper::with('topic')
