@@ -53,6 +53,7 @@ class PastPaperResource extends Resource
                             Forms\Components\Select::make('year')
                                 ->required()
                                 ->options([
+                                    '2018' => '2018',
                                     '2019' => '2019',
                                     '2020' => '2020',
                                     '2021' => '2021',
@@ -130,7 +131,7 @@ class PastPaperResource extends Resource
             ->columns([
                 TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('paperCode.name')
-                    ->label('Paper Code')
+                    ->label('Paper')
                     ->searchable(),
                 TextColumn::make('year'),
                 TextColumn::make('month'),

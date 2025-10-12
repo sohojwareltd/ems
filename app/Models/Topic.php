@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Topic extends Model
 {
-    protected $guarded=[];
+    protected $guarded = [];
 
     public function paperCode()
     {
@@ -24,9 +24,8 @@ class Topic extends Model
     }
 
     public function essays()
-{
-    return $this->belongsToMany(Essay::class, 'essay_topic', 'topic_id', 'essay_id')
-        ->withTimestamps();
-}
-
+    {
+        return $this->belongsToMany(Essay::class, 'essay_topic', 'topic_id', 'essay_id')
+            ->withTimestamps();
+    }
 }

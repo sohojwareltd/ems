@@ -49,21 +49,10 @@
             @endif --}}
         </div>
         @if (request('tab') !== 'pastpapers')
-            <div class="col-12">
+            <div class="col-12 topic-wrapper">
                 <label class="form-label">Topics</label>
-                <div class="row">
-                    @foreach ($topics as $topic)
-                        <div class="col-md-12">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="topics[]"
-                                    value="{{ $topic->id }}" id="topic-{{ $topic->id }}"
-                                    {{ in_array($topic->id, (array) request('topics')) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="topic-{{ $topic->id }}">
-                                    {{ $topic->name }}
-                                </label>
-                            </div>
-                        </div>
-                    @endforeach
+                <div class="row topics-checkbox-wrapper">
+
                 </div>
             </div>
         @endif
@@ -236,30 +225,49 @@
                                 '<option value="">Error loading paper codes</option>';
                         });
 
-                    // ✅ Only fetch topics if topicSelect exists (not pastpapers tab)
-                    if (topicSelect) {
-                        const selectedTopic = "{{ request('topic') }}";
 
-                        fetch(`/get-topics-by-paper/${paperId}/{{ request('subject') }}`)
-                            .then(res => res.json())
-                            .then(data => {
-                                let optionsHtml = '<option value="">Select Topic</option>';
-                                data.forEach(topic => {
-                                    const selected = selectedTopic == topic.id ?
-                                        'selected' : '';
-                                    optionsHtml +=
-                                        `<option value="${topic.id}" ${selected}>${topic.name}</option>`;
-                                });
-                                topicSelect.innerHTML = optionsHtml;
 
-                                if (data.length === 1) topicSelect.value = data[0].id;
-                            })
-                            .catch(e => {
-                                console.error('Error loading topics:', e);
-                                topicSelect.innerHTML =
-                                    '<option value="">Error loading topics</option>';
+
+                    fetch(`/get-topics-by-paper/${paperId}/{{ request('subject') }}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            let html = '';
+                            const selectedTopics =
+                            @json((array) request('topics')); // previously selected topics
+
+                            data.forEach(topic => {
+                                const checked = selectedTopics.includes(String(topic
+                                    .id)) ? 'checked' : '';
+                                console.log(checked);
+                                html += `
+                    <div class="col-md-12">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="topics[]" value="${topic.id}" id="topic-${topic.id}" ${checked}>
+                            <label class="form-check-label" for="topic-${topic.id}">${topic.name}</label>
+                        </div>
+                    </div>
+                `;
                             });
-                    }
+
+                            const topicsWrappers = document.querySelectorAll(
+                                '.topics-checkbox-wrapper');
+                            console.log(topicsWrappers);
+                            if (topicsWrappers) {
+                                topicsWrappers.forEach(wrapper => {
+                                    wrapper.innerHTML = html;
+                                });
+                            } else {
+                                console.warn(
+                                    'No element found with class .topics-checkbox-wrapper');
+                            }
+                        })
+                        .catch(e => {
+                            console.error('Error loading topics:', e);
+                            const wrapper = document.querySelector('.topics-checkbox-wrapper');
+                            if (wrapper) wrapper.innerHTML = 'Error loading topics';
+                        });
+
+
                 });
 
                 // Auto-load on page load if paper already selected

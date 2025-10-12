@@ -11,6 +11,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\SubscriptionController;
 use App\Mail\NewOrderNotification;
 use App\Mail\OrderConfirmation;
+use App\Mail\OrderStatusUpdate;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -206,8 +207,8 @@ Route::get('/test-welcome-email', function () {
 });
 
 Route::get('/test-order-confirmation/{order}', function (Order $order) {
-    Mail::to('test@example.com')->send(new OrderConfirmation($order));
-    Mail::to('test@example.com')->send(new NewOrderNotification($order));
+    Mail::to('test@example.com')->send(new OrderStatusUpdate($order, 'processing', 'shipped'));
+    // Mail::to('test@example.com')->send(new NewOrderNotification($order));
     return 'New order notification email sent!';
 })->name('test.order-confirmation');
 
@@ -228,9 +229,9 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 Route::get('/get-topics-by-paper/{paperId}/{subjectId}', function ($paperId, $subjectId) {
 
-    return response()->json(
-        Topic::where('paper_id', $paperId)->where('subject_id', $subjectId)->select('id', 'name')->get()
-    );
+
+    $topics = Topic::where('paper_id', $paperId)->where('subject_id', $subjectId)->select('id', 'name')->get();
+    return response()->json($topics);
 });
 
 Route::get('/get-paper-codes-by-paper/{paperId}', function ($paperId) {
