@@ -5,7 +5,7 @@
 @section('content')
     <div class="container py-5">
         <h2 class="mb-4 fw-bold text-dark">
-            <i class="fas fa-receipt text-primary me-2"></i>My Subscriptions
+            <i class="fas fa-receipt  me-2" style="color: var(--primary-color)"></i>My Subscriptions
         </h2>
 
         @if (session('success'))
@@ -63,12 +63,12 @@
                                 <td>
                                     @if (!$subscription->status->isCanceled())
                                         @if ($subscription->type === 'default')
-                                            <span class="badge bg-primary">Default</span>
+                                            <span class="badge custom-btn-outline">Default</span>
                                         @else
                                             <form action="{{ route('user.subscription.set-default', $subscription->id) }}"
                                                 method="POST" class="d-inline">
                                                 @csrf
-                                                <button type="submit" class="btn btn-sm btn-outline-primary">Set as
+                                                <button type="submit" class="btn btn-sm custom-btn-outline">Set as
                                                     Default</button>
                                             </form>
                                         @endif

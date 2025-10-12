@@ -38,8 +38,8 @@ Route::get('/', function () {
 })->name('home');
 // Static Pages
 Route::get('/about', [PageController::class, 'about'])->name('about');
-Route::get('/contact', [PageController::class, 'contact'])->middleware('auth')->name('contact');
-Route::post('/contact', [PageController::class, 'store'])->middleware('auth')->name('contact.store');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::post('/contact', [PageController::class, 'store'])->name('contact.store');
 Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 Route::get('/model-essays', [PageController::class, 'model'])->name('model.index');
 Route::get('/model-essays/{product:slug}', [PageController::class, 'show'])->name('model.show');
@@ -234,7 +234,7 @@ Route::get('/get-topics-by-paper/{paperId}/{subjectId}', function ($paperId, $su
 });
 
 Route::get('/get-paper-codes-by-paper/{paperId}', function ($paperId) {
-       return response()->json(
+    return response()->json(
         PaperCode::where('paper_id', $paperId)->select('id', 'name')->get()
     );
 });

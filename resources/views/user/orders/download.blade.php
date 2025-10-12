@@ -10,12 +10,12 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h1 class="h2 mb-1 fw-bold text-dark">
-                            <i class="fas fa-box-open me-2 text-primary"></i>
+                            <i class="fas fa-box-open me-2 " style="color: var(--primary-color)"></i>
                             My Products
                         </h1>
                         <p class="text-muted mb-0">View and track all your orders</p>
                     </div>
-                    <a href="{{ route('dashboard') }}" class="btn btn-outline-primary">
+                    <a href="{{ route('dashboard') }}" class="btn custom-btn-outline">
                         <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
                     </a>
                 </div>
@@ -24,35 +24,35 @@
         <div class="filter_new my-4">
 
             <form id="filterForm" method="GET" action="{{ route('user.orders.download') }}">
-    <div class="row g-3">
-        <!-- Search -->
-        <div class="col-lg-9 col-md-7 col-sm-12">
-            <label for="search" class="form-label">Search Product</label>
-            <div class="input-group">
-                <span class="input-group-text">
-                    <i class="bi bi-search text-muted"></i>
-                </span>
-                <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}"
-                    placeholder="Search by name, description, or SKU...">
-            </div>
-        </div>
-   
+                <div class="row g-3">
+                    <!-- Search -->
+                    <div class="col-lg-9 col-md-7 col-sm-12">
+                        <label for="search" class="form-label">Search Product</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-search text-muted"></i>
+                            </span>
+                            <input type="text" class="form-control" id="search" name="search"
+                                value="{{ request('search') }}" placeholder="Search by name, description, or SKU...">
+                        </div>
+                    </div>
 
-    
-       
-        <!-- Filter Actions -->
-        <div class="col-lg-3 col-md-5 col-sm-12 d-flex align-items-end">
-            <div class="d-flex gap-2 w-100">
-                <button type="submit" class="btn btn-primary flex-fill">
-                    <i class="bi bi-search me-2"></i>Apply Filters
-                </button>
-                <a href="{{ route('user.orders.download') }}" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-clockwise me-2"></i>Clear
-                </a>
-            </div>
-        </div>
-    </div>
-</form>
+
+
+
+                    <!-- Filter Actions -->
+                    <div class="col-lg-3 col-md-5 col-sm-12 d-flex align-items-end">
+                        <div class="d-flex gap-2 w-100">
+                            <button type="submit" class="btn custom-btn flex-fill">
+                                <i class="bi bi-search me-2"></i>Apply Filters
+                            </button>
+                            <a href="{{ route('user.orders.download') }}" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-clockwise me-2"></i>Clear
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
 
         <!-- Orders List -->
@@ -76,12 +76,12 @@
                 </div>
             </div>
             <div class="card-body p-0">
-                @if($products->count() > 0)
+                @if ($products->count() > 0)
                     <div class="table-responsive">
                         <table class="table table-hover mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    
+
                                     <th class="border-0">Name</th>
                                     <th class="border-0">Qualification</th>
                                     <th class="border-0">Resource</th>
@@ -91,12 +91,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($products as $product)
+                                @foreach ($products as $product)
                                     <tr class="order-row" data-status="{{ $product->name }}">
                                         <td class="align-middle">
                                             <span class="fw-semibold">{{ $product->name }}</span>
                                         </td>
-                                     
+
                                         <td class="align-middle">
                                             <span class="fw-semibold">{{ $product->qualiification->title }}</span>
                                         </td>
@@ -104,13 +104,14 @@
                                             <span class="fw-semibold">{{ $product->resource->title }}</span>
                                         </td>
                                         <td class="align-middle">
-                                           <span class="fw-semibold">{{ $product->subject->title }}</span>
+                                            <span class="fw-semibold">{{ $product->subject->title }}</span>
                                         </td>
                                         <td class="align-middle">
                                             <span class="fw-semibold">{{ $product->examboard->title }}</span>
                                         </td>
                                         <td class="align-middle">
-                                            <a href="{{route('user.products.download', $product->id)}}" class="btn btn-success btn-sm"><i class="fas fa-download"></i> Download</a>
+                                            <a href="{{ route('user.products.download', $product->id) }}"
+                                                class="btn custom-btn btn-sm"><i class="fas fa-download"></i> Download</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -119,11 +120,12 @@
                     </div>
 
                     <!-- Pagination -->
-                    @if($products->hasPages())
+                    @if ($products->hasPages())
                         <div class="card-footer bg-white border-0 py-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="text-muted">
-                                    Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of {{ $products->total() }}
+                                    Showing {{ $products->firstItem() }} to {{ $products->lastItem() }} of
+                                    {{ $products->total() }}
                                     orders
                                 </div>
                                 <div>
@@ -146,7 +148,7 @@
         </div>
     </div>
 
- 
+
 
 
     <style>
@@ -204,11 +206,11 @@
     </style>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const statusFilter = document.getElementById('statusFilter');
             const orderRows = document.querySelectorAll('.order-row');
 
-            statusFilter.addEventListener('change', function () {
+            statusFilter.addEventListener('change', function() {
                 const selectedStatus = this.value;
 
                 orderRows.forEach(row => {

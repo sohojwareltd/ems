@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-lg-8 mx-auto text-center">
                     <h1 class="text-white display-4 fw-bold mb-3">About Economics Made Simple (EMS)</h1>
-                    <p class="text-white lead mb-0">Our story, mission, and the team behind your literary haven</p>
+                    <p class="text-white lead mb-0">Our story, mission and the team behind it all.</p>
                 </div>
             </div>
         </div>
@@ -23,21 +23,33 @@
                     <div class="story-content">
                         <h2 class="section-title mb-4">Our Story</h2>
                         <p class="lead mb-4">
-                            EMS was born from a simple yet powerful belief: that every person deserves access to
-                            exceptional books that inspire, educate, and entertain. What started as a small local bookstore
-                            has grown into a beloved literary destination for book lovers everywhere.
+                            Economics Made Simple didn’t start with a plan or a name. It began in the classroom with a
+                            shared goal to help learners truly understand Economics. We were a group of teachers determined
+                            to make lessons clearer, and more effective. The official materials and mark schemes often much
+                            to be desired, so we started building our own from scratch with model essays, slides, notes, and
+                            explanations that actually made sense to learners.
                         </p>
                         <p class="mb-4">
-                            Founded in 2020 by a group of passionate bibliophiles, we began with a modest collection of
-                            carefully curated books. Our founders shared a vision of creating more than just a place to
-                            buy books – they wanted to build a community where readers could discover new worlds, share
-                            their love for literature, and find the perfect book for every moment.
+                            Economics Made Simple didn’t start with a plan or a name. It began in the classroom with a
+                            shared goal to help learners truly understand Economics. We were a group of teachers determined
+                            to make lessons clearer, and more effective. The official materials and mark schemes often much
+                            to be desired, so we started building our own from scratch with model essays, slides, notes, and
+                            explanations that actually made sense to learners.
                         </p>
-                        {{-- <p class="mb-4">
-                        Today, EMS continues to grow while staying true to our roots. We've expanded our 
-                        offerings to include audiobooks, curated gift boxes, and literary merchandise, but our 
-                        commitment to quality, community, and the love of reading remains unchanged.
-                    </p> --}}
+                        <p class="mb-4">
+                            Economics Made Simple didn’t start with a plan or a name. It began in the classroom with a
+                            shared goal to help learners truly understand Economics. We were a group of teachers determined
+                            to make lessons clearer, and more effective. The official materials and mark schemes often much
+                            to be desired, so we started building our own from scratch with model essays, slides, notes, and
+                            explanations that actually made sense to learners.
+                        </p>
+                        <div class="mb-4">
+                            Economics Made Simple didn’t start with a plan or a name. It began in the classroom with a
+                            shared goal to help learners truly understand Economics. We were a group of teachers determined
+                            to make lessons clearer, and more effective. The official materials and mark schemes often much
+                            to be desired, so we started building our own from scratch with model essays, slides, notes, and
+                            explanations that actually made sense to learners.
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -59,31 +71,47 @@
                     <div class="mission-content">
                         <h2 class="section-title mb-4">Our Mission</h2>
                         <p class="lead mb-4">
-                            To inspire a lifelong love of reading by providing access to exceptional books and creating
-                            meaningful connections within our literary community.
+                            To raise the standard of education. We aim create precise, exam-board-aligned resources that
+                            empower teachers to deliver lessons with confidence and help learners achieve outstanding
+                            results. By combining clarity, structure, and accessibility, EMS turns complex and chaotic
+                            learning into simple, measurable success.
+
                         </p>
                         <p class="mb-4">
-                            We believe that books have the power to transform lives, broaden perspectives, and bring
-                            people together. Our mission is to be the bridge between readers and the stories that will
-                            change their lives.
+                            We truly believe great education changes lives; it shapes how learners think, make decisions,
+                            and understand the world around them. Our goal is not just to help learners pass exams, but to
+                            equip them with the knowledge and perspective to navigate their futures with confidence,
+                            curiosity, and purpose. Through EMS, we aim to build a generation of independent thinkers, ready
+                            to understand the world, and improve it.
+
                         </p>
+
                         <div class="mission-stats row text-center">
                             <div class="col-4">
                                 <div class="stat-item">
-                                    <h3 class="fw-bold" style="color: var(--primary-color);">1000+</h3>
-                                    <p class="text-muted">Books Curated</p>
+                                    @if (setting('store.learners_impacted'))
+                                        <h3 class="fw-bold" style="color: var(--primary-color);">
+                                            {{ setting('store.learners_impacted') }}</h3>
+                                        <p class="text-muted">Learners Impacted</p>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="stat-item">
-                                    <h3 class="fw-bold" style="color: var(--primary-color);">50+</h3>
-                                    <p class="text-muted">Gift Boxes</p>
+                                    @if (setting('store.teachers_empowered'))
+                                        <h3 class="fw-bold" style="color: var(--primary-color);">
+                                            {{ setting('store.teachers_empowered') }}</h3>
+                                        <p class="text-muted">Teachers Empowered</p>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-4">
                                 <div class="stat-item">
-                                    <h3 class="fw-bold" style="color: var(--primary-color);">500+</h3>
-                                    <p class="text-muted">Happy Readers</p>
+                                    @if (setting('store.resources_created'))
+                                        <h3 class="fw-bold" style="color: var(--primary-color);">
+                                            {{ setting('store.resources_created') }}</h3>
+                                        <p class="text-muted">Resources Created</p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -91,39 +119,45 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="values-content">
-                        <h2 class="section-title mb-4">Our Values</h2>
+                        <h2 class="section-title mb-4">Our Focus</h2>
                         <div class="values-list">
                             <div class="value-item d-flex align-items-start mb-4">
                                 <div class="value-icon me-3">
-                                    <i class="bi bi-heart-fill fs-4" style="color: var(--primary-color);"></i>
+                                    <i class="bi bi-bullseye fs-4" style="color: var(--primary-color);"></i>
+
                                 </div>
                                 <div class="value-content">
-                                    <h4 class="h5 mb-2">Passion for Literature</h4>
-                                    <p class="text-muted mb-0">We're driven by our love for books and storytelling, and we
-                                        share that passion with every customer.</p>
+                                    <h4 class="h5 mb-2">Curriculum Precision</h4>
+                                    <p class="text-muted mb-0">Every EMS resource is built and trimmed in alignment with
+                                        exact exam board specifications, ensuring accuracy, consistency, and complete
+                                        syllabus coverage.
+                                    </p>
                                 </div>
                             </div>
                             <div class="value-item d-flex align-items-start mb-4">
                                 <div class="value-icon me-3">
-                                    <i class="bi bi-people-fill fs-4" style="color: var(--secondary-color);"></i>
+                                    <i class="bi bi-person-check-fill fs-4" style="color: var(--secondary-color);"></i>
+
                                 </div>
                                 <div class="value-content">
-                                    <h4 class="h5 mb-2">Community First</h4>
-                                    <p class="text-muted mb-0">We believe in building strong relationships with our
-                                        customers and creating a welcoming literary community.</p>
+                                    <h4 class="h5 mb-2">Teacher Empowerment</h4>
+                                    <p class="text-muted mb-0">We give teachers ready-to-use, time-saving materials that
+                                        enhance lesson delivery and boost classroom confidence.</p>
                                 </div>
                             </div>
                             <div class="value-item d-flex align-items-start mb-4">
                                 <div class="value-icon me-3">
-                                    <i class="bi bi-award-fill fs-4" style="color: var(--success-color);"></i>
+                                    <i class="bi bi-trophy-fill fs-4" style="color: var(--success-color);"></i>
+
                                 </div>
                                 <div class="value-content">
-                                    <h4 class="h5 mb-2">Quality Curation</h4>
-                                    <p class="text-muted mb-0">Every book in our collection is carefully selected to ensure
-                                        the highest quality and relevance for our readers.</p>
+                                    <h4 class="h5 mb-2">Learner Achievement</h4>
+                                    <p class="text-muted mb-0">Our ultimate aim! Our structured resources simplify complex
+                                        content, helping learners see the bigger picture, master content and excel in exams.
+                                    </p>
                                 </div>
                             </div>
-                            <div class="value-item d-flex align-items-start">
+                            {{-- <div class="value-item d-flex align-items-start">
                                 <div class="value-icon me-3">
                                     <i class="bi bi-lightbulb-fill fs-4" style="color: var(--warning-color);"></i>
                                 </div>
@@ -132,7 +166,7 @@
                                     <p class="text-muted mb-0">We continuously evolve to meet the changing needs of our
                                         readers while staying true to our core mission.</p>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -213,7 +247,7 @@
                             <i class="bi bi-award fs-1" style="color: var(--primary-color);"></i>
                         </div>
                         <h4 class="h5 mb-3">Quality</h4>
-                        <p class="text-muted">Every resource is created and curated by experienced teachers and examiners —
+                        <p class="text-muted">Every resource is created and curated by experienced teachers and examiners,
                             nothing less than the best.</p>
                     </div>
                 </div>
@@ -234,17 +268,18 @@
                         </div>
                         <h4 class="h5 mb-3">Innovation</h4>
                         <p class="text-muted">We are constantly rethinking how learning can be clearer, smarter, and more
-                            effective</p>
+                            effective.</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <div class="feature-card text-center p-4 bg-white rounded-3 shadow-sm h-100">
                         <div class="feature-icon mb-3">
-                           <i class="bi bi-people fs-1" style="color: var(--danger-color);"></i>
+                            <i class="bi bi-people fs-1" style="color: var(--danger-color);"></i>
 
                         </div>
                         <h4 class="h5 mb-3">Community</h4>
-                        <p class="text-muted">We’re building a space for those who love learning and have the courage to aim higher</p>
+                        <p class="text-muted">We’re building a space for those who love learning and have the courage to
+                            aim higher.</p>
                     </div>
                 </div>
             </div>
@@ -257,8 +292,8 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center">
-                    <h2 class="text-white mb-3">Start Your Journey Your Reading Journey?</h2>
-                    <p class="text-white mb-4">Explore and discover your next favorite book today.</p>
+                    <h2 class="text-white mb-3">Start Your Journey</h2>
+                    <p class="text-white mb-4">Start Your Journey</p>
                     <div class="cta-buttons">
                         <a href="{{ route('products.index') }}" class="btn btn-light btn-lg me-3 mb-2">
                             <i class="bi bi-book me-2"></i>Browse Shop

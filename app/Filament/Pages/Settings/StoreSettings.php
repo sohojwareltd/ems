@@ -78,6 +78,15 @@ class StoreSettings extends BaseSettings
                                     Textarea::make('store.footer_text')
                                         ->label('Footer Text')
                                         ->helperText('Footer text displayed at the bottom of each page.'),
+                                    TextInput::make('store.learners_impacted')
+                                        ->label('Learners Impacted')
+                                        ->helperText('Number of learners impacted by your store.'),
+                                    TextInput::make('store.teachers_empowered')
+                                        ->label('Teachers Empowered')
+                                        ->helperText('Number of teachers empowered by your store.'),
+                                    TextInput::make('store.resources_created')
+                                        ->label('Resources Created')
+                                        ->helperText('Number of resources created by your store.'),
                                     // TextInput::make('store.currency')
                                     //     ->label('Store Currency')
                                     //     ->default('USD')
@@ -164,19 +173,19 @@ class StoreSettings extends BaseSettings
                                 ]),
                         ]),
                     Tabs\Tab::make('Payments')
-                     ->visible(false)
+                        ->visible(false)
                         ->schema([
                             Section::make('Payment Methods')
                                 ->description('Enable or disable payment methods for your store.')
                                 ->schema([
                                     Toggle::make('payments.enable_stripe')
                                         ->label('Enable Stripe')
-                                         ->visible(false)
+                                        ->visible(false)
                                         ->helperText('Allow customers to pay using Stripe.'),
                                     Toggle::make('payments.stripe_sandbox')
                                         ->label('Enable Sandbox')
                                         ->helperText('Enable Stripe Sandbox Mode.')
-                                         ->visible(false),
+                                        ->visible(false),
                                     TextInput::make('payments.stripe_key')
                                         ->label('Stripe Public Key')
                                         ->helperText('Your Stripe publishable key.')->visible(false),
@@ -184,7 +193,7 @@ class StoreSettings extends BaseSettings
                                         ->label('Stripe Secret Key')
 
                                         ->helperText('Your Stripe secret key.')
-                                         ->visible(false),
+                                        ->visible(false),
                                     Toggle::make('payments.enable_paypal')
                                         ->label('Enable PayPal')
                                         ->helperText('Allow customers to pay using PayPal.')->visible(false),
@@ -198,8 +207,8 @@ class StoreSettings extends BaseSettings
                                         ->label('PayPal Secret')
 
                                         ->helperText('Your PayPal secret.')->visible(false),
-                            ]),
-                    ]),
+                                ]),
+                        ]),
 
 
                 ]),

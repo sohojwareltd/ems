@@ -240,23 +240,26 @@
                             </div>
                             <div class="col-12 col-md-8 col-lg-6">
                                 <p class="lead mb-4">
-                                    What are our pillars? What drives our decision-making? What does the future look like
-                                    for EMS?
+                                    What are our pillars? What drives us?
                                 </p>
                             </div>
                         </div>
 
                         <!-- Updated focus items -->
                         <div class="about-stats row text-center justify-content-center">
-                            <div class="col-md-12 d-flex justify-content-center">
+                            <div class="col-md-12 d-flex ">
                                 <div class="stat-item mx-2">
-                                    <p class="focus-btn focus-active text-center">Maximising student outcomes</p>
+                                    <p class="focus-btn focus-active text-center px-3">Curriculum Precision
+                                    </p>
                                 </div>
                                 <div class="stat-item mx-2">
-                                    <p class="focus-btn text-center">Integrating education with technology</p>
+                                    <p class="focus-btn text-center px-3">Teacher Empowerment</p>
                                 </div>
                                 <div class="stat-item mx-2">
-                                    <p class="focus-btn text-center">Improving financial literacy</p>
+                                    <p class="focus-btn text-center px-3 text-white" style="background-color: #ea4e1d;">
+                                        Teacher
+                                        Empowerment
+                                    </p>
                                 </div>
                             </div>
                         </div>
