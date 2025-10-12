@@ -10,7 +10,26 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'status', 'payment_method', 'payment_status', 'shipping_status', 'payment_intent_id', 'total', 'currency', 'shipping_address', 'billing_address', 'notes', 'shipping_method', 'tracking', 'coupon_id', 'coupon_code', 'discount', 'discount_amount', 'subtotal', 'tax_amount', 'shipping_amount',
+        'user_id',
+        'status',
+        'payment_method',
+        'payment_status',
+        'shipping_status',
+        'payment_intent_id',
+        'total',
+        'currency',
+        'shipping_address',
+        'billing_address',
+        'notes',
+        'shipping_method',
+        'tracking',
+        'coupon_id',
+        'coupon_code',
+        'discount',
+        'discount_amount',
+        'subtotal',
+        'tax_amount',
+        'shipping_amount',
     ];
 
     protected $casts = [
@@ -86,7 +105,7 @@ class Order extends Model
      */
     public function getStatusColorAttribute()
     {
-        return match($this->status) {
+        return match ($this->status) {
             'pending' => 'warning',
             'processing' => 'info',
             'completed' => 'success',
@@ -95,4 +114,4 @@ class Order extends Model
             default => 'secondary',
         };
     }
-} 
+}
