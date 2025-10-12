@@ -178,7 +178,7 @@
     <section class="team-section py-5">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="section-title mb-3">Meet Our Team</h2>
+                <h2 class="section-title mb-3">Meet The Team</h2>
                 <p class="section-subtitle">The passionate individuals behind EMS</p>
             </div>
 
