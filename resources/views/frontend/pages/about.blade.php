@@ -1,3 +1,7 @@
+@php
+    $teams = App\Models\Team::all();
+
+@endphp
 @extends('frontend.layouts.app')
 
 @section('title', 'About Us - EMS')
@@ -183,51 +187,24 @@
             </div>
 
             <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="team-member text-center">
-                        <div class="team-photo mb-3">
-                            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                alt="Sarah Johnson" class="img-fluid rounded-circle shadow"
-                                style="width: 200px; height: 200px; object-fit: cover;">
+                @foreach ($teams as $team)
+                    <div class="col-lg-4 col-md-6">
+                        <div class="team-member text-center">
+                            <div class="team-photo mb-3">
+                                <img src="{{ asset('storage/' . $team->picture) }}" alt="{{ $team->name }}"
+                                    class="img-fluid rounded-circle shadow"
+                                    style="width: 200px; height: 200px; object-fit: cover;">
+                            </div>
+                            <h4 class="h5 mb-2">{{ $team->name }}</h4>
+                            <p class="text-muted mb-2">{{ $team->title }}</p>
+                            <p class="small text-muted">
+                                {{ $team->description }}
+                            </p>
                         </div>
-                        <h4 class="h5 mb-2">Sarah Johnson</h4>
-                        <p class="text-muted mb-2">Founder & CEO</p>
-                        <p class="small text-muted">
-                            A lifelong book lover with 15+ years in the publishing industry. Sarah's vision drives our
-                            mission to connect readers with exceptional stories.
-                        </p>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="team-member text-center">
-                        <div class="team-photo mb-3">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
-                                alt="Michael Chen" class="img-fluid rounded-circle shadow"
-                                style="width: 200px; height: 200px; object-fit: cover;">
-                        </div>
-                        <h4 class="h5 mb-2">Michael Chen</h4>
-                        <p class="text-muted mb-2">Head of Curation</p>
-                        <p class="small text-muted">
-                            With a Master's in Literature, Michael ensures every book in our collection meets our high
-                            standards for quality and relevance.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="team-member text-center">
-                        <div class="team-photo mb-3">
-                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
-                                alt="Emily Rodriguez" class="img-fluid rounded-circle shadow"
-                                style="width: 200px; height: 200px; object-fit: cover;">
-                        </div>
-                        <h4 class="h5 mb-2">Emily Rodriguez</h4>
-                        <p class="text-muted mb-2">Customer Experience Manager</p>
-                        <p class="small text-muted">
-                            Emily ensures every customer interaction is exceptional, from personalized recommendations to
-                            seamless shopping experiences.
-                        </p>
-                    </div>
-                </div>
+                @endforeach
+
+
             </div>
         </div>
     </section>
