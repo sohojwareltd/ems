@@ -44,7 +44,7 @@
 
             @if (request('tab') !== 'pastpapers')
                 <label class="form-label mt-2">Topics</label>
-                <select class="form-select topic-select" name="topics[]">
+                <select class="form-select topic-select" name="topic">
                     <option value="">Select Topic</option>
                 </select>
             @endif
@@ -164,7 +164,7 @@
                 <button type="submit" class="btn custom-btn flex-fill">
                     <i class="bi bi-search me-2"></i>Apply Filters
                 </button>
-                <a href="{{ route('model.index', ['qualification' => request('qualification'), 'subject' => request('subject'), 'exam_board' => request('exam_board'), 'tab' => request('tab') ?? 'essays']) }}"
+                <a href="{{ route('model.index', ['qualification' => request('qualification'), 'subject' => request('subject'), 'exam_board' => request('exam_board')]) }}"
                     class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-clockwise me-2"></i>Clear
                 </a>
@@ -176,7 +176,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.topic-wrapper').forEach(wrapper => {
-                const topicSelect = wrapper.querySelector('select[name="topics[]"]'); // may be null
+                const topicSelect = wrapper.querySelector('select[name="topic"]'); // may be null
                 const paperCodeSelect = wrapper.querySelector('select[name="paper_code"]');
                 const paperSelect = wrapper.querySelector('select[name="paper"]');
 

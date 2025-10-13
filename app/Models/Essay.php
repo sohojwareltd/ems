@@ -95,20 +95,49 @@ class Essay extends Model
 
 
         return $query
-            ->when(!empty($filters['years']), fn($q) => $q->whereIn('year', $filters['years']))
-            ->when(!empty($filters['months']), fn($q) => $q->whereIn('month', $filters['months']))
-            ->when(!empty($filters['marks']), fn($q) => $q->whereIn('marks', $filters['marks']))
-            ->when(!empty($filters['topics']), function ($q) use ($filters) {
+            ->when(
+                !empty($filters['years']),
+                fn($q) =>
+                $q->whereIn('year', (array) $filters['years'])
+            )
+            ->when(
+                !empty($filters['months']),
+                fn($q) =>
+                $q->whereIn('month', (array) $filters['months'])
+            )
+            ->when(
+                !empty($filters['marks']),
+                fn($q) =>
+                $q->whereIn('marks', (array) $filters['marks'])
+            )
+            ->when(!empty($filters['topic']), function ($q) use ($filters) {
                 $q->whereHas('topics', function ($subQuery) use ($filters) {
-                    $subQuery->whereIn('topics.id', (array) $filters['topics']);
+
+                    $subQuery->where('topic_id', $filters['topic']);
                 });
             })
-            ->when(!empty($filters['paper_code']), fn($q) => $q->where('paper_code_id', $filters['paper_code']))
-            ->when(!empty($filters['qualification']), fn($q) => $q->where('qualiification_id', $filters['qualification']))
-            ->when(!empty($filters['subject']), fn($q) => $q->where('subject_id', $filters['subject']))
-            ->when(!empty($filters['exam_board']), fn($q) => $q->where('examboard_id', $filters['exam_board']))
-            ->when(!empty($filters['search']), function ($q) use ($filters) {
-                $term = $filters['search'];
+            ->when(
+                !empty($filters['paper_code']),
+                fn($q) =>
+                $q->where('paper_code_id', $filters['paper_code'])
+            )
+            ->when(
+                !empty($filters['qualification']),
+                fn($q) =>
+                $q->where('qualiification_id', $filters['qualification'])
+            )
+            ->when(
+                !empty($filters['subject']),
+                fn($q) =>
+                $q->where('subject_id', $filters['subject'])
+            )
+            ->when(
+                !empty($filters['exam_board']),
+                fn($q) =>
+                $q->where('examboard_id', $filters['exam_board'])
+            )
+            ->when(!empty(trim($filters['search'] ?? '')), function ($q) use ($filters) {
+                $term = trim($filters['search']);
                 $q->where(function ($sub) use ($term) {
                     $sub->where('name', 'like', "%$term%")
                         ->orWhere('description', 'like', "%$term%");
