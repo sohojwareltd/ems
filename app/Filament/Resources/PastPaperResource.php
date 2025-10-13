@@ -50,17 +50,9 @@ class PastPaperResource extends Resource
                                 ->required()
                                 ->maxLength(255),
 
-                            Forms\Components\Select::make('year')
+                            Forms\Components\TextInput::make('year')
                                 ->required()
-                                ->options([
-                                    '2018' => '2018',
-                                    '2019' => '2019',
-                                    '2020' => '2020',
-                                    '2021' => '2021',
-                                    '2022' => '2022',
-                                    '2023' => '2023',
-                                    '2024' => '2024',
-                                ]),
+                                ->label('Year'),
 
                             Forms\Components\Select::make('month')
                                 ->required()
@@ -69,10 +61,28 @@ class PastPaperResource extends Resource
                                     'June' => 'June',
                                     'November' => 'November',
                                 ]),
+                            Forms\Components\Select::make('paper_id')
+                                ->label('Paper')
+                                ->relationship('paper', 'name')
+                                ->required()
+                                ->reactive() // 👈 important
+                                ->afterStateUpdated(fn(callable $set) => $set('paper_code_id', null)) // reset child field
+                                ->helperText('Associate the essay with a specific paper.'),
+
                             Forms\Components\Select::make('paper_code_id')
-                                ->relationship('paperCode', 'name')
                                 ->label('Paper Code')
-                                ->required(),
+                                ->options(function (callable $get) {
+                                    $paperId = $get('paper_id'); // get selected paper id
+                                    if (!$paperId) {
+                                        return [];
+                                    }
+
+                                    return \App\Models\PaperCode::where('paper_id', $paperId)
+                                        ->pluck('name', 'id');
+                                })
+                                ->required()
+                                ->reactive()
+                                ->disabled(fn(callable $get) => !$get('paper_id')), // disable until paper selected
                             // Forms\Components\Select::make('topic_id')
                             //     ->relationship('topic', 'name')
                             //     ->label('Topic')
@@ -93,10 +103,7 @@ class PastPaperResource extends Resource
                                 ->relationship('examboard', 'title')
                                 ->label('Exam Board')
                                 ->required(),
-                            Forms\Components\Select::make('paper_id')
-                                ->relationship('paper', 'name')
-                                ->label('Paper')
-                                ->required(),
+
                             // Forms\Components\Select::make('resource_type_id')
                             //     ->label('Resource')
                             //     ->relationship('resource', 'title')

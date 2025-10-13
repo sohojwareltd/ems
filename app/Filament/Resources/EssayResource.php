@@ -74,17 +74,8 @@ class EssayResource extends Resource
                             //     ->required()
                             //     ->columnSpanFull(),
 
-                            Forms\Components\Select::make('year')
+                            Forms\Components\TextInput::make('year')
                                 ->required()
-                                ->options([
-                                    '2018' => '2018',
-                                    '2019' => '2019',
-                                    '2020' => '2020',
-                                    '2021' => '2021',
-                                    '2022' => '2022',
-                                    '2023' => '2023',
-                                    '2024' => '2024',
-                                ])
                                 ->label('Year'),
 
                             Forms\Components\Select::make('month')
@@ -126,10 +117,28 @@ class EssayResource extends Resource
                             //     ->searchable()
                             //     ->disabled(fn(callable $get) => !$get('paper_code_id')),
 
+                            Forms\Components\Select::make('paper_id')
+                                ->label('Paper')
+                                ->relationship('paper', 'name')
+                                ->required()
+                                ->reactive() // 👈 important
+                                ->afterStateUpdated(fn(callable $set) => $set('paper_code_id', null)) // reset child field
+                                ->helperText('Associate the essay with a specific paper.'),
+
                             Forms\Components\Select::make('paper_code_id')
                                 ->label('Paper Code')
-                                ->relationship('paperCode', 'name')
-                                ->required(),
+                                ->options(function (callable $get) {
+                                    $paperId = $get('paper_id'); // get selected paper id
+                                    if (!$paperId) {
+                                        return [];
+                                    }
+
+                                    return \App\Models\PaperCode::where('paper_id', $paperId)
+                                        ->pluck('name', 'id');
+                                })
+                                ->required()
+                                ->reactive()
+                                ->disabled(fn(callable $get) => !$get('paper_id')), // disable until paper selected
 
                             Forms\Components\Select::make('topics')
                                 ->label('Topics')
@@ -148,11 +157,7 @@ class EssayResource extends Resource
                                 ->default('draft')
                                 ->required()
                                 ->helperText('Set the product status.'),
-                            Forms\Components\Select::make('paper_id')
-                                ->label('Paper')
-                                ->relationship('paper', 'name')
-                                ->required()
-                                ->helperText('Associate the essay with a specific paper.'),
+
 
 
                         ]),
