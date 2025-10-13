@@ -107,6 +107,8 @@ class PageController extends Controller
             ->get();
 
         $essaysByYear = $essays->groupBy('year');
+        $essaysByYearByFilter = Essay::groupBy('year')->pluck('year');
+
         $essaysByTopic = $essays->groupBy(fn($e) => optional($e->topic)->name ?? 'Unknown Topic');
 
 
@@ -115,6 +117,7 @@ class PageController extends Controller
             ->filter($filters)
             ->latest()
             ->get();
+            
 
         $papersByYear = $papers->groupBy('year');
         $papersByTopic = $papers->groupBy(fn($p) => optional($p->topic)->name ?? 'Unknown Topic');
@@ -130,6 +133,7 @@ class PageController extends Controller
             'qualifications',
             'examBoards',
             'subjects',
+            'essaysByYearByFilter'
         ));
     }
 

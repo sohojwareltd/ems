@@ -107,6 +107,7 @@
                         'examBoards' => $examBoards,
                         'subjects' => $subjects,
                         'papers' => $papers,
+                        'essaysByYearByFilter' => $essaysByYearByFilter,
                     ])
                 </div>
             </div>
@@ -125,6 +126,7 @@
                                 'examBoards' => $examBoards,
                                 'subjects' => $subjects,
                                 'papers' => $papers,
+                                'essaysByYearByFilter' => $essaysByYearByFilter,
                             ])
                         </div>
                     </div>

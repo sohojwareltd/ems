@@ -56,7 +56,7 @@
         <div class="col-12">
             <label class="form-label">Year</label>
             <div class="row">
-                @foreach (range(2019, 2024) as $year)
+                @foreach ($essaysByYearByFilter as $year)
                     <div class="col-md-3">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="years[]" value="{{ $year }}"
