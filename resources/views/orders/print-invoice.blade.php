@@ -249,7 +249,7 @@
             </div>
             <div class="header-right">
                 <div class="business-address">
-                    Great Portland Street,<br> London, <br> United Kingdom
+                    Great Portland Street, London, <br> United Kingdom
                 </div>
             </div>
         </div>
@@ -258,7 +258,8 @@
             <div class="invoice-meta">
                 <div class="meta-block">
                     <div class="meta-label">Billed To</div>
-                    <div class="meta-value">{{ $order->user->name ?? 'Guest Customer' }}</div>
+                    <div class="meta-value">{{ $order->user->name ?? 'Guest Customer' }}
+                        {{ $order->user->last_name }}</div>
                     @if (!empty($order->shipping_address['address_line_1']))
                         <div class="meta-label">{{ $order->shipping_address['address_line_1'] }}</div>
                     @endif
@@ -271,7 +272,8 @@
                     @endif
                 </div>
                 <div class="meta-block">
-
+                    <div class="meta-label">Billing date</div>
+                    <div class="meta-value">{{ $order->created_at->format('d M, Y') }}</div>
                 </div>
                 <div class="meta-block meta-right">
                     <div class="meta-label">Invoice #</div>
@@ -324,9 +326,8 @@
                 </table>
             </div>
 
-            <div class="thanks">Thank you for your business!</div>
-            <div class="terms">Terms & Conditions apply. We value your trust in us and hope to exceed your
-                expectations.</div>
+            <div class="thanks">Thank you for your trust in us, we hope your expectations were exceeded!</div>
+            <div class="terms">Terms & Conditions apply.</div>
         </div>
     </div>
 </body>

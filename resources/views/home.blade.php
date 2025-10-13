@@ -256,9 +256,9 @@
                                     <p class="focus-btn text-center px-3">Teacher Empowerment</p>
                                 </div>
                                 <div class="stat-item mx-2">
-                                    <p class="focus-btn text-center px-3 text-white" style="background-color: #ea4e1d;">
-                                        Teacher
-                                        Empowerment
+                                    <p class="focus-btn text-center px-3 ">
+                                        Learner Achievement
+
                                     </p>
                                 </div>
                             </div>

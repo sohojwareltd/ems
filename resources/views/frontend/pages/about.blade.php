@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-lg-8 mx-auto text-center">
                     <h1 class="text-white display-4 fw-bold mb-3">About Economics Made Simple (EMS)</h1>
-                    <p class="text-white lead mb-0">Our story, mission and the team behind it all.</p>
+                    <p class="text-white lead mb-0">Our story, mission and the team behind it all</p>
                 </div>
             </div>
         </div>
@@ -34,25 +34,24 @@
                             explanations that actually made sense to learners.
                         </p>
                         <p class="mb-4">
-                            Economics Made Simple didn’t start with a plan or a name. It began in the classroom with a
-                            shared goal to help learners truly understand Economics. We were a group of teachers determined
-                            to make lessons clearer, and more effective. The official materials and mark schemes often much
-                            to be desired, so we started building our own from scratch with model essays, slides, notes, and
-                            explanations that actually made sense to learners.
+                            We wanted the answers straight from the horse’s mouth, no guesswork, so we trained as official
+                            examiners. We wanted to see exactly how marks were awarded, where learners lost them, and what
+                            separated a good answer from a great one. These insights changed everything. It shaped how we
+                            structured lessons, how we designed resources, and how we explained complex ideas. We rewrote,
+                            refined, and rebuilt everything again, from ground up.
+
                         </p>
                         <p class="mb-4">
-                            Economics Made Simple didn’t start with a plan or a name. It began in the classroom with a
-                            shared goal to help learners truly understand Economics. We were a group of teachers determined
-                            to make lessons clearer, and more effective. The official materials and mark schemes often much
-                            to be desired, so we started building our own from scratch with model essays, slides, notes, and
-                            explanations that actually made sense to learners.
+                            As our resources improved, so did the results. Word spread quickly. Other teachers began using
+                            our materials, learners started seeing Economics differently, and we realised we were all
+                            solving the same problems together. That was when the idea of EMS began to take shape.
+
                         </p>
                         <div class="mb-4">
-                            Economics Made Simple didn’t start with a plan or a name. It began in the classroom with a
-                            shared goal to help learners truly understand Economics. We were a group of teachers determined
-                            to make lessons clearer, and more effective. The official materials and mark schemes often much
-                            to be desired, so we started building our own from scratch with model essays, slides, notes, and
-                            explanations that actually made sense to learners.
+                            The name came naturally. Our purpose was simple. We wanted learners to find Economics simple.
+                            EMS grew from that shared vision, a community of educators and learners working together to make
+                            education clearer, more consistent, and more rewarding for everyone.
+
                         </div>
                     </div>
                 </div>
@@ -186,7 +185,7 @@
                 <p class="section-subtitle">The passionate individuals behind EMS</p>
             </div>
 
-            <div class="row g-4">
+            <div class="row g-4 justify-content-center">
                 @foreach ($teams as $team)
                     <div class="col-lg-4 col-md-6">
                         <div class="team-member text-center">
@@ -269,7 +268,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center">
-                    <h2 class="text-white mb-3">Start Your Journey</h2>
+                    <h2 class="text-white mb-3">Explore Our Collection</h2>
                     <p class="text-white mb-4">Start Your Journey</p>
                     <div class="cta-buttons">
                         <a href="{{ route('products.index') }}" class="btn btn-light btn-lg me-3 mb-2">

@@ -77,6 +77,7 @@ class EssayResource extends Resource
                             Forms\Components\Select::make('year')
                                 ->required()
                                 ->options([
+                                    '2018' => '2018',
                                     '2019' => '2019',
                                     '2020' => '2020',
                                     '2021' => '2021',
@@ -221,7 +222,7 @@ class EssayResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('paperCode.name')
-                    ->label('Paper')
+                    ->label('Paper Code')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('year')
                     ->sortable(),

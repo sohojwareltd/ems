@@ -129,12 +129,12 @@ class PastPaperResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable()->sortable(),
+                TextColumn::make('name')->label('Name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('paperCode.name')
-                    ->label('Paper')
+                    ->label('Paper Code')
                     ->searchable(),
-                TextColumn::make('year'),
-                TextColumn::make('month'),
+                TextColumn::make('year')->label('Year')->sortable(),
+                TextColumn::make('month')->label('Month')->sortable(),
                 // TextColumn::make('topic.name')->label('Topic'),
                 TextColumn::make('created_at')->date('d M Y'),
             ])
