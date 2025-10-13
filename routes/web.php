@@ -229,9 +229,9 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
 Route::get('/get-topics-by-paper/{paperId}/{subjectId}', function ($paperId, $subjectId) {
 
-
-    $topics = Topic::where('paper_id', $paperId)->where('subject_id', $subjectId)->select('id', 'name')->get();
-    return response()->json($topics);
+    return response()->json(
+        Topic::where('paper_id', $paperId)->where('subject_id', $subjectId)->select('id', 'name')->get()
+    );
 });
 
 Route::get('/get-paper-codes-by-paper/{paperId}', function ($paperId) {

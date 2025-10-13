@@ -20,6 +20,7 @@
         @php
             $paperCodes = \App\Models\PaperCode::orderBy('name')->get();
         @endphp
+
         <div class="col-12 topic-wrapper">
             <label class="form-label">Paper</label>
             <select class="form-select paper-code" name="paper">
@@ -41,21 +42,13 @@
                 @endforeach
             </select>
 
-            {{-- @if (request('tab') !== 'pastpapers')
+            @if (request('tab') !== 'pastpapers')
                 <label class="form-label mt-2">Topics</label>
-                <select class="form-select topic-select" name="topic">
+                <select class="form-select topic-select" name="topics[]">
                     <option value="">Select Topic</option>
                 </select>
-            @endif --}}
+            @endif
         </div>
-        @if (request('tab') !== 'pastpapers')
-            <div class="col-12 topic-wrapper">
-                <label class="form-label">Topics</label>
-                <div class="row topics-checkbox-wrapper">
-
-                </div>
-            </div>
-        @endif
 
 
         <!-- Repeat this div anywhere on the page if needed -->
@@ -126,7 +119,7 @@
         @endif
         <input type="hidden" name="qualification" value="{{ request('qualification') }}">
         <input type="hidden" name="subject" value="{{ request('subject') }}">
-        <input type="hidden" name="tab" value="{{ request('tab') ?? 'essays' }}">
+        <input type="hidden" name="tab" value="{{ request('tab') }}">
 
         {{-- <div class="col-12">
             <label for="qualifications" class="form-label">Qualifications</label>
@@ -171,7 +164,7 @@
                 <button type="submit" class="btn custom-btn flex-fill">
                     <i class="bi bi-search me-2"></i>Apply Filters
                 </button>
-                <a href="{{ route('model.index', ['qualification' => request('qualification'), 'subject' => request('subject'), 'exam_board' => request('exam_board'), 'tab' => request('tab')]) }}"
+                <a href="{{ route('model.index', ['qualification' => request('qualification'), 'subject' => request('subject'), 'exam_board' => request('exam_board')]) }}"
                     class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-clockwise me-2"></i>Clear
                 </a>
@@ -183,7 +176,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.topic-wrapper').forEach(wrapper => {
-                const topicSelect = wrapper.querySelector('select[name="topic"]'); // may be null
+                const topicSelect = wrapper.querySelector('select[name="topics[]"]'); // may be null
                 const paperCodeSelect = wrapper.querySelector('select[name="paper_code"]');
                 const paperSelect = wrapper.querySelector('select[name="paper"]');
 
@@ -225,49 +218,30 @@
                                 '<option value="">Error loading paper codes</option>';
                         });
 
+                    // ✅ Only fetch topics if topicSelect exists (not pastpapers tab)
+                    if (topicSelect) {
+                        const selectedTopic = "{{ request('topic') }}";
 
-
-
-                    fetch(`/get-topics-by-paper/${paperId}/{{ request('subject') }}`)
-                        .then(res => res.json())
-                        .then(data => {
-                            let html = '';
-                            const selectedTopics =
-                            @json((array) request('topics')); // previously selected topics
-
-                            data.forEach(topic => {
-                                const checked = selectedTopics.includes(String(topic
-                                    .id)) ? 'checked' : '';
-                                console.log(checked);
-                                html += `
-                    <div class="col-md-12">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="topics[]" value="${topic.id}" id="topic-${topic.id}" ${checked}>
-                            <label class="form-check-label" for="topic-${topic.id}">${topic.name}</label>
-                        </div>
-                    </div>
-                `;
-                            });
-
-                            const topicsWrappers = document.querySelectorAll(
-                                '.topics-checkbox-wrapper');
-                            console.log(topicsWrappers);
-                            if (topicsWrappers) {
-                                topicsWrappers.forEach(wrapper => {
-                                    wrapper.innerHTML = html;
+                        fetch(`/get-topics-by-paper/${paperId}/{{ request('subject') }}`)
+                            .then(res => res.json())
+                            .then(data => {
+                                let optionsHtml = '<option value="">Select Topic</option>';
+                                data.forEach(topic => {
+                                    const selected = selectedTopic == topic.id ?
+                                        'selected' : '';
+                                    optionsHtml +=
+                                        `<option value="${topic.id}" ${selected}>${topic.name}</option>`;
                                 });
-                            } else {
-                                console.warn(
-                                    'No element found with class .topics-checkbox-wrapper');
-                            }
-                        })
-                        .catch(e => {
-                            console.error('Error loading topics:', e);
-                            const wrapper = document.querySelector('.topics-checkbox-wrapper');
-                            if (wrapper) wrapper.innerHTML = 'Error loading topics';
-                        });
+                                topicSelect.innerHTML = optionsHtml;
 
-
+                                if (data.length === 1) topicSelect.value = data[0].id;
+                            })
+                            .catch(e => {
+                                console.error('Error loading topics:', e);
+                                topicSelect.innerHTML =
+                                    '<option value="">Error loading topics</option>';
+                            });
+                    }
                 });
 
                 // Auto-load on page load if paper already selected
