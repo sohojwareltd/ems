@@ -119,7 +119,7 @@
         @endif
         <input type="hidden" name="qualification" value="{{ request('qualification') }}">
         <input type="hidden" name="subject" value="{{ request('subject') }}">
-        <input type="hidden" name="tab" value="{{ request('tab') }}">
+        <input type="hidden" name="tab" value="{{ request('tab') ?? 'essays' }}">
 
         {{-- <div class="col-12">
             <label for="qualifications" class="form-label">Qualifications</label>
