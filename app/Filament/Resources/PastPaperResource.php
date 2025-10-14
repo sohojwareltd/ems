@@ -137,6 +137,9 @@ class PastPaperResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->label('Name')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('paper.name')
+                    ->label('Paper')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('paperCode.name')
                     ->label('Paper Code')
                     ->searchable(),

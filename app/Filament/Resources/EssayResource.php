@@ -226,6 +226,9 @@ class EssayResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('paper.name')
+                    ->label('Paper')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('paperCode.name')
                     ->label('Paper Code')
                     ->searchable(),
