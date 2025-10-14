@@ -245,6 +245,7 @@ class EssayResource extends Resource
                     ->label('Topic')
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('created_at')->date('d M Y'),
                 // Tables\Columns\TextColumn::make('category_id')
                 //     ->numeric()
                 //     ->sortable(),
