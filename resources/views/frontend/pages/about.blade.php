@@ -28,29 +28,33 @@
                         <h2 class="section-title mb-4">Our Story</h2>
                         <p class="lead mb-4">
                             Economics Made Simple didn’t start with a plan or a name. It began in the classroom with a
-                            shared goal to help learners truly understand Economics. We were a group of teachers determined
-                            to make lessons clearer, and more effective. The official materials and mark schemes often much
-                            to be desired, so we started building our own from scratch with model essays, slides, notes, and
-                            explanations that actually made sense to learners.
+                            shared goal to help our students truly understand Economics. Just a couple of teachers
+                            determined to make lessons clearer, and more effective. The official materials and mark schemes
+                            left much to be desired, so we started building our own from scratch with model essays, slides,
+                            notes, and explanations that actually made sense to our students.
+
                         </p>
                         <p class="mb-4">
                             We wanted the answers straight from the horse’s mouth, no guesswork, so we trained as official
-                            examiners. We wanted to see exactly how marks were awarded, where learners lost them, and what
-                            separated a good answer from a great one. These insights changed everything. It shaped how we
-                            structured lessons, how we designed resources, and how we explained complex ideas. We rewrote,
-                            refined, and rebuilt everything again, from ground up.
+                            examiners. We wanted to see exactly how marks were awarded, where our students lost them, and
+                            what separated a good answer from a great one. These insights changed everything! It shaped how
+                            we structured our lessons, how we designed resources, and how we explained complex ideas. We
+                            rewrote, refined, and rebuilt everything again, from the ground up.
+
 
                         </p>
                         <p class="mb-4">
-                            As our resources improved, so did the results. Word spread quickly. Other teachers began using
-                            our materials, learners started seeing Economics differently, and we realised we were all
-                            solving the same problems together. That was when the idea of EMS began to take shape.
+                            As our resources improved, so did the results. Word spread quickly, other teachers began using
+                            our materials, our students started seeing Economics differently, and we realised we all had the
+                            same problems. That was when the idea of EMS began to take shape.
+
 
                         </p>
                         <div class="mb-4">
-                            The name came naturally. Our purpose was simple. We wanted learners to find Economics simple.
-                            EMS grew from that shared vision, a community of educators and learners working together to make
-                            education clearer, more consistent, and more rewarding for everyone.
+                            As our resources improved, so did the results. Word spread quickly, other teachers began using
+                            our materials, our students started seeing Economics differently, and we realised we all had the
+                            same problems. That was when the idea of EMS began to take shape.
+
 
                         </div>
                     </div>
@@ -74,10 +78,11 @@
                     <div class="mission-content">
                         <h2 class="section-title mb-4">Our Mission</h2>
                         <p class="lead mb-4">
-                            To raise the standard of education. We aim create precise, exam-board-aligned resources that
+                            To raise the standard of education. We aim to create precise, exam-board-aligned resources that
                             empower teachers to deliver lessons with confidence and help learners achieve outstanding
                             results. By combining clarity, structure, and accessibility, EMS turns complex and chaotic
                             learning into simple, measurable success.
+
 
                         </p>
                         <p class="mb-4">
@@ -86,6 +91,8 @@
                             equip them with the knowledge and perspective to navigate their futures with confidence,
                             curiosity, and purpose. Through EMS, we aim to build a generation of independent thinkers, ready
                             to understand the world, and improve it.
+
+
 
                         </p>
 
