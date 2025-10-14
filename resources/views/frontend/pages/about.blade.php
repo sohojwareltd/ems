@@ -51,9 +51,10 @@
 
                         </p>
                         <div class="mb-4">
-                            As our resources improved, so did the results. Word spread quickly, other teachers began using
-                            our materials, our students started seeing Economics differently, and we realised we all had the
-                            same problems. That was when the idea of EMS began to take shape.
+                            The name came naturally. Our purpose was simple. We wanted learners to find Economics simple.
+                            EMS grew from that shared vision, a community of educators and learners working together to make
+                            education clearer, more consistent, and more rewarding for everyone.
+
 
 
                         </div>
