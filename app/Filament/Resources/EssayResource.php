@@ -124,11 +124,24 @@ class EssayResource extends Resource
                                 ->reactive() // 👈 important
                                 ->afterStateUpdated(fn(callable $set) => $set('paper_code_id', null)) // reset child field
                                 ->helperText('Associate the essay with a specific paper.'),
+                            Forms\Components\Select::make('paper_id')
+                                ->label('Paper')
+                                ->relationship('paper', 'name')
+                                ->required()
+                                ->reactive() // 👈 triggers dependent fields
+                                ->afterStateUpdated(function (callable $set) {
+                                    // Reset dependent fields when paper changes
+                                    $set('paper_code_id', null);
+                                    $set('topics', []);
+                                })
+                                ->helperText('Associate the essay with a specific paper.'),
 
                             Forms\Components\Select::make('paper_code_id')
                                 ->label('Paper Code')
+                                ->required()
+                                ->reactive()
                                 ->options(function (callable $get) {
-                                    $paperId = $get('paper_id'); // get selected paper id
+                                    $paperId = $get('paper_id');
                                     if (!$paperId) {
                                         return [];
                                     }
@@ -136,17 +149,28 @@ class EssayResource extends Resource
                                     return \App\Models\PaperCode::where('paper_id', $paperId)
                                         ->pluck('name', 'id');
                                 })
-                                ->required()
-                                ->reactive()
-                                ->disabled(fn(callable $get) => !$get('paper_id')), // disable until paper selected
+                                ->disabled(fn(callable $get) => !$get('paper_id'))
+                                ->helperText('Select the code corresponding to the chosen paper.'),
 
                             Forms\Components\Select::make('topics')
                                 ->label('Topics')
                                 ->multiple()
-                                ->relationship('topics', 'name')
-                                ->preload()
                                 ->searchable()
-                                ->required(),
+                                ->preload()
+                                ->required()
+                                ->reactive()
+                                ->options(function (callable $get) {
+                                    $paperId = $get('paper_id');
+                                    if (!$paperId) {
+                                        return [];
+                                    }
+
+                                    return \App\Models\Topic::where('paper_id', $paperId)
+                                        ->pluck('name', 'id');
+                                })
+                                ->disabled(fn(callable $get) => !$get('paper_id'))
+                                ->helperText('Select topics associated with the chosen paper.'),
+
 
                             Forms\Components\Select::make('status')
                                 ->options([
