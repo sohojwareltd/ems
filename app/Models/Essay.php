@@ -122,6 +122,11 @@ class Essay extends Model
                 $q->where('paper_code_id', $filters['paper_code'])
             )
             ->when(
+                !empty($filters['paper']),
+                fn($q) =>
+                $q->where('paper_id', $filters['paper'])
+            )
+            ->when(
                 !empty($filters['qualification']),
                 fn($q) =>
                 $q->where('qualiification_id', $filters['qualification'])

@@ -93,7 +93,8 @@ class PageController extends Controller
             'subject',
             'exam_board',
             'search',
-            'paper_code'
+            'paper_code',
+            'paper',
         ]);
         $topics = Topic::all();
         $qualifications = Qualification::all();
@@ -117,7 +118,7 @@ class PageController extends Controller
             ->filter($filters)
             ->latest()
             ->get();
-            
+
 
         $papersByYear = $papers->groupBy('year');
         $papersByTopic = $papers->groupBy(fn($p) => optional($p->topic)->name ?? 'Unknown Topic');
