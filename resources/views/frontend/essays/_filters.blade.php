@@ -52,25 +52,26 @@
 
 
         <!-- Repeat this div anywhere on the page if needed -->
-        
 
-        <div class="col-12">
-            <label class="form-label">Year</label>
-            <div class="row">
-                @foreach ($essaysByYearByFilter as $year)
-                    <div class="col-md-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="years[]" value="{{ $year }}"
-                                id="year-{{ $year }}"
-                                {{ in_array($year, (array) request('years')) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="year-{{ $year }}">
-                                {{ $year }}
-                            </label>
+        @if (count($essaysByYearByFilter) > 0)
+            <div class="col-12">
+                <label class="form-label">Year</label>
+                <div class="row">
+                    @foreach ($essaysByYearByFilter as $year)
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="years[]"
+                                    value="{{ $year }}" id="year-{{ $year }}"
+                                    {{ in_array($year, (array) request('years')) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="year-{{ $year }}">
+                                    {{ $year }}
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
-        </div>
+        @endif
 
         <div class="col-12">
             <label class="form-label">Month</label>
