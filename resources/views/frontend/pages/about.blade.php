@@ -34,6 +34,7 @@
                             slides, notes, and explanations that actually made sense to our students.
 
 
+
                         </p>
                         <p class="mb-4">
                             We wanted the answers straight from the horse’s mouth, no guesswork, so we trained as official
@@ -45,11 +46,14 @@
 
 
 
+
                         </p>
                         <p class="mb-4">
                             As our resources improved, so did the results. Word spread quickly, other teachers and students
                             began using our materials, our students started seeing Economics differently, and we realised we
                             all had the same problems. That was when the idea of EMS began to take shape.
+
+
 
 
 
