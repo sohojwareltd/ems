@@ -108,7 +108,12 @@ class PageController extends Controller
             ->get();
 
         $essaysByYear = $essays->groupBy('year');
-        $essaysByYearByFilter = Essay::groupBy('year')->pluck('year');
+        if (request('tab') == 'pastpapers') {
+            $essaysByYearByFilter = PastPaper::groupBy('year')->pluck('year');
+        } else {
+            $essaysByYearByFilter = Essay::groupBy('year')->pluck('year');
+        }
+
 
         $essaysByTopic = $essays->groupBy(fn($e) => optional($e->topic)->name ?? 'Unknown Topic');
 
