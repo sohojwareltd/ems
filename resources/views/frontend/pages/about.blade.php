@@ -29,9 +29,10 @@
                         <p class="lead mb-4">
                             Economics Made Simple didn’t start with a plan or a name. It began in the classroom with a
                             shared goal to help our students truly understand Economics. Just a couple of teachers
-                            determined to make lessons clearer, and more effective. The official materials and mark schemes
-                            left much to be desired, so we started building our own from scratch with model essays, slides,
-                            notes, and explanations that actually made sense to our students.
+                            determined to make our lessons clearer, and more effective. The official materials and mark
+                            schemes left much to be desired, so we started building our own from scratch with model essays,
+                            slides, notes, and explanations that actually made sense to our students.
+
 
                         </p>
                         <p class="mb-4">
@@ -42,11 +43,14 @@
                             rewrote, refined, and rebuilt everything again, from the ground up.
 
 
+
+
                         </p>
                         <p class="mb-4">
-                            As our resources improved, so did the results. Word spread quickly, other teachers began using
-                            our materials, our students started seeing Economics differently, and we realised we all had the
-                            same problems. That was when the idea of EMS began to take shape.
+                            As our resources improved, so did the results. Word spread quickly, other teachers and students
+                            began using our materials, our students started seeing Economics differently, and we realised we
+                            all had the same problems. That was when the idea of EMS began to take shape.
+
 
 
                         </p>
@@ -54,6 +58,7 @@
                             The name came naturally. Our purpose was simple. We wanted learners to find Economics simple.
                             EMS grew from that shared vision, a community of educators and learners working together to make
                             education clearer, more consistent, and more rewarding for everyone.
+
 
 
 
@@ -276,8 +281,8 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center">
-                    <h2 class="text-white mb-3">Explore Our Collection</h2>
-                    <p class="text-white mb-4">Start Your Journey</p>
+                    <h2 class="text-white mb-3">Start Your Journey</h2>
+                    <p class="text-white mb-4">Explore Our Collection</p>
                     <div class="cta-buttons">
                         <a href="{{ route('products.index') }}" class="btn btn-light btn-lg me-3 mb-2">
                             <i class="bi bi-book me-2"></i>Browse Shop

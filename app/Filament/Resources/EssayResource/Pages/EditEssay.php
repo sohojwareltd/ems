@@ -16,4 +16,17 @@ class EditEssay extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function handleRecordUpdate(\Illuminate\Database\Eloquent\Model $record, array $data): \Illuminate\Database\Eloquent\Model
+    {
+        $topics = $data['topics'] ?? [];
+        unset($data['topics']);
+
+        $record = parent::handleRecordUpdate($record, $data);
+
+        // Sync pivot table after updating
+        $record->topics()->sync($topics);
+
+        return $record;
+    }
 }

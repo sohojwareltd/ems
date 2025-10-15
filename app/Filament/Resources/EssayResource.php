@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\EssayResource\Pages;
-use App\Filament\Resources\EssayResource\RelationManagers;
 use App\Models\Essay;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,10 +10,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class EssayResource extends Resource
 {
@@ -35,44 +31,31 @@ class EssayResource extends Resource
                                 ->required()
                                 ->maxLength(255)
                                 ->live(onBlur: true)
-                                ->afterStateUpdated(function (string $state, callable $set) {
-                                    $set('slug', Str::slug($state));
-                                })
+                                ->afterStateUpdated(fn(string $state, callable $set) => $set('slug', Str::slug($state)))
                                 ->helperText('Enter the product name as it will appear to customers.'),
+
                             Forms\Components\TextInput::make('slug')
                                 ->required()
                                 ->maxLength(255)
                                 ->helperText('Unique URL slug for the product. Auto-generated from the name.'),
 
-                            // Forms\Components\Select::make('resource_type_id')
-                            //     ->label('Resource')
-                            //     ->relationship('resource', 'title')
-                            //     // ->searchable()
-                            //     ->required()
-                            //     ->helperText('Assign a resource for better organization.'),
                             Forms\Components\Select::make('qualiification_id')
                                 ->label('Qualification')
                                 ->relationship('qualiification', 'title')
-                                // ->searchable()
                                 ->required()
-                                ->helperText('Assign a qualiification for better organization.'),
+                                ->helperText('Assign a qualification for better organization.'),
+
                             Forms\Components\Select::make('subject_id')
                                 ->label('Subject')
                                 ->relationship('subject', 'title')
-                                // ->searchable()
                                 ->required()
                                 ->helperText('Assign a subject for better organization.'),
+
                             Forms\Components\Select::make('examboard_id')
                                 ->label('Examboard')
                                 ->relationship('examboard', 'title')
-                                // ->searchable()
                                 ->required()
-                                ->helperText('Assign a examboard for better organization.'),
-
-
-                            // Forms\Components\RichEditor::make('description')
-                            //     ->required()
-                            //     ->columnSpanFull(),
+                                ->helperText('Assign an examboard for better organization.'),
 
                             Forms\Components\TextInput::make('year')
                                 ->required()
@@ -95,45 +78,16 @@ class EssayResource extends Resource
                                     '12' => '12 Marks',
                                 ])
                                 ->label('Marks'),
-                            // Forms\Components\Select::make('paper_code_id')
-                            //     ->label('Paper Code')
-                            //     ->options(\App\Models\Paper::all()->pluck('name', 'id'))
-                            //     ->reactive()
-                            //     ->afterStateUpdated(fn(callable $set) => $set('topic_id', null))
-                            //     ->required(),
-
-                            // Forms\Components\Select::make('topic_id')
-                            //     ->label('Topic')
-                            //     ->required()
-                            //     ->options(function (callable $get) {
-                            //         $paperId = $get('paper_code_id');
-                            //         if (!$paperId) {
-                            //             return [];
-                            //         }
-
-                            //         return \App\Models\Topic::where('paper_code_id', $paperId)
-                            //             ->pluck('name', 'id');
-                            //     })
-                            //     ->searchable()
-                            //     ->disabled(fn(callable $get) => !$get('paper_code_id')),
 
                             Forms\Components\Select::make('paper_id')
                                 ->label('Paper')
                                 ->relationship('paper', 'name')
                                 ->required()
-                                ->reactive() // 👈 important
-                                ->afterStateUpdated(fn(callable $set) => $set('paper_code_id', null)) // reset child field
-                                ->helperText('Associate the essay with a specific paper.'),
-                            Forms\Components\Select::make('paper_id')
-                                ->label('Paper')
-                                ->relationship('paper', 'name')
-                                ->required()
-                                ->reactive() // 👈 triggers dependent fields
-                                ->afterStateUpdated(function (callable $set) {
-                                    // Reset dependent fields when paper changes
-                                    $set('paper_code_id', null);
-                                    $set('topics', []);
-                                })
+                                ->reactive()
+                                ->afterStateUpdated(fn(callable $set) => [
+                                    $set('paper_code_id', null),
+                                    $set('topics', []),
+                                ])
                                 ->helperText('Associate the essay with a specific paper.'),
 
                             Forms\Components\Select::make('paper_code_id')
@@ -155,12 +109,12 @@ class EssayResource extends Resource
                             Forms\Components\Select::make('topics')
                                 ->label('Topics')
                                 ->multiple()
-                                ->searchable()
-                                ->preload()
-                                ->required()
                                 ->reactive()
+                                ->dehydrated(false)
                                 ->options(function (callable $get) {
                                     $paperId = $get('paper_id');
+
+
                                     if (!$paperId) {
                                         return [];
                                     }
@@ -168,8 +122,15 @@ class EssayResource extends Resource
                                     return \App\Models\Topic::where('paper_id', $paperId)
                                         ->pluck('name', 'id');
                                 })
+                                ->afterStateHydrated(function ($component, $state, $record) {
+                                    if ($record) {
+                                        $component->state(
+                                            $record->topics()->pluck('topics.id')->toArray() // ✅ fully qualified
+                                        );
+                                    }
+                                })
                                 ->disabled(fn(callable $get) => !$get('paper_id'))
-                                ->helperText('Select topics associated with the chosen paper.'),
+                                ->helperText('Select the topics related to the chosen paper code.'),
 
 
                             Forms\Components\Select::make('status')
@@ -181,35 +142,11 @@ class EssayResource extends Resource
                                 ->default('draft')
                                 ->required()
                                 ->helperText('Set the product status.'),
-
-
-
                         ]),
+
                     Forms\Components\Tabs\Tab::make('Media')
                         ->icon('heroicon-o-photo')
                         ->schema([
-                            // Thumbnail upload
-
-                            // Forms\Components\FileUpload::make('thumbnail')
-                            //     ->label('Thumbnail')
-                            //     ->image()
-                            //     ->nullable()
-                            //     ->directory('products/thumbnails')
-                            //     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
-                            //     ->maxSize(5120),
-
-
-                            // Forms\Components\FileUpload::make('gallery')
-                            //     ->label('Gallery Images')
-                            //     ->image()
-                            //     ->multiple()
-                            //     ->directory('products/gallery')
-                            //     ->nullable()
-                            //     ->helperText('Additional images for the product gallery.')
-                            //     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
-                            //     ->maxSize(2048),
-
-
                             Forms\Components\FileUpload::make('file')
                                 ->label('PDF File')
                                 ->directory('products/essay')
@@ -217,30 +154,14 @@ class EssayResource extends Resource
                                 ->required()
                                 ->maxSize(5120),
 
-
                             Forms\Components\FileUpload::make('ppt_file')
                                 ->label('Zip File')
                                 ->directory('products/powerpoints'),
                         ]),
-                    // Forms\Components\Tabs\Tab::make('SEO')
-                    //     ->icon('heroicon-o-magnifying-glass')
-                    //     ->schema([
-                    //         Forms\Components\TextInput::make('meta_title')
-                    //             ->label('Meta Title')
-                    //             ->maxLength(255),
-                    //         Forms\Components\Textarea::make('meta_description')
-                    //             ->label('Meta Description'),
-                    //         Forms\Components\TextInput::make('meta_keywords')
-                    //             ->label('Meta Keywords')
-                    //             ->maxLength(255),
-                    //         Forms\Components\TextInput::make('tags')
-                    //             ->label('Tags')
-                    //             ->helperText('Enter tags separated by commas.'),
-                    //     ]),
                 ])
                 ->maxWidth('full')
                 ->columns(2)
-                ->columnSpanFull()
+                ->columnSpanFull(),
         ]);
     }
 
@@ -248,54 +169,18 @@ class EssayResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('paper.name')
-                    ->label('Paper')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('paperCode.name')
-                    ->label('Paper Code')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('year')
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('month')
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('marks')
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('topic.name')
-                    ->label('Topic')
-                    ->sortable()
-                    ->searchable(),
+                TextColumn::make('name')->searchable(),
+                TextColumn::make('paper.name')->label('Paper')->searchable(),
+                TextColumn::make('paperCode.name')->label('Paper Code')->searchable(),
+                TextColumn::make('year')->sortable(),
+                TextColumn::make('month')->sortable(),
+                TextColumn::make('marks')->sortable(),
+                TextColumn::make('topics.name')->label('Topics')->limit(50),
                 TextColumn::make('created_at')->date('d M Y'),
-                // Tables\Columns\TextColumn::make('category_id')
-                //     ->numeric()
-                //     ->sortable(),
-                // Tables\Columns\TextColumn::make('brand_id')
-                //     ->numeric()
-                //     ->sortable(),
-
-            ])
-            ->filters([
-                //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
@@ -305,5 +190,11 @@ class EssayResource extends Resource
             'create' => Pages\CreateEssay::route('/create'),
             'edit' => Pages\EditEssay::route('/{record}/edit'),
         ];
+    }
+
+    public static function mutateFormDataBeforeSave(array $data): array
+    {
+        unset($data['topics']); // prevent saving topics directly
+        return $data;
     }
 }
