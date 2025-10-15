@@ -79,6 +79,8 @@
             <h1 class="section-title display-4 fw-bold">
                 {{ $qualification ?? '' }} {{ $examBoard ?? '' }} {{ $subject ?? '' }}
             </h1>
+            <p>All Edexcel Economics variations are identical in content and structure, use any resource, regardless of your
+                paper code. Differences only exist to manage exam timing, region, and format.</p>
         </div>
 
         <div class="row">
