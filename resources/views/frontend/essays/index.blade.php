@@ -121,7 +121,7 @@
 
         <div class="row">
             <!-- Offcanvas Trigger (Mobile) -->
-            <div class="col-12 d-md-none mb-3">
+            <div class="col-12 d-lg-none mb-3">
                 <button class="btn btn-outline-primary w-100" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#filtersOffcanvas" aria-controls="filtersOffcanvas">
                     <i class="bi bi-funnel me-2"></i>Filters & Search
@@ -151,7 +151,7 @@
             </div>
 
             <!-- Desktop Filters -->
-            <div class="col-md-4 mb-4 d-none d-md-block">
+            <div class="col-md-4 mb-4 d-none d-lg-block">
                 <div class="position-sticky" style="top: 90px;">
                     <div class="card">
                         <div class="card-header" style="background-color: var(--primary-dark); color: var(--white);">
@@ -172,7 +172,7 @@
             </div>
 
             <!-- Main Content -->
-            <div class="col-md-8">
+            <div class="col-lg-8 ">
 
                 {{-- Active Filters --}}
                 @if (request()->except(['page']))
