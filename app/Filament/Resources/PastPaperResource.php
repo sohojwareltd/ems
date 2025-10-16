@@ -1,9 +1,7 @@
 <?php
-
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PastPaperResource\Pages;
-use App\Filament\Resources\PastPaperResource\RelationManagers;
 use App\Models\PastPaper;
 use Filament\Forms;
 use Filament\Forms\Components\Tabs;
@@ -16,8 +14,6 @@ use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
 class PastPaperResource extends Resource
@@ -26,8 +22,7 @@ class PastPaperResource extends Resource
 
     protected static ?string $navigationLabel = 'Past Papers';
     protected static ?string $navigationGroup = 'Catalogue';
-    protected static ?int $navigationSort = 7;
-
+    protected static ?int $navigationSort     = 7;
 
     public static function form(Form $form): Form
     {
@@ -43,7 +38,15 @@ class PastPaperResource extends Resource
                                 ->maxLength(255)
                                 ->live(onBlur: true)
                                 ->afterStateUpdated(function (string $state, callable $set) {
-                                    $set('slug', Str::slug($state));
+                                    $baseSlug = Str::slug($state);
+                                    $slug     = $baseSlug;
+                                    $counter  = 1;
+                                    while (PastPaper::where('slug', $slug)->exists()) {
+                                        $slug = $baseSlug . '-' . Str::random(4);
+                                        $counter++;
+                                    }
+
+                                    $set('slug', $slug);
                                 }),
 
                             Forms\Components\TextInput::make('slug')
@@ -57,15 +60,15 @@ class PastPaperResource extends Resource
                             Forms\Components\Select::make('month')
                                 ->required()
                                 ->options([
-                                    'January' => 'January',
-                                    'June' => 'June',
+                                    'January'  => 'January',
+                                    'June'     => 'June',
                                     'November' => 'November',
                                 ]),
                             Forms\Components\Select::make('paper_id')
                                 ->label('Paper')
                                 ->relationship('paper', 'name')
                                 ->required()
-                                ->reactive() // 👈 important
+                                ->reactive()                                                          // 👈 important
                                 ->afterStateUpdated(fn(callable $set) => $set('paper_code_id', null)) // reset child field
                                 ->helperText('Associate the essay with a specific paper.'),
 
@@ -73,7 +76,7 @@ class PastPaperResource extends Resource
                                 ->label('Paper Code')
                                 ->options(function (callable $get) {
                                     $paperId = $get('paper_id'); // get selected paper id
-                                    if (!$paperId) {
+                                    if (! $paperId) {
                                         return [];
                                     }
 
@@ -82,12 +85,12 @@ class PastPaperResource extends Resource
                                 })
                                 ->required()
                                 ->reactive()
-                                ->disabled(fn(callable $get) => !$get('paper_id')), // disable until paper selected
-                            // Forms\Components\Select::make('topic_id')
-                            //     ->relationship('topic', 'name')
-                            //     ->label('Topic')
-                            //     ->required()
-                            //     ->searchable(),
+                                ->disabled(fn(callable $get) => ! $get('paper_id')), // disable until paper selected
+                                                                                // Forms\Components\Select::make('topic_id')
+                                                                                //     ->relationship('topic', 'name')
+                                                                                //     ->label('Topic')
+                                                                                //     ->required()
+                                                                                //     ->searchable(),
 
                             Forms\Components\Select::make('qualiification_id')
                                 ->relationship('qualiification', 'title')
@@ -168,9 +171,9 @@ class PastPaperResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPastPapers::route('/'),
+            'index'  => Pages\ListPastPapers::route('/'),
             'create' => Pages\CreatePastPaper::route('/create'),
-            'edit' => Pages\EditPastPaper::route('/{record}/edit'),
+            'edit'   => Pages\EditPastPaper::route('/{record}/edit'),
         ];
     }
 }
