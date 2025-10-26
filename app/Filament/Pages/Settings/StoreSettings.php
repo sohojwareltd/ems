@@ -173,7 +173,7 @@ class StoreSettings extends BaseSettings
                                 ]),
                         ]),
                     Tabs\Tab::make('Payments')
-                        ->visible(true)
+                        ->visible(false)
                         ->schema([
                             Section::make('Payment Methods')
                                 ->description('Enable or disable payment methods for your store.')
