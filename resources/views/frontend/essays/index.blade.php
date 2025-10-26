@@ -52,6 +52,36 @@
     .whatsapp-float {
         padding: 13px 15px !important;
     }
+
+    .notice-pill {
+        display: inline-block;
+        padding: 14px 18px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #1fa67a, #17a26f);
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 6px 20px rgba(23, 162, 111, 0.25);
+        transform-origin: center;
+        animation: notice-bounce 3.6s ease-in-out infinite;
+        max-width: 900px;
+        line-height: 1.4;
+    }
+
+    .notice-pill strong {
+        margin-right: 8px;
+    }
+
+    @keyframes notice-bounce {
+
+        0%,
+        100% {
+            transform: translateY(0)
+        }
+
+        50% {
+            transform: translateY(-6px)
+        }
+    }
 </style>
 
 @php
@@ -79,13 +109,19 @@
             <h1 class="section-title display-4 fw-bold">
                 {{ $qualification ?? '' }} {{ $examBoard ?? '' }} {{ $subject ?? '' }}
             </h1>
-            <p>All Edexcel Economics variations are identical in content and structure, use any resource, regardless of your
-                paper code. Differences only exist to manage exam timing, region, and format.</p>
+            <!-- Paste where you want the notice -->
+            <div class="notice-pill mt-3">
+                All variations are identical in content and structure, use any resource, regardless of your paper code. <br>
+                Differences only exist to manage exam timing, region, and format.
+
+            </div>
+
+
         </div>
 
         <div class="row">
             <!-- Offcanvas Trigger (Mobile) -->
-            <div class="col-12 d-md-none mb-3">
+            <div class="col-12 d-lg-none mb-3">
                 <button class="btn btn-outline-primary w-100" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#filtersOffcanvas" aria-controls="filtersOffcanvas">
                     <i class="bi bi-funnel me-2"></i>Filters & Search
@@ -115,7 +151,7 @@
             </div>
 
             <!-- Desktop Filters -->
-            <div class="col-md-4 mb-4 d-none d-md-block">
+            <div class="col-md-4 mb-4 d-none d-lg-block">
                 <div class="position-sticky" style="top: 90px;">
                     <div class="card">
                         <div class="card-header" style="background-color: var(--primary-dark); color: var(--white);">
@@ -136,7 +172,7 @@
             </div>
 
             <!-- Main Content -->
-            <div class="col-md-8">
+            <div class="col-lg-8 ">
 
                 {{-- Active Filters --}}
                 @if (request()->except(['page']))
@@ -215,7 +251,7 @@
                                                 @foreach ($essays as $essay)
                                                     <div class="mt-3 d-flex justify-content-between align-items-center">
                                                         <div><strong>{{ $essay->name }}</strong></div>
-                                                        <a href="{{ asset('storage/' . $essay->file) }}" target="_blank"
+                                                        <a href="{{ asset('storage/' . $essay->file) }}"  target="_blank"
                                                             class="btn btn-sm btn-primary">Download</a>
                                                     </div>
                                                 @endforeach
@@ -247,7 +283,7 @@
                                                             @else
                                                                 <strong>
                                                                     <a
-                                                                        href="{{ route('subscriptions.index') }}">{{ $essay->name }}</a>
+                                                                        href="{{ route('subscriptions.index') }}" style="color: var(--primary-color)">{{ $essay->name }}</a>
                                                                 </strong>
                                                             @endif
                                                         </div>
@@ -329,22 +365,22 @@
                                             data-bs-parent="#papersByYear">
                                             <div class="accordion-body">
                                                 @foreach ($papers as $paper)
-                                                    <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex justify-content-between align-items-center mb-3">
                                                         <div><strong>{{ $paper->month }} {{ $paper->year }}</strong>
                                                             {{ $paper->name }}</div>
                                                         <div class="d-flex gap-3">
 
                                                             @if ($paper->file)
                                                                 <a href="{{ asset('storage/' . $paper->file) }}"
-                                                                    target="_blank">Question paper</a>
+                                                                    target="_blank" style="color: var(--primary-color)">Question paper</a>
                                                             @endif
                                                             @if ($paper->mark)
                                                                 <a href="{{ asset('storage/' . $paper->mark) }}"
-                                                                    target="_blank">Mark scheme</a>
+                                                                    target="_blank" style="color: var(--primary-color)">Mark scheme</a>
                                                             @endif
                                                             @if ($paper->power_point)
                                                                 <a href="{{ asset('storage/' . $paper->power_point) }}"
-                                                                    target="_blank">Examiner’s Report</a>
+                                                                    target="_blank" style="color: var(--primary-color)">Examiner’s Report</a>
                                                             @endif
                                                         </div>
                                                     </div>

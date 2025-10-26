@@ -31,7 +31,17 @@ class EssayResource extends Resource
                                 ->required()
                                 ->maxLength(255)
                                 ->live(onBlur: true)
-                                ->afterStateUpdated(fn(string $state, callable $set) => $set('slug', Str::slug($state)))
+                                ->afterStateUpdated(function (string $state, callable $set) {
+                                    $baseSlug = Str::slug($state);
+                                    $slug     = $baseSlug;
+                                    $counter  = 1;
+                                    while (Essay::where('slug', $slug)->exists()) {
+                                        $slug = $baseSlug . '-' . Str::random(4);
+                                        $counter++;
+                                    }
+
+                                    $set('slug', $slug);
+                                })
                                 ->helperText('Enter the product name as it will appear to customers.'),
 
                             Forms\Components\TextInput::make('slug')

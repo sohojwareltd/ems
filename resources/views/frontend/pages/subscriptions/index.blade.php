@@ -314,11 +314,11 @@
             grid-area: 1 / 1 / 2 / 2;
             display: table;
         }
-
+/* 
         #Annual-pricing-card.w-node-_574b3d40-8b40-810a-3abf-631d6f677ea9-836f1a9d {
             grid-area: span 1 / span 1 / span 1 / span 1;
             align-self: start;
-        }
+        } */
 
         .pricing-card.featured-pricing {
             z-index: 2;
@@ -628,7 +628,10 @@
                 max-width: 728px;
             }
         }
+
     </style>
+
+    
     {{-- @if ($months->isNotEmpty())
         <div class="subscription-container mb-5">
             <div class="subscription-header">
