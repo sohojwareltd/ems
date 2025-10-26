@@ -237,7 +237,7 @@
                         </div>
 
                         <div class="plan-details">
-                            <div class="plan-price">$ {{ $plan->price }} <span>/per month</span></div>
+                            <div class="plan-price">£ {{ $plan->price }} <span>/per month</span></div>
                             <p class="plan-features">{!! $plan->description !!}</p>
                             {{-- <ul class="plan-features">
                                 <li><i class="fas fa-check"></i> Unlimited projects</li>
@@ -409,7 +409,7 @@
     </script> --}}
     <script src="https://js.stripe.com/v3/"></script>
     <script>
-    const stripe = Stripe("{{ setting('payments.stripe_key', env('STRIPE_KEY')) }}");
+        const stripe = Stripe("{{ setting('payments.stripe_key', env('STRIPE_KEY')) }}");
 
 
         document.addEventListener("DOMContentLoaded", async function() {

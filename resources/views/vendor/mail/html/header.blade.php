@@ -1,5 +1,5 @@
 @props(['url'])
-<table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+{{-- <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
     <tr>
         <td align="center" style="padding:32px 0 12px 0;">
             <span style="display:inline-block;vertical-align:middle;">
@@ -14,4 +14,4 @@
             </span>
         </td>
     </tr>
-</table>
+</table> --}}

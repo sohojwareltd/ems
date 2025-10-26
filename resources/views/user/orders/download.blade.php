@@ -98,16 +98,16 @@
                                         </td>
 
                                         <td class="align-middle">
-                                            <span class="fw-semibold">{{ $product->qualiification->title }}</span>
+                                            <span class="fw-semibold">{{ $product->qualiification?->title }}</span>
                                         </td>
                                         <td class="align-middle">
-                                            <span class="fw-semibold">{{ $product->resource->title }}</span>
+                                            <span class="fw-semibold">{{ $product->resource?->title }}</span>
                                         </td>
                                         <td class="align-middle">
-                                            <span class="fw-semibold">{{ $product->subject->title }}</span>
+                                            <span class="fw-semibold">{{ $product->subject?->title }}</span>
                                         </td>
                                         <td class="align-middle">
-                                            <span class="fw-semibold">{{ $product->examboard->title }}</span>
+                                            <span class="fw-semibold">{{ $product->examboard?->title }}</span>
                                         </td>
                                         <td class="align-middle">
                                             <a href="{{ route('user.products.download', $product->id) }}"

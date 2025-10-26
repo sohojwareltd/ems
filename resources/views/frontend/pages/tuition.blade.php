@@ -159,12 +159,37 @@
                 margin-bottom: 20px;
             }
         }
+
+        .tuition-img {
+            max-height: 120px;
+        }
+
+        @media (max-width: 576px) {
+            .tuition-img {
+                width: 150px !important;
+                /* small on mobile */
+                height: auto;
+            }
+        }
     </style>
     <div class="container py-5">
-        <div class="text-center pricing-header mb-4">
-            <h2>Specialist Economics & Business Tuition</h2>
-            <p class="section-subtitle lead">GCSE, IGCSE, A-Level, IAL & IB across all exam boards</p>
+        <div class="row align-items-center text-center">
+
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center mb-3 mb-md-0">
+                <img src="{{ asset('images/tuition-1.jpeg') }}" class="img-fluid tuition-img">
+            </div>
+
+            <div class="col-12 col-md-8 pricing-header mb-3 mb-md-0">
+                <h2>Specialist Economics & Business Tuition</h2>
+                <p class="section-subtitle lead">GCSE, IGCSE, A-Level, IAL & IB across all exam boards</p>
+            </div>
+
+            <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                <img src="{{ asset('images/tuition-2.jpeg') }}" class="img-fluid tuition-img">
+            </div>
+
         </div>
+
 
         <div class="row g-4 mt-2">
             <!-- The Problem -->

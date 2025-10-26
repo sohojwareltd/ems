@@ -138,17 +138,21 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="{{ route('dashboard') }}"><i
-                                            class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+                                            class="bi bi-speedometer2 me-2"
+                                            style="color: var(--primary-color)"></i>Dashboard</a></li>
 
                                 <li><a class="dropdown-item" href="{{ route('user.profile') }}"><i
-                                            class="bi bi-person me-2"></i>Profile</a></li>
+                                            class="bi bi-person me-2" style="color: var(--primary-color)"></i>Profile</a>
+                                </li>
                                 <li><a class="dropdown-item" href="{{ route('user.orders.index') }}"><i
-                                            class="bi bi-bag me-2"></i>Orders</a></li>
+                                            class="bi bi-bag me-2" style="color: var(--primary-color)"></i>Orders</a></li>
                                 <li>
                                 <li><a class="dropdown-item" href="{{ route('user.orders.download') }}"><i
-                                            class="fas fa-download"></i> Download</a></li>
+                                            class="fas fa-download" style="color: var(--primary-color)"></i> Download</a>
+                                </li>
                                 <li><a class="dropdown-item btn btn-outline-dark"
-                                        href="{{ route('user.subscription') }}"><i class="fa-regular fa-file"></i>
+                                        href="{{ route('user.subscription') }}"><i class="fa-regular fa-file "
+                                            style="color: var(--primary-color)"></i>
                                         Subscriptions</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
@@ -156,7 +160,8 @@
                                 <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                                        <i class="bi bi-box-arrow-right me-2"
+                                            style="color: var(--primary-color)"></i>Logout
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                         class="d-none">

@@ -9,8 +9,6 @@
         {{ $slot }}
     </div>
 
-    <div style="width:60px;height:4px;background:linear-gradient(90deg,#D7CCC8,#C5E1A5);border-radius:2px;margin:32px auto 24px auto;"></div>
-
     {{-- Subcopy --}}
     @isset($subcopy)
         @slot('subcopy')

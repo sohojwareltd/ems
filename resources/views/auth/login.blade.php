@@ -13,7 +13,7 @@
                         <i class="fas fa-shopping-bag text-primary" style="font-size: 2rem;"></i>
                     </div>
                     <h2 class="fw-bold text-dark mb-2">Welcome Back</h2>
-                    <p class="text-muted mb-0">Sign in to continue your shopping journey</p>
+                    <p class="text-muted mb-0">Sign in to continue your learning journey</p>
                 </div>
 
                 <!-- Login Form Card -->
@@ -62,7 +62,8 @@
                                     </button>
                                 </div>
                                 @error('password')
-                                    <div class="invalid-feedback">
+                                    <div class="text-danger mb-3">
+
                                         {{ $message }}
                                     </div>
                                 @enderror
