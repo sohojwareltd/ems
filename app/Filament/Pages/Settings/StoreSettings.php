@@ -188,12 +188,12 @@ class StoreSettings extends BaseSettings
                                         ->visible(false),
                                     TextInput::make('payments.stripe_key')
                                         ->label('Stripe Public Key')
-                                        ->helperText('Your Stripe publishable key.')->visible(false),
+                                        ->helperText('Your Stripe publishable key.')->visible(true),
                                     TextInput::make('payments.stripe_secret')
                                         ->label('Stripe Secret Key')
 
                                         ->helperText('Your Stripe secret key.')
-                                        ->visible(false),
+                                        ->visible(true),
                                     Toggle::make('payments.enable_paypal')
                                         ->label('Enable PayPal')
                                         ->helperText('Allow customers to pay using PayPal.')->visible(false),
