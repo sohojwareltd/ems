@@ -173,7 +173,7 @@ class StoreSettings extends BaseSettings
                                 ]),
                         ]),
                     Tabs\Tab::make('Payments')
-                        ->visible(true)
+                        ->visible(false)
                         ->schema([
                             Section::make('Payment Methods')
                                 ->description('Enable or disable payment methods for your store.')
@@ -188,12 +188,12 @@ class StoreSettings extends BaseSettings
                                         ->visible(false),
                                     TextInput::make('payments.stripe_key')
                                         ->label('Stripe Public Key')
-                                        ->helperText('Your Stripe publishable key.')->visible(true),
+                                        ->helperText('Your Stripe publishable key.')->visible(false),
                                     TextInput::make('payments.stripe_secret')
                                         ->label('Stripe Secret Key')
 
                                         ->helperText('Your Stripe secret key.')
-                                        ->visible(true),
+                                        ->visible(false),
                                     Toggle::make('payments.enable_paypal')
                                         ->label('Enable PayPal')
                                         ->helperText('Allow customers to pay using PayPal.')->visible(false),
