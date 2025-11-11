@@ -340,27 +340,40 @@
                 </div>
             </div>
         </div>
-
         <div class="newsletter-section py-3 mt-2">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-md-6">
-                        <h6 class="mb-0"><i class="bi bi-envelope-open me-2"></i>Subscribe to our newsletter</h6>
+                        <h6 class="mb-0">
+                            <i class="bi bi-envelope-open me-2"></i>Subscribe to our newsletter
+                        </h6>
                     </div>
                     <div class="col-md-6 mt-2 mt-md-0">
-                        <div class="row">
-                            <div class="col-md-10">
+                        <form action="{{ route('newsletter.subscribe') }}" method="POST">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <input type="email" name="email" class="form-control w-100"
+                                        placeholder="Enter your email" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn custom-btn w-100">Subscribe</button>
+                                </div>
+                            </div>
+                        </form>
 
-                                <input type="email" class="form-control w-100" placeholder="Enter your email">
-                            </div>
-                            <div class="col-md-2">
-                                <button class="btn custom-btn">Subscribe</button>
-                            </div>
-                        </div>
+                        @if (session('success'))
+                            <div class="alert alert-success mt-2 mb-0">{{ session('success') }}</div>
+                        @endif
+
+                        @error('email')
+                            <div class="alert alert-danger mt-2 mb-0">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
             </div>
         </div>
+
 
         <div class="container mt-3">
             <div class="row align-items-center">

@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderPrintController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SubscriptionController;
@@ -239,6 +240,9 @@ Route::get('/get-paper-codes-by-paper/{paperId}', function ($paperId) {
         PaperCode::where('paper_id', $paperId)->select('id', 'name')->get()
     );
 });
+
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
+    ->name('newsletter.subscribe');
 
 
 // Route::get('/get-topics-by-paper/{paperId}', function ($paperId) {
