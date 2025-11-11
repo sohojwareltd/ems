@@ -4,7 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EssayResource\Pages;
 use App\Models\Essay;
+use App\Models\Topic;
 use Filament\Forms;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -185,7 +187,18 @@ class EssayResource extends Resource
                 TextColumn::make('year')->sortable(),
                 TextColumn::make('month')->sortable(),
                 TextColumn::make('marks')->sortable(),
-                TextColumn::make('topics.name')->label('Topics')->limit(50),
+                TextColumn::make('topics.name')
+                    ->label('Topics')
+                    ->sortable(query: function (Builder $query, string $direction): Builder {
+                        return $query->orderBy(
+                            Topic::select('name')
+                                ->join('essay_topic', 'topics.id', '=', 'essay_topic.topic_id')
+                                ->whereColumn('essay_topic.essay_id', 'essays.id')
+                                ->limit(1),
+                            $direction
+                        );
+                    })
+                    ->limit(50),
                 TextColumn::make('created_at')->date('d M Y'),
             ])
             ->actions([
