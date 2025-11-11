@@ -101,7 +101,6 @@ class PageController extends Controller
         $examBoards = Examboard::all();
         $subjects = Subject::all();
 
-        // Model Essays
         $essays = Essay::with('topics')
             ->filter($filters)
             ->latest()
@@ -117,8 +116,6 @@ class PageController extends Controller
 
         $essaysByTopic = $essays->groupBy(fn($e) => optional($e->topic)->name ?? 'Unknown Topic');
 
-
-        // Past Papers
         $papers = PastPaper::with('topic')
             ->filter($filters)
             ->latest()

@@ -6,6 +6,10 @@
         scroll-margin-top: 120px;
         /* Adjust the value as needed */
     }
+    #terms {
+        scroll-margin-top: 120px;
+        /* Adjust the value as needed */
+    }
 </style>
 
 @section('content')

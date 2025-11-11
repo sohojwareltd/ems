@@ -111,7 +111,7 @@
             </h1>
             <!-- Paste where you want the notice -->
             <div class="notice-pill mt-3">
-                All variations are identical in content and structure, use any resource, regardless of your paper code. <br>
+                All variations are identical in content and structure, use any resource, regardless of paper code. <br>
                 Differences only exist to manage exam timing, region, and format.
 
             </div>
