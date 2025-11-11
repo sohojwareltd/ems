@@ -37,7 +37,7 @@
                                             First Name
                                         </label>
                                         @error('name')
-                                            <div class="invalid-feedback">
+                                            <div class="text-danger">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -52,7 +52,7 @@
                                             <i class="fas fa-user me-2 text-muted"></i>
                                             Last Name </label>
                                         @error('lastname')
-                                            <div class="invalid-feedback">
+                                            <div class="text-danger">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -69,7 +69,7 @@
                                             Email Address
                                         </label>
                                         @error('email')
-                                            <div class="invalid-feedback">
+                                            <div class="text-danger">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -89,7 +89,7 @@
                                         Confirm Email Address
                                     </label>
                                     @error('email_confirmation')
-                                        <div class="invalid-feedback">
+                                        <div class="text-danger">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -109,7 +109,7 @@
                                         id="birthdate" name="birthdate" value="{{ old('birthdate') }}"
                                         placeholder="dd/mm/yyyy" required>
                                     @error('birthdate')
-                                        <div class="invalid-feedback">
+                                        <div class="text-danger">
                                             {{ $message }}
                                         </div>
                                     @enderror
@@ -127,7 +127,7 @@
                                         <option value="A Levels" {{ old('stage') == 'A Levels' ? 'selected' : '' }}>A
                                             Levels</option>
                                         @error('stage')
-                                            <div class="invalid-feedback">
+                                            <div class="text-danger">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -151,7 +151,7 @@
                                                 {{ $country }}</option>
                                         @endforeach
                                         @error('country')
-                                            <div class="invalid-feedback">
+                                            <div class="text-danger">
                                                 {{ $message }}
                                             </div>
                                         @enderror
@@ -168,6 +168,12 @@
                                                 <i class="fas fa-lock me-2 text-muted"></i>
                                                 Password
                                             </label>
+                                            @error('password')
+                                            <div class="text-danger mt-1">
+                                                {{ $message }}
+                                                test
+                                            </div>
+                                            @enderror
                                             <button type="button"
                                                 class="btn btn-link position-absolute end-0 top-50  pe-3"
                                                 id="togglePassword" style="transform: translateY(-78%) !important;">
@@ -175,11 +181,6 @@
                                             </button>
                                         </div>
                                         <div class="mt-2" id="password-strength"></div>
-                                        @error('password')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
                                     </div>
                                 </div>
 
