@@ -197,107 +197,115 @@
 
                         <div class="card border-0 shadow-sm">
                             <div class="card-body">
-                                <h3 class="h5 mb-3">Who We Are</h3>
-                                <p class="mb-3">ECONOMICS MADE SIMPLE LTD (“EMS”, “we”, “our”, “us”) is a UK-registered
-                                    limited company providing educational resources, subscriptions, and online tuition
-                                    worldwide. Contact: <a
-                                        href="mailto:info@economicsmadesimple.com">info@economicsmadesimple.com</a>.</p>
+                                <p class="text-muted mb-4"><strong>Last updated:</strong> {{ date('F j, Y') }}</p>
+                                
+                                <p class="mb-4">These Terms & Conditions (the "Terms") form the contract between Economics Made Simple Ltd ("EMS", "we", "us") and any person or organisation ("you") who accesses our website, buys our products, or uses our services. By using EMS you agree to these Terms.</p>
 
-                                <h3 class="h5 mb-3">Acceptance of Terms</h3>
-                                <p class="mb-3">By accessing and using our website, purchasing our products, or using our
-                                    services, you accept and agree to be bound by these Terms & Conditions.</p>
+                                <h3 class="h5 mb-3">1. Who We Are</h3>
+                                <p class="mb-3">EMS is a UK‑registered limited company providing educational resources, subscriptions and online tuition worldwide.<br>
+                                <strong>Registered name:</strong> ECONOMICS MADE SIMPLE LTD<br>
+                                <strong>Contact:</strong> <a href="mailto:info@economicsmadesimple.com">info@economicsmadesimple.com</a></p>
 
-                                <h3 class="h5 mb-3">Eligibility & Accounts</h3>
+                                <h3 class="h5 mb-3">2. Definitions</h3>
                                 <ul class="mb-3">
-                                    <li>Provide accurate information and keep your password secure.</li>
-                                    <li>Accounts are for one person; password sharing is prohibited.</li>
-                                    <li>Users under 18 must have consent from a parent, guardian, or school.</li>
+                                    <li><strong>"Digital Content"</strong> means our downloadable files (e.g., PowerPoints, PDFs), and view‑only materials in a login portal.</li>
+                                    <li><strong>"Subscription"</strong> means time‑limited access to online content or services that auto‑renews unless cancelled.</li>
+                                    <li><strong>"Institution"</strong> means a school, college, tuition company or other organisation purchasing for multiple users.</li>
                                 </ul>
 
-                                <h3 class="h5 mb-3">Products & Services</h3>
+                                <h3 class="h5 mb-3">3. Scope of these Terms & Acceptance</h3>
+                                <p class="mb-3">These Terms apply to all use of our website, purchases of Digital Content, Subscriptions and tuition. If you do not agree, do not use EMS. If you create an account or buy from us, you accept these Terms.</p>
+
+                                <h3 class="h5 mb-3">4. Eligibility & Accounts</h3>
+                                <ul class="mb-3">
+                                    <li>You must provide accurate information and keep your password secure.</li>
+                                    <li>Accounts are for one person only. Password sharing is not allowed.</li>
+                                    <li>If you are under 18, you confirm you have consent from a parent/guardian or your school.</li>
+                                </ul>
+
+                                <h3 class="h5 mb-3">5. Newsletter Subscriptions</h3>
+                                <p class="mb-3">When you create an account on Economics Made Simple, you agree to be automatically added to our newsletter mailing list. This allows us to keep you informed about updates, new resources, and relevant educational content. You may opt out of these communications at any time by selecting the unsubscribe link included in each email or by contacting us directly. Unsubscribing from the newsletter does not affect your ability to maintain an account or access purchased resources.</p>
+
+                                <h3 class="h5 mb-3">6. Products & Services</h3>
                                 <ul class="mb-3">
                                     <li>Digital resources (PowerPoints, model essays, revision materials).</li>
-                                    <li>Subscription services with restricted online content.</li>
+                                    <li>Subscription services with access to restricted online content.</li>
                                     <li>Online tuition services.</li>
-                                    <li>Other digital learning tools added in the future.</li>
+                                    <li>Other digital learning tools that we may add.</li>
                                 </ul>
+                                <p class="mb-3">Some resources are instant digital downloads. Others are view‑only inside a secure login portal.</p>
 
-                                <h3 class="h5 mb-3">Pricing, Taxes & Payment</h3>
-                                <p class="mb-3">Prices are in GBP unless stated. Taxes may apply. Payments are processed
-                                    by Stripe or PayPal. We do not store full card details. EMS and its processors are
-                                    authorised to take payment for purchases and renewals. Pricing or payment errors may be
-                                    corrected, with refunds if necessary.</p>
-
-                                <h3 class="h5 mb-3">Subscriptions & Auto-Renew</h3>
-                                <p class="mb-3">Subscriptions default to auto-renew. Cancelling stops future billing but
-                                    does not refund the current term. Access continues until the end of the paid period.</p>
-
-                                <h3 class="h5 mb-3">Refunds & Cancellations</h3>
+                                <h3 class="h5 mb-3">7. Pricing, Taxes & Payment</h3>
                                 <ul class="mb-3">
-                                    <li>Digital Content: No refunds once accessed/downloaded.</li>
-                                    <li>Subscriptions: No refunds for current term; future renewals can be stopped anytime.
-                                    </li>
-                                    <li>Tuition: Non-refundable once booked unless EMS cancels; then refund or reschedule is
-                                        offered.</li>
+                                    <li>Prices are shown in GBP unless stated. Taxes (including VAT or equivalent) may apply based on your location.</li>
+                                    <li>Payments are processed by Stripe or PayPal, or by card via those processors. We do not store full card details.</li>
+                                    <li>You authorise EMS and our payment processors to take payment for your purchases and renewals.</li>
                                 </ul>
+                                <p class="mb-3"><strong>Pricing/Payment Errors:</strong> If a price or payment error occurs (for example a clear mispricing or duplicate charge), we may cancel the order, correct the error, and refund any amounts wrongly taken.</p>
 
-                                <h3 class="h5 mb-3">Licence & Intellectual Property</h3>
-                                <p class="mb-3">All EMS content is owned by EMS or its licensors. Personal licence is
-                                    non-exclusive and non-transferable for study or teaching preparation. Institutions must
-                                    purchase a separate licence for sharing content.</p>
-
-                                <h3 class="h5 mb-3">Acceptable Use</h3>
+                                <h3 class="h5 mb-3">8. Subscriptions & Auto‑Renew</h3>
                                 <ul class="mb-3">
-                                    <li>Do not share logins or allow unauthorised access.</li>
-                                    <li>Do not copy, scrape, or bulk-download materials.</li>
-                                    <li>Do not remove watermarks or rights notices.</li>
-                                    <li>Do not use EMS to break laws or infringe rights.</li>
+                                    <li>Plans: monthly, 6‑month, and annual. Default is auto‑renew.</li>
+                                    <li>Cancelling auto‑renew stops future billing. It does not refund the current paid term.</li>
+                                    <li>Access continues until the end of the current term. There is no pro‑rata refund.</li>
                                 </ul>
 
-                                <h3 class="h5 mb-3">Termination & Suspension</h3>
-                                <p class="mb-3">EMS may suspend or terminate your account for breaches of these Terms. No
-                                    refund is due if terminated for breach. Access may be disabled to protect intellectual
-                                    property.</p>
+                                <h3 class="h5 mb-3">9. Refunds, Cancellations & Digital Content</h3>
+                                <p class="mb-3"><strong>Digital Content:</strong> By choosing immediate access/download you agree your statutory cooling‑off right ends when access starts. Therefore, we do not offer refunds once Digital Content has been accessed or downloaded.</p>
+                                <p class="mb-3"><strong>Subscriptions:</strong> No refunds are given for the current paid term. You can stop future renewals at any time from your account.</p>
+                                <p class="mb-3"><strong>Tuition:</strong> Sessions are non‑refundable once booked unless we cancel. If we cancel, we will offer a new time or a refund.</p>
 
-                                <h3 class="h5 mb-3">Availability & Force Majeure</h3>
-                                <p class="mb-3">EMS aims for service availability but does not guarantee uninterrupted
-                                    access. We are not liable for failures caused by events beyond our control, including
-                                    outages, strikes, natural disasters, or legal changes.</p>
+                                <h3 class="h5 mb-3">10. Licence & Intellectual Property</h3>
+                                <p class="mb-3"><strong>Ownership:</strong> All EMS content (including text, diagrams, videos, PowerPoints, and branding) is owned by EMS or our licensors.</p>
+                                <p class="mb-3"><strong>Personal Licence (default):</strong> When you buy, you receive a personal, non‑exclusive, non‑transferable licence to use the content for your own study or teaching preparation. You must not copy, upload, share, resell, or distribute our content.</p>
+                                <p class="mb-3"><strong>Institutional Use:</strong> Schools and other organisations must purchase an institutional licence from EMS before sharing our content with staff or students. One personal purchase does not authorise departmental or whole‑school use.</p>
 
-                                <h3 class="h5 mb-3">Accuracy of Information</h3>
-                                <p class="mb-3">Materials may contain errors. EMS may update content without notice. This
-                                    does not remove mandatory legal rights.</p>
+                                <h3 class="h5 mb-3">11. Acceptable Use</h3>
+                                <ul class="mb-3">
+                                    <li>Do not share your login or enable unauthorised access.</li>
+                                    <li>Do not copy, scrape, or bulk‑download our materials.</li>
+                                    <li>Do not remove watermarks or rights‑management notices.</li>
+                                    <li>Do not use EMS to break any law or to infringe anyone's rights.</li>
+                                </ul>
 
-                                <h3 class="h5 mb-3">Third-Party Services & Links</h3>
-                                <p class="mb-3">Our site may link to or use third-party services, which are subject to
-                                    their own terms. EMS is not responsible for third-party acts or omissions.</p>
+                                <h3 class="h5 mb-3">12. Termination & Suspension</h3>
+                                <p class="mb-3">We may suspend or terminate your account immediately (with or without notice) if we reasonably believe you breached these Terms (e.g., password sharing, copying or redistribution). If we terminate for breach, no refund is due. We may also disable access to specific content to protect our IP.</p>
 
-                                <h3 class="h5 mb-3">Limitation of Liability</h3>
-                                <p class="mb-3">EMS’s total liability is limited to the amount paid for the
-                                    product/service. EMS is not liable for exam results, downtime, data loss,
-                                    business/profit loss, or indirect/consequential losses, except where law cannot exclude
-                                    liability (death, personal injury, or fraud).</p>
+                                <h3 class="h5 mb-3">13. Availability, Maintenance & Force Majeure</h3>
+                                <p class="mb-3">We aim to keep EMS available, but we do not guarantee uninterrupted service. We may perform maintenance and updates. We are not responsible for failure or delay caused by events beyond our reasonable control (including internet or hosting outages, denial‑of‑service attacks, strikes, fires, floods, war, government actions, or changes in law).</p>
 
-                                <h3 class="h5 mb-3">Indemnity</h3>
-                                <p class="mb-3">You agree to indemnify EMS against claims or losses arising from unlawful
-                                    use, breach of these Terms, or infringement of intellectual property or privacy rights.
-                                </p>
+                                <h3 class="h5 mb-3">14. Accuracy of Information (Typos & Updates)</h3>
+                                <p class="mb-3">We take care to ensure accuracy, but materials may contain technical, typographical, or content errors. We may update, correct, or improve content at any time without notice. This clause does not remove your legal rights where mandatory.</p>
 
-                                <h3 class="h5 mb-3">Privacy & Cookies</h3>
-                                <p class="mb-3">Your use of EMS is also governed by our <a href="#privacy">Privacy &
-                                        Cookies Policy</a>, which explains how we collect and use data.</p>
+                                <h3 class="h5 mb-3">15. Third‑Party Services & Links</h3>
+                                <p class="mb-3">Our site may link to third‑party sites or use third‑party tools (e.g., payment processors, analytics). Those services are subject to their own terms and privacy policies. We are not responsible for third‑party acts or omissions.</p>
 
-                                <h3 class="h5 mb-3">Changes to Services & Terms</h3>
-                                <p class="mb-3">EMS may change or discontinue services and update these Terms. Continued
-                                    use after changes constitutes acceptance of the updated Terms.</p>
+                                <h3 class="h5 mb-3">16. Limitation of Liability</h3>
+                                <p class="mb-3">To the fullest extent permitted by law, our total liability for any claim arising out of or relating to your use of EMS is limited to the amount you paid to EMS for the product or service giving rise to the claim.</p>
+                                <p class="mb-3">We do not accept liability for: exam results or educational outcomes; service downtime or delays; loss of data; loss of business, profits, or goodwill; or any indirect or consequential losses. Nothing in these Terms excludes liability that cannot be excluded by law (such as for death or personal injury caused by negligence, or fraud).</p>
 
-                                <h3 class="h5 mb-3">Governing Law & Jurisdiction</h3>
-                                <p class="mb-3">These Terms are governed by the laws of England and Wales. Disputes are
-                                    resolved exclusively in the courts of England and Wales.</p>
+                                <h3 class="h5 mb-3">17. Indemnity</h3>
+                                <p class="mb-3">You agree to indemnify EMS against claims, costs and losses arising from your unlawful use of EMS, your breach of these Terms, or your infringement of intellectual property or privacy rights.</p>
 
-                                <h3 class="h5 mb-3">Contact</h3>
-                                <p class="mb-0">Email: <a
-                                        href="mailto:info@economicsmadesimple.com">info@economicsmadesimple.com</a></p>
+                                <h3 class="h5 mb-3">18. Privacy & Cookies</h3>
+                                <p class="mb-3">Your use of EMS is also governed by our <a href="#privacy">Privacy & Cookies Policy</a>, which explains what data we collect and how we use it. By using EMS you agree to that policy.</p>
+
+                                <h3 class="h5 mb-3">19. Changes to Services and to these Terms</h3>
+                                <p class="mb-3">We may change or discontinue features or content. We may update these Terms from time to time. Changes take effect when posted on our website. If you keep using EMS after changes, you accept the updated Terms.</p>
+
+                                <h3 class="h5 mb-3">20. Governing Law & Jurisdiction</h3>
+                                <p class="mb-3">These Terms are governed by the laws of England and Wales. Disputes will be resolved exclusively in the courts of England and Wales.</p>
+
+                                <h3 class="h5 mb-3">21. Contact ECONOMICS MADE SIMPLE LTD</h3>
+                                <p class="mb-3">Email: <a href="mailto:info@economicsmadesimple.com">info@economicsmadesimple.com</a></p>
+
+                                <div class="alert alert-info mt-4">
+                                    <h4 class="h6 mb-2"><strong>Important Checkout Notices</strong></h4>
+                                    <ul class="mb-0 small">
+                                        <li><strong>Digital Content:</strong> "By accessing or downloading this digital product immediately, I understand I will lose my right to cancel and I am not entitled to a refund."</li>
+                                        <li><strong>Subscriptions:</strong> "You can cancel auto‑renew at any time. The current paid term is non‑refundable."</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>

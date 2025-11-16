@@ -20,9 +20,9 @@ class PayPalController extends Controller
 
     public function __construct()
     {
-        $paypalClientId = setting('payments.paypal_client_id', env('PAYPAL_CLIENT_ID'));
-        $paypalSecret = setting('payments.paypal_secret', env('PAYPAL_CLIENT_SECRET'));
-        $paypalSandbox = setting('payments.paypal_sandbox', false);
+        $paypalClientId = env('PAYPAL_CLIENT_ID');
+        $paypalSecret = env('PAYPAL_CLIENT_SECRET');
+        $paypalSandbox = env('PAYPAL_SANDBOX', false);
         $this->paypalService = new \App\Services\PayPalService($paypalClientId, $paypalSecret, $paypalSandbox);
         $this->checkoutService = new CheckoutService();
     }

@@ -37,19 +37,8 @@ class SettingsSeeder extends Seeder
                     'facebook_pixel_id' => null,
                 ]
             ],
-            [
-                'key' => 'payments',
-                'value' => [
-                    'enable_stripe' => true,
-                    'stripe_sandbox' => true,
-                    'stripe_key' => env('STRIPE_KEY'),
-                    'stripe_secret' => env('STRIPE_SECRET'),
-                    'enable_paypal' => true,
-                    'paypal_sandbox' => true,
-                    'paypal_client_id' => env('PAYPAL_CLIENT_ID'),
-                    'paypal_secret' => env('PAYPAL_SECRET'),
-                ]
-            ],
+            // Payment credentials are now handled via .env file only
+            // Removed payments settings to avoid confusion
         ];
         foreach ($settings as $setting) {
 

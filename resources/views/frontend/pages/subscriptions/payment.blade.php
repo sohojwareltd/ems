@@ -409,7 +409,7 @@
     </script> --}}
     <script src="https://js.stripe.com/v3/"></script>
     <script>
-        const stripe = Stripe("{{ setting('payments.stripe_key', env('STRIPE_KEY')) }}");
+        const stripe = Stripe("{{ env('STRIPE_KEY') }}");
 
 
         document.addEventListener("DOMContentLoaded", async function() {

@@ -44,7 +44,7 @@ class SubscriptionController extends Controller
         $plan = Plan::findOrFail($id);
         $user = Auth::user();
 
-        Stripe::setApiKey( setting('payments.stripe_secret', env('STRIPE_SECRET')));
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
 
         return view('frontend.pages.subscriptions.payment', [
@@ -57,7 +57,7 @@ class SubscriptionController extends Controller
     public function subscribe(Request $request, Plan $plan)
     {
         $user = auth()->user();
-        Stripe::setApiKey( setting('payments.stripe_secret', env('STRIPE_SECRET')));
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
         // 1. Setup customer & payment method
         $user->createOrGetStripeCustomer();

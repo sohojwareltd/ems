@@ -34,18 +34,16 @@ class CheckoutService
     protected function initializePaymentGateways()
     {
         // Stripe initialization
-        if (setting('payments.enable_stripe')) {
-            $stripeSandbox = setting('payments.stripe_sandbox', false);
-            $stripeSecret = setting('payments.stripe_secret', $stripeSandbox ? env('STRIPE_TEST_SECRET', env('STRIPE_SECRET')) : env('STRIPE_SECRET'));
-            if ($stripeSecret) {
-                $this->stripe = new \Stripe\StripeClient($stripeSecret);
-            }
+        $stripeSecret = env('STRIPE_SECRET');
+        if ($stripeSecret) {
+            $this->stripe = new \Stripe\StripeClient($stripeSecret);
         }
-        if (setting('payments.enable_paypal')) {
-            // PayPal initialization
-            $paypalClientId = setting('payments.paypal_client_id', env('PAYPAL_CLIENT_ID'));
-            $paypalSecret = setting('payments.paypal_secret', env('PAYPAL_CLIENT_SECRET'));
-            $paypalSandbox = setting('payments.paypal_sandbox', false);
+
+        // PayPal initialization
+        $paypalClientId = env('PAYPAL_CLIENT_ID');
+        $paypalSecret = env('PAYPAL_CLIENT_SECRET');
+        if ($paypalClientId && $paypalSecret) {
+            $paypalSandbox = env('PAYPAL_SANDBOX', false);
             $this->paypalService = new \App\Services\PayPalService($paypalClientId, $paypalSecret, $paypalSandbox);
         }
     }
@@ -1451,7 +1449,7 @@ class CheckoutService
     {
         $methods = [];
 
-        if (setting('payments.enable_stripe', false) && setting('payments.stripe_secret', env('STRIPE_SECRET'))) {
+        if (env('STRIPE_SECRET')) {
             $methods[] = [
                 'id' => 'stripe',
                 'name' => 'Credit Card',
@@ -1460,7 +1458,7 @@ class CheckoutService
             ];
         }
 
-        if (setting('payments.enable_paypal', false) && setting('payments.paypal_client_id', env('PAYPAL_CLIENT_ID')) && setting('payments.paypal_secret', env('PAYPAL_CLIENT_SECRET'))) {
+        if (env('PAYPAL_CLIENT_ID') && env('PAYPAL_CLIENT_SECRET')) {
             $methods[] = [
                 'id' => 'paypal',
                 'name' => 'PayPal',
