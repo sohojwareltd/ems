@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Newsletter;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Auth\Events\Registered;
 use App\Mail\WelcomeEmail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -56,6 +59,9 @@ class RegisterController extends Controller
             'lastname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'confirmed'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ], [
+            'password.confirmed' => 'Passwords do not match.',
+            'email.confirmed' => 'Email addresses do not match.',
         ]);
     }
 
@@ -75,6 +81,18 @@ class RegisterController extends Controller
             'country' => $data['country'],
             'role_id' => 2,
             'password' => Hash::make($data['password']),
+        ]);
+
+        // Subscribe user to newsletter
+        Newsletter::firstOrCreate(['email' => $user->email]);
+
+        // Trigger the Registered event to send verification email
+        event(new Registered($user));
+        
+        // Log for debugging
+        Log::info('User registered and verification email triggered', [
+            'user_id' => $user->id,
+            'email' => $user->email
         ]);
 
         // Send welcome email

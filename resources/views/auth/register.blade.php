@@ -31,7 +31,7 @@
                                     <div class="form-floating">
                                         <input type="text" class="form-control @error('name') is-invalid @enderror"
                                             id="name" name="name" value="{{ old('name') }}"
-                                            placeholder="First Name" required autocomplete="name" autofocus>
+                                            placeholder="First Name" required autocomplete="given-name" autofocus>
                                         <label for="name">
                                             <i class="fas fa-user me-2 text-muted"></i>
                                             First Name
@@ -47,7 +47,7 @@
                                     <div class="form-floating">
                                         <input type="text" class="form-control @error('lastname') is-invalid @enderror"
                                             id="lastname" name="lastname" value="{{ old('lastname') }}"
-                                            placeholder="Last Name" required autocomplete="lastname">
+                                            placeholder="Last Name" required autocomplete="family-name">
                                         <label for="lastname">
                                             <i class="fas fa-user me-2 text-muted"></i>
                                             Last Name </label>
@@ -107,7 +107,7 @@
                                     <input type="text"
                                         class="form-control flatpickr-dob @error('birthdate') is-invalid @enderror"
                                         id="birthdate" name="birthdate" value="{{ old('birthdate') }}"
-                                        placeholder="dd/mm/yyyy" required>
+                                        placeholder="dd/mm/yyyy" required autocomplete="bday">
                                     @error('birthdate')
                                         <div class="text-danger">
                                             {{ $message }}
@@ -143,7 +143,7 @@
                                         Country
                                     </label>
                                     <select name="country" id="country"
-                                        class="form-select @error('country') is-invalid @enderror" required>
+                                        class="form-select @error('country') is-invalid @enderror" required autocomplete="country-name">
                                         <option value="" disabled selected>Select your country</option>
                                         @foreach ($Country as $country)
                                             <option value="{{ $country }}"
@@ -171,7 +171,7 @@
                                             @error('password')
                                             <div class="text-danger mt-1">
                                                 {{ $message }}
-                                                test
+                                                
                                             </div>
                                             @enderror
                                             <button type="button"
@@ -212,12 +212,12 @@
                                         required>
                                     <label class="form-check-label text-muted" for="terms">
                                         I agree to the
-                                        <a href="#" class="text-decoration-none">
-                                            <span class="text-primary fw-semibold">Terms of Service</span>
+                                        <a href="{{ route('faq') }}#terms" target="_blank" class="text-decoration-none terms-link">
+                                            <span class="fw-semibold">Terms of Service</span>
                                         </a>
                                         and
-                                        <a href="#" class="text-decoration-none">
-                                            <span class="text-primary fw-semibold">Privacy Policy</span>
+                                        <a href="{{ route('faq') }}#privacy" target="_blank" class="text-decoration-none terms-link">
+                                            <span class="fw-semibold">Privacy Policy</span>
                                         </a>
                                     </label>
                                 </div>
@@ -368,6 +368,16 @@
         .badge {
             font-size: 0.75rem !important;
             padding: 0.5rem 0.75rem;
+        }
+
+        .terms-link {
+            color: var(--primary-color) !important;
+            transition: all 0.3s ease;
+        }
+
+        .terms-link:hover {
+            color: var(--primary-dark) !important;
+            text-decoration: underline !important;
         }
 
         @media (max-width: 768px) {
