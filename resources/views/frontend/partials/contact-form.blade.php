@@ -50,23 +50,18 @@
                                     @enderror
                                 </div>
                                 <div class="col-12">
-                                    <label for="subject" class="form-label">Enquiry *</label>
-                                    <select class="form-select @error('subject') is-invalid @enderror" id="subject"
-                                        name="subject" required>
-                                        <option value="">Select a subject</option>
-                                        <option value="General Enquiry"
-                                            {{ old('subject') == 'General Enquiry' ? 'selected' : '' }}>General Enquiry
-                                        </option>
-                                        <option value="Tuition" {{ old('subject') == 'Tuition' ? 'selected' : '' }}>
-                                            Tuition</option>
-                                        {{-- <option value="Order Support"
-                                            {{ old('subject') == 'Order Support' ? 'selected' : '' }}>Order Support
-                                        </option> --}}
-
-                                        <option value="Other" {{ old('subject') == 'Other' ? 'selected' : '' }}>Other
-                                        </option>
+                                    <label for="contact_category_id" class="form-label">Category *</label>
+                                    <select class="form-select @error('contact_category_id') is-invalid @enderror" id="contact_category_id"
+                                        name="contact_category_id" required>
+                                        <option value="">Select a category</option>
+                                        @foreach($contactCategories ?? [] as $category)
+                                            <option value="{{ $category->id }}" 
+                                                {{ old('contact_category_id') == $category->id ? 'selected' : '' }}>
+                                                {{ $category->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
-                                    @error('subject')
+                                    @error('contact_category_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

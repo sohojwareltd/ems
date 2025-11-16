@@ -35,7 +35,8 @@ class PageController extends Controller
     public function contact()
     {
         $faqPreview = \App\Models\FaqItem::active()->featured()->ordered()->limit(4)->get();
-        return view('frontend.pages.contact', compact('faqPreview'));
+        $contactCategories = \App\Models\ContactCategory::active()->ordered()->get();
+        return view('frontend.pages.contact', compact('faqPreview', 'contactCategories'));
     }
 
     public function store(Request $request)
@@ -45,10 +46,14 @@ class PageController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:25',
-            'subject' => 'required|string|max:255',
+            'contact_category_id' => 'required|exists:contact_categories,id',
             'message' => 'required|string',
             // 'newsletter' => 'nullable|in:on,true,1,0,false',
         ]);
+        
+        // Set default status for new enquiries
+        $data['status'] = Contact::STATUS_NEW;
+        
         Contact::create($data);
 
         // $data['newsletter'] = $request->has('newsletter');
@@ -59,7 +64,7 @@ class PageController extends Controller
         //     Mail::to(setting('store.email', $admin->email))->send(new ContactFormNotification($data));
         // }
 
-        return redirect()->back()->with('success', 'Your message has been sent successfully!');
+        return redirect()->back()->with('success', 'Your enquiry has been submitted successfully! We will respond shortly.');
     }
 
     /**
