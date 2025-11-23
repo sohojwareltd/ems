@@ -225,6 +225,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link {{ $tab === 'sample' ? 'active' : '' }}"
+                                href="{{ route('model.index', array_merge($query, ['tab' => 'sample', 'view' => $view])) }}">
+                                Sample
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link {{ $tab === 'pastpapers' ? 'active' : '' }}"
                                 href="{{ route('model.index', array_merge($query, ['tab' => 'pastpapers', 'view' => $view])) }}">
                                 Past Papers
@@ -299,6 +305,66 @@
                                                         @else
                                                             <div class="unloack-overly"></div>
                                                         @endif
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    @elseif($tab === 'sample')
+                        @if ($view === 'topic')
+                            <div class="accordion" id="samplesByTopic">
+                                @foreach ($essaysByTopic as $topicName => $essays)
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingSampleTopic-{{ Str::slug($topicName) }}">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapseSampleTopic-{{ Str::slug($topicName) }}">
+                                                {{ $topicName }}
+                                            </button>
+                                        </h2>
+                                        <div id="collapseSampleTopic-{{ Str::slug($topicName) }}"
+                                            class="accordion-collapse collapse" data-bs-parent="#samplesByTopic">
+                                            <div class="accordion-body">
+                                                @foreach ($essays as $essay)
+                                                    <div class="mt-3 d-flex justify-content-between align-items-center">
+                                                        <div><strong>{{ $essay->name }}</strong></div>
+                                                        <a href="{{ asset('storage/' . $essay->file) }}"  target="_blank"
+                                                            class="btn btn-sm btn-primary">Download</a>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="accordion" id="samplesByYear">
+                                @foreach ($essaysByYear as $year => $essays)
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingSampleYear-{{ $year }}">
+                                            <button class="accordion-button collapsed" type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#collapseSampleYear-{{ $year }}">
+                                                {{ $year }} Sample Essays
+                                            </button>
+                                        </h2>
+                                        <div id="collapseSampleYear-{{ $year }}" class="accordion-collapse collapse"
+                                            data-bs-parent="#samplesByYear">
+                                            <div class="accordion-body">
+                                                @foreach ($essays as $essay)
+                                                    <div class="mt-2 d-flex justify-content-between align-items-center">
+                                                        <div><strong>{{ $essay->name }}</strong></div>
+                                                        <div class="d-flex gap-2">
+                                                            <a href="{{ asset('storage/' . $essay->file) }}"
+                                                                target="_blank">Download PDF</a>
+                                                            @if ($essay->ppt_file)
+                                                                <a href="{{ asset('storage/' . $essay->ppt_file) }}"
+                                                                    download>Download Documents</a>
+                                                            @endif
+                                                        </div>
                                                     </div>
                                                 @endforeach
                                             </div>

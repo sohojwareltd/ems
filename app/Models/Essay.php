@@ -13,6 +13,7 @@ class Essay extends Model
         'tags' => 'array',
         'options' => 'array',
         'published_at' => 'datetime',
+        'is_sample' => 'boolean',
     ];
 
 
@@ -85,6 +86,12 @@ class Essay extends Model
     public function paperCode()
     {
         return $this->belongsTo(PaperCode::class);
+    }
+
+    // Scope for sample essays
+    public function scopeSample($query)
+    {
+        return $query->where('is_sample', true);
     }
 
     // ModelEssay.php or PastPaper.php

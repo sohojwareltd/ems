@@ -154,6 +154,11 @@ class EssayResource extends Resource
                                 ->default('draft')
                                 ->required()
                                 ->helperText('Set the product status.'),
+
+                            Forms\Components\Toggle::make('is_sample')
+                                ->label('Sample Essay')
+                                ->helperText('Mark this as a sample essay (visible in Sample tab)')
+                                ->default(false),
                         ]),
 
                     Forms\Components\Tabs\Tab::make('Media')

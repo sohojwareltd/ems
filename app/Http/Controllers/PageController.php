@@ -106,14 +106,20 @@ class PageController extends Controller
         $examBoards = Examboard::all();
         $subjects = Subject::all();
 
-        $essays = Essay::with('topics')
-            ->filter($filters)
-            ->latest()
-            ->get();
+        $essaysQuery = Essay::with('topics')->filter($filters);
+        
+        // Apply sample filter if on sample tab
+        if ($tab === 'sample') {
+            $essaysQuery->sample();
+        }
+        
+        $essays = $essaysQuery->latest()->get();
 
         $essaysByYear = $essays->groupBy('year');
         if (request('tab') == 'pastpapers') {
             $essaysByYearByFilter = PastPaper::groupBy('year')->pluck('year');
+        } elseif (request('tab') == 'sample') {
+            $essaysByYearByFilter = Essay::sample()->groupBy('year')->pluck('year');
         } else {
             $essaysByYearByFilter = Essay::groupBy('year')->pluck('year');
         }
