@@ -218,7 +218,7 @@ Route::get('/test-verification-email', function () {
     
 
     
-    Mail::to('ahmedtamim19050@gmail.com')->send(new \App\Mail\TestVerificationMail());
+    Mail::to('thisiskazi@gmail.com')->send(new \App\Mail\TestVerificationMail());
     return 'Verification email sent!';
 })->name('test.verification-email');
 
