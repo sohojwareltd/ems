@@ -214,15 +214,34 @@ Route::get('/test-order-confirmation/{order}', function (Order $order) {
 })->name('test.order-confirmation');
 
 Route::get('/test-verification-email', function () {
+    \Illuminate\Support\Facades\Log::info('Test verification email route accessed');
+    
     $user = \App\Models\User::where('email', 'ahmedtamim19050@gmail.com')->first();
     if (!$user) {
+        \Illuminate\Support\Facades\Log::error('User not found: ahmedtamim19050@gmail.com');
         return 'User with email ahmedtamim19050@gmail.com not found!';
     }
     
-    // Send verification notification
-    $user->sendEmailVerificationNotification();
+    \Illuminate\Support\Facades\Log::info('User found', [
+        'id' => $user->id,
+        'email' => $user->email,
+        'email_verified_at' => $user->email_verified_at
+    ]);
     
-    return 'Verification email sent to ' . $user->email;
+    try {
+        // Send verification notification
+        $user->sendEmailVerificationNotification();
+        \Illuminate\Support\Facades\Log::info('Verification email sent successfully', ['email' => $user->email]);
+        
+        return 'Verification email sent to ' . $user->email . '. Check storage/logs/laravel.log for details.';
+    } catch (\Exception $e) {
+        \Illuminate\Support\Facades\Log::error('Failed to send verification email', [
+            'email' => $user->email,
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        return 'Error sending email: ' . $e->getMessage();
+    }
 })->name('test.verification-email');
 
 Route::get('/essay-pdf-read/{essay:slug}', [PageController::class, 'essayPdfView'])->middleware('auth')->name('essay.pdf.view');
