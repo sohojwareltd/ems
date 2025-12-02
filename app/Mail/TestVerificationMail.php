@@ -14,16 +14,14 @@ class TestVerificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
-    public $verificationUrl;
+    
 
     /**
      * Create a new message instance.
      */
-    public function __construct(User $user, string $verificationUrl)
+    public function __construct()
     {
-        $this->user = $user;
-        $this->verificationUrl = $verificationUrl;
+      
     }
 
     /**
@@ -43,10 +41,7 @@ class TestVerificationMail extends Mailable
     {
         return new Content(
             view: 'emails.test-verification',
-            with: [
-                'user' => $this->user,
-                'url' => $this->verificationUrl,
-            ]
+       
         );
     }
 

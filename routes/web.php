@@ -214,21 +214,12 @@ Route::get('/test-order-confirmation/{order}', function (Order $order) {
 })->name('test.order-confirmation');
 
 Route::get('/test-verification-email', function () {
-    $user = \App\Models\User::where('email', 'ahmedtamim19050@gmail.com')->first();
+
     
-    if (!$user) {
-        return 'User not found!';
-    }
+
     
-    $verificationUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute(
-        'verification.verify',
-        now()->addMinutes(60),
-        ['id' => $user->id, 'hash' => sha1($user->email)]
-    );
-    
-    Mail::to($user->email)->send(new \App\Mail\TestVerificationMail($user, $verificationUrl));
-    
-    return 'Hello World - Email sent to ' . $user->email;
+    Mail::to('ahmedtamim19050@gmail.com')->send(new \App\Mail\TestVerificationMail());
+    return 'Verification email sent!';
 })->name('test.verification-email');
 
 Route::get('/essay-pdf-read/{essay:slug}', [PageController::class, 'essayPdfView'])->middleware('auth')->name('essay.pdf.view');
