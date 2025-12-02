@@ -219,15 +219,15 @@
                     {{-- Main Tabs --}}
                     <ul class="nav nav-tabs border-0">
                         <li class="nav-item">
-                            <a class="nav-link {{ $tab === 'essays' ? 'active' : '' }}"
-                                href="{{ route('model.index', array_merge($query, ['tab' => 'essays', 'view' => $view])) }}">
-                                Model Essays
+                            <a class="nav-link {{ $tab === 'sample' ? 'active' : '' }}"
+                                href="{{ route('model.index', array_merge($query, ['tab' => 'sample', 'view' => $view])) }}">
+                                Free Sample Essays
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ $tab === 'sample' ? 'active' : '' }}"
-                                href="{{ route('model.index', array_merge($query, ['tab' => 'sample', 'view' => $view])) }}">
-                                Sample
+                            <a class="nav-link {{ $tab === 'essays' ? 'active' : '' }}"
+                                href="{{ route('model.index', array_merge($query, ['tab' => 'essays', 'view' => $view])) }}">
+                                Model Essays
                             </a>
                         </li>
                         <li class="nav-item">
