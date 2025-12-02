@@ -174,43 +174,6 @@
             <!-- Main Content -->
             <div class="col-lg-8 ">
 
-                {{-- Active Filters --}}
-                @if (request()->except(['page']))
-                    <div class="mb-3">
-                        <h6 class="mb-2">Active Filters:</h6>
-                        <div class="d-flex flex-wrap gap-2">
-                            @foreach (request()->except(['page']) as $key => $value)
-                                @php
-                                    $titles = [];
-                                    if ($key === 'qualification') {
-                                        $titles = $qualificationsMap;
-                                    } elseif ($key === 'subject') {
-                                        $titles = $subjectsMap;
-                                    } elseif ($key === 'exam_board') {
-                                        $titles = $examBoardsMap;
-                                    } elseif ($key === 'topics') {
-                                        $titles = $topicsMap;
-                                    }
-                                @endphp
-
-                                @if (is_array($value))
-                                    @foreach ($value as $v)
-                                        <a href="{{ route('model.index', array_diff_key(request()->all(), [$key => '']) + [$key => array_diff((array) $value, [$v])]) }}"
-                                            class="badge custom-badge  text-decoration-none">
-                                            {{ ucfirst($key) }}: {{ $titles[$v] ?? $v }} <i class="bi bi-x ms-1"></i>
-                                        </a>
-                                    @endforeach
-                                @else
-                                    <a href="{{ route('model.index', Arr::except(request()->all(), [$key])) }}"
-                                        class="badge custom-badge  text-decoration-none">
-                                        {{ ucfirst($key) }}: {{ $titles[$value] ?? $value }} <i class="bi bi-x ms-1"></i>
-                                    </a>
-                                @endif
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-
                 <div class="container py-5">
                     @php
                         $query = request()->except(['tab']);
