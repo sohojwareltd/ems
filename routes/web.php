@@ -214,58 +214,21 @@ Route::get('/test-order-confirmation/{order}', function (Order $order) {
 })->name('test.order-confirmation');
 
 Route::get('/test-verification-email', function () {
-    \Illuminate\Support\Facades\Log::info('=== Test verification email route accessed ===');
-    
     $user = \App\Models\User::where('email', 'ahmedtamim19050@gmail.com')->first();
+    
     if (!$user) {
-        \Illuminate\Support\Facades\Log::error('User not found: ahmedtamim19050@gmail.com');
-        return 'User with email ahmedtamim19050@gmail.com not found!';
+        return 'User not found!';
     }
     
-    \Illuminate\Support\Facades\Log::info('User found', [
-        'id' => $user->id,
-        'email' => $user->email,
-        'name' => $user->name,
-        'email_verified_at' => $user->email_verified_at,
-        'created_at' => $user->created_at
-    ]);
+    $verificationUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute(
+        'verification.verify',
+        now()->addMinutes(60),
+        ['id' => $user->id, 'hash' => sha1($user->email)]
+    );
     
-    // Check mail configuration
-    \Illuminate\Support\Facades\Log::info('Mail Configuration', [
-        'driver' => config('mail.default'),
-        'mailer' => config('mail.mailers.' . config('mail.default')),
-        'from_address' => config('mail.from.address'),
-        'from_name' => config('mail.from.name'),
-    ]);
+    Mail::to($user->email)->send(new \App\Mail\TestVerificationMail($user, $verificationUrl));
     
-    try {
-        // Try using Mail facade directly with verification URL
-        $verificationUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute(
-            'verification.verify',
-            now()->addMinutes(60),
-            ['id' => $user->id, 'hash' => sha1($user->email)]
-        );
-        
-        \Illuminate\Support\Facades\Log::info('Generated verification URL', [
-            'url' => $verificationUrl
-        ]);
-        
-        // Send using TestVerificationMail class
-        Mail::to($user->email)->send(new \App\Mail\TestVerificationMail($user, $verificationUrl));
-
-        
-        return 'Verification email sent to ' . $user->email . '<br><br><strong>Details:</strong><br>1. Check storage/logs/laravel.log<br>2. Queue: ' . config('queue.default') . '<br>3. Mail Driver: ' . config('mail.default') . '<br><br><strong>Verification URL:</strong><br>' . $verificationUrl;
-        
-    } catch (\Exception $e) {
-        \Illuminate\Support\Facades\Log::error('Failed to send verification email', [
-            'email' => $user->email,
-            'error' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
-            'trace' => $e->getTraceAsString()
-        ]);
-        return 'Error sending email: ' . $e->getMessage() . '<br>File: ' . $e->getFile() . ':' . $e->getLine();
-    }
+    return 'Hello World - Email sent to ' . $user->email;
 })->name('test.verification-email');
 
 Route::get('/essay-pdf-read/{essay:slug}', [PageController::class, 'essayPdfView'])->middleware('auth')->name('essay.pdf.view');
