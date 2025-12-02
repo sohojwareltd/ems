@@ -49,6 +49,12 @@ class CountryResource extends Resource
                             ->placeholder('e.g., US, GB, FR')
                             ->unique(ignoreRecord: true)
                             ->helperText('Enter the ISO country code (2 characters)'),
+                        Forms\Components\TextInput::make('calling_code')
+                            ->label('Calling Code')
+                            ->required()
+                            ->maxLength(10)
+                            ->placeholder('e.g., +1, +44, +880')
+                            ->helperText('Enter the international calling code with + prefix'),
                     ])
                     ->columns(2)
             ]);
@@ -69,6 +75,12 @@ class CountryResource extends Resource
                     ->sortable()
                     ->badge()
                     ->color('primary'),
+                Tables\Columns\TextColumn::make('calling_code')
+                    ->label('Calling Code')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('success'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created')
                     ->dateTime('M d, Y H:i')
