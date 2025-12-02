@@ -86,40 +86,30 @@ class ContactResource extends Resource
                     ->color(fn (string $state): string => Contact::getStatusColor($state))
                     ->formatStateUsing(fn (string $state): string => Contact::getStatuses()[$state] ?? $state)
                     ->sortable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Category')
+                    ->searchable()
+                    ->sortable()
+                    ->default('—'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Received')
+                    ->dateTime('d M Y H:i')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable()
+                    ->copyable(),
                 Tables\Columns\TextColumn::make('first_name')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('last_name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable()
-                    ->copyable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('category.name')
-                    ->label('Category')
-                    ->searchable()
-                    ->sortable()
-                    ->default('—'),
-                Tables\Columns\TextColumn::make('message')
-                    ->limit(50)
-                    ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
-                        $state = $column->getState();
-                        if (strlen($state) <= 50) {
-                            return null;
-                        }
-                        return $state;
-                    }),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Received')
-                    ->dateTime('d M Y H:i')
-                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->options(Contact::getStatuses())
-                    ->default(Contact::STATUS_NEW),
+                    ->options(Contact::getStatuses()),
                 Tables\Filters\SelectFilter::make('contact_category_id')
                     ->label('Category')
                     ->relationship('category', 'name')
