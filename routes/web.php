@@ -214,7 +214,7 @@ Route::get('/test-order-confirmation/{order}', function (Order $order) {
 })->name('test.order-confirmation');
 
 Route::get('/test-verification-email', function () {
-    \Illuminate\Support\Facades\Log::info('Test verification email route accessed');
+    \Illuminate\Support\Facades\Log::info('=== Test verification email route accessed ===');
     
     $user = \App\Models\User::where('email', 'ahmedtamim19050@gmail.com')->first();
     if (!$user) {
@@ -225,22 +225,53 @@ Route::get('/test-verification-email', function () {
     \Illuminate\Support\Facades\Log::info('User found', [
         'id' => $user->id,
         'email' => $user->email,
-        'email_verified_at' => $user->email_verified_at
+        'name' => $user->name,
+        'email_verified_at' => $user->email_verified_at,
+        'created_at' => $user->created_at
+    ]);
+    
+    // Check mail configuration
+    \Illuminate\Support\Facades\Log::info('Mail Configuration', [
+        'driver' => config('mail.default'),
+        'mailer' => config('mail.mailers.' . config('mail.default')),
+        'from_address' => config('mail.from.address'),
+        'from_name' => config('mail.from.name'),
     ]);
     
     try {
-        // Send verification notification
-        $user->sendEmailVerificationNotification();
-        \Illuminate\Support\Facades\Log::info('Verification email sent successfully', ['email' => $user->email]);
+        // Try using Mail facade directly with verification URL
+        $verificationUrl = \Illuminate\Support\Facades\URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $user->id, 'hash' => sha1($user->email)]
+        );
         
-        return 'Verification email sent to ' . $user->email . '. Check storage/logs/laravel.log for details.';
+        \Illuminate\Support\Facades\Log::info('Generated verification URL', [
+            'url' => $verificationUrl
+        ]);
+        
+        // Send via Mail facade
+        Mail::send('emails.verify-email', ['user' => $user, 'url' => $verificationUrl], function($message) use ($user) {
+            $message->to($user->email, $user->name)
+                    ->subject('Verify Your Email Address - EMS');
+        });
+        
+        \Illuminate\Support\Facades\Log::info('Email queued/sent via Mail facade', [
+            'email' => $user->email,
+            'queue_connection' => config('queue.default')
+        ]);
+        
+        return 'Verification email sent to ' . $user->email . '<br>Check:<br>1. storage/logs/laravel.log<br>2. Queue: ' . config('queue.default') . '<br>3. Verification URL: ' . $verificationUrl;
+        
     } catch (\Exception $e) {
         \Illuminate\Support\Facades\Log::error('Failed to send verification email', [
             'email' => $user->email,
             'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
             'trace' => $e->getTraceAsString()
         ]);
-        return 'Error sending email: ' . $e->getMessage();
+        return 'Error sending email: ' . $e->getMessage() . '<br>File: ' . $e->getFile() . ':' . $e->getLine();
     }
 })->name('test.verification-email');
 
