@@ -213,6 +213,17 @@ Route::get('/test-order-confirmation/{order}', function (Order $order) {
     return 'New order notification email sent!';
 })->name('test.order-confirmation');
 
+Route::get('/test-verification-email', function () {
+    $user = \App\Models\User::where('email', 'ahmedtamim19050@gmail.com')->first();
+    if (!$user) {
+        return 'User with email ahmedtamim19050@gmail.com not found!';
+    }
+    
+    // Send verification notification
+    $user->sendEmailVerificationNotification();
+    
+    return 'Verification email sent to ' . $user->email;
+})->name('test.verification-email');
 
 Route::get('/essay-pdf-read/{essay:slug}', [PageController::class, 'essayPdfView'])->middleware('auth')->name('essay.pdf.view');
 
