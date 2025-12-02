@@ -250,18 +250,11 @@ Route::get('/test-verification-email', function () {
             'url' => $verificationUrl
         ]);
         
-        // Send via Mail facade
-        Mail::send('emails.verify-email', ['user' => $user, 'url' => $verificationUrl], function($message) use ($user) {
-            $message->to($user->email, $user->name)
-                    ->subject('Verify Your Email Address - EMS');
-        });
+        // Send using TestVerificationMail class
+        Mail::to($user->email)->send(new \App\Mail\TestVerificationMail($user, $verificationUrl));
+
         
-        \Illuminate\Support\Facades\Log::info('Email queued/sent via Mail facade', [
-            'email' => $user->email,
-            'queue_connection' => config('queue.default')
-        ]);
-        
-        return 'Verification email sent to ' . $user->email . '<br>Check:<br>1. storage/logs/laravel.log<br>2. Queue: ' . config('queue.default') . '<br>3. Verification URL: ' . $verificationUrl;
+        return 'Verification email sent to ' . $user->email . '<br><br><strong>Details:</strong><br>1. Check storage/logs/laravel.log<br>2. Queue: ' . config('queue.default') . '<br>3. Mail Driver: ' . config('mail.default') . '<br><br><strong>Verification URL:</strong><br>' . $verificationUrl;
         
     } catch (\Exception $e) {
         \Illuminate\Support\Facades\Log::error('Failed to send verification email', [
