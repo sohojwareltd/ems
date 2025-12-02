@@ -32,24 +32,6 @@
 @section('title', 'Verify Email - EMS')
 
 @section('content')
-    <!-- Success Toast Notification -->
-    @if (session('resent'))
-        <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999; margin-top: 80px;">
-            <div class="toast show align-items-center text-white border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true" id="successToast" style="background: linear-gradient(135deg, #00b22d 0%, #019c26 100%); min-width: 350px;">
-                <div class="d-flex">
-                    <div class="toast-body d-flex align-items-center py-3 px-4">
-                        <i class="fas fa-check-circle fs-4 me-3"></i>
-                        <div>
-                            <strong class="d-block mb-1">Verification Email Sent!</strong>
-                            <small>Please check your inbox in a few minutes.</small>
-                        </div>
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
-    @endif
-
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -62,7 +44,7 @@
                         <h2 class="mb-3">Verify Your Email Address</h2>
 
                         <p class="text-muted">
-                            Before proceeding, please check your email for a verification link.
+                            Before proceeding, please check your inbox for a verification link.
                         </p>
                         <p class="mb-4 text-muted">
                             If you did not receive the email, click the button below to request another.
@@ -91,15 +73,6 @@
 
     @push('scripts')
     <script>
-        // Auto-hide success toast after 12 seconds
-        const successToast = document.getElementById('successToast');
-        if (successToast) {
-            setTimeout(function() {
-                const bsToast = new bootstrap.Toast(successToast);
-                bsToast.hide();
-            }, 12000);
-        }
-
         // Button and countdown management
         const resendForm = document.getElementById('resendForm');
         const resendBtn = document.getElementById('resendBtn');
@@ -125,14 +98,6 @@
                 localStorage.removeItem('verificationCountdown');
                 localStorage.removeItem('verificationTimestamp');
             }
-        }
-
-        // If toast is shown (email was just sent), start countdown
-        if (successToast) {
-            localStorage.setItem('verificationCountdown', '60');
-            localStorage.setItem('verificationTimestamp', Date.now().toString());
-            timeRemaining = 60;
-            startCountdown();
         }
 
         function startCountdown() {
@@ -162,6 +127,10 @@
                     e.preventDefault();
                     return false;
                 }
+                
+                // Set countdown on submit
+                localStorage.setItem('verificationCountdown', '60');
+                localStorage.setItem('verificationTimestamp', Date.now().toString());
                 
                 resendBtn.disabled = true;
                 btnText.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';

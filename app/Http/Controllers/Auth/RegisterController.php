@@ -87,7 +87,7 @@ class RegisterController extends Controller
         Newsletter::firstOrCreate(['email' => $user->email]);
 
         // Trigger the Registered event to send verification email
-        event(new Registered($user));
+        // event(new Registered($user));
         
         // Log for debugging
         Log::info('User registered and verification email triggered', [
