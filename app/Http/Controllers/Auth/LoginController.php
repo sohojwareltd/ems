@@ -36,6 +36,28 @@ class LoginController extends Controller
      *
      * @return void
      */
+    
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function logout(Request $request)
+    {
+        // Remove all devices before logout
+        if ($request->user()) {
+            $request->user()->devices()->delete();
+        }
+
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return $this->loggedOut($request) ?: redirect('/');
+    }
 
 
 
@@ -67,37 +89,21 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        // $deviceId = $request->cookie('device_id') ?? Str::uuid()->toString();
+        // Remove all existing devices on new login to ensure only one active session
+        $user->devices()->delete();
+        
+        $deviceId = $request->cookie('device_id') ?? Str::uuid()->toString();
 
-        // $existingDevice = $user->devices()->where('device_id', $deviceId)->first();
+        // Create new device entry for current login
+        $user->devices()->create([
+            'device_id' => $deviceId,
+            'device_agent' => $request->userAgent(),
+            'ip_address' => $request->ip(),
+            'session_id' => Session::getId(),
+        ]);
 
-        // if (!$existingDevice) {
-        //     if ($user->devices()->count() >= 1) {
-        //         auth()->logout();
-        //         Session::invalidate();
-        //         Session::regenerateToken();
-
-        //         return redirect()->route('login')->withErrors([
-        //             'email' => 'You are already logged in on 1 devices.',
-        //         ]);
-        //     }
-
-        //     $user->devices()->create([
-        //         'device_id' => $deviceId,
-        //         'device_agent' => $request->userAgent(),
-        //         'ip_address' => $request->ip(),
-        //         'session_id' => Session::getId(),
-        //     ]);
-        // } else {
-        //     $existingDevice->update([
-        //         'session_id' => Session::getId(),
-        //         'ip_address' => $request->ip(),
-        //         'device_agent' => $request->userAgent()
-        //     ]);
-        // }
-
-        // // Ensure cookie is set
-        // cookie()->queue('device_id', $deviceId, 525600); // 1 year
+        // Ensure cookie is set
+        cookie()->queue('device_id', $deviceId, 525600); // 1 year
     }
     public function __construct()
     {
