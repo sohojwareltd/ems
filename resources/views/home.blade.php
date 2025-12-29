@@ -115,19 +115,15 @@
     @endif
 
     <!-- Quick Navigation Section -->
-    <section class="py-5" id="courses">
+    {{-- <section class="py-5" id="courses">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-5 flex-column flex-md-row">
                 <div class="text-center text-md-start">
                     <h2 class="section-title mb-2">Select Your Course</h2>
-                    {{-- <p class="section-subtitle mb-0 w-50">Welcome to our extensive catalog of model essays, carefully
-                        curated by
-                        our
-                        examiners. We are committed to providing you the best resources possible.</p> --}}
+                   
                 </div>
                 <div class="mt-3 mt-md-0">
-                    {{-- <a href="{{ route('model.index') }}" class="text-decoration-none custome-text see-all-btn">See All <i
-                            class="fa-solid fa-arrow-right"></i></a> --}}
+                   
                 </div>
             </div>
 
@@ -145,9 +141,7 @@
                             @foreach ($qualifications as $item)
                                 <option value="{{ $item->id }}">{{ $item->title }}</option>
                             @endforeach
-                            {{-- <option value="gcse">GCSE</option> --}}
-
-                            <!-- Add more stages if needed -->
+                       
                         </select>
                     </div>
 
@@ -182,7 +176,7 @@
 
 
         </div>
-    </section>
+    </section> --}}
 
     <!-- Featured Products Section - moved up -->
     <section class="py-5">
