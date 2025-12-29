@@ -21,7 +21,7 @@ class UserResource extends Resource
 
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationLabel = 'Users';
+    protected static ?string $navigationLabel = 'Customers';
     protected static ?string $navigationGroup = 'People';
     protected static ?int $navigationSort = 2;
     protected static bool $shouldRegisterNavigation = false; // Hide from navigation

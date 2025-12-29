@@ -16,6 +16,11 @@ class CheckDeviceSession
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Skip device checks entirely for Filament admin panel routes
+        if ($request->is('admin') || $request->is('admin/*')) {
+            return $next($request);
+        }
+
         // Only check for authenticated users
         if (Auth::check()) {
             $user = Auth::user();

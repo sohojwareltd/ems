@@ -70,10 +70,16 @@
                     <div class="card-body text-center">
                         <div class="d-inline-flex align-items-center justify-content-center custom-badge rounded-circle mb-3"
                             style="width: 60px; height: 60px;">
-                            <i class="fas fa-pound-sign  fs-4"></i>
+                            <i class="fas fa-calendar-check  fs-4"></i>
                         </div>
-                        <h3 class="fw-bold text-dark mb-1">£{{ number_format($stats['total_spent'] ?? 0, 2) }}</h3>
-                        <p class="text-muted mb-0">Total Spent</p>
+                        <h3 class="fw-bold text-dark mb-1">
+                            @if(isset($recent_orders) && $recent_orders->count() > 0)
+                                {{ $recent_orders->first()->created_at->format('M d, Y') }}
+                            @else
+                                —
+                            @endif
+                        </h3>
+                        <p class="text-muted mb-0">Last Purchase</p>
                     </div>
                 </div>
             </div>

@@ -174,7 +174,7 @@
             <!-- Main Content -->
             <div class="col-lg-8 ">
 
-                <div class="container py-5">
+                <div class="container pt-0 pb-5">
                     @php
                         $query = request()->except(['tab']);
                     @endphp

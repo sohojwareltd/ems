@@ -86,7 +86,7 @@ class PageController extends Controller
 
     public function model(Request $request)
     {
-        $tab = $request->get('tab', 'essays'); // default: essays
+        $tab = $request->get('tab', 'sample'); // default: free samples
         $view = $request->get('view', 'year'); // default: year
 
         $filters = $request->only([
@@ -116,9 +116,9 @@ class PageController extends Controller
         $essays = $essaysQuery->latest()->get();
 
         $essaysByYear = $essays->groupBy('year');
-        if (request('tab') == 'pastpapers') {
+        if ($tab === 'pastpapers') {
             $essaysByYearByFilter = PastPaper::groupBy('year')->pluck('year');
-        } elseif (request('tab') == 'sample') {
+        } elseif ($tab === 'sample') {
             $essaysByYearByFilter = Essay::sample()->groupBy('year')->pluck('year');
         } else {
             $essaysByYearByFilter = Essay::groupBy('year')->pluck('year');

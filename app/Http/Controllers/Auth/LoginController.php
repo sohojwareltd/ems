@@ -91,16 +91,37 @@ class LoginController extends Controller
     {
         // Remove all existing devices on new login to ensure only one active session
         $user->devices()->delete();
-        
-        $deviceId = $request->cookie('device_id') ?? Str::uuid()->toString();
 
-        // Create new device entry for current login
-        $user->devices()->create([
-            'device_id' => $deviceId,
-            'device_agent' => $request->userAgent(),
-            'ip_address' => $request->ip(),
-            'session_id' => Session::getId(),
-        ]);
+        // Use cookie only if not already claimed by another user; otherwise, generate a fresh UUID
+        $incoming = $request->cookie('device_id');
+        $conflictExists = $incoming
+            ? \App\Models\UserDevice::where('device_id', $incoming)
+                ->where('user_id', '!=', $user->id)
+                ->exists()
+            : false;
+
+        $deviceId = $conflictExists || empty($incoming)
+            ? Str::uuid()->toString()
+            : $incoming;
+
+        // Create new device entry for current login, retry once on rare race duplicate
+        try {
+            $user->devices()->create([
+                'device_id' => $deviceId,
+                'device_agent' => $request->userAgent(),
+                'ip_address' => $request->ip(),
+                'session_id' => Session::getId(),
+            ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            // If duplicate device_id slipped through, regenerate and insert
+            $deviceId = Str::uuid()->toString();
+            $user->devices()->create([
+                'device_id' => $deviceId,
+                'device_agent' => $request->userAgent(),
+                'ip_address' => $request->ip(),
+                'session_id' => Session::getId(),
+            ]);
+        }
 
         // Ensure cookie is set
         cookie()->queue('device_id', $deviceId, 525600); // 1 year

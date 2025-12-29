@@ -25,6 +25,16 @@ class CustomerResource extends Resource
     protected static ?string $navigationGroup = 'People';
     protected static ?int $navigationSort = 1;
 
+    public static function getModelLabel(): string
+    {
+        return 'Customer';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Customers';
+    }
+
     public static function getEloquentQuery(): Builder
     {
         // Only show users who are not admins (customers)
@@ -110,13 +120,13 @@ class CustomerResource extends Resource
                     ->badge()
                     ->color('primary')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('phone')
-                    ->searchable()
-                    ->toggleable(),
-                Tables\Columns\TextColumn::make('city')
-                    ->searchable()
-                    ->sortable()
-                    ->toggleable(),
+                // Tables\Columns\TextColumn::make('phone')
+                //     ->searchable()
+                //     ->toggleable(),
+                // Tables\Columns\TextColumn::make('city')
+                //     ->searchable()
+                //     ->sortable()
+                //     ->toggleable(),
                 Tables\Columns\TextColumn::make('country')
                     ->searchable()
                     ->sortable()

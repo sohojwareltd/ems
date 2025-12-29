@@ -112,16 +112,35 @@ class RegisterController extends Controller
         // Remove any existing device records just in case
         $user->devices()->delete();
 
-        // Reuse device_id cookie if present, otherwise generate one
-        $deviceId = $request->cookie('device_id') ?? Str::uuid()->toString();
+        // Use cookie only if not already claimed by another user; otherwise, generate a fresh UUID
+        $incoming = $request->cookie('device_id');
+        $conflictExists = $incoming
+            ? \App\Models\UserDevice::where('device_id', $incoming)
+                ->where('user_id', '!=', $user->id)
+                ->exists()
+            : false;
 
-        // Store current device
-        $user->devices()->create([
-            'device_id' => $deviceId,
-            'device_agent' => $request->userAgent(),
-            'ip_address' => $request->ip(),
-            'session_id' => Session::getId(),
-        ]);
+        $deviceId = $conflictExists || empty($incoming)
+            ? Str::uuid()->toString()
+            : $incoming;
+
+        // Store current device, retry once if unique constraint triggers
+        try {
+            $user->devices()->create([
+                'device_id' => $deviceId,
+                'device_agent' => $request->userAgent(),
+                'ip_address' => $request->ip(),
+                'session_id' => Session::getId(),
+            ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            $deviceId = Str::uuid()->toString();
+            $user->devices()->create([
+                'device_id' => $deviceId,
+                'device_agent' => $request->userAgent(),
+                'ip_address' => $request->ip(),
+                'session_id' => Session::getId(),
+            ]);
+        }
 
         // Persist cookie for future requests (1 year)
         cookie()->queue('device_id', $deviceId, 525600);
