@@ -40,34 +40,7 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="phone" class="form-label">WhatsApp Number</label>
-                                    <div class="input-group">
-                                        <select class="form-select @error('country_code') is-invalid @enderror" 
-                                            id="country_code" name="country_code" style="max-width: 120px;">
-                                            <option value="">Code</option>
-                                            @php
-                                                $countries = \App\Models\Country::orderBy('name')->get();
-                                            @endphp
-                                            @foreach($countries as $country)
-                                                <option value="{{ $country->calling_code }}" 
-                                                    {{ old('country_code', '+880') == $country->calling_code ? 'selected' : '' }}>
-                                                    {{ $country->calling_code }} ({{ $country->code }})
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        <input type="tel" class="form-control @error('phone') is-invalid @enderror"
-                                            id="phone" name="phone" placeholder="Enter WhatsApp number"
-                                            value="{{ old('phone', auth()->user()->phone ?? '') }}">
-                                        @error('phone')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                        @error('country_code')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-12">
+                                  <div class="col-6">
                                     <label for="contact_category_id" class="form-label">Category *</label>
                                     <select class="form-select @error('contact_category_id') is-invalid @enderror" id="contact_category_id"
                                         name="contact_category_id" required>
@@ -83,6 +56,34 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <div class="col-md-12">
+                                    <label for="phone" class="form-label">WhatsApp Number</label>
+                                    <div class="input-group">
+                                        <select class="form-select @error('country_code') is-invalid @enderror" 
+                                            id="country_code" name="country_code" style="max-width: 190px;">
+                                            <option value="">Code</option>
+                                            @php
+                                                $countries = \App\Models\Country::query()->orderByRaw('LOWER(name) ASC')->get();
+                                            @endphp
+                                            @foreach($countries as $country)
+                                                <option value="{{ $country->calling_code }}" 
+                                                    {{ old('country_code', '+880') == $country->calling_code ? 'selected' : '' }}>
+                                                    {{ $country->name }} ({{ $country->calling_code }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <input type="tel" class="form-control @error('phone') is-invalid @enderror"
+                                            id="phone" name="phone" placeholder="Enter WhatsApp number"
+                                            value="{{ old('phone', auth()->user()->phone ?? '') }}">
+                                        @error('phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        @error('country_code')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                              
                                 <div class="col-12">
                                     <label for="message" class="form-label">Message *</label>
                                     <textarea class="form-control @error('message') is-invalid @enderror" id="message" name="message" rows="6"
