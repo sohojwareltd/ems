@@ -233,14 +233,14 @@
             <div class="row align-items-center">
                 <div class="col-lg-7 mb-3">
                     <div class="about-content">
-                        <span class="custom-badge">Our Focus</span>
+                        <span class="custom-badge">{{ setting('home.focus_badge', 'Our Focus') }}</span>
                         <div class="row mt-2">
                             <div class="col-12 col-md-10 col-lg-8">
-                                <h2 class="section-title mb-4">The future belongs to those who prepare for it today</h2>
+                                <h2 class="section-title mb-4">{{ setting('home.focus_heading', 'The future belongs to those who prepare for it today') }}</h2>
                             </div>
                             <div class="col-12 col-md-8 col-lg-6">
                                 <p class="lead mb-4">
-                                    What are our pillars? What drives us?
+                                    {{ setting('home.focus_subtitle', 'What are our pillars? What drives us?') }}
                                 </p>
                             </div>
                         </div>
@@ -249,28 +249,28 @@
                         <div class="about-stats row text-center justify-content-center">
                             <div class="col-md-12 d-flex ">
                                 <div class="stat-item mx-2">
-                                    <p class="focus-btn focus-active text-center px-3">Curriculum Precision
-                                    </p>
+                                    <p class="focus-btn focus-active text-center px-3">{{ setting('about.value_1_title', 'Curriculum Precision') }}</p>
                                 </div>
                                 <div class="stat-item mx-2">
-                                    <p class="focus-btn text-center px-3">Teacher Empowerment</p>
+                                    <p class="focus-btn text-center px-3">{{ setting('about.value_2_title', 'Teacher Empowerment') }}</p>
                                 </div>
                                 <div class="stat-item mx-2">
-                                    <p class="focus-btn text-center px-3 ">
-                                        Learner Achievement
-
-                                    </p>
+                                    <p class="focus-btn text-center px-3 ">{{ setting('about.value_3_title', 'Learner Achievement') }}</p>
                                 </div>
                             </div>
                         </div>
 
                         <a href="{{ route('about') }}" class="btn custom-btn btn-lg mt-4">
-                            Learn More About Us
+                            {{ setting('home.focus_button_text', 'Learn More About Us') }}
                         </a>
                     </div>
                 </div>
                 <div class="col-lg-5">
-                    <img src="{{ asset('images/about.jpg') }}" alt="About Eterna Reads"
+                    @php
+                        $focusImage = setting('home.focus_image');
+                        $imageUrl = $focusImage ? asset('storage/' . $focusImage) : asset('images/about.jpg');
+                    @endphp
+                    <img src="{{ $imageUrl }}" alt="Our Focus"
                         class="img-fluid w-100 rounded-3 shadow-lg" style="max-height: 400px; object-fit: cover;">
                 </div>
             </div>

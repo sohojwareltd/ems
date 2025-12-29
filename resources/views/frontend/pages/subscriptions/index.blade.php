@@ -5,7 +5,52 @@
 @section('content')
 
     <style>
-        .subscription-container {
+        .pricing-wrapper.single-plan {
+            grid-template-columns: 1fr !important;
+            max-width: 500px !important;
+            margin: 0 auto !important;
+        }
+
+        .pricing-wrapper.single-plan .pricing-card {
+            width: 100%;
+        }
+
+        .pricing-comparison {
+            background: linear-gradient(135deg, rgba(0, 178, 45, 0.05) 0%, rgba(142, 84, 233, 0.05) 100%);
+            padding: 80px 20px;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-comparison::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 178, 45, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .pricing-comparison::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(142, 84, 233, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .pricing-comparison > * {
+            position: relative;
+            z-index: 1;
+        }
             width: 100%;
             max-width: 1200px;
             background: white;
@@ -706,7 +751,10 @@
             </div>
         </div>
         <div class="container-3">
-            <div class="pricing-wrapper">
+            @php
+                $totalPlans = count($plans);
+            @endphp
+            <div class="pricing-wrapper @if($totalPlans === 1)single-plan @endif">
 
 
                 @foreach ($plans as $plan)

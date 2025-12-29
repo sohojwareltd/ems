@@ -86,7 +86,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label for="phone" class="form-label fw-semibold">Phone Number</label>
+                                    <label for="phone" class="form-label fw-semibold">WhatsApp Number</label>
                                     <input type="tel" class="form-control @error('phone') is-invalid @enderror"
                                         id="phone" name="phone" value="{{ old('phone', $user->phone) }}">
                                     @error('phone')

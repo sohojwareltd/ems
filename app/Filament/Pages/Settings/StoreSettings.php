@@ -172,6 +172,187 @@ class StoreSettings extends BaseSettings
                                         ->helperText('Your Facebook Pixel ID for tracking conversions.'),
                                 ]),
                         ]),
+                    Tabs\Tab::make('About Us')
+                        ->schema([
+                            Section::make('Page Header')
+                                ->description('Configure the header section of the About Us page.')
+                                ->schema([
+                                    TextInput::make('about.page_title')
+                                        ->label('Page Title')
+                                        ->default('About Economics Made Simple (EMS)')
+                                        ->helperText('Main heading displayed at the top of the page.'),
+                                    Textarea::make('about.page_subtitle')
+                                        ->label('Page Subtitle')
+                                        ->default('Our story, mission and the team behind it all')
+                                        ->helperText('Subtitle displayed below the main heading.'),
+                                ]),
+                            Section::make('Our Story')
+                                ->description('Tell your story and background.')
+                                ->schema([
+                                    TextInput::make('about.story_heading')
+                                        ->label('Story Section Heading')
+                                        ->default('Our Story')
+                                        ->helperText('Heading for the story section.'),
+                                    Textarea::make('about.story_paragraph_1')
+                                        ->label('Story Paragraph 1')
+                                        ->rows(4)
+                                        ->default('Economics Made Simple didn\'t start with a plan or a name. It began in the classroom with a shared goal to help our students truly understand Economics. Just a couple of teachers determined to make our lessons clearer, and more effective. The official materials and mark schemes left much to be desired, so we started building our own from scratch with model essays, slides, notes, and explanations that actually made sense to our students.')
+                                        ->helperText('First paragraph of your story.'),
+                                    Textarea::make('about.story_paragraph_2')
+                                        ->label('Story Paragraph 2')
+                                        ->rows(5)
+                                        ->default('We wanted the answers straight from the horse\'s mouth, no guesswork, so we trained as official examiners. We wanted to see exactly how marks were awarded, where our students lost them, and what separated a good answer from a great one. These insights changed everything! It shaped how we structured our lessons, how we designed resources, and how we explained complex ideas. We rewrote, refined, and rebuilt everything again, from the ground up.')
+                                        ->helperText('Second paragraph of your story.'),
+                                    Textarea::make('about.story_paragraph_3')
+                                        ->label('Story Paragraph 3')
+                                        ->rows(4)
+                                        ->default('As our resources improved, so did the results. Word spread quickly, other teachers and students began using our materials, our students started seeing Economics differently, and we realised we all had the same problems. That was when the idea of EMS began to take shape.')
+                                        ->helperText('Third paragraph of your story.'),
+                                    Textarea::make('about.story_paragraph_4')
+                                        ->label('Story Paragraph 4')
+                                        ->rows(4)
+                                        ->default('The name came naturally. Our purpose was simple. We wanted learners to find Economics simple. EMS grew from that shared vision, a community of educators and learners working together to make education clearer, more consistent, and more rewarding for everyone.')
+                                        ->helperText('Fourth paragraph of your story.'),
+                                    \Filament\Forms\Components\FileUpload::make('about.story_image')
+                                        ->label('Story Image')
+                                        ->image()
+                                        ->directory('settings/about')
+                                        ->helperText('Upload an image for the story section (recommended size: 800x600px).'),
+                                ]),
+                            Section::make('Our Mission')
+                                ->description('Describe your mission and goals.')
+                                ->schema([
+                                    TextInput::make('about.mission_heading')
+                                        ->label('Mission Section Heading')
+                                        ->default('Our Mission')
+                                        ->helperText('Heading for the mission section.'),
+                                    Textarea::make('about.mission_paragraph_1')
+                                        ->label('Mission Paragraph 1')
+                                        ->rows(4)
+                                        ->default('To raise the standard of education. We aim to create precise, exam-board-aligned resources that empower teachers to deliver lessons with confidence and help learners achieve outstanding results. By combining clarity, structure, and accessibility, EMS turns complex and chaotic learning into simple, measurable success.')
+                                        ->helperText('First paragraph of your mission.'),
+                                    Textarea::make('about.mission_paragraph_2')
+                                        ->label('Mission Paragraph 2')
+                                        ->rows(4)
+                                        ->default('We truly believe great education changes lives; it shapes how learners think, make decisions, and understand the world around them. Our goal is not just to help learners pass exams, but to equip them with the knowledge and perspective to navigate their futures with confidence, curiosity, and purpose. Through EMS, we aim to build a generation of independent thinkers, ready to understand the world, and improve it.')
+                                        ->helperText('Second paragraph of your mission.'),
+                                ]),
+                            Section::make('Our Focus/Values')
+                                ->description('Define your core values and focus areas.')
+                                ->schema([
+                                    TextInput::make('about.values_heading')
+                                        ->label('Values Section Heading')
+                                        ->default('Our Focus')
+                                        ->helperText('Heading for the values section.'),
+                                    TextInput::make('about.value_1_title')
+                                        ->label('Value 1 Title')
+                                        ->default('Curriculum Precision')
+                                        ->helperText('Title for the first value.'),
+                                    Textarea::make('about.value_1_description')
+                                        ->label('Value 1 Description')
+                                        ->rows(2)
+                                        ->default('Every EMS resource is built and trimmed in alignment with exact exam board specifications, ensuring accuracy, consistency, and complete syllabus coverage.')
+                                        ->helperText('Description for the first value.'),
+                                    TextInput::make('about.value_2_title')
+                                        ->label('Value 2 Title')
+                                        ->default('Teacher Empowerment')
+                                        ->helperText('Title for the second value.'),
+                                    Textarea::make('about.value_2_description')
+                                        ->label('Value 2 Description')
+                                        ->rows(2)
+                                        ->default('We give teachers ready-to-use, time-saving materials that enhance lesson delivery and boost classroom confidence.')
+                                        ->helperText('Description for the second value.'),
+                                    TextInput::make('about.value_3_title')
+                                        ->label('Value 3 Title')
+                                        ->default('Learner Achievement')
+                                        ->helperText('Title for the third value.'),
+                                    Textarea::make('about.value_3_description')
+                                        ->label('Value 3 Description')
+                                        ->rows(2)
+                                        ->default('Our ultimate aim! Our structured resources simplify complex content, helping learners see the bigger picture, master content and excel in exams.')
+                                        ->helperText('Description for the third value.'),
+                                ]),
+                            Section::make('Team Section')
+                                ->description('Configure the team section heading.')
+                                ->schema([
+                                    TextInput::make('about.team_heading')
+                                        ->label('Team Section Heading')
+                                        ->default('Meet The Team')
+                                        ->helperText('Heading for the team section.'),
+                                    TextInput::make('about.team_subtitle')
+                                        ->label('Team Section Subtitle')
+                                        ->default('The passionate individuals behind EMS')
+                                        ->helperText('Subtitle for the team section.'),
+                                ]),
+                            Section::make('Why Choose Us')
+                                ->description('Highlight what makes you different.')
+                                ->schema([
+                                    TextInput::make('about.why_heading')
+                                        ->label('Why Choose Us Heading')
+                                        ->default('Why Choose EMS?')
+                                        ->helperText('Main heading for why choose us section.'),
+                                    TextInput::make('about.why_subtitle')
+                                        ->label('Why Choose Us Subtitle')
+                                        ->default('What makes us different?')
+                                        ->helperText('Subtitle for why choose us section.'),
+                                    TextInput::make('about.feature_1_title')
+                                        ->label('Feature 1 Title')
+                                        ->default('Quality')
+                                        ->helperText('Title for the first feature.'),
+                                    Textarea::make('about.feature_1_description')
+                                        ->label('Feature 1 Description')
+                                        ->rows(2)
+                                        ->default('Every resource is created and curated by experienced teachers and examiners, nothing less than the best.')
+                                        ->helperText('Description for the first feature.'),
+                                    TextInput::make('about.feature_2_title')
+                                        ->label('Feature 2 Title')
+                                        ->default('Clarity')
+                                        ->helperText('Title for the second feature.'),
+                                    Textarea::make('about.feature_2_description')
+                                        ->label('Feature 2 Description')
+                                        ->rows(2)
+                                        ->default('Content is trimmed, focused, and aligned perfectly with exam requirements, no fluff, no filler.')
+                                        ->helperText('Description for the second feature.'),
+                                    TextInput::make('about.feature_3_title')
+                                        ->label('Feature 3 Title')
+                                        ->default('Innovation')
+                                        ->helperText('Title for the third feature.'),
+                                    Textarea::make('about.feature_3_description')
+                                        ->label('Feature 3 Description')
+                                        ->rows(2)
+                                        ->default('We are constantly rethinking how learning can be clearer, smarter, and more effective.')
+                                        ->helperText('Description for the third feature.'),
+                                    TextInput::make('about.feature_4_title')
+                                        ->label('Feature 4 Title')
+                                        ->default('Community')
+                                        ->helperText('Title for the fourth feature.'),
+                                    Textarea::make('about.feature_4_description')
+                                        ->label('Feature 4 Description')
+                                        ->rows(2)
+                                        ->default('We\'re building a space for those who love learning and have the courage to aim higher.')
+                                        ->helperText('Description for the fourth feature.'),
+                                ]),
+                            Section::make('Call to Action')
+                                ->description('Configure the call to action at the bottom.')
+                                ->schema([
+                                    TextInput::make('about.cta_heading')
+                                        ->label('CTA Heading')
+                                        ->default('Start Your Journey')
+                                        ->helperText('Main heading for the call to action.'),
+                                    TextInput::make('about.cta_subtitle')
+                                        ->label('CTA Subtitle')
+                                        ->default('Explore Our Collection')
+                                        ->helperText('Subtitle for the call to action.'),
+                                    TextInput::make('about.cta_button_1_text')
+                                        ->label('Button 1 Text')
+                                        ->default('Browse Shop')
+                                        ->helperText('Text for the first button.'),
+                                    TextInput::make('about.cta_button_2_text')
+                                        ->label('Button 2 Text')
+                                        ->default('Get in Touch')
+                                        ->helperText('Text for the second button.'),
+                                ]),
+                        ]),
                     Tabs\Tab::make('Payments')
                         ->visible(condition: true)
                         ->schema([
@@ -207,6 +388,35 @@ class StoreSettings extends BaseSettings
                                         ->label('PayPal Secret')
 
                                         ->helperText('Your PayPal secret.')->visible(false),
+                                ]),
+                        ]),
+                    Tabs\Tab::make('Home Page')
+                        ->schema([
+                            Section::make('Our Focus Section')
+                                ->description('Configure the "Our Focus" section on the home page.')
+                                ->schema([
+                                    TextInput::make('home.focus_badge')
+                                        ->label('Badge Text')
+                                        ->default('Our Focus')
+                                        ->helperText('Small badge text above the heading.'),
+                                    TextInput::make('home.focus_heading')
+                                        ->label('Section Heading')
+                                        ->default('The future belongs to those who prepare for it today')
+                                        ->helperText('Main heading for the focus section.'),
+                                    Textarea::make('home.focus_subtitle')
+                                        ->label('Subtitle')
+                                        ->rows(2)
+                                        ->default('What are our pillars? What drives us?')
+                                        ->helperText('Subtitle below the heading.'),
+                                    TextInput::make('home.focus_button_text')
+                                        ->label('Button Text')
+                                        ->default('Learn More About Us')
+                                        ->helperText('Text for the call to action button.'),
+                                    \Filament\Forms\Components\FileUpload::make('home.focus_image')
+                                        ->label('Section Image')
+                                        ->image()
+                                        ->directory('settings/home')
+                                        ->helperText('Upload an image for the focus section (recommended size: 800x600px).'),
                                 ]),
                         ]),
 

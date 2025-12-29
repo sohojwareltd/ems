@@ -50,19 +50,19 @@ class PageController extends Controller
             'message' => 'required|string',
             // 'newsletter' => 'nullable|in:on,true,1,0,false',
         ]);
-        
+
         // Set default status for new enquiries
         $data['status'] = Contact::STATUS_NEW;
-        
+
         Contact::create($data);
 
         // $data['newsletter'] = $request->has('newsletter');
 
         // $admins = User::where('role_id', 1)->get();
 
-        // foreach ($admins as $admin) {
-        //     Mail::to(setting('store.email', $admin->email))->send(new ContactFormNotification($data));
-        // }
+
+        Mail::to(setting('store.email'))->send(new ContactFormNotification($data));
+
 
         return redirect()->back()->with('success', 'Your enquiry has been submitted successfully! We will respond shortly.');
     }
@@ -107,12 +107,12 @@ class PageController extends Controller
         $subjects = Subject::all();
 
         $essaysQuery = Essay::with('topics')->filter($filters);
-        
+
         // Apply sample filter if on sample tab
         if ($tab === 'sample') {
             $essaysQuery->sample();
         }
-        
+
         $essays = $essaysQuery->latest()->get();
 
         $essaysByYear = $essays->groupBy('year');
