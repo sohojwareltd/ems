@@ -15,13 +15,13 @@
             width: 100%;
         }
 
-        /* .pricing-comparison {
+        .pricing-comparison {
             background: linear-gradient(135deg, rgba(0, 178, 45, 0.05) 0%, rgba(142, 84, 233, 0.05) 100%);
             padding: 80px 20px;
             min-height: 100vh;
             position: relative;
             overflow: hidden;
-        } */
+        }
 
         .pricing-comparison::before {
             content: '';
