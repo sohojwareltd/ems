@@ -13,6 +13,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'product.has.purchased' => \App\Http\Middleware\ProductHasPurchased::class,
+            'check.device.session' => \App\Http\Middleware\CheckDeviceSession::class,
+        ]);
+        
+        // Apply device check middleware to web routes
+        $middleware->web(append: [
+            \App\Http\Middleware\CheckDeviceSession::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
