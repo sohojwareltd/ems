@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Newsletter;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
 use App\Mail\WelcomeEmail;
@@ -99,5 +101,29 @@ class RegisterController extends Controller
         // Mail::to($user->email)->send(new WelcomeEmail($user));
 
         return $user;
+    }
+
+    /**
+     * After registration, ensure the device record and cookie are created
+     * so the single-device middleware does not immediately log the user out.
+     */
+    protected function registered($request, $user)
+    {
+        // Remove any existing device records just in case
+        $user->devices()->delete();
+
+        // Reuse device_id cookie if present, otherwise generate one
+        $deviceId = $request->cookie('device_id') ?? Str::uuid()->toString();
+
+        // Store current device
+        $user->devices()->create([
+            'device_id' => $deviceId,
+            'device_agent' => $request->userAgent(),
+            'ip_address' => $request->ip(),
+            'session_id' => Session::getId(),
+        ]);
+
+        // Persist cookie for future requests (1 year)
+        cookie()->queue('device_id', $deviceId, 525600);
     }
 }

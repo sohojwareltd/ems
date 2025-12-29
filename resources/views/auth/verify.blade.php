@@ -44,7 +44,7 @@
                         <h2 class="mb-3">Verify Your Email Address</h2>
 
                         <p class="text-muted">
-                            Before proceeding, please check your inbox for a verification link.
+                            Before proceeding, please check your inbox/junk for a verification link.
                         </p>
                         <p class="mb-4 text-muted">
                             If you did not receive the email, click the button below to request another.
@@ -136,8 +136,30 @@
                 btnText.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Sending...';
             });
         }
+
+        // Show success toast when a new verification link is sent
+        const verificationToastEl = document.getElementById('verificationToast');
+        if (verificationToastEl) {
+            const toast = new bootstrap.Toast(verificationToastEl, { delay: 4000 });
+            toast.show();
+        }
     </script>
     @endpush
+
+    @if (session('resent') || session('status') === 'verification-link-sent')
+        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+            <div id="verificationToast" class="toast align-items-center text-white bg-success border-0" role="alert"
+                aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Please check your inbox/junk for a verification link.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <style>
         .toast {
