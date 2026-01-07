@@ -275,6 +275,10 @@ class StoreSettings extends BaseSettings
                             Section::make('Team Section')
                                 ->description('Configure the team section heading.')
                                 ->schema([
+                                    Toggle::make('about.show_team_section')
+                                        ->label('Show Team Section')
+                                        ->default(true)
+                                        ->helperText('Toggle to show or hide the entire Meet The Team section.'),
                                     TextInput::make('about.team_heading')
                                         ->label('Team Section Heading')
                                         ->default('Meet The Team')
@@ -287,6 +291,10 @@ class StoreSettings extends BaseSettings
                             Section::make('Why Choose Us')
                                 ->description('Highlight what makes you different.')
                                 ->schema([
+                                    Toggle::make('about.show_features_section')
+                                        ->label('Show Features Section')
+                                        ->default(true)
+                                        ->helperText('Toggle to show or hide the Why Choose Us features section.'),
                                     TextInput::make('about.why_heading')
                                         ->label('Why Choose Us Heading')
                                         ->default('Why Choose EMS?')
@@ -295,6 +303,10 @@ class StoreSettings extends BaseSettings
                                         ->label('Why Choose Us Subtitle')
                                         ->default('What makes us different?')
                                         ->helperText('Subtitle for why choose us section.'),
+                                    Toggle::make('about.show_feature_1')
+                                        ->label('Show Feature 1')
+                                        ->default(true)
+                                        ->helperText('Toggle to show or hide Feature 1.'),
                                     TextInput::make('about.feature_1_title')
                                         ->label('Feature 1 Title')
                                         ->default('Quality')
@@ -304,6 +316,10 @@ class StoreSettings extends BaseSettings
                                         ->rows(2)
                                         ->default('Every resource is created and curated by experienced teachers and examiners, nothing less than the best.')
                                         ->helperText('Description for the first feature.'),
+                                    Toggle::make('about.show_feature_2')
+                                        ->label('Show Feature 2')
+                                        ->default(true)
+                                        ->helperText('Toggle to show or hide Feature 2.'),
                                     TextInput::make('about.feature_2_title')
                                         ->label('Feature 2 Title')
                                         ->default('Clarity')
@@ -313,6 +329,10 @@ class StoreSettings extends BaseSettings
                                         ->rows(2)
                                         ->default('Content is trimmed, focused, and aligned perfectly with exam requirements, no fluff, no filler.')
                                         ->helperText('Description for the second feature.'),
+                                    Toggle::make('about.show_feature_3')
+                                        ->label('Show Feature 3')
+                                        ->default(true)
+                                        ->helperText('Toggle to show or hide Feature 3.'),
                                     TextInput::make('about.feature_3_title')
                                         ->label('Feature 3 Title')
                                         ->default('Innovation')
@@ -322,6 +342,10 @@ class StoreSettings extends BaseSettings
                                         ->rows(2)
                                         ->default('We are constantly rethinking how learning can be clearer, smarter, and more effective.')
                                         ->helperText('Description for the third feature.'),
+                                    Toggle::make('about.show_feature_4')
+                                        ->label('Show Feature 4')
+                                        ->default(true)
+                                        ->helperText('Toggle to show or hide Feature 4.'),
                                     TextInput::make('about.feature_4_title')
                                         ->label('Feature 4 Title')
                                         ->default('Community')

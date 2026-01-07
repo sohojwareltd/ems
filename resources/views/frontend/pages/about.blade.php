@@ -267,6 +267,7 @@
     </section>
 
     <!-- Team Section -->
+    @if(setting('about.show_team_section', true))
     <section class="team-section py-5">
         <div class="container">
             @if(setting('about.team_heading') || setting('about.team_subtitle'))
@@ -311,8 +312,10 @@
             </div>
         </div>
     </section>
+    @endif
 
     <!-- Why Choose Us Section -->
+    @if(setting('about.show_features_section', true))
     <section class="why-choose-us py-5" style="background: var(--light-bg);">
         <div class="container">
             @if(setting('about.why_heading') || setting('about.why_subtitle'))
@@ -336,6 +339,7 @@
             @endif
 
             <div class="row g-4">
+                @if(setting('about.show_feature_1', true))
                 <div class="col-lg-3 col-md-6">
                     <div class="feature-card text-center p-4 bg-white rounded-3 shadow-sm h-100">
                         <div class="feature-icon mb-3">
@@ -353,6 +357,8 @@
                         @endif
                     </div>
                 </div>
+                @endif
+                @if(setting('about.show_feature_2', true))
                 <div class="col-lg-3 col-md-6">
                     <div class="feature-card text-center p-4 bg-white rounded-3 shadow-sm h-100">
                         <div class="feature-icon mb-3">
@@ -370,6 +376,8 @@
                         @endif
                     </div>
                 </div>
+                @endif
+                @if(setting('about.show_feature_3', true))
                 <div class="col-lg-3 col-md-6">
                     <div class="feature-card text-center p-4 bg-white rounded-3 shadow-sm h-100">
                         <div class="feature-icon mb-3">
@@ -387,7 +395,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
+                @endif                @if(setting('about.show_feature_4', true))                <div class="col-lg-3 col-md-6">
                     <div class="feature-card text-center p-4 bg-white rounded-3 shadow-sm h-100">
                         <div class="feature-icon mb-3">
                             <i class="bi bi-people fs-1" style="color: var(--danger-color);"></i>
@@ -405,9 +413,11 @@
                         @endif
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </section>
+    @endif
 
     <!-- Call to Action -->
     <section class="cta-section py-5"
