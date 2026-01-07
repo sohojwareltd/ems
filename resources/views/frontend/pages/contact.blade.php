@@ -60,7 +60,7 @@
                             @foreach($emails as $email)
                                 <a href="mailto:{{ $email }}" class="text-decoration-none">{{ $email }}</a><br>
                             @endforeach
-                            We'll respond within 24 hours
+                            {{-- We'll respond within 24 hours --}}
                         </p>
                     </div>
                 </div>

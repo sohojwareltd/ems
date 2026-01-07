@@ -73,7 +73,7 @@
                                             @endforeach
                                         </select>
                                         <input type="tel" class="form-control @error('phone') is-invalid @enderror"
-                                            id="phone" name="phone" placeholder="Enter WhatsApp number"
+                                            id="phone" name="phone" placeholder="Enter WhatsApp Number"
                                             value="{{ old('phone', auth()->user()->phone ?? '') }}">
                                         @error('phone')
                                             <div class="invalid-feedback">{{ $message }}</div>
