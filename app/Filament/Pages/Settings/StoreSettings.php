@@ -442,6 +442,22 @@ class StoreSettings extends BaseSettings
                                         ->directory('settings/home')
                                         ->helperText('Upload an image for the focus section (recommended size: 800x600px).'),
                                 ]),
+                            Section::make('Reviews Carousel')
+                                ->description('Configure the reviews carousel at the bottom of the home page.')
+                                ->schema([
+                                    Toggle::make('home.show_reviews')
+                                        ->label('Show Reviews Carousel')
+                                        ->default(true)
+                                        ->helperText('Toggle to show or hide the reviews carousel section.'),
+                                    TextInput::make('home.reviews_heading')
+                                        ->label('Section Heading')
+                                        ->default('What Our Users Say')
+                                        ->helperText('Main heading for the reviews section.'),
+                                    TextInput::make('home.reviews_subtitle')
+                                        ->label('Subtitle')
+                                        ->default('Hear from our community')
+                                        ->helperText('Subtitle below the heading.'),
+                                ]),
                         ]),
 
 

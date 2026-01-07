@@ -152,6 +152,28 @@
                 </div>
             </div>
 
+            <!-- Review Prompt -->
+            @if ($order->payment_status === 'paid' && $order->orderLines->count() > 0)
+                <div class="card mb-4" style="border: 2px solid #00b22d;">
+                    <div class="card-body text-center p-4">
+                        <h5 class="mb-3"><i class="bi bi-star text-warning"></i> Love Your Purchase?</h5>
+                        <p class="text-muted mb-4">
+                            Share your experience! Your feedback helps other users and allows us to improve our products.
+                        </p>
+                        <div class="d-flex flex-column flex-md-row gap-2 justify-content-center">
+                            @foreach ($order->orderLines as $line)
+                                @if ($line->product)
+                                    <a href="{{ route('products.review.create', $line->product->id) }}" 
+                                       class="btn btn-outline-primary">
+                                        <i class="bi bi-chat-square-text me-2"></i>Review {{ $line->product->name }}
+                                    </a>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            @endif
+
    
           
 

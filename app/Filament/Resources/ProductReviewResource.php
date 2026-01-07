@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ReviewResource\Pages;
-use App\Filament\Resources\ReviewResource\RelationManagers;
-use App\Models\Review;
-use App\Models\Country;
+use App\Filament\Resources\ProductReviewResource\Pages;
+use App\Filament\Resources\ProductReviewResource\RelationManagers;
+use App\Models\ProductReview;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,15 +14,16 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ResourcePermissionTrait;
 
-class ReviewResource extends Resource
+class ProductReviewResource extends Resource
 {
     use ResourcePermissionTrait;
 
-    protected static ?string $model = Review::class;
+    protected static ?string $model = ProductReview::class;
 
-    protected static ?string $navigationLabel = 'Site Reviews';
+    protected static ?string $navigationLabel = 'Product Reviews';
     protected static ?string $navigationGroup = 'Content Management';
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 7;
+    protected static ?string $navigationIcon = 'heroicon-o-star';
 
     public static function form(Form $form): Form
     {
@@ -31,26 +31,30 @@ class ReviewResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Review Information')
                     ->schema([
-                        Forms\Components\Select::make('user_id')
-                            ->relationship('user', 'name')
+                        Forms\Components\Select::make('product_id')
+                            ->relationship('product', 'name')
+                            ->required()
                             ->searchable()
                             ->preload()
-                            ->helperText('Optional: Link to user who submitted this review'),
+                            ->helperText('The product being reviewed'),
+                        
+                        Forms\Components\Select::make('user_id')
+                            ->relationship('user', 'name')
+                            ->required()
+                            ->searchable()
+                            ->preload()
+                            ->helperText('User who wrote the review'),
                         
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->maxLength(255)
-                            ->helperText('Name of the person giving the review'),
+                            ->helperText('Name to display with the review'),
                         
-                        Forms\Components\TextInput::make('title')
-                            ->maxLength(255)
-                            ->helperText('Professional title or role (e.g., "Teacher", "Student")'),
-                        
-                        Forms\Components\Textarea::make('content')
+                        Forms\Components\Textarea::make('comment')
                             ->required()
                             ->maxLength(1000)
                             ->rows(4)
-                            ->helperText('The review content/testimonial'),
+                            ->helperText('The review comment'),
                         
                         Forms\Components\Select::make('rating')
                             ->options([
@@ -63,51 +67,25 @@ class ReviewResource extends Resource
                             ->default(5)
                             ->required()
                             ->helperText('Rating from 1 to 5 stars'),
-                        
-                        Forms\Components\Select::make('country_code')
-                            ->label('Country')
-                            ->searchable()
-                            ->options(fn() => Country::pluck('name', 'code'))
-                            ->helperText('Optional: Country of the reviewer'),
                     ])->columns(2),
                 
-                Forms\Components\Section::make('Media')
-                    ->schema([
-                        Forms\Components\FileUpload::make('avatar')
-                            ->label('Profile Image')
-                            ->image()
-                            ->directory('reviews/avatars')
-                            ->maxSize(2048)
-                            ->helperText('Optional profile image for the reviewer')
-                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp']),
-                    ]),
-                
-                Forms\Components\Section::make('Display Settings')
+                Forms\Components\Section::make('Approval & Status')
                     ->schema([
                         Forms\Components\Toggle::make('is_approved')
                             ->label('Approved')
                             ->default(false)
-                            ->helperText('Approve this review to make it visible to users'),
+                            ->reactive()
+                            ->helperText('Approve this review to make it visible'),
                         
                         Forms\Components\DateTimePicker::make('approved_at')
                             ->label('Approved At')
                             ->disabled()
                             ->helperText('Automatically set when approved'),
                         
-                        Forms\Components\Toggle::make('is_featured')
-                            ->label('Featured')
-                            ->default(false)
-                            ->helperText('Featured reviews will appear on the homepage carousel'),
-                        
                         Forms\Components\Toggle::make('is_active')
                             ->label('Active')
                             ->default(true)
                             ->helperText('Only active reviews will be displayed'),
-                        
-                        Forms\Components\TextInput::make('sort_order')
-                            ->numeric()
-                            ->default(0)
-                            ->helperText('Lower numbers appear first'),
                     ])->columns(3),
             ]);
     }
@@ -115,27 +93,27 @@ class ReviewResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->reorderable('sort_order')
-            ->defaultSort('sort_order')
+            ->defaultSort('created_at', 'desc')
             ->columns([
-                Tables\Columns\ImageColumn::make('avatar')
-                    ->label('Avatar')
-                    ->circular()
-                    ->size(40),
-                
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('product.name')
                     ->searchable()
                     ->sortable()
-                    ->weight('bold'),
+                    ->limit(30),
                 
-                Tables\Columns\TextColumn::make('title')
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('User')
                     ->searchable()
                     ->sortable()
                     ->badge()
-                    ->color('gray'),
+                    ->color('info'),
                 
-                Tables\Columns\TextColumn::make('content')
-                    ->limit(60)
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Display Name')
+                    ->searchable()
+                    ->sortable(),
+                
+                Tables\Columns\TextColumn::make('comment')
+                    ->limit(50)
                     ->searchable(),
                 
                 Tables\Columns\TextColumn::make('rating')
@@ -153,27 +131,20 @@ class ReviewResource extends Resource
                     })
                     ->sortable(),
                 
-                Tables\Columns\TextColumn::make('sort_order')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                
-                Tables\Columns\IconColumn::make('is_featured')
-                    ->boolean()
-                    ->sortable(),
-                
                 Tables\Columns\IconColumn::make('is_approved')
                     ->label('Approved')
                     ->boolean()
                     ->sortable(),
                 
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label('Active')
                     ->boolean()
                     ->sortable(),
                 
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Submitted')
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_approved')
@@ -182,19 +153,16 @@ class ReviewResource extends Resource
                     ->trueLabel('Approved only')
                     ->falseLabel('Pending approval'),
                 
-                Tables\Filters\TernaryFilter::make('is_featured')
-                    ->label('Featured Status'),
-                
                 Tables\Filters\TernaryFilter::make('is_active')
                     ->label('Active Status'),
                 
                 Tables\Filters\SelectFilter::make('rating')
                     ->options([
-                        1 => '1 Star',
-                        2 => '2 Stars',
-                        3 => '3 Stars',
-                        4 => '4 Stars',
                         5 => '5 Stars',
+                        4 => '4 Stars',
+                        3 => '3 Stars',
+                        2 => '2 Stars',
+                        1 => '1 Star',
                     ]),
             ])
             ->actions([
@@ -203,26 +171,26 @@ class ReviewResource extends Resource
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->requiresConfirmation()
-                    ->action(function (Review $record) {
+                    ->action(function (ProductReview $record) {
                         $record->update([
                             'is_approved' => true,
                             'approved_at' => now(),
                         ]);
                     })
-                    ->visible(fn (Review $record) => !$record->is_approved),
+                    ->visible(fn (ProductReview $record) => !$record->is_approved),
                 
                 Tables\Actions\Action::make('unapprove')
                     ->label('Unapprove')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->action(function (Review $record) {
+                    ->action(function (ProductReview $record) {
                         $record->update([
                             'is_approved' => false,
                             'approved_at' => null,
                         ]);
                     })
-                    ->visible(fn (Review $record) => $record->is_approved),
+                    ->visible(fn (ProductReview $record) => $record->is_approved),
                 
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
@@ -255,9 +223,9 @@ class ReviewResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListReviews::route('/'),
-            'create' => Pages\CreateReview::route('/create'),
-            'edit' => Pages\EditReview::route('/{record}/edit'),
+            'index' => Pages\ListProductReviews::route('/'),
+            'create' => Pages\CreateProductReview::route('/create'),
+            'edit' => Pages\EditProductReview::route('/{record}/edit'),
         ];
     }
 

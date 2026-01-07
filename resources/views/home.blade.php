@@ -113,70 +113,384 @@
             </div>
         </section>
     @endif
+    <!-- Reviews Carousel Section -->
+    @php
+        $featuredReviews = \App\Models\Review::featured()->active()->approved()->ordered()->get();
+    @endphp
 
-    <!-- Quick Navigation Section -->
-    {{-- <section class="py-5" id="courses">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center mb-5 flex-column flex-md-row">
-                <div class="text-center text-md-start">
-                    <h2 class="section-title mb-2">Select Your Course</h2>
-                   
+    @if ($featuredReviews->count() > 0 && setting('home.show_reviews', true))
+        <section class="reviews-carousel-section py-5" style="
+            background: linear-gradient(135deg, #f8f9ff 0%, var(--light-bg) 50%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        ">
+            <!-- Decorative Background Elements -->
+            <div style="
+                position: absolute;
+                top: -100px;
+                right: -100px;
+                width: 300px;
+                height: 300px;
+                background: rgba(var(--primary-color-rgb, 59, 130, 246), 0.08);
+                border-radius: 50%;
+                z-index: 1;
+            "></div>
+            <div style="
+                position: absolute;
+                bottom: -80px;
+                left: -80px;
+                width: 250px;
+                height: 250px;
+                background: rgba(var(--primary-color-rgb, 59, 130, 246), 0.06);
+                border-radius: 50%;
+                z-index: 1;
+            "></div>
+
+            <div class="container" style="position: relative; z-index: 2;">
+                <!-- Section Header -->
+                <div class="text-center mb-5">
+                    <div class="mb-3">
+                        <span class="badge" style="
+                            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+                            font-size: 0.85rem;
+                            padding: 0.6rem 1.2rem;
+                            border-radius: 50px;
+                            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                        ">
+                            <i class="bi bi-star-fill me-2"></i>WHAT USERS SAY
+                        </span>
+                    </div>
+                    <h2 class="section-title mb-3" style="
+                        color: var(--primary-color);
+                        font-weight: 800;
+                        font-size: 2.5rem;
+                        text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+                    ">
+                        {{ setting('home.reviews_heading', 'What Our Users Say') }}
+                    </h2>
+                    <p class="section-subtitle text-muted" style="font-size: 1.1rem; font-weight: 500;">
+                        {{ setting('home.reviews_subtitle', 'Join thousands of satisfied learners worldwide') }}
+                    </p>
                 </div>
-                <div class="mt-3 mt-md-0">
-                   
+
+                <!-- Carousel Wrapper -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-11">
+                        <div id="reviewsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-pause="hover" data-bs-interval="5000">
+                            <div class="carousel-inner">
+                                @foreach ($featuredReviews as $index => $review)
+                                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                                        <div class="review-card" style="
+                                            background: linear-gradient(135deg, #ffffff 0%, #fafbff 100%);
+                                            border: 2px solid var(--primary-color);
+                                            border-radius: 20px;
+                                            padding: 45px;
+                                            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+                                            min-height: 340px;
+                                            display: flex;
+                                            flex-direction: column;
+                                            justify-content: space-between;
+                                            position: relative;
+                                            transition: all 0.4s ease;
+                                        ">
+                                            <!-- Quote Icon Background -->
+                                            <div style="
+                                                position: absolute;
+                                                top: -15px;
+                                                right: 30px;
+                                                font-size: 4rem;
+                                                color: rgba(var(--primary-color-rgb, 59, 130, 246), 0.1);
+                                                font-weight: bold;
+                                            ">
+                                                "
+                                            </div>
+
+                                            <!-- Stars with Animation -->
+                                            <div style="
+                                                display: flex;
+                                                gap: 8px;
+                                                justify-content: center;
+                                                font-size: 1.8rem;
+                                                margin-bottom: 25px;
+                                            ">
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($i <= $review->rating)
+                                                        <i class="bi bi-star-fill review-star" style="
+                                                            color: #ffc107;
+                                                            text-shadow: 0 2px 5px rgba(255, 193, 7, 0.3);
+                                                            animation: twinkle 0.8s ease-in-out;
+                                                            animation-delay: {{ ($i - 1) * 0.1 }}s;
+                                                        "></i>
+                                                    @else
+                                                        <i class="bi bi-star" style="color: #e8e8e8;"></i>
+                                                    @endif
+                                                @endfor
+                                            </div>
+
+                                            <!-- Quote -->
+                                            <blockquote style="
+                                                text-align: center;
+                                                font-size: 1.2rem;
+                                                line-height: 1.9;
+                                                color: #2c3e50;
+                                                margin: 0 0 35px 0;
+                                                font-style: italic;
+                                                font-weight: 500;
+                                                letter-spacing: 0.5px;
+                                            ">
+                                                "{{ $review->content }}"
+                                            </blockquote>
+
+                                            <!-- Reviewer Info with Avatar -->
+                                            <div style="
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                gap: 16px;
+                                                border-top: 2px solid #f0f0f0;
+                                                padding-top: 25px;
+                                            ">
+                                                <div style="position: relative;">
+                                                    @if ($review->avatar)
+                                                        <img src="{{ $review->avatar_url }}" 
+                                                            alt="{{ $review->name }}"
+                                                            style="
+                                                                width: 70px;
+                                                                height: 70px;
+                                                                border-radius: 50%;
+                                                                object-fit: cover;
+                                                                border: 4px solid var(--primary-color);
+                                                                box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+                                                                transition: transform 0.3s ease;
+                                                            "
+                                                            class="reviewer-avatar">
+                                                    @else
+                                                        <div style="
+                                                            width: 70px;
+                                                            height: 70px;
+                                                            border-radius: 50%;
+                                                            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+                                                            display: flex;
+                                                            align-items: center;
+                                                            justify-content: center;
+                                                            color: white;
+                                                            font-weight: bold;
+                                                            font-size: 1.8rem;
+                                                            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+                                                            transition: transform 0.3s ease;
+                                                        "
+                                                        class="reviewer-avatar">
+                                                            {{ substr($review->name, 0, 1) }}
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                
+                                                <div style="text-align: left;">
+                                                    <h6 style="
+                                                        margin: 0;
+                                                        color: var(--primary-color);
+                                                        font-weight: 700;
+                                                        font-size: 1.1rem;
+                                                    ">
+                                                        {{ $review->name }}
+                                                    </h6>
+                                                    @if ($review->title)
+                                                        <small style="
+                                                            color: #888;
+                                                            display: block;
+                                                            margin: 4px 0;
+                                                            font-weight: 500;
+                                                        ">
+                                                            {{ $review->title }}
+                                                        </small>
+                                                    @endif
+                                                    @if ($review->country_flag_url)
+                                                        <img src="{{ $review->country_flag_url }}" 
+                                                            alt="Country" 
+                                                            style="
+                                                                width: 28px;
+                                                                height: auto;
+                                                                margin-top: 6px;
+                                                                border-radius: 3px;
+                                                                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                                                            ">
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <!-- Carousel Indicators at Bottom -->
+                            @if ($featuredReviews->count() > 1)
+                                <div style="
+                                    text-align: center;
+                                    margin-top: 40px;
+                                    display: flex;
+                                    gap: 10px;
+                                    justify-content: center;
+                                    flex-wrap: wrap;
+                                    padding-bottom: 10px;
+                                ">
+                                    @foreach ($featuredReviews as $index => $review)
+                                        <button type="button" 
+                                            data-bs-target="#reviewsCarousel" 
+                                            data-bs-slide-to="{{ $index }}"
+                                            class="{{ $index === 0 ? 'active' : '' }} review-indicator"
+                                            style="
+                                                width: 14px;
+                                                height: 14px;
+                                                border-radius: 50%;
+                                                border: 2px solid {{ $index === 0 ? 'var(--primary-color)' : '#ddd' }};
+                                                background-color: {{ $index === 0 ? 'var(--primary-color)' : 'transparent' }};
+                                                cursor: pointer;
+                                                transition: all 0.4s ease;
+                                                box-shadow: {{ $index === 0 ? '0 0 10px rgba(0,0,0,0.2)' : 'none' }};
+                                            "
+                                            aria-current="{{ $index === 0 ? 'true' : 'false' }}"
+                                            aria-label="Slide {{ $index + 1 }}">
+                                        </button>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                    </div>
                 </div>
+
+                <!-- Share Review Button -->
+                @auth
+                    @if(Auth::user()->hasActiveSubscription())
+                        <div class="text-center mt-5">
+                            <a href="{{ route('reviews.create') }}" class="btn btn-lg review-cta-btn" style="
+                                background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+                                border: none;
+                                color: white;
+                                padding: 15px 50px;
+                                border-radius: 50px;
+                                font-weight: 700;
+                                font-size: 1.1rem;
+                                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+                                transition: all 0.3s ease;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                            ">
+                                <i class="bi bi-pencil-square me-2"></i>Share Your Experience
+                            </a>
+                        </div>
+                    @else
+                        <div class="text-center mt-5">
+                            <a href="{{ route('login') }}" class="btn btn-lg review-cta-btn" style="
+                                background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+                                border: none;
+                                color: white;
+                                padding: 15px 50px;
+                                border-radius: 50px;
+                                font-weight: 700;
+                                font-size: 1.1rem;
+                                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+                                transition: all 0.3s ease;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                            ">
+                                <i class="bi bi-pencil-square me-2"></i>Login to Share Your Experience
+                            </a>
+                        </div>
+                    @endauth
+                @endauth
             </div>
 
-            @php
-                $subjects = \App\Models\Subject::orderBy('title')->get();
-                $examBoards = \App\Models\Examboard::orderBy('title')->get();
-                $qualifications = \App\Models\Qualification::orderBy('title')->get();
-            @endphp
-            <form action="{{ route('model.index') }}" method="get">
-                <div class="row justify-content-center">
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label" for="qualification">Qualification</label>
-                        <select id="qualification" name="qualification" class="form-select">
-                            <option value=""> Select Qualification</option>
-                            @foreach ($qualifications as $item)
-                                <option value="{{ $item->id }}">{{ $item->title }}</option>
-                            @endforeach
-                       
-                        </select>
-                    </div>
+            <style>
+                .review-card {
+                    animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+                }
 
+                .carousel-item.active .review-card {
+                    animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+                }
 
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label" for="subject">Subject</label>
-                        <select id="subject" name="subject" class="form-select">
-                            <option value="">Select Subject</option>
-                            @foreach ($subjects as $subject)
-                                <option value="{{ $subject->id }}">{{ $subject->title }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                @keyframes slideIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(30px) scale(0.95);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
 
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label" for="exam_board">Exam Board</label>
-                        <select id="exam_board" name="exam_board" class="form-select">
-                            <option value="">Select Exam Board</option>
-                            @foreach ($examBoards as $examBoard)
-                                <option value="{{ $examBoard->id }}">{{ $examBoard->title }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                @keyframes twinkle {
+                    0% {
+                        transform: scale(0.8);
+                        opacity: 0.3;
+                    }
+                    50% {
+                        transform: scale(1.2);
+                    }
+                    100% {
+                        transform: scale(1);
+                        opacity: 1;
+                    }
+                }
 
-                    <div class="col-md-3 d-flex align-items-center mt-2">
-                        <button id="view-course-btn" type="submit" class="btn custom-btn mt-1 w-100" disabled>
-                            View Course
-                        </button>
-                    </div>
-                </div>
-            </form>
+                .review-carousel-btn:hover span {
+                    transform: scale(1.2);
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.25) !important;
+                }
 
+                .reviewer-avatar:hover {
+                    transform: scale(1.12) !important;
+                }
 
-        </div>
-    </section> --}}
+                .review-cta-btn:hover {
+                    transform: translateY(-4px);
+                    box-shadow: 0 15px 40px rgba(0,0,0,0.2) !important;
+                }
+
+                .review-cta-btn:active {
+                    transform: translateY(-2px);
+                }
+
+                .review-indicator {
+                    transition: all 0.3s ease;
+                }
+
+                .review-indicator.active {
+                    box-shadow: 0 0 15px rgba(var(--primary-color-rgb, 59, 130, 246), 0.5) !important;
+                }
+
+                .review-indicator:hover:not(.active) {
+                    border-color: var(--primary-color);
+                    background-color: rgba(var(--primary-color-rgb, 59, 130, 246), 0.3);
+                }
+
+                @media (max-width: 768px) {
+                    .carousel-control-prev,
+                    .carousel-control-next {
+                        display: none;
+                    }
+                    
+                    .review-card {
+                        padding: 30px;
+                        min-height: 320px;
+                    }
+
+                    .review-cta-btn {
+                        padding: 12px 30px !important;
+                        font-size: 0.95rem !important;
+                    }
+
+                    h2.section-title {
+                        font-size: 1.8rem !important;
+                    }
+                    .review-indicator {
+                        width: 12px !important;
+                        height: 12px !important;
+                    }                }
+            </style>
+        </section>
+    @endif
 
     <!-- Featured Products Section - moved up -->
     <section class="py-5">
@@ -230,7 +544,9 @@
                         <span class="custom-badge">{{ setting('home.focus_badge', 'Our Focus') }}</span>
                         <div class="row mt-2">
                             <div class="col-12 col-md-10 col-lg-8">
-                                <h2 class="section-title mb-4">{{ setting('home.focus_heading', 'The future belongs to those who prepare for it today') }}</h2>
+                                <h2 class="section-title mb-4">
+                                    {{ setting('home.focus_heading', 'The future belongs to those who prepare for it today') }}
+                                </h2>
                             </div>
                             <div class="col-12 col-md-8 col-lg-6">
                                 <p class="lead mb-4">
@@ -243,13 +559,16 @@
                         <div class="about-stats row text-center justify-content-center">
                             <div class="col-md-12 d-flex ">
                                 <div class="stat-item mx-2">
-                                    <p class="focus-btn focus-active text-center px-3">{{ setting('about.value_1_title', 'Curriculum Precision') }}</p>
+                                    <p class="focus-btn focus-active text-center px-3">
+                                        {{ setting('about.value_1_title', 'Curriculum Precision') }}</p>
                                 </div>
                                 <div class="stat-item mx-2">
-                                    <p class="focus-btn text-center px-3">{{ setting('about.value_2_title', 'Teacher Empowerment') }}</p>
+                                    <p class="focus-btn text-center px-3">
+                                        {{ setting('about.value_2_title', 'Teacher Empowerment') }}</p>
                                 </div>
                                 <div class="stat-item mx-2">
-                                    <p class="focus-btn text-center px-3 ">{{ setting('about.value_3_title', 'Learner Achievement') }}</p>
+                                    <p class="focus-btn text-center px-3 ">
+                                        {{ setting('about.value_3_title', 'Learner Achievement') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -264,8 +583,8 @@
                         $focusImage = setting('home.focus_image');
                         $imageUrl = $focusImage ? asset('storage/' . $focusImage) : asset('images/about.jpg');
                     @endphp
-                    <img src="{{ $imageUrl }}" alt="Our Focus"
-                        class="img-fluid w-100 rounded-3 shadow-lg" style="max-height: 400px; object-fit: cover;">
+                    <img src="{{ $imageUrl }}" alt="Our Focus" class="img-fluid w-100 rounded-3 shadow-lg"
+                        style="max-height: 400px; object-fit: cover;">
                 </div>
             </div>
         </div>
@@ -416,6 +735,9 @@
                 });
         }
     </script>
+
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const qualification = document.getElementById('qualification');

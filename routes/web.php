@@ -114,6 +114,18 @@ Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/blog/category/{slug}', [BlogController::class, 'category'])->name('blog.category');
 
+// Review Routes
+use App\Http\Controllers\ReviewController;
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Site review routes
+    Route::get('/reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    
+    // Product review routes
+    Route::get('/products/{product}/review', [ReviewController::class, 'createProductReview'])->name('products.review.create');
+    Route::post('/products/{product}/review', [ReviewController::class, 'storeProductReview'])->name('products.review.store');
+});
+
 Auth::routes();
 
 // User Dashboard Routes (Protected by auth middleware)

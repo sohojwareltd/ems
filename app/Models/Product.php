@@ -100,6 +100,38 @@ class Product extends Model
     }
 
     /**
+     * Get all reviews for this product
+     */
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
+    }
+
+    /**
+     * Get approved reviews for this product
+     */
+    public function approvedReviews()
+    {
+        return $this->hasMany(ProductReview::class)->approved()->active();
+    }
+
+    /**
+     * Get average rating
+     */
+    public function getAverageRatingAttribute(): float
+    {
+        return $this->approvedReviews()->avg('rating') ?? 0;
+    }
+
+    /**
+     * Get total reviews count
+     */
+    public function getReviewsCountAttribute(): int
+    {
+        return $this->approvedReviews()->count();
+    }
+
+    /**
      * Get gallery images for frontend display
      */
     public function getGalleryUrlsAttribute(): array

@@ -4,26 +4,41 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Review extends Model
 {
     protected $fillable = [
+        'user_id',
         'name',
         'title',
         'content',
         'rating',
         'avatar',
+        'country_code',
         'is_featured',
         'is_active',
+        'is_approved',
+        'approved_at',
         'sort_order',
     ];
 
     protected $casts = [
         'is_featured' => 'boolean',
         'is_active' => 'boolean',
+        'is_approved' => 'boolean',
         'rating' => 'integer',
         'sort_order' => 'integer',
+        'approved_at' => 'datetime',
     ];
+
+    /**
+     * Get the user that wrote the review
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * Scope for active reviews
@@ -31,6 +46,14 @@ class Review extends Model
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
+    }
+
+    /**
+     * Scope for approved reviews
+     */
+    public function scopeApproved(Builder $query): Builder
+    {
+        return $query->where('is_approved', true);
     }
 
     /**
@@ -82,5 +105,16 @@ class Review extends Model
             }
         }
         return $stars;
+    }
+
+    /**
+     * Get country flag URL
+     */
+    public function getCountryFlagUrlAttribute(): ?string
+    {
+        if ($this->country_code) {
+            return 'https://flagcdn.com/w40/' . strtolower($this->country_code) . '.png';
+        }
+        return null;
     }
 }
