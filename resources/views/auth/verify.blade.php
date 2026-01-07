@@ -138,23 +138,45 @@
         }
 
         // Show success toast when a new verification link is sent
-        const verificationToastEl = document.getElementById('verificationToast');
-        if (verificationToastEl) {
-            const toast = new bootstrap.Toast(verificationToastEl, { delay: 4000 });
-            toast.show();
-        }
+        @if(session('resent'))
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(function() {
+                    const verificationToastEl = document.getElementById('verificationToast');
+                    if (verificationToastEl) {
+                        if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
+                            const toast = new bootstrap.Toast(verificationToastEl, { 
+                                delay: 5000,
+                                autohide: true 
+                            });
+                            toast.show();
+                        } else {
+                            // Fallback if Bootstrap is not loaded
+                            verificationToastEl.classList.add('show');
+                            setTimeout(() => {
+                                verificationToastEl.classList.remove('show');
+                            }, 5000);
+                        }
+                    }
+                }, 200);
+            });
+        @endif
     </script>
     @endpush
 
-    @if (session('resent') || session('status') === 'verification-link-sent')
-        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
-            <div id="verificationToast" class="toast align-items-center text-white bg-success border-0" role="alert"
-                aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        Please check your inbox/junk for a verification link.
+    @if (session('resent'))
+        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+            <div id="verificationToast" class="toast show align-items-center text-white border-0" role="alert"
+                aria-live="assertive" aria-atomic="true"
+                style="background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); min-width: 350px;">
+                <div class="d-flex align-items-center p-3">
+                    <div class="toast-body d-flex align-items-start" style="flex: 1;">
+                        <i class="fas fa-check-circle me-3" style="font-size: 1.2rem; margin-top: 2px;"></i>
+                        <div>
+                            <strong style="display: block; margin-bottom: 4px;">Verification Email Sent!</strong>
+                            <span style="font-size: 0.9rem; opacity: 0.95;">Please check your inbox in a few minutes.</span>
+                        </div>
                     </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast"
                         aria-label="Close"></button>
                 </div>
             </div>

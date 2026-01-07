@@ -248,7 +248,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 
     $request->fulfill();
 
-    return redirect('/dashboard');
+    return redirect('/dashboard')->with('success', 'Your email has been verified successfully!');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::get('/get-topics-by-paper/{paperId}/{subjectId}', function ($paperId, $subjectId) {
