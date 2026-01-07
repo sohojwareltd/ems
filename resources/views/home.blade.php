@@ -118,14 +118,16 @@
         $featuredReviews = \App\Models\Review::featured()->active()->approved()->ordered()->get();
     @endphp
 
-    @if ($featuredReviews->count() > 0 && setting('home.show_reviews', true))
-        <section class="reviews-carousel-section py-5" style="
+    {{-- @if ($featuredReviews->count() > 0 && setting('home.show_reviews', true)) --}}
+    <section class="reviews-carousel-section py-5"
+        style="
             background: linear-gradient(135deg, #f8f9ff 0%, var(--light-bg) 50%, #ffffff 100%);
             position: relative;
             overflow: hidden;
         ">
-            <!-- Decorative Background Elements -->
-            <div style="
+        <!-- Decorative Background Elements -->
+        <div
+            style="
                 position: absolute;
                 top: -100px;
                 right: -100px;
@@ -134,8 +136,10 @@
                 background: rgba(var(--primary-color-rgb, 59, 130, 246), 0.08);
                 border-radius: 50%;
                 z-index: 1;
-            "></div>
-            <div style="
+            ">
+        </div>
+        <div
+            style="
                 position: absolute;
                 bottom: -80px;
                 left: -80px;
@@ -144,49 +148,54 @@
                 background: rgba(var(--primary-color-rgb, 59, 130, 246), 0.06);
                 border-radius: 50%;
                 z-index: 1;
-            "></div>
+            ">
+        </div>
 
-            <div class="container" style="position: relative; z-index: 2;">
-                <!-- Section Header -->
-                <div class="text-center mb-5">
-                    <div class="mb-3">
-                        <span class="badge" style="
+        <div class="container" style="position: relative; z-index: 2;">
+            <!-- Section Header -->
+            <div class="text-center mb-5">
+                <div class="mb-3">
+                    <span class="badge"
+                        style="
                             background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
                             font-size: 0.85rem;
                             padding: 0.6rem 1.2rem;
                             border-radius: 50px;
                             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
                         ">
-                            <i class="bi bi-star-fill me-2"></i>WHAT USERS SAY
-                        </span>
-                    </div>
-                    <h2 class="section-title mb-3" style="
+                        <i class="bi bi-star-fill me-2"></i>WHAT USERS SAY
+                    </span>
+                </div>
+                <h2 class="section-title mb-3"
+                    style="
                         color: var(--primary-color);
                         font-weight: 800;
                         font-size: 2.5rem;
                         text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
                     ">
-                        {{ setting('home.reviews_heading', 'What Our Users Say') }}
-                    </h2>
-                    <p class="section-subtitle text-muted" style="font-size: 1.1rem; font-weight: 500;">
-                        {{ setting('home.reviews_subtitle', 'Join thousands of satisfied learners worldwide') }}
-                    </p>
-                </div>
+                    {{ setting('home.reviews_heading', 'What Our Users Say') }}
+                </h2>
+                <p class="section-subtitle text-muted" style="font-size: 1.1rem; font-weight: 500;">
+                    {{ setting('home.reviews_subtitle', 'Join thousands of satisfied learners worldwide') }}
+                </p>
+            </div>
 
-                <!-- Carousel Wrapper -->
-                <div class="row justify-content-center">
-                    <div class="col-lg-11">
-                        <div id="reviewsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-pause="hover" data-bs-interval="5000">
-                            @php
-                                $reviewChunks = $featuredReviews->chunk(3);
-                            @endphp
-                            <div class="carousel-inner">
-                                @foreach ($reviewChunks as $chunkIndex => $chunk)
-                                    <div class="carousel-item {{ $chunkIndex === 0 ? 'active' : '' }}">
-                                        <div class="row g-4">
-                                            @foreach ($chunk as $review)
-                                                <div class="col-md-6 col-lg-4">
-                                                    <div class="review-card" style="
+            <!-- Carousel Wrapper -->
+            <div class="row justify-content-center">
+                <div class="col-lg-11">
+                    <div id="reviewsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-pause="hover"
+                        data-bs-interval="5000">
+                        @php
+                            $reviewChunks = $featuredReviews->chunk(3);
+                        @endphp
+                        <div class="carousel-inner">
+                            @foreach ($reviewChunks as $chunkIndex => $chunk)
+                                <div class="carousel-item {{ $chunkIndex === 0 ? 'active' : '' }}">
+                                    <div class="row g-4">
+                                        @foreach ($chunk as $review)
+                                            <div class="col-md-6 col-lg-4">
+                                                <div class="review-card"
+                                                    style="
                                                         background: #ffffff;
                                                         border: 1px solid #e5e7eb;
                                                         border-radius: 16px;
@@ -197,44 +206,54 @@
                                                         flex-direction: column;
                                                         gap: 18px;
                                                     ">
-                                                        <div style="display: flex; gap: 8px; font-size: 1.1rem; color: var(--primary-color);">
-                                                            @for ($i = 1; $i <= 5; $i++)
-                                                                <i class="bi bi-star{{ $i <= $review->rating ? '-fill' : '' }}" style="color: var(--primary-color);"></i>
-                                                            @endfor
-                                                        </div>
+                                                    <div
+                                                        style="display: flex; gap: 8px; font-size: 1.1rem; color: var(--primary-color);">
+                                                        @for ($i = 1; $i <= 5; $i++)
+                                                            <i class="bi bi-star{{ $i <= $review->rating ? '-fill' : '' }}"
+                                                                style="color: var(--primary-color);"></i>
+                                                        @endfor
+                                                    </div>
 
-                                                        <h5 style="font-weight: 700; color: #111827; font-size: 1.1rem; line-height: 1.5; margin: 0;">
-                                                            {{ $review->title ?: 'Happy learner' }}
-                                                        </h5>
+                                                    <h5
+                                                        style="font-weight: 700; color: #111827; font-size: 1.1rem; line-height: 1.5; margin: 0;">
+                                                        {{ $review->title ?: 'Happy learner' }}
+                                                    </h5>
 
-                                                        <p style="color: #374151; font-size: 0.98rem; line-height: 1.7; margin: 0;">
-                                                            {{ Str::limit($review->content, 260) }}
-                                                        </p>
+                                                    <p
+                                                        style="color: #374151; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+                                                        {{ Str::limit($review->content, 260) }}
+                                                    </p>
 
-                                                        <div style="border-top: 1px solid #e5e7eb; margin: 6px 0;"></div>
+                                                    <div style="border-top: 1px solid #e5e7eb; margin: 6px 0;"></div>
 
-                                                        <div style="display: flex; align-items: center; gap: 10px; margin-top: auto;">
-                                                            @if ($review->country_flag_url)
-                                                                <img src="{{ $review->country_flag_url }}" alt="Country" style="width: 28px; height: 20px; object-fit: cover; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.12);">
+                                                    <div
+                                                        style="display: flex; align-items: center; gap: 10px; margin-top: auto;">
+                                                        @if ($review->country_flag_url)
+                                                            <img src="{{ $review->country_flag_url }}" alt="Country"
+                                                                style="width: 28px; height: 20px; object-fit: cover; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.12);">
+                                                        @endif
+                                                        <div>
+                                                            <div style="font-weight: 700; color: #0f172a;">
+                                                                {{ $review->name }}</div>
+                                                            @if ($review->title)
+                                                                <div
+                                                                    style="color: #4b5563; font-weight: 600; font-size: 0.95rem;">
+                                                                    {{ $review->title }}</div>
                                                             @endif
-                                                            <div>
-                                                                <div style="font-weight: 700; color: #0f172a;">{{ $review->name }}</div>
-                                                                @if ($review->title)
-                                                                    <div style="color: #4b5563; font-weight: 600; font-size: 0.95rem;">{{ $review->title }}</div>
-                                                                @endif
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endforeach
-                                        </div>
+                                            </div>
+                                        @endforeach
                                     </div>
-                                @endforeach
-                            </div>
+                                </div>
+                            @endforeach
+                        </div>
 
-                            <!-- Carousel Indicators at Bottom -->
-                            @if ($reviewChunks->count() > 1)
-                                <div style="
+                        <!-- Carousel Indicators at Bottom -->
+                        @if ($reviewChunks->count() > 1)
+                            <div
+                                style="
                                     text-align: center;
                                     margin-top: 30px;
                                     display: flex;
@@ -243,12 +262,11 @@
                                     flex-wrap: wrap;
                                     padding-bottom: 10px;
                                 ">
-                                    @foreach ($reviewChunks as $index => $chunk)
-                                        <button type="button" 
-                                            data-bs-target="#reviewsCarousel" 
-                                            data-bs-slide-to="{{ $index }}"
-                                            class="{{ $index === 0 ? 'active' : '' }} review-indicator"
-                                            style="
+                                @foreach ($reviewChunks as $index => $chunk)
+                                    <button type="button" data-bs-target="#reviewsCarousel"
+                                        data-bs-slide-to="{{ $index }}"
+                                        class="{{ $index === 0 ? 'active' : '' }} review-indicator"
+                                        style="
                                                 width: 14px;
                                                 height: 14px;
                                                 border-radius: 50%;
@@ -258,21 +276,22 @@
                                                 transition: all 0.4s ease;
                                                 box-shadow: {{ $index === 0 ? '0 0 10px rgba(0,0,0,0.2)' : 'none' }};
                                             "
-                                            aria-current="{{ $index === 0 ? 'true' : 'false' }}"
-                                            aria-label="Slide {{ $index + 1 }}">
-                                        </button>
-                                    @endforeach
-                                </div>
-                            @endif
-                        </div>
+                                        aria-current="{{ $index === 0 ? 'true' : 'false' }}"
+                                        aria-label="Slide {{ $index + 1 }}">
+                                    </button>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
                 </div>
+            </div>
 
-                <!-- Share Review Button -->
-                @auth
-                    @if(Auth::user()->hasActiveSubscription())
-                        <div class="text-center mt-5">
-                            <a href="{{ route('reviews.create') }}" class="btn btn-lg review-cta-btn" style="
+            <!-- Share Review Button -->
+            @auth
+                @if (Auth::user()->hasActiveSubscription())
+                    <div class="text-center mt-5">
+                        <a href="{{ route('reviews.create') }}" class="btn btn-lg review-cta-btn"
+                            style="
                                 background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
                                 border: none;
                                 color: white;
@@ -285,48 +304,74 @@
                                 text-transform: uppercase;
                                 letter-spacing: 0.4px;
                             ">
-                                <i class="bi bi-pencil-square me-2"></i>Share Your Experience
-                            </a>
-                        </div>
-                    @else
-                      
-                        </div>
-                    @endauth
-                @endauth
-            </div>
+                            <i class="bi bi-pencil-square me-2"></i>Share Your Experience
+                        </a>
+                    </div>
+                @endif
 
-            <style>
+
+
+            @endauth
+        </div>
+
+        <style>
+            .review-card {
+                animation: slideIn 0.5s ease;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+
+            .review-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08) !important;
+            }
+
+            .carousel-item.active .review-card {
+                animation: slideIn 0.5s ease;
+            }
+
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(12px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .review-indicator {
+                transition: all 0.3s ease;
+            }
+
+            .review-indicator.active {
+                box-shadow: 0 0 12px rgba(var(--primary-color-rgb, 59, 130, 246), 0.45);
+            }
+
+            .review-indicator:hover:not(.active) {
+                border-color: var(--primary-color);
+                background-color: rgba(var(--primary-color-rgb, 59, 130, 246), 0.2);
+            }
+
+            @media (max-width: 768px) {
                 .review-card {
-                    animation: slideIn 0.5s ease;
-                    transition: transform 0.2s ease, box-shadow 0.2s ease;
+                    padding: 22px 18px;
+                    height: auto;
                 }
 
-                .review-card:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 16px 36px rgba(0,0,0,0.08) !important;
+                h2.section-title {
+                    font-size: 1.8rem !important;
                 }
 
-                .carousel-item.active .review-card {
-                    animation: slideIn 0.5s ease;
+                .review-indicator {
+                    width: 12px !important;
+                    height: 12px !important;
                 }
-
-                @keyframes slideIn {
-                    from { opacity: 0; transform: translateY(12px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-
-                .review-indicator { transition: all 0.3s ease; }
-                .review-indicator.active { box-shadow: 0 0 12px rgba(var(--primary-color-rgb, 59, 130, 246), 0.45); }
-                .review-indicator:hover:not(.active) { border-color: var(--primary-color); background-color: rgba(var(--primary-color-rgb, 59, 130, 246), 0.2); }
-
-                @media (max-width: 768px) {
-                    .review-card { padding: 22px 18px; height: auto; }
-                    h2.section-title { font-size: 1.8rem !important; }
-                    .review-indicator { width: 12px !important; height: 12px !important; }
-                }
-            </style>
-        </section>
-    @endif
+            }
+        </style>
+    </section>
+    {{-- @endif --}}
 
     <!-- Featured Products Section - moved up -->
     <section class="py-5">
