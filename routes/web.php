@@ -137,6 +137,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
     Route::put('/profile', [UserController::class, 'updateProfile'])->name('user.profile.update');
     Route::post('/profile/change-password', [UserController::class, 'changePassword'])->name('user.password.change');
+    Route::get('/profile/verify-password/{token}', [UserController::class, 'verifyPasswordChange'])->name('user.password.verify');
+    Route::post('/profile/change-email', [UserController::class, 'changeEmail'])->name('user.email.change');
+    Route::get('/profile/verify-email/{token}', [UserController::class, 'verifyEmailChange'])->name('user.email.verify');
 
     // Order Management
     Route::get('/orders', [UserController::class, 'orders'])->name('user.orders.index');

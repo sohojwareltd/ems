@@ -5,8 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
+use App\Models\PasswordChangeRequest;
+use App\Models\EmailChangeRequest;
+use App\Mail\VerifyPasswordChange;
+use App\Mail\VerifyEmailChange;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -82,12 +89,105 @@ class UserController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
+        // Generate verification token
+        $token = Str::random(60);
         $user = Auth::user();
-        $user->update([
-            'password' => Hash::make($request->password)
+        
+        // Store the new password with token for verification
+        PasswordChangeRequest::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'new_password' => Hash::make($request->password),
+                'token' => $token,
+            ]
+        );
+
+        // Send verification email
+        Mail::to($user->email)->send(new VerifyPasswordChange(
+            $user,
+            $token,
+            route('user.password.verify', ['token' => $token])
+        ));
+
+        return redirect()->route('user.profile')->with('success', 'A verification email has been sent to your email address. Please verify to complete the password change.');
+    }
+
+    public function verifyPasswordChange($token)
+    {
+        $request = PasswordChangeRequest::where('token', $token)
+            ->where('created_at', '>', now()->subHours(1))
+            ->first();
+
+        if (!$request) {
+            return redirect()->route('user.profile')->with('error', 'Invalid or expired verification token.');
+        }
+
+        $user = Auth::user();
+        if ($request->user_id !== $user->id) {
+            return redirect()->route('user.profile')->with('error', 'This verification token is not for your account.');
+        }
+
+        // Update password
+        $user->update(['password' => $request->new_password]);
+        
+        // Delete the request
+        $request->delete();
+
+        return redirect()->route('user.profile')->with('success', 'Your password has been changed successfully!');
+    }
+
+    public function changeEmail(Request $request)
+    {
+        $request->validate([
+            'new_email' => 'required|email|unique:users,email|different:email',
         ]);
 
-        return redirect()->route('user.profile')->with('success', 'Password changed successfully!');
+        // Generate verification token
+        $token = Str::random(60);
+        $user = Auth::user();
+        
+        // Store the new email with token for verification
+        EmailChangeRequest::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'new_email' => $request->new_email,
+                'token' => $token,
+            ]
+        );
+
+        // Send verification email to NEW email address
+        Mail::to($request->new_email)->send(new VerifyEmailChange(
+            $user,
+            $request->new_email,
+            $token,
+            route('user.email.verify', ['token' => $token])
+        ));
+
+        return redirect()->route('user.profile')->with('success', 'A verification email has been sent to your new email address. Please verify to complete the email change.');
+    }
+
+    public function verifyEmailChange($token)
+    {
+        $request = EmailChangeRequest::where('token', $token)
+            ->where('created_at', '>', now()->subHours(24))
+            ->first();
+
+        if (!$request) {
+            return redirect()->route('user.profile')->with('error', 'Invalid or expired verification token.');
+        }
+
+        $user = Auth::user();
+        if ($request->user_id !== $user->id) {
+            return redirect()->route('user.profile')->with('error', 'This verification token is not for your account.');
+        }
+
+        // Update email
+        $user->update(['email' => $request->new_email]);
+        
+        // Delete the request
+        $request->delete();
+
+        return redirect()->route('user.profile')->with('success', 'Your email has been changed successfully!');
     }
 
     public function orders()

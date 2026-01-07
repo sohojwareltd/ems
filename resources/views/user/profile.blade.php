@@ -21,14 +21,14 @@
                 </div>
             </div>
         </div>
-
+{{-- 
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="fas fa-check-circle me-2"></i>
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
-        @endif
+        @endif --}}
 
         @if ($errors->any())
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -79,11 +79,12 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="email" class="form-label fw-semibold">Email Address</label>
-                                    <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                        id="email" readonly value="{{ old('email', $user->email) }}" required>
-                                    @error('email')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                    <div class="d-flex gap-2">
+                                        <input type="email" class="form-control" id="email" readonly value="{{ old('email', $user->email) }}" required style="flex: 1;">
+                                        <button type="button" class="btn custom-btn" data-bs-toggle="modal" data-bs-target="#changeEmailModal">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="phone" class="form-label fw-semibold">WhatsApp Number</label>
@@ -166,6 +167,10 @@
                         </h5>
                     </div>
                     <div class="card-body">
+                        <p class="alert alert-info mb-3">
+                            <i class="bi bi-info-circle me-2"></i>
+                            A verification email will be sent to verify your password change for security.
+                        </p>
                         <form action="{{ route('user.password.change') }}" method="POST">
                             @csrf
 
@@ -268,4 +273,38 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
         }
     </style>
+
+    <!-- Change Email Modal -->
+    <div class="modal fade" id="changeEmailModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: var(--primary-dark); color: white;">
+                    <h5 class="modal-title">Change Email Address</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted mb-3">
+                        A verification email will be sent to your new email address. You must verify it to complete the change.
+                    </p>
+                    <form action="{{ route('user.email.change') }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="new_email" class="form-label fw-semibold">New Email Address</label>
+                            <input type="email" class="form-control @error('new_email') is-invalid @enderror" 
+                                   id="new_email" name="new_email" required>
+                            @error('new_email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn custom-btn flex-grow-1">
+                                <i class="bi bi-send me-2"></i>Send Verification Email
+                            </button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
