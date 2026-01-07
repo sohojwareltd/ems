@@ -177,163 +177,73 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-11">
                         <div id="reviewsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-pause="hover" data-bs-interval="5000">
+                            @php
+                                $reviewChunks = $featuredReviews->chunk(3);
+                            @endphp
                             <div class="carousel-inner">
-                                @foreach ($featuredReviews as $index => $review)
-                                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                        <div class="review-card" style="
-                                            background: linear-gradient(135deg, #ffffff 0%, #fafbff 100%);
-                                            border: 2px solid var(--primary-color);
-                                            border-radius: 20px;
-                                            padding: 45px;
-                                            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-                                            min-height: 340px;
-                                            display: flex;
-                                            flex-direction: column;
-                                            justify-content: space-between;
-                                            position: relative;
-                                            transition: all 0.4s ease;
-                                        ">
-                                            <!-- Quote Icon Background -->
-                                            <div style="
-                                                position: absolute;
-                                                top: -15px;
-                                                right: 30px;
-                                                font-size: 4rem;
-                                                color: rgba(var(--primary-color-rgb, 59, 130, 246), 0.1);
-                                                font-weight: bold;
-                                            ">
-                                                "
-                                            </div>
-
-                                            <!-- Stars with Animation -->
-                                            <div style="
-                                                display: flex;
-                                                gap: 8px;
-                                                justify-content: center;
-                                                font-size: 1.8rem;
-                                                margin-bottom: 25px;
-                                            ">
-                                                @for ($i = 1; $i <= 5; $i++)
-                                                    @if ($i <= $review->rating)
-                                                        <i class="bi bi-star-fill review-star" style="
-                                                            color: #ffc107;
-                                                            text-shadow: 0 2px 5px rgba(255, 193, 7, 0.3);
-                                                            animation: twinkle 0.8s ease-in-out;
-                                                            animation-delay: {{ ($i - 1) * 0.1 }}s;
-                                                        "></i>
-                                                    @else
-                                                        <i class="bi bi-star" style="color: #e8e8e8;"></i>
-                                                    @endif
-                                                @endfor
-                                            </div>
-
-                                            <!-- Quote -->
-                                            <blockquote style="
-                                                text-align: center;
-                                                font-size: 1.2rem;
-                                                line-height: 1.9;
-                                                color: #2c3e50;
-                                                margin: 0 0 35px 0;
-                                                font-style: italic;
-                                                font-weight: 500;
-                                                letter-spacing: 0.5px;
-                                            ">
-                                                "{{ $review->content }}"
-                                            </blockquote>
-
-                                            <!-- Reviewer Info with Avatar -->
-                                            <div style="
-                                                display: flex;
-                                                align-items: center;
-                                                justify-content: center;
-                                                gap: 16px;
-                                                border-top: 2px solid #f0f0f0;
-                                                padding-top: 25px;
-                                            ">
-                                                <div style="position: relative;">
-                                                    @if ($review->avatar)
-                                                        <img src="{{ $review->avatar_url }}" 
-                                                            alt="{{ $review->name }}"
-                                                            style="
-                                                                width: 70px;
-                                                                height: 70px;
-                                                                border-radius: 50%;
-                                                                object-fit: cover;
-                                                                border: 4px solid var(--primary-color);
-                                                                box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-                                                                transition: transform 0.3s ease;
-                                                            "
-                                                            class="reviewer-avatar">
-                                                    @else
-                                                        <div style="
-                                                            width: 70px;
-                                                            height: 70px;
-                                                            border-radius: 50%;
-                                                            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-                                                            display: flex;
-                                                            align-items: center;
-                                                            justify-content: center;
-                                                            color: white;
-                                                            font-weight: bold;
-                                                            font-size: 1.8rem;
-                                                            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-                                                            transition: transform 0.3s ease;
-                                                        "
-                                                        class="reviewer-avatar">
-                                                            {{ substr($review->name, 0, 1) }}
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                
-                                                <div style="text-align: left;">
-                                                    <h6 style="
-                                                        margin: 0;
-                                                        color: var(--primary-color);
-                                                        font-weight: 700;
-                                                        font-size: 1.1rem;
+                                @foreach ($reviewChunks as $chunkIndex => $chunk)
+                                    <div class="carousel-item {{ $chunkIndex === 0 ? 'active' : '' }}">
+                                        <div class="row g-4">
+                                            @foreach ($chunk as $review)
+                                                <div class="col-md-6 col-lg-4">
+                                                    <div class="review-card" style="
+                                                        background: #ffffff;
+                                                        border: 1px solid #e5e7eb;
+                                                        border-radius: 16px;
+                                                        padding: 28px 24px;
+                                                        box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+                                                        height: 100%;
+                                                        display: flex;
+                                                        flex-direction: column;
+                                                        gap: 18px;
                                                     ">
-                                                        {{ $review->name }}
-                                                    </h6>
-                                                    @if ($review->title)
-                                                        <small style="
-                                                            color: #888;
-                                                            display: block;
-                                                            margin: 4px 0;
-                                                            font-weight: 500;
-                                                        ">
-                                                            {{ $review->title }}
-                                                        </small>
-                                                    @endif
-                                                    @if ($review->country_flag_url)
-                                                        <img src="{{ $review->country_flag_url }}" 
-                                                            alt="Country" 
-                                                            style="
-                                                                width: 28px;
-                                                                height: auto;
-                                                                margin-top: 6px;
-                                                                border-radius: 3px;
-                                                                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-                                                            ">
-                                                    @endif
+                                                        <div style="display: flex; gap: 8px; font-size: 1.1rem; color: var(--primary-color);">
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                <i class="bi bi-star{{ $i <= $review->rating ? '-fill' : '' }}" style="color: var(--primary-color);"></i>
+                                                            @endfor
+                                                        </div>
+
+                                                        <h5 style="font-weight: 700; color: #111827; font-size: 1.1rem; line-height: 1.5; margin: 0;">
+                                                            {{ $review->title ?: 'Happy learner' }}
+                                                        </h5>
+
+                                                        <p style="color: #374151; font-size: 0.98rem; line-height: 1.7; margin: 0;">
+                                                            {{ Str::limit($review->content, 260) }}
+                                                        </p>
+
+                                                        <div style="border-top: 1px solid #e5e7eb; margin: 6px 0;"></div>
+
+                                                        <div style="display: flex; align-items: center; gap: 10px; margin-top: auto;">
+                                                            @if ($review->country_flag_url)
+                                                                <img src="{{ $review->country_flag_url }}" alt="Country" style="width: 28px; height: 20px; object-fit: cover; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.12);">
+                                                            @endif
+                                                            <div>
+                                                                <div style="font-weight: 700; color: #0f172a;">{{ $review->name }}</div>
+                                                                @if ($review->title)
+                                                                    <div style="color: #4b5563; font-weight: 600; font-size: 0.95rem;">{{ $review->title }}</div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            @endforeach
                                         </div>
                                     </div>
                                 @endforeach
                             </div>
 
                             <!-- Carousel Indicators at Bottom -->
-                            @if ($featuredReviews->count() > 1)
+                            @if ($reviewChunks->count() > 1)
                                 <div style="
                                     text-align: center;
-                                    margin-top: 40px;
+                                    margin-top: 30px;
                                     display: flex;
                                     gap: 10px;
                                     justify-content: center;
                                     flex-wrap: wrap;
                                     padding-bottom: 10px;
                                 ">
-                                    @foreach ($featuredReviews as $index => $review)
+                                    @foreach ($reviewChunks as $index => $chunk)
                                         <button type="button" 
                                             data-bs-target="#reviewsCarousel" 
                                             data-bs-slide-to="{{ $index }}"
@@ -366,35 +276,20 @@
                                 background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
                                 border: none;
                                 color: white;
-                                padding: 15px 50px;
-                                border-radius: 50px;
+                                padding: 12px 34px;
+                                border-radius: 40px;
                                 font-weight: 700;
-                                font-size: 1.1rem;
-                                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-                                transition: all 0.3s ease;
+                                font-size: 12px;
+                                box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+                                transition: all 0.25s ease;
                                 text-transform: uppercase;
-                                letter-spacing: 0.5px;
+                                letter-spacing: 0.4px;
                             ">
                                 <i class="bi bi-pencil-square me-2"></i>Share Your Experience
                             </a>
                         </div>
                     @else
-                        <div class="text-center mt-5">
-                            <a href="{{ route('login') }}" class="btn btn-lg review-cta-btn" style="
-                                background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-                                border: none;
-                                color: white;
-                                padding: 15px 50px;
-                                border-radius: 50px;
-                                font-weight: 700;
-                                font-size: 1.1rem;
-                                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-                                transition: all 0.3s ease;
-                                text-transform: uppercase;
-                                letter-spacing: 0.5px;
-                            ">
-                                <i class="bi bi-pencil-square me-2"></i>Login to Share Your Experience
-                            </a>
+                      
                         </div>
                     @endauth
                 @endauth
@@ -402,92 +297,33 @@
 
             <style>
                 .review-card {
-                    animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+                    animation: slideIn 0.5s ease;
+                    transition: transform 0.2s ease, box-shadow 0.2s ease;
+                }
+
+                .review-card:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 16px 36px rgba(0,0,0,0.08) !important;
                 }
 
                 .carousel-item.active .review-card {
-                    animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+                    animation: slideIn 0.5s ease;
                 }
 
                 @keyframes slideIn {
-                    from {
-                        opacity: 0;
-                        transform: translateY(30px) scale(0.95);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0) scale(1);
-                    }
+                    from { opacity: 0; transform: translateY(12px); }
+                    to { opacity: 1; transform: translateY(0); }
                 }
 
-                @keyframes twinkle {
-                    0% {
-                        transform: scale(0.8);
-                        opacity: 0.3;
-                    }
-                    50% {
-                        transform: scale(1.2);
-                    }
-                    100% {
-                        transform: scale(1);
-                        opacity: 1;
-                    }
-                }
-
-                .review-carousel-btn:hover span {
-                    transform: scale(1.2);
-                    box-shadow: 0 10px 30px rgba(0,0,0,0.25) !important;
-                }
-
-                .reviewer-avatar:hover {
-                    transform: scale(1.12) !important;
-                }
-
-                .review-cta-btn:hover {
-                    transform: translateY(-4px);
-                    box-shadow: 0 15px 40px rgba(0,0,0,0.2) !important;
-                }
-
-                .review-cta-btn:active {
-                    transform: translateY(-2px);
-                }
-
-                .review-indicator {
-                    transition: all 0.3s ease;
-                }
-
-                .review-indicator.active {
-                    box-shadow: 0 0 15px rgba(var(--primary-color-rgb, 59, 130, 246), 0.5) !important;
-                }
-
-                .review-indicator:hover:not(.active) {
-                    border-color: var(--primary-color);
-                    background-color: rgba(var(--primary-color-rgb, 59, 130, 246), 0.3);
-                }
+                .review-indicator { transition: all 0.3s ease; }
+                .review-indicator.active { box-shadow: 0 0 12px rgba(var(--primary-color-rgb, 59, 130, 246), 0.45); }
+                .review-indicator:hover:not(.active) { border-color: var(--primary-color); background-color: rgba(var(--primary-color-rgb, 59, 130, 246), 0.2); }
 
                 @media (max-width: 768px) {
-                    .carousel-control-prev,
-                    .carousel-control-next {
-                        display: none;
-                    }
-                    
-                    .review-card {
-                        padding: 30px;
-                        min-height: 320px;
-                    }
-
-                    .review-cta-btn {
-                        padding: 12px 30px !important;
-                        font-size: 0.95rem !important;
-                    }
-
-                    h2.section-title {
-                        font-size: 1.8rem !important;
-                    }
-                    .review-indicator {
-                        width: 12px !important;
-                        height: 12px !important;
-                    }                }
+                    .review-card { padding: 22px 18px; height: auto; }
+                    h2.section-title { font-size: 1.8rem !important; }
+                    .review-indicator { width: 12px !important; height: 12px !important; }
+                }
             </style>
         </section>
     @endif
