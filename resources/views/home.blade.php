@@ -17,7 +17,7 @@
     @endphp
 
     @if ($sliders->count() > 0)
-        <section class="hero-section" style="height: 60vh">
+        <section class="hero-section pt-0" style="height: 60vh">
             <div class="container">
                 <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
