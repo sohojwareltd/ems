@@ -266,16 +266,6 @@
                                     <button type="button" data-bs-target="#reviewsCarousel"
                                         data-bs-slide-to="{{ $index }}"
                                         class="{{ $index === 0 ? 'active' : '' }} review-indicator"
-                                        style="
-                                                width: 14px;
-                                                height: 14px;
-                                                border-radius: 50%;
-                                                border: 2px solid {{ $index === 0 ? 'var(--primary-color)' : '#ddd' }};
-                                                background-color: {{ $index === 0 ? 'var(--primary-color)' : 'transparent' }};
-                                                cursor: pointer;
-                                                transition: all 0.4s ease;
-                                                box-shadow: {{ $index === 0 ? '0 0 10px rgba(0,0,0,0.2)' : 'none' }};
-                                            "
                                         aria-current="{{ $index === 0 ? 'true' : 'false' }}"
                                         aria-label="Slide {{ $index + 1 }}">
                                     </button>
@@ -342,10 +332,19 @@
             }
 
             .review-indicator {
-                transition: all 0.3s ease;
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                border: 2px solid #ddd;
+                background-color: transparent;
+                cursor: pointer;
+                transition: all 0.4s ease;
+                box-shadow: none;
             }
 
             .review-indicator.active {
+                border-color: var(--primary-color);
+                background-color: var(--primary-color);
                 box-shadow: 0 0 12px rgba(var(--primary-color-rgb, 59, 130, 246), 0.45);
             }
 
