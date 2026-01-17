@@ -202,6 +202,7 @@
                                                         padding: 28px 24px;
                                                         box-shadow: 0 12px 30px rgba(0,0,0,0.06);
                                                         height: 100%;
+                                                        min-height: 380px;
                                                         display: flex;
                                                         flex-direction: column;
                                                         gap: 18px;
@@ -215,13 +216,13 @@
                                                     </div>
 
                                                     <h5
-                                                        style="font-weight: 700; color: #111827; font-size: 1.1rem; line-height: 1.5; margin: 0;">
+                                                        style="font-weight: 700; color: #111827; font-size: 1.1rem; line-height: 1.5; margin: 0; min-height: 50px;">
                                                         {{ $review->title ?: 'Happy learner' }}
                                                     </h5>
 
                                                     <p
-                                                        style="color: #374151; font-size: 0.98rem; line-height: 1.7; margin: 0;">
-                                                        {{ Str::limit($review->content, 260) }}
+                                                        style="color: #374151; font-size: 0.98rem; line-height: 1.7; margin: 0; min-height: 135px; flex: 1;">
+                                                        {{ Str::limit($review->content, 180) }}
                                                     </p>
 
                                                     <div style="border-top: 1px solid #e5e7eb; margin: 6px 0;"></div>
@@ -358,6 +359,7 @@
                 .review-card {
                     padding: 22px 18px;
                     height: auto;
+                    min-height: 350px !important;
                 }
 
                 h2.section-title {
