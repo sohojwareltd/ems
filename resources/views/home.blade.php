@@ -216,7 +216,7 @@
 
                                                     <h5
                                                         style="font-weight: 700; color: #111827; font-size: 1.1rem; line-height: 1.5; margin: 0; flex-shrink: 0;">
-                                                        {{ $review->title ?: 'Happy learner' }}
+                                                        {{ $review->name ?: 'Happy learner' }} ({{ $review->title }})
                                                     </h5>
 
                                                     <p
