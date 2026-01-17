@@ -201,14 +201,13 @@
                                                         border-radius: 16px;
                                                         padding: 28px 24px;
                                                         box-shadow: 0 12px 30px rgba(0,0,0,0.06);
-                                                        height: 100%;
-                                                        min-height: 380px;
+                                                        height: 450px;
                                                         display: flex;
                                                         flex-direction: column;
                                                         gap: 18px;
                                                     ">
                                                     <div
-                                                        style="display: flex; gap: 8px; font-size: 1.1rem; color: var(--primary-color);">
+                                                        style="display: flex; gap: 8px; font-size: 1.1rem; color: var(--primary-color); flex-shrink: 0;">
                                                         @for ($i = 1; $i <= 5; $i++)
                                                             <i class="bi bi-star{{ $i <= $review->rating ? '-fill' : '' }}"
                                                                 style="color: var(--primary-color);"></i>
@@ -216,24 +215,24 @@
                                                     </div>
 
                                                     <h5
-                                                        style="font-weight: 700; color: #111827; font-size: 1.1rem; line-height: 1.5; margin: 0; min-height: 50px;">
+                                                        style="font-weight: 700; color: #111827; font-size: 1.1rem; line-height: 1.5; margin: 0; flex-shrink: 0;">
                                                         {{ $review->title ?: 'Happy learner' }}
                                                     </h5>
 
                                                     <p
-                                                        style="color: #374151; font-size: 0.98rem; line-height: 1.7; margin: 0; min-height: 135px; flex: 1;">
+                                                        style="color: #374151; font-size: 0.98rem; line-height: 1.7; margin: 0; flex: 1; overflow: hidden;">
                                                         {{ Str::limit($review->content, 180) }}
                                                     </p>
 
-                                                    <div style="border-top: 1px solid #e5e7eb; margin: 6px 0;"></div>
+                                                    <div style="border-top: 1px solid #e5e7eb; margin: 6px 0; flex-shrink: 0;"></div>
 
                                                     <div
-                                                        style="display: flex; align-items: center; gap: 10px; margin-top: auto;">
+                                                        style="display: flex; align-items: center; gap: 10px; flex-shrink: 0; min-height: 48px;">
                                                         @if ($review->country_flag_url)
                                                             <img src="{{ $review->country_flag_url }}" alt="Country"
                                                                 style="width: 28px; height: 20px; object-fit: cover; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.12);">
                                                         @endif
-                                                        <div>
+                                                        <div style="flex: 1;">
                                                             <div style="font-weight: 700; color: #0f172a;">
                                                                 {{ $review->name }}</div>
                                                             @if ($review->title)
@@ -358,8 +357,7 @@
             @media (max-width: 768px) {
                 .review-card {
                     padding: 22px 18px;
-                    height: auto;
-                    min-height: 350px !important;
+                    height: 420px !important;
                 }
 
                 h2.section-title {
