@@ -216,7 +216,11 @@
 
                                                     <h5
                                                         style="font-weight: 700; color: #111827; font-size: 1.1rem; line-height: 1.5; margin: 0; flex-shrink: 0;">
-                                                        {{ $review->name ?: 'Happy learner' }} ({{ $review->title }})
+                                                        @if (!empty($review->heading))
+                                                            {{ $review->heading }}
+                                                        @else
+                                                            {{ $review->name ?: 'Happy learner' }} ({{ $review->title }})
+                                                        @endif
                                                     </h5>
 
                                                     <p
