@@ -157,7 +157,7 @@
                 <div class="mb-3">
                     <span class="badge"
                         style="
-                            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+                            background: linear-gradient(135deg, #19390b, #0d1f06);
                             font-size: 0.85rem;
                             padding: 0.6rem 1.2rem;
                             border-radius: 50px;
@@ -168,7 +168,7 @@
                 </div>
                 <h2 class="section-title mb-3"
                     style="
-                        color: var(--primary-color);
+                        color: #19390b;
                         font-weight: 800;
                         font-size: 2.5rem;
                         text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
@@ -207,10 +207,10 @@
                                                         gap: 14px;
                                                     ">
                                                     <div
-                                                        style="display: flex; gap: 8px; font-size: 1.1rem; color: var(--primary-color); flex-shrink: 0;">
+                                                        style="display: flex; gap: 8px; font-size: 1.1rem; color: #19390b; flex-shrink: 0;">
                                                         @for ($i = 1; $i <= 5; $i++)
                                                             <i class="bi bi-star{{ $i <= $review->rating ? '-fill' : '' }}"
-                                                                style="color: var(--primary-color);"></i>
+                                                                style="color: #19390b;"></i>
                                                         @endfor
                                                     </div>
 
@@ -286,7 +286,7 @@
                     <div class="text-center mt-5">
                         <a href="{{ route('reviews.create') }}" class="btn btn-lg review-cta-btn"
                             style="
-                                background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+                                background: linear-gradient(135deg, #19390b, #0d1f06);
                                 border: none;
                                 color: white;
                                 padding: 12px 34px;
@@ -347,14 +347,14 @@
             }
 
             .review-indicator.active {
-                border-color: var(--primary-color);
-                background-color: var(--primary-color);
-                box-shadow: 0 0 12px rgba(var(--primary-color-rgb, 59, 130, 246), 0.45);
+                border-color: #19390b;
+                background-color: #19390b;
+                box-shadow: 0 0 12px rgba(25, 57, 11, 0.45);
             }
 
             .review-indicator:hover:not(.active) {
-                border-color: var(--primary-color);
-                background-color: rgba(var(--primary-color-rgb, 59, 130, 246), 0.2);
+                border-color: #19390b;
+                background-color: rgba(25, 57, 11, 0.2);
             }
 
             @media (max-width: 768px) {

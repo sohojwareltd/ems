@@ -173,7 +173,7 @@
                         <i class="fas fa-check-circle me-3" style="font-size: 1.2rem; margin-top: 2px;"></i>
                         <div>
                             <strong style="display: block; margin-bottom: 4px;">Verification Email Sent!</strong>
-                            <span style="font-size: 0.9rem; opacity: 0.95;">Please check your inbox in a few minutes.</span>
+                            <span style="font-size: 0.9rem; opacity: 0.95;">Please check your inbox/junk in a few minutes.</span>
                         </div>
                     </div>
                     <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="toast"
