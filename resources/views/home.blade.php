@@ -199,12 +199,12 @@
                                                         background: #ffffff;
                                                         border: 1px solid #e5e7eb;
                                                         border-radius: 16px;
-                                                        padding: 28px 24px;
+                                                        padding: 24px 20px;
                                                         box-shadow: 0 12px 30px rgba(0,0,0,0.06);
-                                                        height: 450px;
+                                                        height: 380px;
                                                         display: flex;
                                                         flex-direction: column;
-                                                        gap: 18px;
+                                                        gap: 14px;
                                                     ">
                                                     <div
                                                         style="display: flex; gap: 8px; font-size: 1.1rem; color: var(--primary-color); flex-shrink: 0;">
@@ -356,8 +356,8 @@
 
             @media (max-width: 768px) {
                 .review-card {
-                    padding: 22px 18px;
-                    height: 420px !important;
+                    padding: 20px 16px;
+                    height: 360px !important;
                 }
 
                 h2.section-title {
