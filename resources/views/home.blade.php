@@ -625,23 +625,25 @@
             const examBoard = document.getElementById('exam_board');
             const viewButton = document.getElementById('view-course-btn');
 
-            function checkSelections() {
-                const isValid =
-                    qualification.value !== '' &&
-                    subject.value !== '' &&
-                    examBoard.value !== '';
-                viewButton.disabled = !isValid;
-            }
+            if (qualification && subject && examBoard && viewButton) {
+                function checkSelections() {
+                    const isValid =
+                        qualification.value !== '' &&
+                        subject.value !== '' &&
+                        examBoard.value !== '';
+                    viewButton.disabled = !isValid;
+                }
 
-            // Attach event listeners
-            qualification.addEventListener('change', checkSelections);
-            subject.addEventListener('change', checkSelections);
-            examBoard.addEventListener('change', checkSelections);
+                // Attach event listeners
+                qualification.addEventListener('change', checkSelections);
+                subject.addEventListener('change', checkSelections);
+                examBoard.addEventListener('change', checkSelections);
+            }
 
             // Handle review carousel indicator updates
             const reviewsCarousel = document.getElementById('reviewsCarousel');
             if (reviewsCarousel) {
-                reviewsCarousel.addEventListener('slide.bs.carousel', function(event) {
+                reviewsCarousel.addEventListener('slid.bs.carousel', function(event) {
                     const indicators = document.querySelectorAll('.review-indicator');
                     indicators.forEach((indicator, index) => {
                         if (index === event.to) {
