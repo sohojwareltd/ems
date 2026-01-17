@@ -42,6 +42,11 @@ class ReviewResource extends Resource
                             ->maxLength(255)
                             ->helperText('Name of the person giving the review'),
                         
+                        Forms\Components\TextInput::make('heading')
+                            ->label('Heading')
+                            ->maxLength(255)
+                            ->helperText('Heading shown at the top of the review card'),
+                        
                         Forms\Components\TextInput::make('title')
                             ->maxLength(255)
                             ->helperText('Professional title or role (e.g., "Teacher", "Student")'),
