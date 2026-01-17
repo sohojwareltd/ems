@@ -637,6 +637,23 @@
             qualification.addEventListener('change', checkSelections);
             subject.addEventListener('change', checkSelections);
             examBoard.addEventListener('change', checkSelections);
+
+            // Handle review carousel indicator updates
+            const reviewsCarousel = document.getElementById('reviewsCarousel');
+            if (reviewsCarousel) {
+                reviewsCarousel.addEventListener('slide.bs.carousel', function(event) {
+                    const indicators = document.querySelectorAll('.review-indicator');
+                    indicators.forEach((indicator, index) => {
+                        if (index === event.to) {
+                            indicator.classList.add('active');
+                            indicator.setAttribute('aria-current', 'true');
+                        } else {
+                            indicator.classList.remove('active');
+                            indicator.setAttribute('aria-current', 'false');
+                        }
+                    });
+                });
+            }
         });
     </script>
 
