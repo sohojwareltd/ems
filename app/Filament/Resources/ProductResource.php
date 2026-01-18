@@ -199,6 +199,9 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
+            Tables\Columns\TextColumn::make('id')
+                ->label('ID')
+                ->sortable(),
             Tables\Columns\ImageColumn::make('thumbnail')->label('Thumbnail')->size(40),
             Tables\Columns\TextColumn::make('name')->searchable(),
             Tables\Columns\TextColumn::make('price')
