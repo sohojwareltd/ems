@@ -31,6 +31,7 @@ class EnquiryReplyMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: 'info@economicsmadesimple.com',
             subject: 'Re: Your Enquiry - ' . ($this->enquiry->category?->name ?? 'General'),
         );
     }

@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-{{-- 
+        {{-- 
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="fas fa-check-circle me-2"></i>
@@ -47,7 +47,8 @@
             <!-- Profile Information -->
             <div class="col-lg-8 mb-4">
                 <div class="card border-0 shadow-sm">
-                    <div class="card-header  border-0 py-3" style="background-color: var(--primary-dark);color:var(--white) !important;">
+                    <div class="card-header  border-0 py-3"
+                        style="background-color: var(--primary-dark);color:var(--white) !important;">
                         <h5 class="mb-0 fw-bold ">
                             <i class="fas fa-user me-2 "></i>
                             Personal Information
@@ -80,22 +81,16 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="email" class="form-label fw-semibold">Email Address</label>
                                     <div class="d-flex gap-2">
-                                        <input type="email" class="form-control" id="email" readonly value="{{ old('email', $user->email) }}" required style="flex: 1;">
-                                        <button type="button" class="btn custom-btn" data-bs-toggle="modal" data-bs-target="#changeEmailModal">
+                                        <input type="email" class="form-control" id="email" readonly
+                                            value="{{ old('email', $user->email) }}" required style="flex: 1;">
+                                        <button type="button" class="btn custom-btn" data-bs-toggle="modal"
+                                            data-bs-target="#changeEmailModal">
                                             <i class="bi bi-pencil-square"></i>
                                         </button>
                                     </div>
                                 </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="phone" class="form-label fw-semibold">WhatsApp Number</label>
-                                    <input type="tel" class="form-control @error('phone') is-invalid @enderror"
-                                        id="phone" name="phone" value="{{ old('phone', $user->phone) }}">
-                                    @error('phone')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
 
-                                <div class="mb-3">
+                                <div class="col-md-6 mb-3">
                                     <label for="billing_country" class="form-label">Country *</label>
                                     <select class="form-select" id="country" name="country" required>
                                         <option value="">Select Country</option>
@@ -105,6 +100,35 @@
                                                 {{ $country->name }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label for="phone" class="form-label">WhatsApp Number</label>
+                                    <div class="input-group">
+                                        <select class="form-select @error('country_code') is-invalid @enderror"
+                                            id="country_code" name="country_code" style="max-width: 190px;">
+                                            <option value="">Code</option>
+                                            @php
+                                                $countries = \App\Models\Country::query()
+                                                    ->orderByRaw('LOWER(name) ASC')
+                                                    ->get();
+                                            @endphp
+                                            @foreach ($countries as $country)
+                                                <option value="{{ $country->calling_code }}"
+                                                    {{ old('country_code', '+880') == $country->calling_code ? 'selected' : '' }}>
+                                                    {{ $country->name }} ({{ $country->calling_code }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <input type="tel" class="form-control @error('phone') is-invalid @enderror"
+                                            id="phone" name="phone" placeholder="Enter WhatsApp Number"
+                                            value="{{ old('phone', auth()->user()->phone ?? '') }}">
+                                        @error('phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                        @error('country_code')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
 
@@ -131,7 +155,7 @@
                                 <div class="col-md-4 mb-3">
                                     <label for="state" class="form-label fw-semibold">State/Province</label>
                                     <input type="text" class="form-control @error('state') is-invalid @enderror"
-                                        id="state" name="state" value="{{ old('state', $user->state) }}">   
+                                        id="state" name="state" value="{{ old('state', $user->state) }}">
                                     @error('state')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -160,7 +184,8 @@
             <!-- Change Password -->
             <div class="col-lg-4 mb-4">
                 <div class="card border-0 shadow-sm">
-                    <div class="card-header border-0 py-3" style="background-color: var(--primary-dark);color:var(--white) !important;">
+                    <div class="card-header border-0 py-3"
+                        style="background-color: var(--primary-dark);color:var(--white) !important;">
                         <h5 class="mb-0 fw-bold ">
                             <i class="fas fa-lock me-2 "></i>
                             Change Password
@@ -211,7 +236,8 @@
 
                 <!-- Account Information -->
                 <div class="card border-0 shadow-sm mt-4">
-                    <div class="card-header  border-0 py-3" style="background-color: var(--primary-dark);color:var(--white) !important;">
+                    <div class="card-header  border-0 py-3"
+                        style="background-color: var(--primary-dark);color:var(--white) !important;">
                         <h5 class="mb-0 fw-bold ">
                             <i class="fas fa-info-circle me-2 "></i>
                             Account Information
@@ -284,14 +310,15 @@
                 </div>
                 <div class="modal-body">
                     <p class="text-muted mb-3">
-                        A verification email will be sent to your new email address. You must verify it to complete the change.
+                        A verification email will be sent to your new email address. You must verify it to complete the
+                        change.
                     </p>
                     <form action="{{ route('user.email.change') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="new_email" class="form-label fw-semibold">New Email Address</label>
-                            <input type="email" class="form-control @error('new_email') is-invalid @enderror" 
-                                   id="new_email" name="new_email" required>
+                            <input type="email" class="form-control @error('new_email') is-invalid @enderror"
+                                id="new_email" name="new_email" required>
                             @error('new_email')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

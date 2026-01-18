@@ -61,6 +61,7 @@ class RegisterController extends Controller
             'lastname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'confirmed'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'phone' => ['required', 'string', 'max:20'],
         ], [
             'password.confirmed' => 'Passwords do not match.',
             'email.confirmed' => 'Email addresses do not match.',
@@ -82,6 +83,7 @@ class RegisterController extends Controller
             'birthdate' => Carbon::createFromFormat('d/m/Y', $data['birthdate'])->format('Y-m-d'),
             'country' => $data['country'],
             'role_id' => 2,
+            'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
         ]);
 

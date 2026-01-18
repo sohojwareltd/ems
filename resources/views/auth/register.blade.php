@@ -96,6 +96,36 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-12 mb-4">
+                                <label for="phone" class="form-label">WhatsApp Number</label>
+                                <div class="input-group">
+                                    <select class="form-select @error('country_code') is-invalid @enderror"
+                                        id="country_code" name="country_code" style="max-width: 190px;">
+                                        <option value="">Code</option>
+                                        @php
+                                            $countries = \App\Models\Country::query()
+                                                ->orderByRaw('LOWER(name) ASC')
+                                                ->get();
+                                        @endphp
+                                        @foreach ($countries as $country)
+                                            <option value="{{ $country->calling_code }}"
+                                                {{ old('country_code', '+880') == $country->calling_code ? 'selected' : '' }}>
+                                                {{ $country->name }} ({{ $country->calling_code }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <input type="tel" class="form-control @error('phone') is-invalid @enderror"
+                                        id="phone" name="phone" placeholder="Enter WhatsApp Number"
+                                        value="{{ old('phone', auth()->user()->phone ?? '') }}">
+                                    @error('phone')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    @error('country_code')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
 
                             <!-- Password Row -->
                             <div class="row">
@@ -143,7 +173,8 @@
                                         Country
                                     </label>
                                     <select name="country" id="country"
-                                        class="form-select @error('country') is-invalid @enderror" required autocomplete="country-name">
+                                        class="form-select @error('country') is-invalid @enderror" required
+                                        autocomplete="country-name">
                                         <option value="" disabled selected>Select your country</option>
                                         @foreach ($Country as $country)
                                             <option value="{{ $country }}"
@@ -162,17 +193,18 @@
                                     <div class="form-floating">
                                         <div class="position-relative">
                                             <input type="password"
-                                                class="form-control @error('password') is-invalid @enderror" id="password"
-                                                name="password" placeholder="Password" required autocomplete="new-password">
+                                                class="form-control @error('password') is-invalid @enderror"
+                                                id="password" name="password" placeholder="Password" required
+                                                autocomplete="new-password">
                                             <label for="password">
                                                 <i class="fas fa-lock me-2 text-muted"></i>
                                                 Password
                                             </label>
                                             @error('password')
-                                            <div class="text-danger mt-1">
-                                                {{ $message }}
-                                                
-                                            </div>
+                                                <div class="text-danger mt-1">
+                                                    {{ $message }}
+
+                                                </div>
                                             @enderror
                                             <button type="button"
                                                 class="btn btn-link position-absolute end-0 top-50  pe-3"
@@ -212,11 +244,13 @@
                                         required>
                                     <label class="form-check-label text-muted" for="terms">
                                         I agree to the
-                                        <a href="{{ route('faq') }}#terms" target="_blank" class="text-decoration-none terms-link">
+                                        <a href="{{ route('faq') }}#terms" target="_blank"
+                                            class="text-decoration-none terms-link">
                                             <span class="fw-semibold">Terms of Service</span>
                                         </a>
                                         and
-                                        <a href="{{ route('faq') }}#privacy" target="_blank" class="text-decoration-none terms-link">
+                                        <a href="{{ route('faq') }}#privacy" target="_blank"
+                                            class="text-decoration-none terms-link">
                                             <span class="fw-semibold">Privacy Policy</span>
                                         </a>
                                     </label>

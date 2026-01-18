@@ -61,7 +61,7 @@ class PageController extends Controller
         // $admins = User::where('role_id', 1)->get();
 
 
-        Mail::to(setting('store.email'))->send(new ContactFormNotification($data));
+        Mail::to('info@economicsmadesimple.com')->send(new ContactFormNotification($data));
 
 
         return redirect()->back()->with('success', 'Your enquiry has been submitted successfully! We will respond shortly.');
