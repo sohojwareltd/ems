@@ -323,6 +323,15 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <label for="current_password_email" class="form-label fw-semibold">Current Password</label>
+                            <input type="password"
+                                class="form-control @error('current_password') is-invalid @enderror"
+                                id="current_password_email" name="current_password" required>
+                            @error('current_password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn custom-btn flex-grow-1">
                                 <i class="bi bi-send me-2"></i>Send Verification Email

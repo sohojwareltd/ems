@@ -51,6 +51,8 @@ class ReviewController extends Controller
             'name' => 'required|string|max:255',
             'comment' => 'required|string|max:1000',
             'rating' => 'required|integer|min:1|max:5',
+            'country_code' => 'required|string|size:2',
+            'title' => 'required|string|max:255',
         ]);
 
         Review::create([
@@ -58,6 +60,8 @@ class ReviewController extends Controller
             'name' => $request->name,
             'content' => $request->comment,
             'rating' => $request->rating,
+            'country_code' => $request->country_code,
+            'title' => $request->title,
             'is_approved' => false,
             'is_active' => true,
         ]);

@@ -140,20 +140,20 @@ class UserController extends Controller
     {
         $request->validate([
             'new_email' => 'required|email|unique:users,email|different:email',
+            'current_password' => 'required|current_password',
         ]);
 
         // Generate verification token
         $token = Str::random(60);
         $user = Auth::user();
         
-        // Store the new email with token for verification
-        EmailChangeRequest::updateOrCreate(
-            ['user_id' => $user->id],
-            [
-                'new_email' => $request->new_email,
-                'token' => $token,
-            ]
-        );
+        // Store the new email with token for verification (reset timestamp each time)
+        EmailChangeRequest::where('user_id', $user->id)->delete();
+        EmailChangeRequest::create([
+            'user_id' => $user->id,
+            'new_email' => $request->new_email,
+            'token' => $token,
+        ]);
 
         // Send verification email to NEW email address
         Mail::to($request->new_email)->send(new VerifyEmailChange(
@@ -181,8 +181,11 @@ class UserController extends Controller
             return redirect()->route('user.profile')->with('error', 'This verification token is not for your account.');
         }
 
-        // Update email
-        $user->update(['email' => $request->new_email]);
+        // Update email and mark verified
+        $user->update([
+            'email' => $request->new_email,
+            'email_verified_at' => now(),
+        ]);
         
         // Delete the request
         $request->delete();

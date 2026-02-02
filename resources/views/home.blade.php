@@ -6,6 +6,35 @@
         scroll-margin-top: 100px;
         /* Adjust the value as needed */
     }
+
+    /* Brand-colored slider controls */
+    #heroCarousel .carousel-control-prev-icon,
+    #heroCarousel .carousel-control-next-icon {
+        background-image: none;
+        width: 2.5rem;
+        height: 2.5rem;
+        position: relative;
+    }
+
+    #heroCarousel .carousel-control-prev-icon::before,
+    #heroCarousel .carousel-control-next-icon::before {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-color: transparent;
+    }
+
+    #heroCarousel .carousel-control-prev-icon::before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2319390b'%3E%3Cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3E%3C/svg%3E");
+    }
+
+    #heroCarousel .carousel-control-next-icon::before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2319390b'%3E%3Cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    }
 </style>
 
 @section('content')
@@ -163,7 +192,7 @@
                             border-radius: 50px;
                             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
                         ">
-                        <i class="bi bi-star-fill me-2"></i>WHAT USERS SAY
+                        <i class="bi bi-star-fill me-2"></i>Tell us what you think
                     </span>
                 </div>
                 <h2 class="section-title mb-3"
@@ -238,12 +267,12 @@
                                                         @endif
                                                         <div style="flex: 1;">
                                                             <div style="font-weight: 700; color: #0f172a;">
-                                                                {{ $review->name }}</div>
-                                                            @if ($review->title)
+                                                                {{ $review->name }} - {{ $review->title }} </div>
+                                                            {{-- @if ($review->title)
                                                                 <div
                                                                     style="color: #4b5563; font-weight: 600; font-size: 0.95rem;">
                                                                     {{ $review->title }}</div>
-                                                            @endif
+                                                            @endif --}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -284,7 +313,10 @@
             @auth
                 @if (Auth::user()->hasActiveSubscription())
                     <div class="text-center mt-5">
-                        <a href="{{ route('reviews.create') }}" class="btn btn-lg review-cta-btn"
+                        <a href="#"
+                            class="btn btn-lg review-cta-btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#reviewModal"
                             style="
                                 background: linear-gradient(135deg, #19390b, #0d1f06);
                                 border: none;
@@ -300,6 +332,177 @@
                             ">
                             <i class="bi bi-pencil-square me-2"></i>Share Your Experience
                         </a>
+                    </div>
+
+                    <!-- Review Modal -->
+                    <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel"
+                        aria-hidden="true" data-bs-backdrop="false">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content review-modal">
+                                <div class="modal-header review-modal__header">
+                                    <div>
+                                        {{-- <p class="review-modal__eyebrow">Share your story</p> --}}
+                                        <h5 class="modal-title review-modal__title" id="reviewModalLabel">Submit a Review</h5>
+                                    </div>
+                                    <button type="button" class="btn-close review-modal__close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body p-4 p-md-5 review-modal__body">
+                                    @if (session('success'))
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            <i class="bi bi-check-circle me-2"></i>
+                                            {{ session('success') }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                        </div>
+                                    @endif
+
+                                    @if (session('error'))
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <i class="bi bi-exclamation-triangle me-2"></i>
+                                            {{ session('error') }}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                        </div>
+                                    @endif
+
+                                    {{-- <div class="review-modal__intro mb-4">
+                                        <div class="review-modal__icon">
+                                            <i class="bi bi-chat-quote-fill"></i>
+                                        </div>
+                                        <p>
+                                            Thank you for taking the time to share your feedback! Your review will be reviewed by
+                                            our team before being published.
+                                        </p>
+                                    </div> --}}
+
+                                    <form action="{{ route('reviews.store') }}" method="POST">
+                                        @csrf
+
+                                        <div class="mb-4">
+                                            <label for="review_name" class="form-label">Your Name <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="text"
+                                                class="form-control @error('name') is-invalid @enderror"
+                                                id="review_name" name="name"
+                                                value="{{ old('name', Auth::user()->name) }}" required readonly>
+                                            @error('name')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label for="review_country" class="form-label">Country <span
+                                                    class="text-danger">*</span></label>
+                                            @php
+                                                $reviewCountries = \App\Models\Country::listCountries();
+                                                $userCountry = old('country_code') ?? (Auth::user()?->country ?? '');
+                                            @endphp
+                                            <select id="review_country" name="country_code"
+                                                class="form-select @error('country_code') is-invalid @enderror" required>
+                                                <option value="" disabled
+                                                    {{ $userCountry == '' ? 'selected' : '' }}>
+                                                    Select your country
+                                                </option>
+                                                @foreach ($reviewCountries as $code => $name)
+                                                    <option value="{{ $code }}"
+                                                        {{ $userCountry == $code ? 'selected' : '' }}>
+                                                        {{ $name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('country_code')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label for="review_title" class="form-label">Role <span
+                                                    class="text-danger">*</span></label>
+                                            @php
+                                                $reviewRoles = [
+                                                    'Student',
+                                                    'Teacher',
+                                                    'Head of Department',
+                                                    'Principal',
+                                                    'Tutor',
+                                                    'Parent',
+                                                    'Administrator',
+                                                    'Other',
+                                                ];
+                                            @endphp
+                                            <select id="review_title" name="title"
+                                                class="form-select @error('title') is-invalid @enderror" required>
+                                                <option value="" disabled
+                                                    {{ old('title') == '' ? 'selected' : '' }}>
+                                                    Select your role
+                                                </option>
+                                                @foreach ($reviewRoles as $role)
+                                                    <option value="{{ $role }}"
+                                                        {{ old('title') == $role ? 'selected' : '' }}>
+                                                        {{ $role }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('title')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label class="form-label">Rating <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="star-rating review-modal__stars">
+                                                <input type="radio" id="home_star5" name="rating" value="5"
+                                                    {{ old('rating', 5) == 5 ? 'checked' : '' }} />
+                                                <label for="home_star5" title="5 stars"><i
+                                                        class="bi bi-star-fill"></i></label>
+
+                                                <input type="radio" id="home_star4" name="rating" value="4"
+                                                    {{ old('rating') == 4 ? 'checked' : '' }} />
+                                                <label for="home_star4" title="4 stars"><i
+                                                        class="bi bi-star-fill"></i></label>
+
+                                                <input type="radio" id="home_star3" name="rating" value="3"
+                                                    {{ old('rating') == 3 ? 'checked' : '' }} />
+                                                <label for="home_star3" title="3 stars"><i
+                                                        class="bi bi-star-fill"></i></label>
+
+                                                <input type="radio" id="home_star2" name="rating" value="2"
+                                                    {{ old('rating') == 2 ? 'checked' : '' }} />
+                                                <label for="home_star2" title="2 stars"><i
+                                                        class="bi bi-star-fill"></i></label>
+
+                                                <input type="radio" id="home_star1" name="rating" value="1"
+                                                    {{ old('rating') == 1 ? 'checked' : '' }} />
+                                                <label for="home_star1" title="1 star"><i
+                                                        class="bi bi-star-fill"></i></label>
+                                            </div>
+                                            @error('rating')
+                                                <div class="text-danger small mt-1">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label for="review_comment" class="form-label">Your Review <span
+                                                    class="text-danger">*</span></label>
+                                            <textarea class="form-control review-modal__textarea @error('comment') is-invalid @enderror"
+                                                id="review_comment" name="comment" rows="6" maxlength="1000" required>{{ old('comment') }}</textarea>
+                                            <div class="form-text">Maximum 1000 characters</div>
+                                            @error('comment')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+
+                                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                            <button type="button" class="btn btn-outline-secondary review-modal__btn-ghost"
+                                                data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn review-modal__btn-primary">
+                                                <i class="bi bi-send me-2"></i>Submit Review
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 @endif
 
@@ -370,6 +573,149 @@
                 .review-indicator {
                     width: 12px !important;
                     height: 12px !important;
+                }
+            }
+
+            .modal .star-rating {
+                direction: rtl;
+                display: inline-flex;
+                font-size: 2rem;
+                gap: 5px;
+            }
+
+            .modal .star-rating input[type="radio"] {
+                display: none;
+            }
+
+            .modal .star-rating label {
+                color: #ddd;
+                cursor: pointer;
+                transition: color 0.2s;
+            }
+
+            .modal .star-rating label:hover,
+            .modal .star-rating label:hover~label,
+            .modal .star-rating input[type="radio"]:checked~label {
+                color: #ffc107;
+            }
+
+            .review-modal {
+                border: 0;
+                border-radius: 22px;
+                overflow: hidden;
+                background: radial-gradient(circle at top right, rgba(25, 57, 11, 0.08), transparent 55%),
+                    #ffffff;
+                box-shadow: 0 24px 80px rgba(15, 23, 42, 0.25);
+            }
+
+            .modal {
+                z-index: 3000 !important;
+                position: fixed !important;
+            }
+
+            .modal-backdrop {
+                z-index: 2990 !important;
+            }
+
+            .modal-open .navbar.sticky-top {
+                z-index: 1000 !important;
+            }
+
+            .review-modal__header {
+                border: 0;
+                padding: 28px 32px 16px;
+                background: linear-gradient(135deg, rgba(25, 57, 11, 0.08), rgba(13, 31, 6, 0.03));
+            }
+
+            .review-modal__eyebrow {
+                margin: 0 0 6px;
+                font-size: 0.75rem;
+                font-weight: 700;
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                color: #6b7280;
+            }
+
+            .review-modal__title {
+                font-size: 1.6rem;
+                font-weight: 800;
+                color: #0f172a;
+                margin: 0;
+            }
+
+            .review-modal__close {
+                border-radius: 999px;
+                border: 1px solid rgba(15, 23, 42, 0.12);
+                background: #ffffff;
+                padding: 8px;
+            }
+
+            .review-modal__body {
+                padding-top: 8px;
+            }
+
+            .review-modal__intro {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                padding: 16px 18px;
+                border-radius: 14px;
+                color: #475569;
+                font-weight: 500;
+            }
+
+            .review-modal__icon {
+                width: 42px;
+                height: 42px;
+                border-radius: 12px;
+                background: rgba(25, 57, 11, 0.12);
+                color: #19390b;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.1rem;
+                flex-shrink: 0;
+            }
+
+            .review-modal__textarea {
+                min-height: 150px;
+                resize: vertical;
+                border-radius: 12px;
+            }
+
+            .review-modal__stars {
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                padding: 10px 14px;
+                border-radius: 12px;
+            }
+
+            .review-modal__btn-primary {
+                background: linear-gradient(135deg, #19390b, #0d1f06);
+                color: #fff;
+                border: 0;
+                font-weight: 700;
+                padding: 10px 20px;
+                border-radius: 12px;
+            }
+
+            .review-modal__btn-ghost {
+                border-radius: 12px;
+            }
+
+            @media (max-width: 768px) {
+                .review-modal__header {
+                    padding: 22px 20px 12px;
+                }
+
+                .review-modal__title {
+                    font-size: 1.35rem;
+                }
+
+                .review-modal__intro {
+                    flex-direction: column;
                 }
             }
         </style>
@@ -659,6 +1005,20 @@
                         }
                     });
                 });
+            }
+
+            const shouldOpenReviewModal = @json($errors->any() || session('success') || session('error'));
+            if (shouldOpenReviewModal) {
+                const reviewModalEl = document.getElementById('reviewModal');
+                if (reviewModalEl && window.bootstrap) {
+                    const reviewModal = new bootstrap.Modal(reviewModalEl);
+                    reviewModal.show();
+                }
+            }
+
+            const reviewModalEl = document.getElementById('reviewModal');
+            if (reviewModalEl && reviewModalEl.parentElement !== document.body) {
+                document.body.appendChild(reviewModalEl);
             }
         });
     </script>
