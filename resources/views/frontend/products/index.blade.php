@@ -135,6 +135,7 @@
                                 @if (request('sort'))
                                     @php
                                         $sortLabels = [
+                                            'sort' => 'Sort Order',
                                             'name' => 'Name A-Z',
                                             'name_desc' => 'Name Z-A',
                                             'price' => 'Price Low-High',
@@ -252,6 +253,9 @@
                                 <div class="col-12">
                                     <label for="sort" class="form-label">Sort By</label>
                                     <select class="form-select" id="sort" name="sort">
+                                        <option value="sort" {{ request('sort') == 'sort' ? 'selected' : '' }}>
+                                            Sort Order
+                                        </option>
                                         <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest First
                                         </option>
                                         <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Name A-Z</option>

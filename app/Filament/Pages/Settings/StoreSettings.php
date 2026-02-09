@@ -237,41 +237,6 @@ class StoreSettings extends BaseSettings
                                         ->default('We truly believe great education changes lives; it shapes how learners think, make decisions, and understand the world around them. Our goal is not just to help learners pass exams, but to equip them with the knowledge and perspective to navigate their futures with confidence, curiosity, and purpose. Through EMS, we aim to build a generation of independent thinkers, ready to understand the world, and improve it.')
                                         ->helperText('Second paragraph of your mission.'),
                                 ]),
-                            Section::make('Our Focus/Values')
-                                ->description('Define your core values and focus areas.')
-                                ->schema([
-                                    TextInput::make('about.values_heading')
-                                        ->label('Values Section Heading')
-                                        ->default('Our Focus')
-                                        ->helperText('Heading for the values section.'),
-                                    TextInput::make('about.value_1_title')
-                                        ->label('Value 1 Title')
-                                        ->default('Curriculum Precision')
-                                        ->helperText('Title for the first value.'),
-                                    Textarea::make('about.value_1_description')
-                                        ->label('Value 1 Description')
-                                        ->rows(2)
-                                        ->default('Every EMS resource is built and trimmed in alignment with exact exam board specifications, ensuring accuracy, consistency, and complete syllabus coverage.')
-                                        ->helperText('Description for the first value.'),
-                                    TextInput::make('about.value_2_title')
-                                        ->label('Value 2 Title')
-                                        ->default('Teacher Empowerment')
-                                        ->helperText('Title for the second value.'),
-                                    Textarea::make('about.value_2_description')
-                                        ->label('Value 2 Description')
-                                        ->rows(2)
-                                        ->default('We give teachers ready-to-use, time-saving materials that enhance lesson delivery and boost classroom confidence.')
-                                        ->helperText('Description for the second value.'),
-                                    TextInput::make('about.value_3_title')
-                                        ->label('Value 3 Title')
-                                        ->default('Learner Achievement')
-                                        ->helperText('Title for the third value.'),
-                                    Textarea::make('about.value_3_description')
-                                        ->label('Value 3 Description')
-                                        ->rows(2)
-                                        ->default('Our ultimate aim! Our structured resources simplify complex content, helping learners see the bigger picture, master content and excel in exams.')
-                                        ->helperText('Description for the third value.'),
-                                ]),
                             Section::make('Team Section')
                                 ->description('Configure the team section heading.')
                                 ->schema([
@@ -416,6 +381,7 @@ class StoreSettings extends BaseSettings
                         ]),
                     Tabs\Tab::make('Home Page')
                         ->schema([
+
                             Section::make('Our Focus Section')
                                 ->description('Configure the "Our Focus" section on the home page.')
                                 ->schema([
@@ -441,6 +407,41 @@ class StoreSettings extends BaseSettings
                                         ->image()
                                         ->directory('settings/home')
                                         ->helperText('Upload an image for the focus section (recommended size: 800x600px).'),
+                                ]),
+                            Section::make('Our Focus/Values')
+                                ->description('Define your core values and focus areas.')
+                                ->schema([
+                                    TextInput::make('about.values_heading')
+                                        ->label('Values Section Heading')
+                                        ->default('Our Focus')
+                                        ->helperText('Heading for the values section.'),
+                                    TextInput::make('about.value_1_title')
+                                        ->label('Value 1 Title')
+                                        ->default('Curriculum Precision')
+                                        ->helperText('Title for the first value.'),
+                                    Textarea::make('about.value_1_description')
+                                        ->label('Value 1 Description')
+                                        ->rows(2)
+                                        ->default('Every EMS resource is built and trimmed in alignment with exact exam board specifications, ensuring accuracy, consistency, and complete syllabus coverage.')
+                                        ->helperText('Description for the first value.'),
+                                    TextInput::make('about.value_2_title')
+                                        ->label('Value 2 Title')
+                                        ->default('Teacher Empowerment')
+                                        ->helperText('Title for the second value.'),
+                                    Textarea::make('about.value_2_description')
+                                        ->label('Value 2 Description')
+                                        ->rows(2)
+                                        ->default('We give teachers ready-to-use, time-saving materials that enhance lesson delivery and boost classroom confidence.')
+                                        ->helperText('Description for the second value.'),
+                                    TextInput::make('about.value_3_title')
+                                        ->label('Value 3 Title')
+                                        ->default('Learner Achievement')
+                                        ->helperText('Title for the third value.'),
+                                    Textarea::make('about.value_3_description')
+                                        ->label('Value 3 Description')
+                                        ->rows(2)
+                                        ->default('Our ultimate aim! Our structured resources simplify complex content, helping learners see the bigger picture, master content and excel in exams.')
+                                        ->helperText('Description for the third value.'),
                                 ]),
                             Section::make('Reviews Carousel')
                                 ->description('Configure the reviews carousel at the bottom of the home page.')

@@ -67,7 +67,7 @@ class ProductController extends Controller
         }
 
         // Sort products
-        $sort = $request->get('sort', 'name');
+        $sort = $request->get('sort', 'sort');
 
         // Handle sorting with _desc suffix
         if (str_ends_with($sort, '_desc')) {
@@ -80,6 +80,9 @@ class ProductController extends Controller
         switch ($sort) {
             case 'price':
                 $query->orderBy('price', $direction);
+                break;
+            case 'sort':
+                $query->orderBy('sort_order', 'asc')->orderBy('created_at', 'desc');
                 break;
             case 'newest':
                 $query->orderBy('created_at', 'desc');

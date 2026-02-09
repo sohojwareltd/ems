@@ -48,6 +48,11 @@ class ProductResource extends Resource
                                 ->required()
                                 ->prefix('$')
                                 ->helperText('Current selling price.'),
+                            Forms\Components\TextInput::make('sort_order')
+                                ->label('Sort')
+                                ->numeric()
+                                ->default(0)
+                                ->helperText('Lower numbers appear first.'),
                             // Forms\Components\Select::make('category_id')
                             //     ->label('Category')
                             //     ->relationship('category', 'name')
@@ -199,9 +204,9 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            Tables\Columns\TextColumn::make('id')
-                ->label('ID')
-                ->sortable(),
+            // Tables\Columns\TextColumn::make('id')
+            //     ->label('ID')
+            //     ->sortable(),
             Tables\Columns\ImageColumn::make('thumbnail')->label('Thumbnail')->size(40),
             Tables\Columns\TextColumn::make('name')->searchable(),
             Tables\Columns\TextColumn::make('price')
@@ -213,6 +218,9 @@ class ProductResource extends Resource
                 )
                 ->html()
                 ->tooltip('Shows the price'),
+            Tables\Columns\TextColumn::make('sort_order')
+                ->label('Sort')
+                ->sortable(),
             Tables\Columns\TextColumn::make('status')->sortable(),
             Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
         ])->filters([

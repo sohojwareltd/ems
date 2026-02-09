@@ -30,6 +30,7 @@ class Product extends Model
         'ppt_file',
         'zip_file',
         'is_featured',
+        'sort_order',
     ];
 
     protected $casts = [
@@ -38,6 +39,7 @@ class Product extends Model
         'options' => 'array',
         'published_at' => 'datetime',
         'is_digital' => 'boolean',
+        'sort_order' => 'integer',
     ];
 
     /**

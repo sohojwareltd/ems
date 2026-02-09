@@ -110,6 +110,7 @@ class ReviewResource extends Resource
                             ->helperText('Only active reviews will be displayed'),
                         
                         Forms\Components\TextInput::make('sort_order')
+                            ->label('Sort')
                             ->numeric()
                             ->default(0)
                             ->helperText('Lower numbers appear first'),
@@ -159,8 +160,8 @@ class ReviewResource extends Resource
                     ->sortable(),
                 
                 Tables\Columns\TextColumn::make('sort_order')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Sort')
+                    ->sortable(),
                 
                 Tables\Columns\IconColumn::make('is_featured')
                     ->boolean()
