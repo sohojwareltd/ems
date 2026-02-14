@@ -229,7 +229,7 @@ Route::get('/test-order-confirmation/{order}', function (Order $order) {
 })->name('test.order-confirmation');
 
 Route::get('/test-verification-email', function () { 
-    Mail::to('brobbey95@outlook.com')->send(new \App\Mail\TestVerificationMail());
+    Mail::to('ahmedtamim19050@gmail.com')->send(new \App\Mail\TestVerificationMail());
     return 'Verification email sent!';
 })->name('test.verification-email');
 
