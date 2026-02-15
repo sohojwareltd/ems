@@ -450,6 +450,10 @@ class StoreSettings extends BaseSettings
                                         ->label('Show Reviews Carousel')
                                         ->default(true)
                                         ->helperText('Toggle to show or hide the reviews carousel section.'),
+                                    TextInput::make('home.reviews_badge_text')
+                                        ->label('Badge Text')
+                                        ->default('Tell us what you think')
+                                        ->helperText('Small badge text above the heading.'),
                                     TextInput::make('home.reviews_heading')
                                         ->label('Section Heading')
                                         ->default('What Our Users Say')

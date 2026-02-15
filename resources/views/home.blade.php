@@ -198,7 +198,7 @@
                             border-radius: 50px;
                             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
                         ">
-                        <i class="bi bi-star-fill me-2"></i>Tell us what you think
+                        <i class="bi bi-star-fill me-2"></i>{{ setting('home.reviews_badge_text', 'Tell us what you think') }}
                     </span>
                 </div>
                 <h2 class="section-title mb-3"
@@ -262,6 +262,15 @@
                                                         style="color: #374151; font-size: 0.98rem; line-height: 1.7; margin: 0; flex: 1; overflow: hidden;">
                                                         {{ Str::limit($review->content, 180) }}
                                                     </p>
+                                                    @if (Str::length($review->content) > 180)
+                                                        <button type="button"
+                                                            class="btn btn-link p-0 align-self-start"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#reviewContentModal-{{ $review->id }}"
+                                                            style="font-size: 0.9rem; font-weight: 600; color: #19390b; text-decoration: none;">
+                                                            Show more
+                                                        </button>
+                                                    @endif
 
                                                     <div style="border-top: 1px solid #e5e7eb; margin: 6px 0; flex-shrink: 0;"></div>
 
@@ -281,6 +290,34 @@
                                                             @endif --}}
                                                         </div>
                                                     </div>
+                                                    @if (Str::length($review->content) > 180)
+                                                        <div class="modal fade" id="reviewContentModal-{{ $review->id }}"
+                                                            tabindex="-1" aria-labelledby="reviewContentModalLabel-{{ $review->id }}"
+                                                            aria-hidden="true" data-bs-backdrop="false"
+                                                            data-bs-keyboard="false">
+                                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title"
+                                                                            id="reviewContentModalLabel-{{ $review->id }}">
+                                                                            {{ $review->heading ?: ($review->name ?: 'Happy learner') }}
+                                                                        </h5>
+                                                                        <button type="button" class="btn-close"
+                                                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p style="color: #374151; font-size: 1rem; line-height: 1.8; margin: 0;">
+                                                                            {{ $review->content }}
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary text-white"
+                                                                            data-bs-dismiss="modal" style="background:linear-gradient(135deg, #19390b, #0d1f06)">Close</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         @endforeach
@@ -746,7 +783,7 @@
             @php
                 $featuredProducts = \App\Models\Product::where('status', 'active')
                     ->where('is_featured', true)
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('sort_order', 'desc')
                     ->limit(8)
                     ->get();
             @endphp
@@ -1009,6 +1046,19 @@
                             indicator.classList.remove('active');
                             indicator.setAttribute('aria-current', 'false');
                         }
+                    });
+                });
+            }
+
+            const reviewContentModals = document.querySelectorAll('[id^="reviewContentModal-"]');
+            if (reviewsCarousel && reviewContentModals.length && window.bootstrap) {
+                const carouselInstance = bootstrap.Carousel.getOrCreateInstance(reviewsCarousel);
+                reviewContentModals.forEach((modalEl) => {
+                    modalEl.addEventListener('show.bs.modal', function() {
+                        carouselInstance.pause();
+                    });
+                    modalEl.addEventListener('hidden.bs.modal', function() {
+                        carouselInstance.cycle();
                     });
                 });
             }
