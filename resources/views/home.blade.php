@@ -783,7 +783,7 @@
             @php
                 $featuredProducts = \App\Models\Product::where('status', 'active')
                     ->where('is_featured', true)
-                    ->orderBy('sort_order', 'desc')
+                    ->orderBy('sort_order', 'asc')
                     ->limit(8)
                     ->get();
             @endphp
