@@ -282,7 +282,7 @@
                                                         @endif
                                                         <div style="flex: 1;">
                                                             <div style="font-weight: 700; color: #0f172a;">
-                                                                {{ $review->name }} - ({{ $review->title }} )</div>
+                                                                {{ $review->name }}  ({{ $review->title }} )</div>
                                                             {{-- @if ($review->title)
                                                                 <div
                                                                     style="color: #4b5563; font-weight: 600; font-size: 0.95rem;">
