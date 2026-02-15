@@ -222,7 +222,9 @@ class ProductResource extends Resource
                 ->label('Sort')
                 ->sortable(),
             Tables\Columns\TextColumn::make('status')->sortable(),
-            Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable(),
+            Tables\Columns\ToggleColumn::make('is_featured')
+                ->label('Featured')
+                ->sortable(),
         ])->filters([
             Tables\Filters\SelectFilter::make('status')
                 ->options([
