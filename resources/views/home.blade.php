@@ -290,34 +290,6 @@
                                                             @endif --}}
                                                         </div>
                                                     </div>
-                                                    @if (Str::length($review->content) > 180)
-                                                        <div class="modal fade" id="reviewContentModal-{{ $review->id }}"
-                                                            tabindex="-1" aria-labelledby="reviewContentModalLabel-{{ $review->id }}"
-                                                            aria-hidden="true" data-bs-backdrop="false"
-                                                            data-bs-keyboard="false">
-                                                            <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="reviewContentModalLabel-{{ $review->id }}">
-                                                                            {{ $review->heading ?: ($review->name ?: 'Happy learner') }}
-                                                                        </h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <p style="color: #374151; font-size: 1rem; line-height: 1.8; margin: 0;">
-                                                                            {{ $review->content }}
-                                                                        </p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary text-white"
-                                                                            data-bs-dismiss="modal" style="background:linear-gradient(135deg, #19390b, #0d1f06)">Close</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
                                                 </div>
                                             </div>
                                         @endforeach
@@ -351,6 +323,35 @@
                     </div>
                 </div>
             </div>
+
+            @foreach ($featuredReviews as $review)
+                @if (Str::length($review->content) > 180)
+                    <div class="modal fade" id="reviewContentModal-{{ $review->id }}" tabindex="-1"
+                        aria-labelledby="reviewContentModalLabel-{{ $review->id }}" aria-hidden="true"
+                        data-bs-backdrop="false" data-bs-keyboard="false">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="reviewContentModalLabel-{{ $review->id }}">
+                                        {{ $review->heading ?: ($review->name ?: 'Happy learner') }}
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p style="color: #374151; font-size: 1rem; line-height: 1.8; margin: 0;">
+                                        {{ $review->content }}
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary text-white" data-bs-dismiss="modal"
+                                        style="background:linear-gradient(135deg, #19390b, #0d1f06)">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endforeach
 
             <!-- Share Review Button -->
             @auth
