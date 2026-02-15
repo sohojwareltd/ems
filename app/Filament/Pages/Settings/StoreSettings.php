@@ -78,15 +78,7 @@ class StoreSettings extends BaseSettings
                                     Textarea::make('store.footer_text')
                                         ->label('Footer Text')
                                         ->helperText('Footer text displayed at the bottom of each page.'),
-                                    TextInput::make('store.learners_impacted')
-                                        ->label('Learners Impacted')
-                                        ->helperText('Number of learners impacted by your store.'),
-                                    TextInput::make('store.teachers_empowered')
-                                        ->label('Teachers Empowered')
-                                        ->helperText('Number of teachers empowered by your store.'),
-                                    TextInput::make('store.resources_created')
-                                        ->label('Resources Created')
-                                        ->helperText('Number of resources created by your store.'),
+
                                     // TextInput::make('store.currency')
                                     //     ->label('Store Currency')
                                     //     ->default('USD')
@@ -237,6 +229,24 @@ class StoreSettings extends BaseSettings
                                         ->default('We truly believe great education changes lives; it shapes how learners think, make decisions, and understand the world around them. Our goal is not just to help learners pass exams, but to equip them with the knowledge and perspective to navigate their futures with confidence, curiosity, and purpose. Through EMS, we aim to build a generation of independent thinkers, ready to understand the world, and improve it.')
                                         ->helperText('Second paragraph of your mission.'),
                                 ]),
+                            Section::make('Our Impact')
+                                ->description('Describe your impact and achievements.')
+                                ->schema([
+                                    Toggle::make('store.show_mission_stats')
+                                        ->label('Show Mission Stats')
+                                        ->default(true)
+                                        ->helperText('Toggle to show or hide the mission stats on the About page.'),
+                                    TextInput::make('store.learners_impacted')
+                                        ->label('Learners Impacted')
+                                        ->helperText('Number of learners impacted by your store.'),
+                                    TextInput::make('store.teachers_empowered')
+                                        ->label('Teachers Empowered')
+                                        ->helperText('Number of teachers empowered by your store.'),
+                                    TextInput::make('store.resources_created')
+                                        ->label('Resources Created')
+                                        ->helperText('Number of resources created by your store.'),
+                                ]),
+
                             Section::make('Our Focus Section')
                                 ->description('Configure the "Our Focus" section on the home page.')
                                 ->schema([

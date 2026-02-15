@@ -123,35 +123,37 @@
                             </p>
                         @endif
 
-                        <div class="mission-stats row text-center">
-                            <div class="col-4">
-                                <div class="stat-item">
-                                    @if (setting('store.learners_impacted'))
-                                        <h3 class="fw-bold" style="color: var(--primary-color);">
-                                            {{ setting('store.learners_impacted') }}</h3>
-                                        <p class="text-muted">Learners Impacted</p>
-                                    @endif
+                        @if (setting('store.show_mission_stats', true))
+                            <div class="mission-stats row text-center">
+                                <div class="col-4">
+                                    <div class="stat-item">
+                                        @if (setting('store.learners_impacted'))
+                                            <h3 class="fw-bold" style="color: var(--primary-color);">
+                                                {{ setting('store.learners_impacted') }}</h3>
+                                            <p class="text-muted">Learners Impacted</p>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="stat-item">
+                                        @if (setting('store.teachers_empowered'))
+                                            <h3 class="fw-bold" style="color: var(--primary-color);">
+                                                {{ setting('store.teachers_empowered') }}</h3>
+                                            <p class="text-muted">Teachers Empowered</p>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="stat-item">
+                                        @if (setting('store.resources_created'))
+                                            <h3 class="fw-bold" style="color: var(--primary-color);">
+                                                {{ setting('store.resources_created') }}</h3>
+                                            <p class="text-muted">Resources Created</p>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-4">
-                                <div class="stat-item">
-                                    @if (setting('store.teachers_empowered'))
-                                        <h3 class="fw-bold" style="color: var(--primary-color);">
-                                            {{ setting('store.teachers_empowered') }}</h3>
-                                        <p class="text-muted">Teachers Empowered</p>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="col-4">
-                                <div class="stat-item">
-                                    @if (setting('store.resources_created'))
-                                        <h3 class="fw-bold" style="color: var(--primary-color);">
-                                            {{ setting('store.resources_created') }}</h3>
-                                        <p class="text-muted">Resources Created</p>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
                 <div class="col-lg-6">
