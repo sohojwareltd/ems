@@ -21,6 +21,11 @@ class SliderResource extends Resource
     
     protected static ?int $navigationSort = 3;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Slider::query()->count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form

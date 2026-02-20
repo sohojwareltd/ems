@@ -21,6 +21,11 @@ class EssayResource extends Resource
     protected static ?string $navigationGroup = 'Catalogue';
     protected static ?int $navigationSort = 7;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Essay::query()->count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form->schema([

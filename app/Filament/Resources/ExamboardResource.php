@@ -20,6 +20,11 @@ class ExamboardResource extends Resource
     protected static ?string $navigationGroup = 'Catalogue';
     protected static ?int $navigationSort = 5;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Examboard::query()->count();
+    }
+
     // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

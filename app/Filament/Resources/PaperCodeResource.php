@@ -25,6 +25,11 @@ class PaperCodeResource extends Resource
     protected static ?string $navigationGroup = 'Catalogue';
     protected static ?int $navigationSort = 2;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) PaperCode::query()->count();
+    }
+
 
     public static function form(Form $form): Form
     {

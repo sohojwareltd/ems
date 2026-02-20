@@ -23,6 +23,11 @@ class CouponResource extends Resource
     protected static ?string $navigationGroup = 'Sales';
     protected static ?int $navigationSort = 2;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Coupon::query()->count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form->schema([

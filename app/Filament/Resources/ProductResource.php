@@ -22,6 +22,11 @@ class ProductResource extends Resource
     protected static ?string $navigationGroup = 'Catalogue';
     protected static ?int $navigationSort = 6;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Product::query()->count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form->schema([

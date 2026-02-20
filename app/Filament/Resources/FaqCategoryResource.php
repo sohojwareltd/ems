@@ -21,6 +21,11 @@ class FaqCategoryResource extends Resource
     
     protected static ?int $navigationSort = 4;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) FaqCategory::query()->count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
