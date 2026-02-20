@@ -14,7 +14,8 @@
         <div style="margin: 15px 0; font-size: 16px; color: #1f2937;"><strong style="display: inline-block; min-width: 150px; color: #19390b;">First Name:</strong> {{ $data['first_name'] }}</div>
         <div style="margin: 15px 0; font-size: 16px; color: #1f2937;"><strong style="display: inline-block; min-width: 150px; color: #19390b;">Last Name:</strong> {{ $data['last_name'] }}</div>
         <div style="margin: 15px 0; font-size: 16px; color: #1f2937;"><strong style="display: inline-block; min-width: 150px; color: #19390b;">Email:</strong> {{ $data['email'] }}</div>
-        <div style="margin: 15px 0; font-size: 16px; color: #1f2937;"><strong style="display: inline-block; min-width: 150px; color: #19390b;">Phone:</strong> {{ $data['phone'] ?? 'N/A' }}</div>
+        <div style="margin: 15px 0; font-size: 16px; color: #1f2937;"><strong style="display: inline-block; min-width: 150px; color: #19390b;">Phone:</strong>{{$data['phone_full'] ?? ($data['phone'] ?? 'N/A')}}</div>
+        <div style="margin: 15px 0; font-size: 16px; color: #1f2937;"><strong style="display: inline-block; min-width: 150px; color: #19390b;">Category:</strong> {{ $data['contact_category_name'] ?? 'N/A' }}</div>
         {{-- <div style="margin: 15px 0; font-size: 16px; color: #333;"><strong style="display: inline-block; min-width: 150px; color: #222;">Subject:</strong> {{ $data['subject'] }}</div> --}}
         <div style="margin: 15px 0; font-size: 16px; color: #1f2937;"><strong style="display: inline-block; min-width: 150px; color: #19390b;">Message:</strong><br><span style="display: block; margin-left: 150px;">{!! nl2br(e($data['message'])) !!}</span></div>
 

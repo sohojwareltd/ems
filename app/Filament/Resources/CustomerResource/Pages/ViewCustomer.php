@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\CustomerResource\Pages;
 
 use App\Filament\Resources\CustomerResource;
+use App\Models\Country;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Infolists;
@@ -46,7 +47,30 @@ class ViewCustomer extends ViewRecord
                                     ->icon('heroicon-o-envelope'),
                                 TextEntry::make('phone')
                                     ->label('Phone Number')
-                                    ->icon('heroicon-o-phone'),
+                                    ->icon('heroicon-o-phone')
+                                    ->getStateUsing(function ($record) {
+                                        if (empty($record->phone)) {
+                                            return 'N/A';
+                                        }
+
+                                        // If no country set, return phone as-is
+                                        if (empty($record->country)) {
+                                            return $record->phone;
+                                        }
+
+                                        // Try to get calling code from country
+                                        $country = Country::query()
+                                            ->where('code', $record->country)
+                                            ->orWhere('name', $record->country)
+                                            ->first();
+
+                                        if (!$country || empty($country->calling_code)) {
+                                            return $record->phone;
+                                        }
+
+                                        // Format as: +880 1705065919
+                                        return sprintf('+%s %s', ltrim($country->calling_code, '+'), $record->phone);
+                                    }),
                                 TextEntry::make('role.display_name')
                                     ->label('Account Type')
                                     ->badge()

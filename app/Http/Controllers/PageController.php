@@ -8,6 +8,8 @@ use App\Models\Essay;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Contact;
+use App\Models\ContactCategory;
+use App\Models\Country;
 use App\Models\Resource;
 use App\Models\Qualification;
 use App\Models\Subject;
@@ -46,10 +48,53 @@ class PageController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:25',
+            'country_code' => 'nullable|string|max:10',
+            'country_code_hidden' => 'nullable|string|max:10',
+            'country_name' => 'nullable|string|max:255',
             'contact_category_id' => 'required|exists:contact_categories,id',
             'message' => 'required|string',
             // 'newsletter' => 'nullable|in:on,true,1,0,false',
         ]);
+
+        $submittedCountryCode = $data['country_code_hidden'] ?? $data['country_code'] ?? null;
+        if (!empty($submittedCountryCode)) {
+            $submittedCountryCode = trim($submittedCountryCode);
+            if (!str_starts_with($submittedCountryCode, '+')) {
+                $submittedCountryCode = '+' . ltrim($submittedCountryCode, '+');
+            }
+        }
+
+        $notificationData = $data;
+
+        $contactCategory = ContactCategory::find($data['contact_category_id']);
+        $notificationData['contact_category_name'] = $contactCategory?->name;
+
+        $country = null;
+        if (!empty($submittedCountryCode)) {
+            $country = Country::query()->where('calling_code', $submittedCountryCode)->first();
+        }
+
+        $resolvedCountryName = $country?->name ?? ($data['country_name'] ?? null);
+
+        $data['country_code'] = $submittedCountryCode;
+        $data['country_name'] = $resolvedCountryName;
+
+        if (!empty($submittedCountryCode)) {
+            $notificationData['country_code_display'] = $submittedCountryCode;
+            $notificationData['country_name'] = $resolvedCountryName;
+        }
+
+        if (!empty($data['phone'])) {
+            if (!empty($submittedCountryCode) && !empty($resolvedCountryName)) {
+                $notificationData['phone_full'] = sprintf('%s (%s)%s', $resolvedCountryName, $submittedCountryCode, $data['phone']);
+            } elseif (!empty($submittedCountryCode)) {
+                $notificationData['phone_full'] = sprintf('(%s)%s', $submittedCountryCode, $data['phone']);
+            } else {
+                $notificationData['phone_full'] = $data['phone'];
+            }
+        }
+
+        unset($data['country_code_hidden']);
 
         // Set default status for new enquiries
         $data['status'] = Contact::STATUS_NEW;
@@ -61,7 +106,7 @@ class PageController extends Controller
         // $admins = User::where('role_id', 1)->get();
 
 
-        Mail::to('info@economicsmadesimple.com')->send(new ContactFormNotification($data));
+        Mail::to('info@economicsmadesimple.com')->send(new ContactFormNotification($notificationData));
 
 
         return redirect()->back()->with('success', 'Your enquiry has been submitted successfully! We will respond shortly.');

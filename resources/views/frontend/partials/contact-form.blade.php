@@ -72,6 +72,10 @@
                                                 </option>
                                             @endforeach
                                         </select>
+                                        <input type="hidden" id="country_code_hidden" name="country_code_hidden"
+                                            value="{{ old('country_code_hidden', old('country_code', '+880')) }}">
+                                        <input type="hidden" id="country_name" name="country_name"
+                                            value="{{ old('country_name') }}">
                                         <input type="tel" class="form-control @error('phone') is-invalid @enderror"
                                             id="phone" name="phone" placeholder="Enter WhatsApp Number"
                                             value="{{ old('phone', auth()->user()->phone ?? '') }}">
@@ -118,3 +122,34 @@
         </div>
     </div>
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const countrySelect = document.getElementById('country_code');
+        const hiddenCountryCode = document.getElementById('country_code_hidden');
+        const hiddenCountryName = document.getElementById('country_name');
+
+        if (!countrySelect || !hiddenCountryCode || !hiddenCountryName) {
+            return;
+        }
+
+        const updateHiddenCountryFields = () => {
+            const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+            const selectedCode = countrySelect.value || '';
+
+            hiddenCountryCode.value = selectedCode;
+
+            if (!selectedOption || !selectedCode) {
+                hiddenCountryName.value = '';
+                return;
+            }
+
+            const optionLabel = selectedOption.textContent || '';
+            const countryName = optionLabel.replace(/\s*\([^)]*\)\s*$/, '').trim();
+            hiddenCountryName.value = countryName;
+        };
+
+        updateHiddenCountryFields();
+        countrySelect.addEventListener('change', updateHiddenCountryFields);
+    });
+</script>

@@ -153,7 +153,7 @@
             </div>
 
             <!-- Review Prompt -->
-            @if ($order->payment_status === 'paid' && $order->orderLines->count() > 0)
+            @if ($order->payment_status === 'paid' && $order->orderLines && $order->orderLines->count() > 0)
                 <div class="card mb-4" style="border: 2px solid #00b22d;">
                     <div class="card-body text-center p-4">
                         <h5 class="mb-3"><i class="bi bi-star text-warning"></i> Love Your Purchase?</h5>

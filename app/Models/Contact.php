@@ -13,6 +13,8 @@ class Contact extends Model
         'last_name',
         'email',
         'phone',
+        'country_code',
+        'country_name',
         'contact_category_id',
         'message',
         'status',
