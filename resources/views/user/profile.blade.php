@@ -130,6 +130,16 @@
                                         @enderror
                                     </div>
                                 </div>
+
+                                <div class="col-md-12 mb-3">
+                                    <label for="current_password_profile" class="form-label fw-semibold">Current Password</label>
+                                    <input type="password"
+                                        class="form-control @error('current_password') is-invalid @enderror"
+                                        id="current_password_profile" name="current_password" required>
+                                    @error('current_password')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
 
 

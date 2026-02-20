@@ -58,6 +58,7 @@ class UserController extends Controller
         $user = Auth::user();
 
         $request->validate([
+            'current_password' => 'required|current_password',
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'phone' => 'nullable|string|max:20',

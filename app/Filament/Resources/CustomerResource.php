@@ -25,6 +25,11 @@ class CustomerResource extends Resource
     protected static ?string $navigationGroup = 'People';
     protected static ?int $navigationSort = 1;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getEloquentQuery()->count();
+    }
+
     public static function getModelLabel(): string
     {
         return 'Customer';

@@ -24,6 +24,11 @@ class AdminUserResource extends Resource
     protected static ?string $navigationGroup = 'People';
     protected static ?int $navigationSort = 2;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getEloquentQuery()->count();
+    }
+
     public static function getEloquentQuery(): Builder
     {
         // Only show admin users

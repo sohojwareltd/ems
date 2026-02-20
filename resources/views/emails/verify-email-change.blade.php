@@ -8,13 +8,14 @@
     <style>
         :root {
             --primary: #19390b;
-            --accent-bg: #f5f5f5;
-            --text-light: #666;
-            --border-color: #E0E0E0;
+            --primary-dark: #0d1f06;
+            --accent-bg: #f5f8f2;
+            --text-light: #647067;
+            --border-color: #dbe5d5;
         }
         body {
             font-family: 'Inter', Arial, sans-serif;
-            background: #faf9f7;
+            background: linear-gradient(135deg, #f8f9ff 0%, #f5f8f2 50%, #ffffff 100%);
             color: #333;
             margin: 0;
             padding: 0;
@@ -24,13 +25,16 @@
             margin: 40px auto;
             background: #fff;
             border-radius: 18px;
-            box-shadow: 0 4px 32px rgba(25,57,11,0.10);
+            box-shadow: 0 12px 36px rgba(15, 23, 42, 0.14);
             border: 1px solid var(--border-color);
             padding: 40px 32px;
         }
         .header {
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
+            padding: 18px 20px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(25, 57, 11, 0.08), rgba(13, 31, 6, 0.04));
         }
         .header .brand {
             font-family: 'Playfair Display', serif;
@@ -43,14 +47,14 @@
         .header .title {
             font-family: 'Playfair Display', serif;
             font-size: 1.3rem;
-            color: #2E2E2E;
+            color: #0f172a;
             font-weight: 700;
             margin-bottom: 0.5em;
         }
         .divider {
             width: 60px;
             height: 4px;
-            background: linear-gradient(90deg, var(--primary), #2d5a15);
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
             border-radius: 2px;
             margin: 32px auto 24px auto;
         }
@@ -69,24 +73,29 @@
             border-radius: 8px;
             padding: 16px 20px;
             margin-bottom: 24px;
-            color: #4A3F35;
+            color: #1f2937;
         }
         .button {
             text-align: center;
             margin: 32px 0;
         }
         .button a {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 14px 32px;
+            padding: 12px 34px;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 40px;
             display: inline-block;
-            font-weight: 500;
-            transition: opacity 0.3s;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            transition: all 0.25s ease;
         }
         .button a:hover {
             opacity: 0.9;
+            transform: translateY(-1px);
         }
         .warning {
             background: #fff3cd;

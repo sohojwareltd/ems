@@ -26,6 +26,11 @@ class TeamResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) Team::query()->count();
+    }
+
     public static function form(Form $form): Form
     {
         return $form
