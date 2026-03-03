@@ -1,33 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Verify Email</title>
-</head>
-<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-        <h2 style="color: #00b22d;">Verify Your Email Address</h2>
-        
-        <p>Hello {{ $user->name }},</p>
-        
-        <p>Thank you for registering with EMS. Please click the button below to verify your email address:</p>
-        
-        <div style="text-align: center; margin: 30px 0;">
-            <a href="{{ $url }}" style="background-color: #00b22d; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
-                Verify Email Address
-            </a>
-        </div>
-        
-        <p>If you did not create an account, no further action is required.</p>
-        
-        <p>If you're having trouble clicking the button, copy and paste the URL below into your web browser:</p>
-        <p style="word-break: break-all; color: #666;">{{ $url }}</p>
-        
-        <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
-        
-        <p style="font-size: 12px; color: #666;">
-            This is an automated email. Please do not reply to this message.
-        </p>
+<x-emails.base title="Verify Your Email Address">
+    <p>Hello {{ $user->name }},</p>
+    <p>Thank you for registering with {{ setting('store.name', config('app.name')) }}.</p>
+    <p>Please verify your email address to complete your account setup.</p>
+
+    <div class="btn-wrap">
+        <a href="{{ $url }}" class="btn">Verify Email Address</a>
     </div>
-</body>
-</html>
+
+    <div class="panel">
+        <p class="muted" style="margin: 0; word-break: break-all;">{{ $url }}</p>
+    </div>
+
+    <p class="muted">If you did not create this account, no further action is required.</p>
+</x-emails.base>

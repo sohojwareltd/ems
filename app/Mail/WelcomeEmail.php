@@ -25,7 +25,7 @@ class WelcomeEmail extends Mailable
     public function build()
     {
         return $this->subject('Welcome to EMS!')
-            ->markdown('emails.welcome')
+            ->view('emails.welcome')
             ->with(['user' => $this->user, 'password' => $this->password]);
     }
 }

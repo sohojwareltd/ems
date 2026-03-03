@@ -1,23 +1,15 @@
-@component('mail::message')
-# Welcome, {{ $user->name }}!
+<x-emails.base title="Your Account Has Been Created">
+    <p>Hello {{ $user->name }},</p>
+    <p>Your account is ready. Use the credentials below to sign in:</p>
 
-Your account has been created for you at <strong>{{ setting('store.name', config('app.name')) }}</strong>.
-<br>
-<br>
-<strong>Email:</strong> {{ $user->email }}  
-<br>
-<strong>Temporary Password:</strong> {{ $password }}
+    <div class="panel">
+        <p style="margin: 0 0 8px;"><strong>Email:</strong> {{ $user->email }}</p>
+        <p style="margin: 0;"><strong>Temporary Password:</strong> {{ $password }}</p>
+    </div>
 
-<br>
-<br>
-Please log in and change your password after your first login.
+    <p>Please change your password after first login.</p>
 
-@component('mail::button', ['url' => url('/login')])
-Log In
-@endcomponent
-
-If you have any questions, feel free to reply to this email.
-
-Thanks,<br>
-The <strong>{{ setting('store.name', config('app.name')) }}</strong> Team
-@endcomponent 
+    <div class="btn-wrap">
+        <a href="{{ url('/login') }}" class="btn">Log In</a>
+    </div>
+</x-emails.base>

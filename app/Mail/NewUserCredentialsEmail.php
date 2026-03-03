@@ -22,7 +22,7 @@ class NewUserCredentialsEmail extends Mailable
     public function build()
     {
         return $this->subject('Your Account Has Been Created')
-            ->markdown('emails.new-user-credentials')
+            ->view('emails.new-user-credentials')
             ->with([
                 'user' => $this->user,
                 'password' => $this->password,
