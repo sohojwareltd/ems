@@ -8,6 +8,7 @@ use App\Models\ProductReview;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class ReviewController extends Controller
 {
@@ -52,7 +53,12 @@ class ReviewController extends Controller
             'comment' => 'required|string|max:1000',
             'rating' => 'required|integer|min:1|max:5',
             'country_code' => 'required|string|size:2',
-            'title' => 'required|string|max:255',
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::exists('review_roles', 'name')->where(fn ($query) => $query->where('is_active', true)),
+            ],
         ]);
 
         Review::create([

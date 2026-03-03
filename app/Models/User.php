@@ -52,6 +52,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'state',
         'zip',
         'country',
+        'country_code',
         'stripe_customer_id',
     ];
 

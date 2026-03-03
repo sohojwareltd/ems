@@ -462,16 +462,11 @@
                                             <label for="review_title" class="form-label">Role <span
                                                     class="text-danger">*</span></label>
                                             @php
-                                                $reviewRoles = [
-                                                    'Student',
-                                                    'Teacher',
-                                                    'Head of Department',
-                                                    'Principal',
-                                                    'Tutor',
-                                                    'Parent',
-                                                    'Administrator',
-                                                    'Other',
-                                                ];
+                                                $reviewRoles = \App\Models\ReviewRole::query()
+                                                    ->where('is_active', true)
+                                                    ->orderBy('sort_order')
+                                                    ->orderBy('name')
+                                                    ->pluck('name');
                                             @endphp
                                             <select id="review_title" name="title"
                                                 class="form-select @error('title') is-invalid @enderror" required>
@@ -690,7 +685,7 @@
             .review-modal__close {
                 border-radius: 999px;
                 border: 1px solid rgba(15, 23, 42, 0.12);
-                background: #ffffff;
+                /* background: #ffffff; */
                 padding: 8px;
             }
 

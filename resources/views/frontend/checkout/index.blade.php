@@ -71,6 +71,15 @@
 
                                 @php
                                     $countries = App\Models\Country::listCountries();
+                                    $selectedBillingCountry = old('billing_address.country');
+
+                                    if (!$selectedBillingCountry && $user) {
+                                        $selectedBillingCountry = $user->country;
+
+                                        if (!$selectedBillingCountry) {
+                                            $selectedBillingCountry = array_search($user->country, $countries, true) ?: '';
+                                        }
+                                    }
                                 @endphp
                                 <div class="mb-3">
                                     <label for="billing_country" class="form-label">Country *</label>
@@ -78,8 +87,8 @@
                                         required>
                                         <option value="">Select Country</option>
                                         @foreach ($countries as $code => $name)
-                                            <option value="{{ $name }}"
-                                                {{ old('billing_address.country', $user ? $user->country : '') == $name ? 'selected' : '' }}>
+                                            <option value="{{ $code }}"
+                                                {{ $selectedBillingCountry == $code ? 'selected' : '' }}>
                                                 {{ $name }}</option>
                                         @endforeach
                                     </select>

@@ -30,6 +30,7 @@ class Product extends Model
         'ppt_file',
         'zip_file',
         'is_featured',
+        'is_purchasable',
         'sort_order',
     ];
 
@@ -39,6 +40,7 @@ class Product extends Model
         'options' => 'array',
         'published_at' => 'datetime',
         'is_digital' => 'boolean',
+        'is_purchasable' => 'boolean',
         'sort_order' => 'integer',
     ];
 

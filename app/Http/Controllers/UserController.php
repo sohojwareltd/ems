@@ -61,6 +61,7 @@ class UserController extends Controller
             'current_password' => 'required|current_password',
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
+            'country_code' => 'nullable|string|max:10',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
             'city' => 'nullable|string|max:100',
@@ -72,6 +73,7 @@ class UserController extends Controller
         $user->update($request->only([
             'name',
             'lastname',
+            'country_code',
             'phone',
             'address',
             'city',

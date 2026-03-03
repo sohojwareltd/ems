@@ -1,12 +1,22 @@
 @props(['product'])
 <div class="product-card-premium h-100 d-flex flex-column position-relative">
 
+    @php
+        $isPurchasable = $product->is_purchasable ?? true;
+    @endphp
+
     <!-- Product Image -->
-    <div class="premium-image-wrapper d-flex align-items-center justify-content-center bg-white rounded-top-4" style="width:100%;height:220px;overflow:hidden;">
+    <div class="premium-image-wrapper d-flex align-items-center justify-content-center bg-white rounded-top-4 position-relative" style="width:100%;height:220px;overflow:hidden;">
        <a href="{{ route('products.show', $product->slug) }}">
            <img src="{{ $product->image_url }}" class="premium-product-image" alt="{{ $product->name }}" style="max-width:100%;max-height:100%;object-fit:contain;display:block;">
 
        </a>
+        @unless($isPurchasable)
+            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                style="background: rgba(0, 0, 0, 0.35); z-index: 2;">
+                <span class="badge bg-warning text-dark px-3 py-2" style="font-size: 0.9rem;">Coming Soon</span>
+            </div>
+        @endunless
     </div>
     <!-- Card Body -->
     <div class="premium-card-body flex-grow-1 d-flex flex-column justify-content-between p-4 bg-white rounded-bottom-4">

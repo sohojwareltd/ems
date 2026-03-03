@@ -66,7 +66,6 @@ class AdminPanelProvider extends PanelProvider
                     ->collapsed(),
                 NavigationGroup::make()
                     ->label('Content Management')
-                    ->icon('heroicon-o-document-text')
                     ->collapsed(),
                 NavigationGroup::make()
                     ->label('People')

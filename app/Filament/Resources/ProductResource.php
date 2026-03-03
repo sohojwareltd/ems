@@ -102,6 +102,10 @@ class ProductResource extends Resource
                                 ->label('Featured Product')
                                 ->helperText('Mark this product as featured on the homepage or spotlight areas.')
                                 ->default(false),
+                            Toggle::make('is_purchasable')
+                                ->label('Purchasable')
+                                ->helperText('Turn off to show this product as Coming Soon on the storefront.')
+                                ->default(true),
                             Forms\Components\RichEditor::make('description')
                                 ->columnSpanFull()
                                 ->helperText('Detailed product description.'),
@@ -230,6 +234,9 @@ class ProductResource extends Resource
             Tables\Columns\ToggleColumn::make('is_featured')
                 ->label('Featured')
                 ->sortable(),
+            Tables\Columns\IconColumn::make('is_purchasable')
+                ->label('Purchasable')
+                ->boolean(),
         ])->filters([
             Tables\Filters\SelectFilter::make('status')
                 ->options([

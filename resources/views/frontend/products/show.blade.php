@@ -410,8 +410,13 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">&nbsp;</label>
-                                <button type="submit" class="btn custom-btn-outline w-100 btn-lg">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart
+                                <button type="submit" class="btn custom-btn-outline w-100 btn-lg"
+                                    {{ ($product->is_purchasable ?? true) ? '' : 'disabled' }}>
+                                    @if($product->is_purchasable ?? true)
+                                        <i class="bi bi-cart-plus"></i> Add to Cart
+                                    @else
+                                        <i class="bi bi-clock"></i> Coming Soon
+                                    @endif
                                 </button>
                             </div>
                         </div>
@@ -701,6 +706,13 @@
         // Add to cart form submission
         $(document).on('submit', '#add-to-cart-form', function(e) {
             e.preventDefault();
+
+            const isPurchasable = @json((bool) ($product->is_purchasable ?? true));
+
+            if (!isPurchasable) {
+                showToast('This product is coming soon and is not purchasable yet.', 'warning');
+                return;
+            }
 
             const button = $(this).find('button[type="submit"]');
             const originalText = button.html();

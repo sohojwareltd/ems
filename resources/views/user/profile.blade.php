@@ -108,13 +108,21 @@
                                             id="country_code" name="country_code" style="max-width: 190px;">
                                             <option value="">Code</option>
                                             @php
-                                                $countries = \App\Models\Country::query()
-                                                    ->orderByRaw('LOWER(name) ASC')
-                                                    ->get();
+                                                    $countries = \App\Models\Country::query()
+                                                        ->orderByRaw('LOWER(name) ASC')
+                                                        ->get();
+
+                                                    $selectedCountryCode = old('country_code');
+
+                                                    if (!$selectedCountryCode) {
+                                                        $selectedCountryCode = $user->country_code
+                                                            ?? optional($countries->firstWhere('code', $user->country))->calling_code
+                                                            ?? '+880';
+                                                    }
                                             @endphp
                                             @foreach ($countries as $country)
                                                 <option value="{{ $country->calling_code }}"
-                                                    {{ old('country_code', '+880') == $country->calling_code ? 'selected' : '' }}>
+                                                        {{ $selectedCountryCode == $country->calling_code ? 'selected' : '' }}>
                                                     {{ $country->name }} ({{ $country->calling_code }})
                                                 </option>
                                             @endforeach
