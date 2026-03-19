@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Plan;
 use App\Models\Subscription;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Payment;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Stripe\PaymentIntent;
-use Stripe\Price;
-use Stripe\Product;
 use Stripe\Stripe;
 use Stripe\PaymentMethod;
 use Stripe\SetupIntent;
@@ -34,29 +35,60 @@ class SubscriptionController extends Controller
 
     public function getSetupIntent()
     {
+        $user = $this->currentUser();
+
         return response()->json([
-            'clientSecret' => auth()->user()->createSetupIntent()->client_secret,
+            'clientSecret' => $user->createSetupIntent()->client_secret,
         ]);
     }
 
     public function subscriptionsPayment($id)
     {
         $plan = Plan::findOrFail($id);
-        $user = Auth::user();
+        $clientSecret = null;
 
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-
+        if (filled(env('STRIPE_SECRET')) && filled(env('STRIPE_KEY'))) {
+            $user = $this->currentUser();
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+            $clientSecret = $user->createSetupIntent()->client_secret;
+        }
 
         return view('frontend.pages.subscriptions.payment', [
             'plan' => $plan,
-            'clientSecret' => auth()->user()->createSetupIntent()->client_secret,
+            'clientSecret' => $clientSecret,
         ]);
     }
 
 
     public function subscribe(Request $request, Plan $plan)
     {
-        $user = auth()->user();
+        $user = $this->currentUser();
+        $validated = $request->validate([
+            'coupon_code' => ['nullable', 'string', 'max:255'],
+            'payment_method' => ['nullable', 'string'],
+        ]);
+
+        $couponCode = trim((string) ($validated['coupon_code'] ?? ''));
+
+        if ($couponCode !== '') {
+            try {
+                $subscription = $this->createCouponSubscription($plan, $user, $couponCode);
+
+                return redirect()->route('dashboard')->with('success', 'Subscription activated successfully with coupon access.');
+            } catch (ValidationException $exception) {
+                return back()
+                    ->withInput()
+                    ->withErrors($exception->errors())
+                    ->with('error', $exception->errors()['coupon_code'][0] ?? 'Invalid coupon code.');
+            }
+        }
+
+        if (blank($validated['payment_method'] ?? null)) {
+            return back()
+                ->withInput()
+                ->with('error', 'Payment details are required unless you use a valid coupon code.');
+        }
+
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         // 1. Setup customer & payment method
@@ -67,11 +99,7 @@ class SubscriptionController extends Controller
         $startsAt = now();
         $trialStartsAt = $startsAt;
         $trialEndsAt = $trialDays > 0 ? $startsAt->copy()->addDays($trialDays) : null;
-        $endsAt = match ($plan->interval) {
-            'month' => ($trialEndsAt ?? $startsAt)->copy()->addMonth(),
-            'year' => ($trialEndsAt ?? $startsAt)->copy()->addYear(),
-            default => ($trialEndsAt ?? $startsAt),
-        };
+        $endsAt = $plan->calculateStandardEndDate($trialEndsAt ?? $startsAt);
 
         $paymentIntent = null;
         $paymentMethod = PaymentMethod::retrieve($request->payment_method);
@@ -131,6 +159,7 @@ class SubscriptionController extends Controller
                 'stripe_charge_id' => $paymentIntent->charges->data[0]->id ?? null,
                 'amount' => $plan->price,
                 'currency' => 'usd',
+                'type' => 'subscription',
                 'paid_at' => Carbon::now(),
                 'failed_at' => null,
                 'status' => $paymentIntent->status,
@@ -179,11 +208,66 @@ class SubscriptionController extends Controller
         }
 
         // Reset previous default
-        $user->subscriptions()->update(['type' => false]);
+        Subscription::where('user_id', $user->id)->update(['type' => null]);
 
         // Set current as default
-        $subscription->update(['is_default' => true]);
+        $subscription->update(['type' => 'default']);
 
         return back()->with('success', 'Default subscription updated successfully.');
+    }
+
+    protected function currentUser(): User
+    {
+        /** @var User $user */
+        $user = Auth::user();
+
+        return $user;
+    }
+
+    protected function createCouponSubscription(Plan $plan, $user, string $couponCode): Subscription
+    {
+        return DB::transaction(function () use ($plan, $user, $couponCode) {
+            $lockedPlan = Plan::query()->lockForUpdate()->findOrFail($plan->id);
+            $validation = $lockedPlan->validateSubscriptionCoupon($couponCode);
+
+            if (! $validation['valid']) {
+                throw ValidationException::withMessages([
+                    'coupon_code' => $validation['message'],
+                ]);
+            }
+
+            $startsAt = now();
+            $endsAt = $lockedPlan->calculateStandardEndDate($startsAt);
+
+            Subscription::where('user_id', $user->id)
+                ->where('type', 'default')
+                ->update(['type' => null]);
+
+            $subscription = Subscription::create([
+                'user_id' => $user->id,
+                'plan_id' => $lockedPlan->id,
+                'stripe_id' => null,
+                'stripe_status' => 'coupon_access',
+                'amount' => 0,
+                'currency' => $lockedPlan->currency,
+                'status' => 'active',
+                'starts_at' => $startsAt,
+                'trial_starts_at' => null,
+                'trial_ends_at' => null,
+                'ends_at' => $endsAt,
+                'type' => 'default',
+                'metadata' => [
+                    'coupon_code' => $validation['code'],
+                    'coupon_applied_at' => now()->toDateTimeString(),
+                    'coupon_max_uses' => $lockedPlan->coupon_max_uses,
+                    'coupon_total_used_before' => $lockedPlan->coupon_total_used,
+                    'access_mode' => 'coupon',
+                ],
+            ]);
+
+            $lockedPlan->increment('coupon_total_used');
+
+            return $subscription;
+        });
     }
 }

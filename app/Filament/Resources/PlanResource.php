@@ -3,16 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PlanResource\Pages;
-use App\Filament\Resources\PlanResource\RelationManagers;
 use App\Models\Plan;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\RichEditor;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PlanResource extends Resource
 {
@@ -24,31 +22,68 @@ class PlanResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                RichEditor::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('price')
-                    ->required()
-                    ->numeric()
-                    ->prefix('$'),
-             
-
-                Forms\Components\Select::make('interval')
-                    ->options([
-                        'month' => 'Monthly',
-                        'year' => 'Yearly',
+                Forms\Components\Section::make('Plan Details')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                        RichEditor::make('description')
+                            ->columnSpanFull(),
+                        Forms\Components\TextInput::make('price')
+                            ->required()
+                            ->numeric()
+                            ->prefix('$'),
+                        Forms\Components\TextInput::make('currency')
+                            ->default('usd')
+                            ->required()
+                            ->maxLength(3),
+                        Forms\Components\Select::make('interval')
+                            ->options([
+                                'day' => 'Daily',
+                                'week' => 'Weekly',
+                                'month' => 'Monthly',
+                                'year' => 'Yearly',
+                            ])
+                            ->default('month')
+                            ->required(),
+                        Forms\Components\TextInput::make('interval_count')
+                            ->numeric()
+                            ->default(1)
+                            ->required()
+                            ->minValue(1),
+                        Forms\Components\TextInput::make('trial_period_days')
+                            ->numeric()
+                            ->nullable()
+                            ->minValue(0),
+                        Forms\Components\Toggle::make('active')
+                            ->required(),
                     ])
-                    ->default('Monthly')
-                    ->required(),
-            
-                Forms\Components\TextInput::make('trial_period_days')
-                    ->numeric()
-                    ->nullable(),
-                    
-                Forms\Components\Toggle::make('active')
-                    ->required(),
+                    ->columns(2),
+                Forms\Components\Section::make('Subscription Coupon Access')
+                    ->schema([
+                        Forms\Components\Toggle::make('is_coupon_enabled')
+                            ->label('Enable plan coupon')
+                            ->live(),
+                        Forms\Components\TextInput::make('coupon_code')
+                            ->label('Coupon code')
+                            ->maxLength(255)
+                            ->helperText('Users can activate this plan without bank details using this code.')
+                            ->visible(fn (Get $get): bool => (bool) $get('is_coupon_enabled')),
+                        Forms\Components\TextInput::make('coupon_max_uses')
+                            ->label('Maximum uses')
+                            ->numeric()
+                            ->minValue(1)
+                            ->nullable()
+                            ->visible(fn (Get $get): bool => (bool) $get('is_coupon_enabled')),
+                        Forms\Components\TextInput::make('coupon_total_used')
+                            ->label('Total used')
+                            ->numeric()
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->default(0)
+                            ->visible(fn (Get $get): bool => (bool) $get('is_coupon_enabled')),
+                    ])
+                    ->columns(2),
             ]);
     }
 
@@ -68,6 +103,21 @@ class PlanResource extends Resource
                 Tables\Columns\TextColumn::make('interval_count')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\IconColumn::make('is_coupon_enabled')
+                    ->label('Coupon')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('coupon_code')
+                    ->searchable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('coupon_total_used')
+                    ->label('Used')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('coupon_max_uses')
+                    ->label('Max Uses')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('trial_period_days')
                     ->numeric()
                     ->sortable(),

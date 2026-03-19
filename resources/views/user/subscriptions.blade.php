@@ -45,7 +45,9 @@
                                 <td>
                                     @if ($subscription->metadata)
                                         @php
-                                            $metadata = json_decode($subscription->metadata, true);
+                                            $metadata = is_array($subscription->metadata)
+                                                ? $subscription->metadata
+                                                : json_decode($subscription->metadata, true);
                                             $brand = $metadata['brand'] ?? 'Card';
                                             $last4 = $metadata['last4'] ?? '****';
                                             $expMonth = $metadata['expiry_month'] ?? '';

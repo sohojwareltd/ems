@@ -211,6 +211,47 @@
             opacity: 0.8;
         }
 
+        .coupon-panel {
+            margin-bottom: 24px;
+            padding: 18px;
+            border: 1px solid #d7e6d9;
+            border-radius: 12px;
+            background: #f8fffa;
+        }
+
+        .coupon-panel h3 {
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+            color: #1b4332;
+        }
+
+        .coupon-help {
+            margin: 0;
+            color: #5c6b62;
+            font-size: 0.92rem;
+        }
+
+        .payment-box {
+            margin-top: 20px;
+        }
+
+        .coupon-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.16);
+            font-size: 0.92rem;
+            margin-top: 16px;
+        }
+
+        .payment-note {
+            margin-top: 12px;
+            font-size: 0.92rem;
+            color: #637068;
+        }
+
         @media (max-width: 900px) {
             .container_pay {
                 flex-direction: column;
@@ -247,6 +288,13 @@
                                 <li><i class="fas fa-check"></i> Cancel anytime</li>
                             </ul> --}}
                         </div>
+
+                        @if ($plan->is_coupon_enabled && $plan->coupon_code)
+                            <div class="coupon-badge">
+                                <i class="fas fa-ticket-alt"></i>
+                                <span>Coupon access available for this plan</span>
+                            </div>
+                        @endif
                     </div>
 
                     <div class="secure-notice">
@@ -260,8 +308,8 @@
 
                 <div class="payment-form">
                     <div class="form-header">
-                        <h2>Payment Details</h2>
-                        <p>Complete your subscription with your payment details</p>
+                        <h2>Activate Subscription</h2>
+                        <p>Pay normally or use a valid plan coupon to get immediate access without bank details.</p>
                     </div>
 
                     {{-- <form action="{{ route('payment.method', $plan->id) }}" method="post" id="payment-form">
@@ -324,10 +372,31 @@
 
                     <form id="subscription-form" action="{{ route('subscribe.create', $plan) }}" method="POST">
                         @csrf
-                        <div id="payment-element"></div>
+                        @if ($plan->is_coupon_enabled)
+                            <div class="coupon-panel">
+                                <h3>Have a subscription coupon?</h3>
+                                <p class="coupon-help">Enter the code below. If it matches this plan, payment details will not be required.</p>
+                                <div class="form-group mb-0">
+                                    <label for="coupon_code">Coupon Code</label>
+                                    <input
+                                        type="text"
+                                        id="coupon_code"
+                                        name="coupon_code"
+                                        class="form-control"
+                                        value="{{ old('coupon_code') }}"
+                                        placeholder="Enter coupon code">
+                                </div>
+                            </div>
+                        @endif
+
+                        <div id="stripe-payment-section" class="payment-box">
+                            <div id="payment-element"></div>
+                            <p class="payment-note">Leave the coupon field empty to continue with card payment.</p>
+                        </div>
+
                         <input type="hidden" name="payment_method" id="paymentmethod">
                         <input id="card-holder-name" type="hidden" value="{{ auth()->user()->name }}">
-                        <button type="submit" class="btn custom-btn mt-3">Subscribe</button>
+                        <button type="submit" class="btn custom-btn mt-3" id="subscription-submit">Subscribe</button>
                     </form>
 
                 </div>
@@ -408,52 +477,103 @@
         });
     </script> --}}
     <script src="https://js.stripe.com/v3/"></script>
+    @if (session('error') || session('success') || $errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                @if (session('error'))
+                    toastr.error(@json(session('error')));
+                @endif
+
+                @if (session('success'))
+                    toastr.success(@json(session('success')));
+                @endif
+
+                @if ($errors->any())
+                    toastr.error(@json($errors->first()));
+                @endif
+            });
+        </script>
+    @endif
     <script>
-        const stripe = Stripe("{{ env('STRIPE_KEY') }}");
+        const stripeKey = @json(env('STRIPE_KEY'));
+        const stripe = stripeKey ? Stripe(stripeKey) : null;
 
 
         document.addEventListener("DOMContentLoaded", async function() {
             const paymentMethodInput = document.getElementById("paymentmethod");
             const form = document.getElementById('subscription-form');
-            const clientSecret = "{{ $clientSecret }}";
+            const clientSecret = @json($clientSecret);
+            const couponInput = document.getElementById('coupon_code');
+            const paymentSection = document.getElementById('stripe-payment-section');
+            const submitButton = document.getElementById('subscription-submit');
+            let elements = null;
 
-            const elements = stripe.elements({
-                clientSecret,
-                paymentMethodCreation: 'manual',
-            });
+            const hasCouponCode = () => couponInput && couponInput.value.trim() !== '';
 
-            const paymentElement = elements.create('payment');
-            paymentElement.mount('#payment-element');
+            const updatePaymentMode = () => {
+                const usingCoupon = hasCouponCode();
 
-            // Enable button once payment element is fully mounted
-            const submitButton = document.querySelector('#subscription-form button[type="submit"]');
-            submitButton.addEventListener("click", async (e) => {
+                if (paymentSection) {
+                    paymentSection.style.display = usingCoupon ? 'none' : 'block';
+                }
+
+                submitButton.textContent = usingCoupon ? 'Activate Subscription' : 'Subscribe';
+            };
+
+            if (couponInput) {
+                couponInput.addEventListener('input', updatePaymentMode);
+                updatePaymentMode();
+            }
+
+            if (stripe && clientSecret) {
+                elements = stripe.elements({
+                    clientSecret,
+                    paymentMethodCreation: 'manual',
+                });
+
+                const paymentElement = elements.create('payment');
+                paymentElement.mount('#payment-element');
+            }
+
+            form.addEventListener('submit', async function(e) {
+                if (hasCouponCode()) {
+                    paymentMethodInput.value = '';
+                    return;
+                }
+
                 e.preventDefault();
-                elements.submit();
-                const {
-                    error,
-                    paymentMethod
-                } = await stripe.createPaymentMethod({
+
+                if (!stripe || !elements) {
+                    toastr.error('Payment service is currently unavailable. Please use a valid coupon or try again later.');
+                    return;
+                }
+
+                submitButton.disabled = true;
+
+                const submitResult = await elements.submit();
+                if (submitResult.error) {
+                    toastr.error(submitResult.error.message || 'Unable to submit payment details.');
+                    submitButton.disabled = false;
+                    return;
+                }
+
+                const { error, paymentMethod } = await stripe.createPaymentMethod({
                     elements,
                     params: {
                         billing_details: {
-                            name: document.getElementById("card-holder-name").value,
+                            name: document.getElementById('card-holder-name').value,
                         },
                     },
                 });
-                paymentMethodInput.value = paymentMethod.id;
-
-                form.submit();
 
                 if (error) {
-                    toastr.error(error.message || "Something went wrong. Try again.");
-                } else {
-
-                    document.getElementById('paymentmethod').value = paymentIntent.payment_method;
-                    toastr.success("Payment submitted successfully!");
-
-                    form.submit();
+                    toastr.error(error.message || 'Something went wrong. Try again.');
+                    submitButton.disabled = false;
+                    return;
                 }
+
+                paymentMethodInput.value = paymentMethod.id;
+                form.submit();
             });
         });
     </script>
