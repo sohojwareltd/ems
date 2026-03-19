@@ -129,7 +129,7 @@
 
                             <!-- Password Row -->
                             <div class="row">
-                                <div class="col-md-6 mb-4">
+                                {{-- <div class="col-md-6 mb-4">
                                     <label for="birthdate" class="form-label">
                                         <i class="fas fa-calendar-alt me-2 text-muted"></i>
                                         Date of Birth
@@ -143,7 +143,7 @@
                                             {{ $message }}
                                         </div>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 {{-- <div class="col-md-6 mb-4">
                                     <label for="stage">
                                         <i class="fas fa-graduation-cap me-2 text-muted"></i>

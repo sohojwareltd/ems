@@ -80,7 +80,6 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'lastname' => $data['lastname'],
             'email' => $data['email'],
-            'birthdate' => Carbon::createFromFormat('d/m/Y', $data['birthdate'])->format('Y-m-d'),
             'country' => $data['country'],
             'role_id' => 2,
             'phone' => $data['phone'],
