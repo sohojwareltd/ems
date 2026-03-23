@@ -96,7 +96,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12 mb-4">
+                            <!-- <div class="col-md-12 mb-4">
                                 <label for="phone" class="form-label">WhatsApp Number</label>
                                 <div class="input-group">
                                     <select class="form-select @error('country_code') is-invalid @enderror"
@@ -124,7 +124,7 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            </div>
+                            </div> -->
 
 
                             <!-- Password Row -->
@@ -167,7 +167,7 @@
                                 @php
                                     $Country = App\Models\Country::all()->pluck('name')->toArray();
                                 @endphp
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-12 mb-4">
                                     <label for="country" class="form-label">
                                         <i class="fas fa-globe me-2 text-muted"></i>
                                         Country
