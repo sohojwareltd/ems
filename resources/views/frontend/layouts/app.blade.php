@@ -154,6 +154,9 @@
                                         href="{{ route('user.subscription') }}"><i class="fa-regular fa-file "
                                             style="color: var(--primary-color)"></i>
                                         Subscriptions</a></li>
+                                <li><a class="dropdown-item" href="{{ route('user.subscription.claim-access-code') }}"><i
+                                            class="fas fa-ticket-alt me-2" style="color: var(--primary-color)"></i>Claim
+                                        Access Code</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -234,6 +237,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('user.orders.index') }}"><i class="bi bi-bag me-2"></i>My
                             Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('user.subscription.claim-access-code') }}"><i
+                                class="fas fa-ticket-alt me-2"></i>Claim Access Code</a>
                     </li>
                     <li>
                         <hr class="dropdown-divider">

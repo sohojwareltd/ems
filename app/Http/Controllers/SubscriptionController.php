@@ -33,6 +33,78 @@ class SubscriptionController extends Controller
         return view('user.subscriptions', compact('subscriptions'));
     }
 
+    public function showClaimAccessCode()
+    {
+        return view('user.claim-access-code');
+    }
+
+    public function searchClaimAccessCode(Request $request)
+    {
+        $validated = $request->validate([
+            'coupon_code' => ['required', 'string', 'max:255'],
+        ]);
+
+        $couponCode = trim((string) $validated['coupon_code']);
+
+        $plan = Plan::query()
+            ->where('active', true)
+            ->where('is_hide', false)
+            ->where('is_coupon_enabled', true)
+            ->whereRaw('UPPER(coupon_code) = ?', [strtoupper($couponCode)])
+            ->first();
+
+        if (! $plan) {
+            return back()
+                ->withInput()
+                ->with('error', 'No plan found for this access code.');
+        }
+
+        $validation = $plan->validateSubscriptionCoupon($couponCode);
+
+        if (! $validation['valid']) {
+            return back()
+                ->withInput()
+                ->with('error', $validation['message']);
+        }
+
+        return view('user.claim-access-code', [
+            'matchedPlan' => $plan,
+            'couponCode' => $validation['code'],
+        ]);
+    }
+
+    public function claimAccessCode(Request $request)
+    {
+        $validated = $request->validate([
+            'plan_id' => ['required', 'integer', 'exists:plans,id'],
+            'coupon_code' => ['required', 'string', 'max:255'],
+        ]);
+
+        $plan = Plan::query()
+            ->whereKey($validated['plan_id'])
+            ->where('active', true)
+            ->where('is_hide', false)
+            ->where('is_coupon_enabled', true)
+            ->first();
+
+        if (! $plan) {
+            return back()->with('error', 'The selected plan is not available for coupon access.');
+        }
+
+        $couponCode = trim((string) $validated['coupon_code']);
+
+        try {
+            $this->createCouponSubscription($plan, $this->currentUser(), $couponCode);
+
+            return redirect()->route('user.subscription')->with('success', 'Access claimed successfully.');
+        } catch (ValidationException $exception) {
+            return back()
+                ->withInput()
+                ->withErrors($exception->errors())
+                ->with('error', $exception->errors()['coupon_code'][0] ?? 'Invalid access code.');
+        }
+    }
+
     public function getSetupIntent()
     {
         $user = $this->currentUser();

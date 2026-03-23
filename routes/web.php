@@ -150,6 +150,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('user.products.download');
 
     Route::get('/dashboard/subscriptions', [SubscriptionController::class, 'subscriptions'])->name('user.subscription');
+    Route::get('/dashboard/subscriptions/claim-access-code', [SubscriptionController::class, 'showClaimAccessCode'])->name('user.subscription.claim-access-code');
+    Route::post('/dashboard/subscriptions/claim-access-code/search', [SubscriptionController::class, 'searchClaimAccessCode'])->name('user.subscription.claim-access-code.search');
+    Route::post('/dashboard/subscriptions/claim-access-code/claim', [SubscriptionController::class, 'claimAccessCode'])->name('user.subscription.claim-access-code.claim');
     // Cancel a subscription
     Route::post('/dashboard/subscription/{subscription}/cancel', [SubscriptionController::class, 'cancel'])->name('user.subscription.cancel');
 

@@ -15,9 +15,7 @@
         @endif
 
         @php
-            $visibleSubscriptions = $subscriptions->filter(
-                fn($subscription) => $subscription->plan && !($subscription->plan->is_hide ?? false),
-            );
+            $visibleSubscriptions = $subscriptions;
         @endphp
 
         @if ($visibleSubscriptions->count() > 0)
