@@ -752,12 +752,13 @@
         </div>
         <div class="container-3">
             @php
-                $totalPlans = count($plans);
+                $visiblePlans = collect($plans)->filter(fn($plan) => !($plan->is_hide ?? false));
+                $totalPlans = $visiblePlans->count();
             @endphp
             <div class="pricing-wrapper @if($totalPlans === 1)single-plan @endif">
 
 
-                @foreach ($plans as $plan)
+                @foreach ($visiblePlans as $plan)
                     <div id="Annual-pricing-card"
                         class="pricing-card featured-pricing w-node-_574b3d40-8b40-810a-3abf-631d6f677ea9-836f1a9d">
                         <div class="w-layout-blockcontainer container-11 w-container">
@@ -806,6 +807,12 @@
                         </div>
                     </div>
                 @endforeach
+
+                @if ($totalPlans === 0)
+                    <div class="text-center w-100">
+                        <h3>No plan available at the moment. Try again later.</h3>
+                    </div>
+                @endif
 
             </div>
         </div>

@@ -17,30 +17,37 @@
 
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-body p-4">
-                        <form action="{{ route('user.subscription.claim-access-code.search') }}" method="POST">
-                            @csrf
-                            <div class="mb-3">
-                                <label for="coupon_code" class="form-label fw-semibold">Access Code</label>
-                                <input
-                                    type="text"
-                                    id="coupon_code"
-                                    name="coupon_code"
-                                    class="form-control @error('coupon_code') is-invalid @enderror"
-                                    value="{{ old('coupon_code', $couponCode ?? '') }}"
-                                    placeholder="Enter your access code"
-                                    required>
-                                @error('coupon_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                        @if (!($hasValidSubscription ?? false))
+                            <form action="{{ route('user.subscription.claim-access-code.search') }}" method="POST">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="coupon_code" class="form-label fw-semibold">Access Code</label>
+                                    <input
+                                        type="text"
+                                        id="coupon_code"
+                                        name="coupon_code"
+                                        class="form-control @error('coupon_code') is-invalid @enderror"
+                                        value="{{ old('coupon_code', $couponCode ?? '') }}"
+                                        placeholder="Enter your access code"
+                                        required>
+                                    @error('coupon_code')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <button type="submit" class="btn custom-btn">
+                                    <i class="fas fa-search me-2"></i>Get Code
+                                </button>
+                            </form>
+                        @else
+                            <div class="alert alert-warning mb-0">
+                                <i class="fas fa-info-circle me-2"></i>
+                                You already have an active subscription. New claim is not allowed right now.
                             </div>
-                            <button type="submit" class="btn custom-btn">
-                                <i class="fas fa-search me-2"></i>Get Code
-                            </button>
-                        </form>
+                        @endif
                     </div>
                 </div>
 
-                @if (isset($matchedPlan))
+                @if (isset($matchedPlan) && !($hasValidSubscription ?? false))
                     <div class="card border-0 shadow-sm">
                         <div class="card-header bg-white">
                             <h5 class="mb-0 fw-bold text-dark">

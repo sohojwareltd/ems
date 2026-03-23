@@ -22,7 +22,9 @@ class SubscriptionController extends Controller
     {
         // Fetch available subscription plans from the database
         // $plans = Plan::where('active', true)->get();
-        $plans = Plan::where('active', true)->get();
+        $plans = Plan::where('active', true)
+            ->where('is_hide', false)
+            ->get();
 
         return view('frontend.pages.subscriptions.index', compact('plans'));
     }
@@ -35,11 +37,19 @@ class SubscriptionController extends Controller
 
     public function showClaimAccessCode()
     {
-        return view('user.claim-access-code');
+        return view('user.claim-access-code', [
+            'hasValidSubscription' => $this->userHasValidSubscription($this->currentUser()->id),
+        ]);
     }
 
     public function searchClaimAccessCode(Request $request)
     {
+        if ($this->userHasValidSubscription($this->currentUser()->id)) {
+            return redirect()
+                ->route('user.subscription')
+                ->with('error', 'You already have an active subscription. You cannot claim a new one now.');
+        }
+
         $validated = $request->validate([
             'coupon_code' => ['required', 'string', 'max:255'],
         ]);
@@ -70,11 +80,18 @@ class SubscriptionController extends Controller
         return view('user.claim-access-code', [
             'matchedPlan' => $plan,
             'couponCode' => $validation['code'],
+            'hasValidSubscription' => false,
         ]);
     }
 
     public function claimAccessCode(Request $request)
     {
+        if ($this->userHasValidSubscription($this->currentUser()->id)) {
+            return redirect()
+                ->route('user.subscription')
+                ->with('error', 'You already have an active subscription. You cannot claim a new one now.');
+        }
+
         $validated = $request->validate([
             'plan_id' => ['required', 'integer', 'exists:plans,id'],
             'coupon_code' => ['required', 'string', 'max:255'],
@@ -294,6 +311,15 @@ class SubscriptionController extends Controller
         $user = Auth::user();
 
         return $user;
+    }
+
+    protected function userHasValidSubscription(int $userId): bool
+    {
+        return Subscription::query()
+            ->where('user_id', $userId)
+            ->whereIn('status', ['active', 'trialing'])
+            ->get()
+            ->contains(fn (Subscription $subscription): bool => $subscription->isValid() && ! $subscription->hasEnded());
     }
 
     protected function createCouponSubscription(Plan $plan, $user, string $couponCode): Subscription
