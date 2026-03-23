@@ -14,7 +14,13 @@
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
-        @if ($subscriptions->count() > 0)
+        @php
+            $visibleSubscriptions = $subscriptions->filter(
+                fn($subscription) => $subscription->plan && !($subscription->plan->is_hide ?? false),
+            );
+        @endphp
+
+        @if ($visibleSubscriptions->count() > 0)
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
@@ -30,7 +36,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($subscriptions as $subscription)
+                        @foreach ($visibleSubscriptions as $subscription)
                             <tr>
                                 <td>{{ $subscription->plan->name }}</td>
                                 <td>

@@ -14,6 +14,7 @@ class Plan extends Model
 
     protected $casts = [
         'active' => 'boolean',
+        'is_hide' => 'boolean',
         'features' => 'array',
         'trial_period_days' => 'integer',
         'interval_count' => 'integer',

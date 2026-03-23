@@ -57,6 +57,10 @@ class PlanResource extends Resource
                             ->minValue(0),
                         Forms\Components\Toggle::make('active')
                             ->required(),
+                        Forms\Components\Toggle::make('is_hide')
+                            ->label('Hide')
+                            ->default(false)
+                            ->required(),
                     ])
                     ->columns(2),
                 Forms\Components\Section::make('Subscription Coupon Access')
@@ -122,6 +126,9 @@ class PlanResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('active')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('is_hide')
+                    ->label('Hide')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
