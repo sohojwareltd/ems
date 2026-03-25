@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AdminEmailResource\Pages;
 use App\Models\AdminEmail;
+use App\Models\EmailGroup;
 use App\Services\AdminEmailSender;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -28,17 +29,117 @@ class AdminEmailResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Custom Emails';
 
+    protected static function getEmailGroupOptions(): array
+    {
+        return EmailGroup::query()
+            ->whereNull('parent_id')
+            ->withCount('children')
+            ->orderBy('title')
+            ->get()
+            ->mapWithKeys(fn (EmailGroup $group): array => [
+                $group->id => sprintf('%s (%d child emails)', $group->title, $group->children_count),
+            ])
+            ->all();
+    }
+
     public static function form(Form $form): Form
     {
         return $form->schema([
             Forms\Components\Section::make('Email Setup')
                 ->schema([
-                    Forms\Components\TextInput::make('to_emails')
-                        ->label('To')
-                        ->required()
-                        ->maxLength(65535)
+                    Forms\Components\Select::make('email_groups')
+                        ->label('Email Groups')
+                        ->options(fn (): array => static::getEmailGroupOptions())
+                        ->searchable()
+                        ->preload()
+                        ->multiple()
+                        ->helperText('Each group shows its total child email count.')
+                        ->live(),
+                    Forms\Components\TagsInput::make('to_emails')
+                        ->label('Additional Emails')
                         ->placeholder('first@example.com, second@example.com')
-                        ->helperText('Use comma-separated email addresses, like Gmail recipient input.'),
+                        ->helperText('Optional: Add comma-separated email addresses in addition to selected groups.')
+                        ->separator(',')
+                        ->formatStateUsing(function (array | string | null $state): array {
+                            if (blank($state)) {
+                                return [];
+                            }
+
+                            if (is_array($state)) {
+                                return collect($state)
+                                    ->map(fn (string $email): string => strtolower(trim($email)))
+                                    ->filter()
+                                    ->values()
+                                    ->all();
+                            }
+
+                            return collect(preg_split('/[\s,;]+/', $state) ?: [])
+                                ->map(fn (string $email): string => strtolower(trim($email)))
+                                ->filter()
+                                ->values()
+                                ->all();
+                        })
+                        ->dehydrateStateUsing(fn (?array $state): ?string => blank($state) ? null : implode(', ', $state)),
+                    Forms\Components\TagsInput::make('cc_emails')
+                        ->label('CC Emails')
+                        ->placeholder('cc1@example.com, cc2@example.com')
+                        ->helperText('Optional: Add comma-separated CC recipients.')
+                        ->separator(',')
+                        ->formatStateUsing(function (array | string | null $state): array {
+                            if (blank($state)) {
+                                return [];
+                            }
+
+                            if (is_array($state)) {
+                                return collect($state)
+                                    ->map(fn (string $email): string => strtolower(trim($email)))
+                                    ->filter()
+                                    ->values()
+                                    ->all();
+                            }
+
+                            return collect(preg_split('/[\s,;]+/', $state) ?: [])
+                                ->map(fn (string $email): string => strtolower(trim($email)))
+                                ->filter()
+                                ->values()
+                                ->all();
+                        })
+                        ->dehydrateStateUsing(fn (?array $state): ?string => blank($state) ? null : implode(', ', $state)),
+                    Forms\Components\TagsInput::make('bcc_emails')
+                        ->label('BCC Emails')
+                        ->placeholder('bcc1@example.com, bcc2@example.com')
+                        ->helperText('Optional: Add comma-separated BCC recipients.')
+                        ->separator(',')
+                        ->formatStateUsing(function (array | string | null $state): array {
+                            if (blank($state)) {
+                                return [];
+                            }
+
+                            if (is_array($state)) {
+                                return collect($state)
+                                    ->map(fn (string $email): string => strtolower(trim($email)))
+                                    ->filter()
+                                    ->values()
+                                    ->all();
+                            }
+
+                            return collect(preg_split('/[\s,;]+/', $state) ?: [])
+                                ->map(fn (string $email): string => strtolower(trim($email)))
+                                ->filter()
+                                ->values()
+                                ->all();
+                        })
+                        ->dehydrateStateUsing(fn (?array $state): ?string => blank($state) ? null : implode(', ', $state)),
+                    Forms\Components\FileUpload::make('attachments')
+                        ->label('Attachments')
+                        ->disk('local')
+                        ->directory('admin-email-attachments')
+                        ->multiple()
+                        ->storeFileNamesIn('attachment_file_names')
+                        ->downloadable()
+                        ->openable()
+                        ->helperText('Optional: Upload one or more files to send with this email.')
+                        ->columnSpanFull(),
                     Forms\Components\TextInput::make('subject')
                         ->required()
                         ->maxLength(255),
@@ -78,6 +179,16 @@ class AdminEmailResource extends Resource
                     ->label('Recipients')
                     ->limit(40)
                     ->wrap(),
+                Tables\Columns\TextColumn::make('email_groups')
+                    ->label('Groups')
+                    ->formatStateUsing(function (?array $state): string {
+                        if (blank($state)) {
+                            return '—';
+                        }
+
+                        return (string) count($state);
+                    })
+                    ->badge(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime('d M Y H:i')
                     ->sortable()
@@ -121,12 +232,12 @@ class AdminEmailResource extends Resource
             app(AdminEmailSender::class)->send($record->fresh());
 
             Notification::make()
-                ->title('Email sent successfully')
+                ->title('Email queued successfully')
                 ->success()
                 ->send();
         } catch (\Throwable $throwable) {
             Notification::make()
-                ->title('Email sending failed')
+                ->title('Email queueing failed')
                 ->body($throwable->getMessage())
                 ->danger()
                 ->send();

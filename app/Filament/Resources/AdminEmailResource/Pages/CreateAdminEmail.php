@@ -16,4 +16,9 @@ class CreateAdminEmail extends CreateRecord
 
         return $data;
     }
+
+    protected function afterCreate(): void
+    {
+        AdminEmailResource::sendEmail($this->record);
+    }
 }

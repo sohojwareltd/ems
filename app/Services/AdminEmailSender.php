@@ -11,13 +11,20 @@ class AdminEmailSender
 {
     public function send(AdminEmail $adminEmail): void
     {
-        $to = AdminEmail::parseRecipients($adminEmail->to_emails);
+        $to = $adminEmail->to_recipients;
+        $cc = $adminEmail->cc_recipients;
+        $bcc = $adminEmail->bcc_recipients;
+        $allRecipients = collect([$to, $cc, $bcc])
+            ->flatten()
+            ->filter()
+            ->values()
+            ->all();
 
-        if ($to === []) {
+        if ($allRecipients === []) {
             throw new InvalidArgumentException('At least one recipient email is required.');
         }
 
-        $invalidEmails = collect($to)
+        $invalidEmails = collect($allRecipients)
             ->reject(fn (string $email): bool => filter_var($email, FILTER_VALIDATE_EMAIL) !== false)
             ->values()
             ->all();
@@ -26,8 +33,11 @@ class AdminEmailSender
             throw new InvalidArgumentException('Invalid email address found: ' . implode(', ', $invalidEmails));
         }
 
-        foreach ($to as $recipient) {
-            Mail::to($recipient)->send(new AdminCustomEmail($adminEmail));
-        }
+        Mail::queue(
+            (new AdminCustomEmail($adminEmail))
+                ->to($to)
+                ->cc($cc)
+                ->bcc($bcc)
+        );
     }
 }

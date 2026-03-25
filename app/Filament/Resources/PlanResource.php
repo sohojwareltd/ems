@@ -7,16 +7,35 @@ use App\Models\Plan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\RichEditor;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Unique;
 
 class PlanResource extends Resource
 {
     protected static ?string $model = Plan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static function generateUniqueCouponCode(?int $ignorePlanId = null): string
+    {
+        do {
+            $code = Str::upper(Str::random(8));
+
+            $exists = Plan::query()
+                ->where('coupon_code', $code)
+                ->where('is_coupon_enabled', true)
+                ->where('active', true)
+                ->when($ignorePlanId, fn ($query) => $query->whereKeyNot($ignorePlanId))
+                ->exists();
+        } while ($exists);
+
+        return $code;
+    }
 
     public static function form(Form $form): Form
     {
@@ -63,14 +82,31 @@ class PlanResource extends Resource
                             ->required(),
                     ])
                     ->columns(2),
-                Forms\Components\Section::make('Subscription Coupon Access')
+                Forms\Components\Section::make('Subscription Access Code')
                     ->schema([
                         Forms\Components\Toggle::make('is_coupon_enabled')
-                            ->label('Enable plan coupon')
+                            ->label(' Enable access code')
+                            ->afterStateUpdated(function (Set $set, Get $get, ?bool $state): void {
+                                if (! $state || filled($get('coupon_code'))) {
+                                    return;
+                                }
+
+                                $set('coupon_code', static::generateUniqueCouponCode());
+                            })
                             ->live(),
                         Forms\Components\TextInput::make('coupon_code')
-                            ->label('Coupon code')
+                            ->label('Access code')
+                            ->default(fn (): string => static::generateUniqueCouponCode())
                             ->maxLength(255)
+                            ->required(fn (Get $get): bool => (bool) $get('is_coupon_enabled'))
+                            ->dehydrated(fn (Get $get): bool => (bool) $get('is_coupon_enabled'))
+                            ->dehydrateStateUsing(fn (?string $state): ?string => filled($state) ? Str::upper(trim($state)) : null)
+                            ->unique(
+                                ignoreRecord: true,
+                                modifyRuleUsing: fn (Unique $rule) => $rule
+                                    ->where('is_coupon_enabled', true)
+                                    ->where('active', true),
+                            )
                             ->helperText('Users can activate this plan without bank details using this code.')
                             ->visible(fn (Get $get): bool => (bool) $get('is_coupon_enabled')),
                         Forms\Components\TextInput::make('coupon_max_uses')
