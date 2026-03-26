@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmailLog;
 use App\Models\EmailRecipient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 class PostmarkController extends Controller
@@ -17,38 +19,55 @@ class PostmarkController extends Controller
         try {
             $payload = $request->all();
 
-            // Postmark usually sends sender in FromFull.Email.
-            $fromEmail = data_get($payload, 'FromFull.Email');
+            $senderCandidates = $this->extractSenderCandidates($payload);
 
-            // Fallback: parse plain From header like "John <john@example.com>".
-            if (blank($fromEmail)) {
-                $fromEmail = $this->extractEmailFromFromHeader((string) data_get($payload, 'From', ''));
-            }
-
-            if (blank($fromEmail)) {
+            if ($senderCandidates->isEmpty()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Sender email not found in webhook payload.',
                 ], 422);
             }
 
-            $fromEmail = strtolower(trim($fromEmail));
-
-            // Match pending recipients by sender email and mark as replied.
-            $updatedCount = EmailRecipient::query()
-                ->whereRaw('LOWER(email) = ?', [$fromEmail])
+            // Normalize matching against legacy rows where email may include whitespace casing differences.
+            $matchingRecipients = EmailRecipient::query()
                 ->whereNull('replied_at')
-                ->update([
-                    'replied_at' => now(),
-                    'updated_at' => now(),
+                ->where(function ($query) use ($senderCandidates): void {
+                    foreach ($senderCandidates as $email) {
+                        $query->orWhereRaw('LOWER(TRIM(email)) = ?', [$email]);
+                    }
+                })
+                ->get(['id', 'email_log_id']);
+
+            $updatedCount = 0;
+
+            if ($matchingRecipients->isNotEmpty()) {
+                $updatedCount = EmailRecipient::query()
+                    ->whereIn('id', $matchingRecipients->pluck('id'))
+                    ->update([
+                        'replied_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+
+                $this->refreshEmailLogReplyCounts($matchingRecipients->pluck('email_log_id')->unique()->values());
+            }
+
+            if ($updatedCount === 0) {
+                Log::warning('Postmark inbound webhook did not match pending recipients', [
+                    'sender_candidates' => $senderCandidates->all(),
+                    'subject' => data_get($payload, 'Subject'),
+                    'from' => data_get($payload, 'From'),
+                    'from_full' => data_get($payload, 'FromFull'),
+                    'to' => data_get($payload, 'To'),
+                    'original_recipient' => data_get($payload, 'OriginalRecipient'),
                 ]);
+            }
 
             return response()->json([
                 'success' => true,
                 'message' => $updatedCount > 0
                     ? 'Reply tracked successfully.'
                     : 'No pending recipient found for this sender.',
-                'sender_email' => $fromEmail,
+                'sender_candidates' => $senderCandidates->all(),
                 'updated_count' => $updatedCount,
             ]);
         } catch (\Throwable $e) {
@@ -66,18 +85,69 @@ class PostmarkController extends Controller
     }
 
     /**
-     * Extract email address from From header text.
+     * Build normalized sender email candidates from common Postmark fields.
      */
-    private function extractEmailFromFromHeader(string $from): ?string
+    private function extractSenderCandidates(array $payload): Collection
     {
-        if (preg_match('/<([^>]+)>/', $from, $matches) === 1) {
-            return $matches[1];
+        $rawCandidates = [
+            data_get($payload, 'FromFull.Email'),
+            data_get($payload, 'From'),
+            data_get($payload, 'Sender'),
+            data_get($payload, 'ReplyTo'),
+        ];
+
+        return collect($rawCandidates)
+            ->filter(fn ($value): bool => filled($value))
+            ->flatMap(function ($value): array {
+                if (!is_string($value)) {
+                    return [];
+                }
+
+                return $this->extractEmailsFromText($value);
+            })
+            ->map(fn (string $email): string => strtolower(trim($email)))
+            ->filter(fn (string $email): bool => filter_var($email, FILTER_VALIDATE_EMAIL) !== false)
+            ->unique()
+            ->values();
+    }
+
+    /**
+     * Extract one or more emails from a free-form header/text string.
+     *
+     * @return array<int, string>
+     */
+    private function extractEmailsFromText(string $value): array
+    {
+        $emails = [];
+
+            if (preg_match_all('/[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,}/i', $value, $matches) > 0) {
+            $emails = $matches[0];
         }
 
-        if (filter_var($from, FILTER_VALIDATE_EMAIL)) {
-            return $from;
+        if ($emails === [] && filter_var($value, FILTER_VALIDATE_EMAIL)) {
+            $emails[] = $value;
         }
 
-        return null;
+        return $emails;
+    }
+
+    /**
+     * Recompute reply counters on affected email logs.
+     */
+    private function refreshEmailLogReplyCounts(Collection $emailLogIds): void
+    {
+        if ($emailLogIds->isEmpty()) {
+            return;
+        }
+
+        EmailLog::query()
+            ->whereIn('id', $emailLogIds)
+            ->get()
+            ->each(function (EmailLog $emailLog): void {
+                $emailLog->update([
+                    'replied_count' => $emailLog->repliedRecipients()->count(),
+                    'pending_count' => $emailLog->pendingRecipients()->count(),
+                ]);
+            });
     }
 }
