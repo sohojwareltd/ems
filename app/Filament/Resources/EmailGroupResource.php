@@ -52,14 +52,26 @@ class EmailGroupResource extends Resource
                         ->helperText('Enter and add multiple emails. Each tag is one email.')
                         ->separator(',')
                         ->live()
-                        ->formatStateUsing(function (?string $state): array {
+                        ->formatStateUsing(function (array | string | null $state): array {
                             if (blank($state)) {
                                 return [];
                             }
-                            // Parse comma-separated or semicolon-separated emails
-                            $emails = preg_split('/[,;]/', $state) ?: [];
-                            return array_map(fn ($e) => strtolower(trim($e)), $emails);
-                        }),
+
+                            if (is_array($state)) {
+                                return collect($state)
+                                    ->map(fn (string $email): string => strtolower(trim($email)))
+                                    ->filter()
+                                    ->values()
+                                    ->all();
+                            }
+
+                            return collect(preg_split('/[,;]/', $state) ?: [])
+                                ->map(fn (string $email): string => strtolower(trim($email)))
+                                ->filter()
+                                ->values()
+                                ->all();
+                        })
+                        ->dehydrateStateUsing(fn (?array $state): ?string => blank($state) ? null : implode(',', $state)),
 
                     Forms\Components\FileUpload::make('email_file')
                         ->label('Upload Excel File')

@@ -16,12 +16,12 @@ class ListEmailGroups extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
-            Actions\ExportAction::make()
-                ->exporter(EmailGroupExport::class)
-                ->label('Export Emails'),
-            Actions\ImportAction::make()
-                ->importer(EmailGroupImport::class)
-                ->label('Import Emails'),
+            // Actions\ExportAction::make()
+            //     ->exporter(EmailGroupExport::class)
+            //     ->label('Export Emails'),
+            // Actions\ImportAction::make()
+            //     ->importer(EmailGroupImport::class)
+            //     ->label('Import Emails'),
         ];
     }
 }
