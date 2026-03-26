@@ -53,6 +53,7 @@ class CreateEmailGroup extends CreateRecord
             }
 
             $existingEmails = EmailGroup::query()
+                ->where('parent_id', $data['parent_id'])
                 ->whereIn('email', $emails)
                 ->pluck('email')
                 ->map(fn (string $email) => strtolower($email))
@@ -82,6 +83,7 @@ class CreateEmailGroup extends CreateRecord
 
             $existingRecord = EmailGroup::query()
                 ->whereNotNull('email')
+                ->where('parent_id', $data['parent_id'])
                 ->whereIn('email', $emails)
                 ->first();
 
@@ -103,6 +105,7 @@ class CreateEmailGroup extends CreateRecord
         }
 
         $existingEmails = EmailGroup::query()
+            ->where('parent_id', $group->getKey())
             ->whereIn('email', $emails)
             ->pluck('email')
             ->map(fn (string $email) => strtolower($email))

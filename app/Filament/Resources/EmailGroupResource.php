@@ -10,6 +10,7 @@ use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class EmailGroupResource extends Resource
 {
@@ -26,6 +27,12 @@ class EmailGroupResource extends Resource
     protected static ?string $modelLabel = 'Email Group';
 
     protected static ?string $pluralModelLabel = 'Email Groups';
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->whereNull('parent_id');
+    }
 
     public static function form(Form $form): Form
     {
@@ -91,34 +98,16 @@ class EmailGroupResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('type')
-                    ->label('Type')
-                    ->getStateUsing(fn (EmailGroup $record) => $record->isGroup() ? 'Group' : 'Email')
-                    ->badge()
-                    ->color(fn (string $state) => match ($state) {
-                        'Group' => 'primary',
-                        'Email' => 'success',
-                        default  => 'gray',
-                    }),
+                // Tables\Columns\TextColumn::make('group_type')
+                //     ->label('Parent')
+                //     ->state('Parent')
+                //     ->badge()
+                //     ->color('primary'),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Group Title')
                     ->searchable()
                     ->placeholder('—')
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('email')
-                    ->label('Email')
-                    ->searchable()
-                    ->placeholder('—')
-                    ->copyable()
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('parent.title')
-                    ->label('Parent Group')
-                    ->placeholder('—')
-                    ->badge()
-                    ->color('gray')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('children_count')
@@ -128,33 +117,14 @@ class EmailGroupResource extends Resource
                     ->color('info')
                     ->sortable()
                     ->toggleable(),
-
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d M Y')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('type')
-                    ->label('Type')
-                    ->options([
-                        'group' => 'Groups Only',
-                        'email' => 'Emails Only',
-                    ])
-                    ->query(function ($query, array $data) {
-                        if ($data['value'] === 'group') {
-                            $query->whereNull('parent_id');
-                        } elseif ($data['value'] === 'email') {
-                            $query->whereNotNull('parent_id');
-                        }
-                    }),
-
-                Tables\Filters\SelectFilter::make('parent_id')
-                    ->label('Group')
-                    ->options(fn () => EmailGroup::whereNull('parent_id')->pluck('title', 'id'))
-                    ->placeholder('All Groups'),
+                Tables\Filters\Filter::make('has_emails')
+                    ->label('Has Emails')
+                    ->query(fn (Builder $query): Builder => $query->has('children')),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -177,6 +147,7 @@ class EmailGroupResource extends Resource
         return [
             'index'  => Pages\ListEmailGroups::route('/'),
             'create' => Pages\CreateEmailGroup::route('/create'),
+            'view'   => Pages\ViewEmailGroup::route('/{record}'),
             'edit'   => Pages\EditEmailGroup::route('/{record}/edit'),
         ];
     }

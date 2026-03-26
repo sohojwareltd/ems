@@ -181,8 +181,19 @@ class AdminEmailResource extends Resource
                     ->wrap(),
                 Tables\Columns\TextColumn::make('email_groups')
                     ->label('Groups')
-                    ->formatStateUsing(function (?array $state): string {
+                    ->formatStateUsing(function (array | string | null $state): string {
                         if (blank($state)) {
+                            return '—';
+                        }
+
+                        if (is_string($state)) {
+                            $decoded = json_decode($state, true);
+                            if (is_array($decoded)) {
+                                $state = $decoded;
+                            }
+                        }
+
+                        if (! is_array($state)) {
                             return '—';
                         }
 

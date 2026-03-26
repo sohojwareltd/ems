@@ -60,6 +60,7 @@ class EditEmailGroup extends EditRecord
             }
 
             $existingEmails = EmailGroup::query()
+                ->where('parent_id', $record->getKey())
                 ->whereIn('email', $emails)
                 ->whereKeyNot($record->getKey())
                 ->pluck('email')
@@ -98,6 +99,7 @@ class EditEmailGroup extends EditRecord
         $hasCurrentInPayload = $currentEmail !== '' && in_array($currentEmail, $emails, true);
 
         $existingEmails = EmailGroup::query()
+            ->where('parent_id', $data['parent_id'])
             ->whereIn('email', $emails)
             ->whereKeyNot($record->getKey())
             ->pluck('email')
