@@ -3,12 +3,21 @@
 namespace App\Filament\Resources\AdminEmailResource\Pages;
 
 use App\Filament\Resources\AdminEmailResource;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
 
 class CreateAdminEmail extends CreateRecord
 {
     protected static string $resource = AdminEmailResource::class;
+
+    protected static bool $canCreateAnother = false;
+
+    protected function getCreateFormAction(): Action
+    {
+        return parent::getCreateFormAction()
+            ->label('Send');
+    }
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {

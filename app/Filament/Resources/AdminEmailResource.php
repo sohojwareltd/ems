@@ -173,40 +173,27 @@ class AdminEmailResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('subject')
+                    ->label('Subject')
                     ->searchable()
                     ->limit(40),
-                Tables\Columns\TextColumn::make('to_emails')
-                    ->label('Recipients')
-                    ->limit(40)
+
+                Tables\Columns\TextColumn::make('group_or_emails')
+                    ->label('Group/Emails')
+                    ->state(fn (AdminEmail $record): string => static::getGroupOrEmailsLabel($record))
                     ->wrap(),
-                Tables\Columns\TextColumn::make('email_groups')
-                    ->label('Groups')
-                    ->formatStateUsing(function (array | string | null $state): string {
-                        if (blank($state)) {
-                            return '—';
-                        }
 
-                        if (is_string($state)) {
-                            $decoded = json_decode($state, true);
-                            if (is_array($decoded)) {
-                                $state = $decoded;
-                            }
-                        }
-
-                        if (! is_array($state)) {
-                            return '—';
-                        }
-
-                        return (string) count($state);
-                    })
+                Tables\Columns\TextColumn::make('emails_count')
+                    ->label('Number of Emails')
+                    ->state(fn (AdminEmail $record): int => count($record->to_recipients))
                     ->badge(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime('d M Y H:i')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([])
             ->actions([
+                Tables\Actions\Action::make('reply')
+                    ->label('Reply')
+                    ->icon('heroicon-o-arrow-uturn-left')
+                    ->color('gray')
+                    ->url(fn (AdminEmail $record): string => static::getUrl('reply', ['replyTo' => $record])),
                 Tables\Actions\Action::make('send')
                     ->icon('heroicon-o-paper-airplane')
                     ->color('success')
@@ -223,6 +210,42 @@ class AdminEmailResource extends Resource
             ->defaultSort('created_at', 'desc');
     }
 
+    protected static function getGroupOrEmailsLabel(AdminEmail $record): string
+    {
+        $groupIds = $record->email_groups;
+
+        if (is_string($groupIds)) {
+            $decoded = json_decode($groupIds, true);
+            $groupIds = is_array($decoded) ? $decoded : [];
+        }
+
+        $groupTitles = EmailGroup::query()
+            ->whereNull('parent_id')
+            ->whereIn('id', (array) $groupIds)
+            ->orderBy('title')
+            ->pluck('title')
+            ->filter()
+            ->values()
+            ->all();
+
+        if (! empty($groupTitles)) {
+            return implode(', ', $groupTitles);
+        }
+
+        $customEmails = AdminEmail::parseRecipients($record->to_emails);
+
+        if (empty($customEmails)) {
+            return '—';
+        }
+
+        $preview = array_slice($customEmails, 0, 2);
+        $remaining = count($customEmails) - count($preview);
+
+        return $remaining > 0
+            ? implode(', ', $preview) . " +{$remaining}"
+            : implode(', ', $preview);
+    }
+
     public static function getRelations(): array
     {
         return [];
@@ -233,6 +256,7 @@ class AdminEmailResource extends Resource
         return [
             'index' => Pages\ListAdminEmails::route('/'),
             'create' => Pages\CreateAdminEmail::route('/create'),
+            'reply' => Pages\ReplyAdminEmail::route('/{replyTo}/reply'),
             'edit' => Pages\EditAdminEmail::route('/{record}/edit'),
         ];
     }

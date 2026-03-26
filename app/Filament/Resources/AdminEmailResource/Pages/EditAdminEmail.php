@@ -13,12 +13,12 @@ class EditAdminEmail extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('send')
-                ->label('Send Email')
-                ->icon('heroicon-o-paper-airplane')
-                ->color('success')
-                ->requiresConfirmation()
-                ->action(fn () => AdminEmailResource::sendEmail($this->record)),
+            // Actions\Action::make('send')
+            //     ->label('Send Email')
+            //     ->icon('heroicon-o-paper-airplane')
+            //     ->color('success')
+            //     ->requiresConfirmation()
+            //     ->action(fn () => AdminEmailResource::sendEmail($this->record)),
             Actions\DeleteAction::make(),
         ];
     }
