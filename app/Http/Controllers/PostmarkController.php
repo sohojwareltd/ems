@@ -16,6 +16,7 @@ class PostmarkController extends Controller
      */
     public function handleInbound(Request $request): JsonResponse
     {
+        dd($request->all());
         try {
             $payload = $request->all();
 
