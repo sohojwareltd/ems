@@ -40,12 +40,12 @@ class CreateEmailGroup extends CreateRecord
             $data['title'] = strtolower(trim((string) $data['title']));
         }
 
+        $emailsFromText = $this->parseEmailsFromText((string) ($data['email'] ?? ''));
+        $emailsFromFiles = $this->parseEmailsFromUploadedFiles($this->uploadedEmailFile);
+        $emails = array_values(array_unique(array_merge($emailsFromText, $emailsFromFiles)));
+
         // Parent selected = child emails mode (manual comma-separated + Excel upload)
         if (! empty($data['parent_id'])) {
-            $emailsFromText = $this->parseEmailsFromText((string) ($data['email'] ?? ''));
-            $emailsFromFiles = $this->parseEmailsFromUploadedFiles($this->uploadedEmailFile);
-            $emails = array_values(array_unique(array_merge($emailsFromText, $emailsFromFiles)));
-
             if (empty($emails)) {
                 throw ValidationException::withMessages([
                     'email' => 'No valid emails found. Please enter comma-separated emails or upload a valid Excel file.',
@@ -94,10 +94,39 @@ class CreateEmailGroup extends CreateRecord
             ]);
         }
 
-        // No parent selected = parent group mode
+        // No parent selected = create a parent group and optionally create child emails under it.
         unset($data['email']);
+        $group = EmailGroup::create($data);
 
-        return EmailGroup::create($data);
+        if (empty($emails)) {
+            return $group;
+        }
+
+        $existingEmails = EmailGroup::query()
+            ->whereIn('email', $emails)
+            ->pluck('email')
+            ->map(fn (string $email) => strtolower($email))
+            ->all();
+
+        $newEmails = array_values(array_diff($emails, $existingEmails));
+
+        foreach ($newEmails as $email) {
+            EmailGroup::create([
+                'email' => $email,
+                'parent_id' => $group->getKey(),
+                'title' => null,
+            ]);
+        }
+
+        $count = count($newEmails);
+        $skipped = count($emails) - $count;
+
+        Notification::make()
+            ->title($count > 0 ? "Group created and {$count} email(s) imported successfully. {$skipped} duplicate skipped." : 'Group created, but all provided emails already exist. No child emails were added.')
+            ->status($count > 0 ? 'success' : 'warning')
+            ->send();
+
+        return $group;
     }
 
     private function parseEmailsFromText(string $input): array

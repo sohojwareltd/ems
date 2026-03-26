@@ -41,19 +41,53 @@ class EditEmailGroup extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        // Parent group mode
-        if (empty($data['parent_id'])) {
-            unset($data['email']);
-            $data['title'] = strtolower(trim((string) ($data['title'] ?? '')));
-            $record->update($data);
-            return $record;
-        }
-
-        // Child email mode: same logic as create (manual comma-separated + Excel upload)
         $emailsFromText = $this->parseEmailsFromText((string) ($data['email'] ?? ''));
         $emailsFromFiles = $this->parseEmailsFromUploadedFiles($this->uploadedEmailFile);
         $emails = array_values(array_unique(array_merge($emailsFromText, $emailsFromFiles)));
 
+        // Parent group mode
+        if (empty($data['parent_id'])) {
+            unset($data['email']);
+            $data['title'] = strtolower(trim((string) ($data['title'] ?? '')));
+            $record->update([
+                'parent_id' => null,
+                'title' => $data['title'],
+                'email' => null,
+            ]);
+
+            if (empty($emails)) {
+                return $record;
+            }
+
+            $existingEmails = EmailGroup::query()
+                ->whereIn('email', $emails)
+                ->whereKeyNot($record->getKey())
+                ->pluck('email')
+                ->map(fn (string $email) => strtolower($email))
+                ->all();
+
+            $newEmails = array_values(array_diff($emails, $existingEmails));
+
+            foreach ($newEmails as $email) {
+                EmailGroup::create([
+                    'email' => $email,
+                    'parent_id' => $record->getKey(),
+                    'title' => null,
+                ]);
+            }
+
+            $count = count($newEmails);
+            $skipped = count($emails) - $count;
+
+            Notification::make()
+                ->title($count > 0 ? "Group updated and {$count} email(s) imported successfully. {$skipped} duplicate skipped." : 'Group updated, but all provided emails already exist. No child emails were added.')
+                ->status($count > 0 ? 'success' : 'warning')
+                ->send();
+
+            return $record;
+        }
+
+        // Child email mode: same logic as create (manual comma-separated + Excel upload)
         if (empty($emails)) {
             throw ValidationException::withMessages([
                 'email' => 'No valid emails found. Please enter comma-separated emails or upload a valid Excel file.',
