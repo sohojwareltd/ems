@@ -9,6 +9,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PostmarkController;
 use App\Http\Controllers\SubscriptionController;
 use App\Mail\NewOrderNotification;
 use App\Mail\OrderConfirmation;
@@ -90,6 +91,11 @@ Route::post('/checkout/repay/process/{order}', [CheckoutController::class, 'repa
 Route::get('/paypal/success', [PayPalController::class, 'success'])->name('paypal.success');
 Route::get('/paypal/cancel', [PayPalController::class, 'cancel'])->name('paypal.cancel');
 Route::post('/paypal/webhook', [PayPalController::class, 'webhook'])->name('paypal.webhook');
+
+// Postmark inbound webhook for reply tracking.
+Route::post('/webhooks/postmark/inbound', [PostmarkController::class, 'handleInbound'])
+    ->name('postmark.inbound')
+    ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class]);
 
 Route::get('/stripe/setup-intent', [SubscriptionController::class, 'getSetupIntent']);
 Route::get('/tuition', [PageController::class, 'tuition'])->name('tuition');
