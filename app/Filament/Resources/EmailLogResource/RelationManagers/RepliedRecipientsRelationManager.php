@@ -73,17 +73,11 @@ class RepliedRecipientsRelationManager extends RelationManager
                             ->label('Main Reply')
                             ->rows(8)
                             ->disabled(),
-
-                        Forms\Components\Textarea::make('quoted_thread')
-                            ->label('Quoted Thread')
-                            ->rows(10)
-                            ->disabled(),
                     ])
                     ->fillForm(fn (EmailRecipient $record): array => [
                         'from' => $this->payloadValue($record, 'From') ?? 'N/A',
                         'subject' => $this->payloadValue($record, 'Subject') ?? 'N/A',
                         'main_reply' => $this->extractMainReply($this->rawReplyText($record)) ?? 'No message text found',
-                        'quoted_thread' => $this->extractQuotedThread($this->rawReplyText($record)) ?? 'No quoted thread found',
                     ])
                     ->action(static function (): void {
                     })
@@ -174,25 +168,15 @@ class RepliedRecipientsRelationManager extends RelationManager
             return null;
         }
 
-        $parts = preg_split('/\nOn .+ wrote:\n/i', $text, 2);
+        // Handle Gmail-style quoted headers that can span multiple lines before "wrote:".
+        $parts = preg_split('/\nOn .*?wrote:\s*/is', $text, 2);
         $main = trim($parts[0] ?? '');
 
+        // Remove any inline quoted lines if they exist in the top block.
+        $main = preg_replace('/^>.*$/m', '', $main) ?? $main;
+        $main = trim($main);
+
         return $main !== '' ? $main : null;
-    }
-
-    private function extractQuotedThread(?string $text): ?string
-    {
-        if ($text === null || $text === '') {
-            return null;
-        }
-
-        if (preg_match('/\n(On .+ wrote:\n.+)$/is', $text, $matches) !== 1) {
-            return null;
-        }
-
-        $quoted = trim($matches[1]);
-
-        return $quoted !== '' ? $quoted : null;
     }
 
     private function normalizeText(string $text): string
