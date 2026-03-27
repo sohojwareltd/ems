@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EmailLog;
+use App\Models\EmailReplyMessage;
 use App\Models\EmailRecipient;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class PostmarkController extends Controller
         try {
             $payload = $request->all();
             $encodedPayload = json_encode($payload, JSON_UNESCAPED_UNICODE);
+            $now = now();
 
             $senderCandidates = $this->extractSenderCandidates($payload);
 
@@ -31,26 +33,69 @@ class PostmarkController extends Controller
 
             // Normalize matching against legacy rows where email may include whitespace casing differences.
             $matchingRecipients = EmailRecipient::query()
-                ->whereNull('replied_at')
                 ->where(function ($query) use ($senderCandidates): void {
                     foreach ($senderCandidates as $email) {
                         $query->orWhereRaw('LOWER(TRIM(email)) = ?', [$email]);
                     }
                 })
-                ->get(['id', 'email_log_id']);
+                ->whereNull('replied_at')
+                ->get(['id', 'email_log_id', 'replied_at']);
+
+            // If no pending rows match, use the most recently replied recipient for ongoing thread tracking.
+            if ($matchingRecipients->isEmpty()) {
+                $matchingRecipients = EmailRecipient::query()
+                    ->where(function ($query) use ($senderCandidates): void {
+                        foreach ($senderCandidates as $email) {
+                            $query->orWhereRaw('LOWER(TRIM(email)) = ?', [$email]);
+                        }
+                    })
+                    ->whereNotNull('replied_at')
+                    ->orderByDesc('replied_at')
+                    ->limit(1)
+                    ->get(['id', 'email_log_id', 'replied_at']);
+            }
 
             $updatedCount = 0;
 
             if ($matchingRecipients->isNotEmpty()) {
+                $recipientIds = $matchingRecipients->pluck('id');
+
                 $updatedCount = EmailRecipient::query()
-                    ->whereIn('id', $matchingRecipients->pluck('id'))
+                    ->whereIn('id', $recipientIds)
                     ->update([
-                        'replied_at' => now(),
                         'reply_payload' => $encodedPayload !== false ? $encodedPayload : null,
-                        'updated_at' => now(),
+                        'updated_at' => $now,
                     ]);
 
-                $this->refreshEmailLogReplyCounts($matchingRecipients->pluck('email_log_id')->unique()->values());
+                $newlyRepliedIds = $matchingRecipients
+                    ->whereNull('replied_at')
+                    ->pluck('id');
+
+                if ($newlyRepliedIds->isNotEmpty()) {
+                    EmailRecipient::query()
+                        ->whereIn('id', $newlyRepliedIds)
+                        ->update([
+                            'replied_at' => $now,
+                            'updated_at' => $now,
+                        ]);
+                }
+
+                foreach ($matchingRecipients as $recipient) {
+                    EmailReplyMessage::query()->create([
+                        'email_log_id' => $recipient->email_log_id,
+                        'email_recipient_id' => $recipient->id,
+                        'from_email' => data_get($payload, 'FromFull.Email') ?? data_get($payload, 'From'),
+                        'subject' => data_get($payload, 'Subject'),
+                        'text_body' => data_get($payload, 'TextBody'),
+                        'html_body' => data_get($payload, 'HtmlBody'),
+                        'payload' => $payload,
+                        'received_at' => $now,
+                    ]);
+                }
+
+                if ($newlyRepliedIds->isNotEmpty()) {
+                    $this->refreshEmailLogReplyCounts($matchingRecipients->pluck('email_log_id')->unique()->values());
+                }
             }
 
             if ($updatedCount === 0) {

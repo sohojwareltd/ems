@@ -61,23 +61,13 @@ class RepliedRecipientsRelationManager extends RelationManager
                     ->icon('heroicon-o-eye')
                     ->modalHeading('Reply Details')
                     ->form([
-                        Forms\Components\TextInput::make('from')
-                            ->label('From')
-                            ->disabled(),
-
-                        Forms\Components\TextInput::make('subject')
-                            ->label('Subject')
-                            ->disabled(),
-
-                        Forms\Components\Textarea::make('main_reply')
-                            ->label('Main Reply')
-                            ->rows(8)
+                        Forms\Components\Textarea::make('conversation_history')
+                            ->label('Full Conversation')
+                            ->rows(18)
                             ->disabled(),
                     ])
                     ->fillForm(fn (EmailRecipient $record): array => [
-                        'from' => $this->payloadValue($record, 'From') ?? 'N/A',
-                        'subject' => $this->payloadValue($record, 'Subject') ?? 'N/A',
-                        'main_reply' => $this->extractMainReply($this->rawReplyText($record)) ?? 'No message text found',
+                        'conversation_history' => $this->buildConversationHistory($record),
                     ])
                     ->action(static function (): void {
                     })
@@ -160,6 +150,44 @@ class RepliedRecipientsRelationManager extends RelationManager
         }
 
         return null;
+    }
+
+    private function buildConversationHistory(EmailRecipient $recipient): string
+    {
+        $messages = [];
+
+        $originalSubject = $recipient->emailLog?->subject ?? 'N/A';
+        $originalFrom = $recipient->emailLog?->from_email ?? 'N/A';
+        $originalBody = $this->normalizeText(strip_tags((string) ($recipient->emailLog?->body ?? '')));
+        $originalSentAt = $recipient->emailLog?->sent_at?->format('Y-m-d H:i:s')
+            ?? $recipient->emailLog?->created_at?->format('Y-m-d H:i:s')
+            ?? 'N/A';
+
+        $messages[] = "--- Original Email ---\n"
+            . "From: {$originalFrom}\n"
+            . "To: {$recipient->email}\n"
+            . "Subject: {$originalSubject}\n"
+            . "Sent At: {$originalSentAt}\n\n"
+            . ($originalBody !== '' ? $originalBody : '[No original content]');
+
+        $recipient->replyMessages()
+            ->orderBy('received_at')
+            ->get()
+            ->each(function ($reply, int $index) use (&$messages): void {
+                $replyBody = $this->normalizeText((string) ($reply->text_body ?? strip_tags((string) $reply->html_body)));
+                $mainReply = $this->extractMainReply($replyBody) ?? '[No reply content]';
+                $from = $reply->from_email ?: 'N/A';
+                $subject = $reply->subject ?: 'N/A';
+                $receivedAt = $reply->received_at?->format('Y-m-d H:i:s') ?? 'N/A';
+
+                $messages[] = "--- Reply #" . ($index + 1) . " ---\n"
+                    . "From: {$from}\n"
+                    . "Subject: {$subject}\n"
+                    . "Received At: {$receivedAt}\n\n"
+                    . $mainReply;
+            });
+
+        return implode("\n\n", $messages);
     }
 
     private function extractMainReply(?string $text): ?string

@@ -35,6 +35,14 @@ class EmailLog extends Model
     }
 
     /**
+     * Get all inbound reply messages attached to this email log.
+     */
+    public function replyMessages(): HasMany
+    {
+        return $this->hasMany(EmailReplyMessage::class, 'email_log_id');
+    }
+
+    /**
      * Get recipients who replied.
      */
     public function repliedRecipients(): HasMany

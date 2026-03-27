@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class EmailRecipient extends Model
 {
@@ -24,6 +25,14 @@ class EmailRecipient extends Model
     public function emailLog(): BelongsTo
     {
         return $this->belongsTo(EmailLog::class, 'email_log_id');
+    }
+
+    /**
+     * Get all inbound reply messages for this recipient.
+     */
+    public function replyMessages(): HasMany
+    {
+        return $this->hasMany(EmailReplyMessage::class, 'email_recipient_id');
     }
 
     /**
