@@ -4,8 +4,8 @@ namespace App\Filament\Resources\EmailLogResource\RelationManagers;
 
 use App\Models\AdminEmail;
 use App\Models\EmailReplyMessage;
+use App\Mail\AdminCustomEmail;
 use App\Models\EmailRecipient;
-use App\Services\AdminEmailSender;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class RepliedRecipientsRelationManager extends RelationManager
@@ -93,7 +94,7 @@ class RepliedRecipientsRelationManager extends RelationManager
                     ])
                     ->action(function (array $data, EmailRecipient $record): void {
                         try {
-                            $adminEmail = AdminEmail::create([
+                            $adminEmail = new AdminEmail([
                                 'to_emails' => $record->email,
                                 'cc_emails' => null,
                                 'bcc_emails' => null,
@@ -103,7 +104,7 @@ class RepliedRecipientsRelationManager extends RelationManager
                                 'created_by' => Auth::id(),
                             ]);
 
-                            app(AdminEmailSender::class)->send($adminEmail);
+                            Mail::to($record->email)->send(new AdminCustomEmail($adminEmail));
 
                             EmailReplyMessage::query()->create([
                                 'email_log_id' => $record->email_log_id,
