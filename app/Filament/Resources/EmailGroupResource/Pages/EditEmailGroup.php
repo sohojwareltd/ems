@@ -18,6 +18,33 @@ class EditEmailGroup extends EditRecord
 
     protected string|array|null $uploadedEmailFile = null;
 
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        /** @var EmailGroup $record */
+        $record = $this->record;
+
+        // Parent group edit: show all child emails in Custom Emails tags input.
+        if ($record->parent_id === null) {
+            $data['email'] = EmailGroup::query()
+                ->where('parent_id', $record->getKey())
+                ->whereNotNull('email')
+                ->orderBy('email')
+                ->pluck('email')
+                ->map(fn (string $email): string => strtolower(trim($email)))
+                ->values()
+                ->all();
+
+            return $data;
+        }
+
+        // Child email edit: keep current row email visible as a single tag.
+        if (! empty($data['email']) && is_string($data['email'])) {
+            $data['email'] = [strtolower(trim($data['email']))];
+        }
+
+        return $data;
+    }
+
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $this->uploadedEmailFile = $data['email_file'] ?? null;

@@ -55,6 +55,7 @@ class EmailGroupResource extends Resource
 
                     Forms\Components\TagsInput::make('email')
                         ->label('Custom Emails')
+                        ->placeholder('Type email and press Enter')
                         ->required(fn (Get $get) => (bool) $get('parent_id') && blank($get('email_file')))
                         ->helperText('Enter and add multiple emails. Each tag is one email.')
                         ->separator(',')
