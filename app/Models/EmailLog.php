@@ -43,6 +43,22 @@ class EmailLog extends Model
     }
 
     /**
+     * Parent log (when this log is a reply/resend).
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(EmailLog::class, 'parent_id');
+    }
+
+    /**
+     * Child reply logs.
+     */
+    public function children(): HasMany
+    {
+        return $this->hasMany(EmailLog::class, 'parent_id');
+    }
+
+    /**
      * Get recipients who replied.
      */
     public function repliedRecipients(): HasMany

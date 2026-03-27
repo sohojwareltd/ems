@@ -80,6 +80,7 @@ class EmailLogResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (\Illuminate\Database\Eloquent\Builder $query) => $query->whereNull('parent_id'))
             ->columns([
                 TextColumn::make('subject')
                     ->searchable()
@@ -204,6 +205,24 @@ class EmailLogResource extends Resource
                             })
                             ->badge()
                             ->color('info'),
+
+                        InfoComponents\TextEntry::make('total_reply_messages')
+                            ->label('Total Messages')
+                            ->getStateUsing(fn (EmailLog $record): int => $record->replyMessages()->count())
+                            ->badge()
+                            ->color('gray'),
+
+                        InfoComponents\TextEntry::make('inbound_replies')
+                            ->label('Inbound Replies')
+                            ->getStateUsing(fn (EmailLog $record): int => $record->replyMessages()->where('direction', 'inbound')->count())
+                            ->badge()
+                            ->color('success'),
+
+                        InfoComponents\TextEntry::make('outbound_replies')
+                            ->label('Sent Replies')
+                            ->getStateUsing(fn (EmailLog $record): int => $record->replyMessages()->where('direction', 'outbound')->count())
+                            ->badge()
+                            ->color('primary'),
                     ])
                     ->columns(4),
 
