@@ -48,13 +48,26 @@ class AdminEmailSender
             // Create email log entry for tracking replies
             $emailLog = $this->createEmailLog($adminEmail, $to, $cc, $bcc);
 
+            $mailable = new AdminCustomEmail($adminEmail);
+
+            $replyToAddress = config('mail.reply_to.address');
+            $replyToName = config('mail.reply_to.name');
+
+            if (filled($replyToAddress)) {
+                $mailable->replyTo($replyToAddress, $replyToName);
+            }
+
             // Send the email via queue
-            Mail::queue(
-                (new AdminCustomEmail($adminEmail))
-                    ->to($to)
-                    ->cc($cc)
-                    ->bcc($bcc)
-            );
+            // Mail::queue(
+            //     $mailable
+            //         ->to($to)
+            //         ->cc($cc)
+            //         ->bcc($bcc)
+            // );
+            Mail::to($to)
+                ->cc($cc)
+                ->bcc($bcc)
+                ->send($mailable);
 
             // Mark as sent
             $emailLog->update([

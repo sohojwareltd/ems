@@ -16,7 +16,13 @@ class PostmarkController extends Controller
      */
     public function handleInbound(Request $request): JsonResponse
     {
-        dd($request->all());
+
+        Log::warning('Postmark inbound webhook did not match pending recipients', [
+            'data' =>  $request->all(),
+        ]);
+
+        return response()->json(['status' => 'received']);
+        
         try {
             $payload = $request->all();
 
@@ -98,7 +104,7 @@ class PostmarkController extends Controller
         ];
 
         return collect($rawCandidates)
-            ->filter(fn ($value): bool => filled($value))
+            ->filter(fn($value): bool => filled($value))
             ->flatMap(function ($value): array {
                 if (!is_string($value)) {
                     return [];
@@ -106,8 +112,8 @@ class PostmarkController extends Controller
 
                 return $this->extractEmailsFromText($value);
             })
-            ->map(fn (string $email): string => strtolower(trim($email)))
-            ->filter(fn (string $email): bool => filter_var($email, FILTER_VALIDATE_EMAIL) !== false)
+            ->map(fn(string $email): string => strtolower(trim($email)))
+            ->filter(fn(string $email): bool => filter_var($email, FILTER_VALIDATE_EMAIL) !== false)
             ->unique()
             ->values();
     }
@@ -121,7 +127,7 @@ class PostmarkController extends Controller
     {
         $emails = [];
 
-            if (preg_match_all('/[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,}/i', $value, $matches) > 0) {
+        if (preg_match_all('/[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,}/i', $value, $matches) > 0) {
             $emails = $matches[0];
         }
 

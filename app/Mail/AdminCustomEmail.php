@@ -10,19 +10,20 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
 
-class AdminCustomEmail extends Mailable implements ShouldQueue
+class AdminCustomEmail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use SerializesModels;
 
-    public function __construct(public AdminEmail $adminEmail)
-    {
-    }
+    public function __construct(public AdminEmail $adminEmail) {}
 
     public function envelope(): Envelope
     {
+   
         return new Envelope(
             subject: $this->adminEmail->subject,
+            replyTo: [new Address('reply@inbound.economicsmadesimple.com', 'Taylor Otwell')]
         );
     }
 

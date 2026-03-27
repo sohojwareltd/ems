@@ -112,6 +112,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Global "Reply To" Address
+    |--------------------------------------------------------------------------
+    |
+    | Replies should typically point to your inbound processing mailbox
+    | (for example a Postmark inbound address) when reply tracking is enabled.
+    |
+    */
+
+    'reply_to' => [
+        'address' => env('MAIL_REPLY_TO_ADDRESS'),
+        'name' => env('MAIL_REPLY_TO_NAME'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Admin Email Address
     |--------------------------------------------------------------------------
     |
