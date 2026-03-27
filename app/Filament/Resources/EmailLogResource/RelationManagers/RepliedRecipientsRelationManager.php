@@ -112,7 +112,7 @@ class RepliedRecipientsRelationManager extends RelationManager
                                 'direction' => 'outbound',
                                 'from_email' => (string) config('mail.from.address'),
                                 'subject' => $data['subject'],
-                                'text_body' => trim(strip_tags((string) $data['body'])),
+                                'text_body' => html_entity_decode(trim(strip_tags((string) $data['body'])), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                                 'html_body' => $data['body'],
                                 'payload' => null,
                                 'received_at' => now(),
@@ -228,7 +228,9 @@ class RepliedRecipientsRelationManager extends RelationManager
 
     private function normalizeText(string $text): string
     {
-        $normalized = str_replace(["\r\n", "\r"], "\n", $text);
+        $normalized = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $normalized = str_replace("\xC2\xA0", ' ', $normalized);
+        $normalized = str_replace(["\r\n", "\r"], "\n", $normalized);
         $normalized = preg_replace('/[ \t]+/', ' ', $normalized) ?? $normalized;
         $normalized = preg_replace('/\n{3,}/', "\n\n", $normalized) ?? $normalized;
 
