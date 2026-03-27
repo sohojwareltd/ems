@@ -186,6 +186,7 @@ class RepliedRecipientsRelationManager extends RelationManager
 
         EmailReplyMessage::query()
             ->where('email_log_id', $recipient->email_log_id)
+            ->where('email_recipient_id', $recipient->id)
             ->orderBy('received_at')
             ->get()
             ->each(function ($reply, int $index) use (&$messages): void {
