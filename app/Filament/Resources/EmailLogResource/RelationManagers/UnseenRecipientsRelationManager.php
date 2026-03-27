@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\EmailLogResource\RelationManagers;
 
 use App\Models\AdminEmail;
+use App\Models\EmailReplyMessage;
 use App\Models\EmailRecipient;
 use App\Services\AdminEmailSender;
 use Filament\Forms;
@@ -95,6 +96,18 @@ class UnseenRecipientsRelationManager extends RelationManager
                             ]);
 
                             app(AdminEmailSender::class)->send($adminEmail);
+
+                            EmailReplyMessage::query()->create([
+                                'email_log_id' => $record->email_log_id,
+                                'email_recipient_id' => $record->id,
+                                'direction' => 'outbound',
+                                'from_email' => (string) config('mail.from.address'),
+                                'subject' => $data['subject'],
+                                'text_body' => trim(strip_tags((string) $data['body'])),
+                                'html_body' => $data['body'],
+                                'payload' => null,
+                                'received_at' => now(),
+                            ]);
 
                             Notification::make()
                                 ->title('Reply sent successfully')

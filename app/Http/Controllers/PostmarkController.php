@@ -84,6 +84,7 @@ class PostmarkController extends Controller
                     EmailReplyMessage::query()->create([
                         'email_log_id' => $recipient->email_log_id,
                         'email_recipient_id' => $recipient->id,
+                        'direction' => 'inbound',
                         'from_email' => data_get($payload, 'FromFull.Email') ?? data_get($payload, 'From'),
                         'subject' => data_get($payload, 'Subject'),
                         'text_body' => data_get($payload, 'TextBody'),

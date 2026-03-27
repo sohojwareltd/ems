@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\EmailLogResource\RelationManagers;
 
 use App\Models\AdminEmail;
+use App\Models\EmailReplyMessage;
 use App\Models\EmailRecipient;
 use App\Services\AdminEmailSender;
 use Filament\Forms;
@@ -104,6 +105,18 @@ class RepliedRecipientsRelationManager extends RelationManager
 
                             app(AdminEmailSender::class)->send($adminEmail);
 
+                            EmailReplyMessage::query()->create([
+                                'email_log_id' => $record->email_log_id,
+                                'email_recipient_id' => $record->id,
+                                'direction' => 'outbound',
+                                'from_email' => (string) config('mail.from.address'),
+                                'subject' => $data['subject'],
+                                'text_body' => trim(strip_tags((string) $data['body'])),
+                                'html_body' => $data['body'],
+                                'payload' => null,
+                                'received_at' => now(),
+                            ]);
+
                             Notification::make()
                                 ->title('Reply sent successfully')
                                 ->success()
@@ -175,15 +188,18 @@ class RepliedRecipientsRelationManager extends RelationManager
             ->get()
             ->each(function ($reply, int $index) use (&$messages): void {
                 $replyBody = $this->normalizeText((string) ($reply->text_body ?? strip_tags((string) $reply->html_body)));
-                $mainReply = $this->extractMainReply($replyBody) ?? '[No reply content]';
+                $mainReply = $reply->direction === 'inbound'
+                    ? ($this->extractMainReply($replyBody) ?? '[No reply content]')
+                    : ($replyBody !== '' ? $replyBody : '[No message content]');
                 $from = $reply->from_email ?: 'N/A';
                 $subject = $reply->subject ?: 'N/A';
                 $receivedAt = $reply->received_at?->format('Y-m-d H:i:s') ?? 'N/A';
+                $label = $reply->direction === 'outbound' ? 'Sent' : 'Reply';
 
-                $messages[] = "--- Reply #" . ($index + 1) . " ---\n"
+                $messages[] = "--- {$label} #" . ($index + 1) . " ---\n"
                     . "From: {$from}\n"
                     . "Subject: {$subject}\n"
-                    . "Received At: {$receivedAt}\n\n"
+                    . "Time: {$receivedAt}\n\n"
                     . $mainReply;
             });
 

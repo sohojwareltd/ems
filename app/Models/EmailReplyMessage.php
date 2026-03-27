@@ -13,6 +13,7 @@ class EmailReplyMessage extends Model
 
     protected $casts = [
         'payload' => 'array',
+        'direction' => 'string',
         'received_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
