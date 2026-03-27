@@ -244,7 +244,8 @@ class EmailLogResource extends Resource
                                 InfoComponents\TextEntry::make('reply_preview')
                                     ->label('Reply Preview')
                                     ->placeholder('No reply body captured')
-                                    ->wrap()
+                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? nl2br(e($state)) : null)
+                                    ->html()
                                     ->columnSpan(2),
 
                                 InfoComponents\TextEntry::make('status')
@@ -315,13 +316,15 @@ class EmailLogResource extends Resource
                                 InfoComponents\TextEntry::make('main_reply')
                                     ->label('Main Reply')
                                     ->placeholder('No main reply text found')
-                                    ->wrap()
+                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? nl2br(e($state)) : null)
+                                    ->html()
                                     ->columnSpan(2),
 
                                 InfoComponents\TextEntry::make('quoted_thread')
                                     ->label('Quoted Thread')
                                     ->placeholder('No quoted thread detected')
-                                    ->wrap()
+                                    ->formatStateUsing(fn (?string $state): ?string => $state !== null ? nl2br(e($state)) : null)
+                                    ->html()
                                     ->columnSpan(1),
                             ])
                             ->columns(3)
