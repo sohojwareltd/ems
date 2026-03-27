@@ -29,6 +29,11 @@ class AdminEmailResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Custom Emails';
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
     protected static function getEmailGroupOptions(): array
     {
         return EmailGroup::query()

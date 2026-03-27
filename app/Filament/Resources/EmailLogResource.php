@@ -87,9 +87,9 @@ class EmailLogResource extends Resource
                     ->sortable()
                     ->limit(50),
 
-                TextColumn::make('from_email')
-                    ->label('From')
-                    ->searchable(),
+                // TextColumn::make('from_email')
+                //     ->label('From')
+                //     ->searchable(),
 
                 TextColumn::make('total_recipients')
                     ->label('Total')
@@ -126,10 +126,10 @@ class EmailLogResource extends Resource
                     ->dateTime()
                     ->sortable(),
 
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->label('Created at'),
+                // TextColumn::make('created_at')
+                //     ->dateTime()
+                //     ->sortable()
+                //     ->label('Created at'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')

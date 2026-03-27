@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\EmailLogResource\Pages;
 
+use App\Filament\Resources\AdminEmailResource;
 use App\Filament\Resources\EmailLogResource;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 
 class ListEmailLogs extends ListRecords
@@ -11,6 +13,12 @@ class ListEmailLogs extends ListRecords
 
     protected function getHeaderActions(): array
     {
-        return [];
+        return [
+            Action::make('newCustomEmail')
+                ->label('New Custom Email')
+                ->icon('heroicon-o-envelope')
+                ->color('primary')
+                ->url(AdminEmailResource::getUrl('create')),
+        ];
     }
 }

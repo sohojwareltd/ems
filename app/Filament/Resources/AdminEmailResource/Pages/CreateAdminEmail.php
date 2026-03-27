@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\AdminEmailResource\Pages;
 
 use App\Filament\Resources\AdminEmailResource;
+use App\Filament\Resources\EmailLogResource;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
@@ -29,5 +30,10 @@ class CreateAdminEmail extends CreateRecord
     protected function afterCreate(): void
     {
         AdminEmailResource::sendEmail($this->record);
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return EmailLogResource::getUrl('index');
     }
 }
