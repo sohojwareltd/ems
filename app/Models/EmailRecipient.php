@@ -12,6 +12,7 @@ class EmailRecipient extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'reply_payload' => 'array',
         'replied_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',

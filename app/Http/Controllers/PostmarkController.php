@@ -16,15 +16,9 @@ class PostmarkController extends Controller
      */
     public function handleInbound(Request $request): JsonResponse
     {
-
-        Log::warning('Postmark inbound webhook did not match pending recipients', [
-            'data' =>  $request->all(),
-        ]);
-
-        return response()->json(['status' => 'received']);
-        
         try {
             $payload = $request->all();
+            $encodedPayload = json_encode($payload, JSON_UNESCAPED_UNICODE);
 
             $senderCandidates = $this->extractSenderCandidates($payload);
 
@@ -52,6 +46,7 @@ class PostmarkController extends Controller
                     ->whereIn('id', $matchingRecipients->pluck('id'))
                     ->update([
                         'replied_at' => now(),
+                        'reply_payload' => $encodedPayload !== false ? $encodedPayload : null,
                         'updated_at' => now(),
                     ]);
 
