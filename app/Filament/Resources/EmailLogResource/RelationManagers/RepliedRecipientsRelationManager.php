@@ -184,7 +184,8 @@ class RepliedRecipientsRelationManager extends RelationManager
             . "Sent At: {$originalSentAt}\n\n"
             . ($originalBody !== '' ? $originalBody : '[No original content]');
 
-        $recipient->replyMessages()
+        EmailReplyMessage::query()
+            ->where('email_log_id', $recipient->email_log_id)
             ->orderBy('received_at')
             ->get()
             ->each(function ($reply, int $index) use (&$messages): void {

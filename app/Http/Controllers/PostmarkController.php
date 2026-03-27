@@ -80,19 +80,23 @@ class PostmarkController extends Controller
                         ]);
                 }
 
-                foreach ($matchingRecipients as $recipient) {
-                    EmailReplyMessage::query()->create([
-                        'email_log_id' => $recipient->email_log_id,
-                        'email_recipient_id' => $recipient->id,
-                        'direction' => 'inbound',
-                        'from_email' => data_get($payload, 'FromFull.Email') ?? data_get($payload, 'From'),
-                        'subject' => data_get($payload, 'Subject'),
-                        'text_body' => data_get($payload, 'TextBody'),
-                        'html_body' => data_get($payload, 'HtmlBody'),
-                        'payload' => $payload,
-                        'received_at' => $now,
-                    ]);
-                }
+                // Deduplicate: one history record per email_log only.
+                $matchingRecipients
+                    ->groupBy('email_log_id')
+                    ->each(function ($recipientsInLog) use ($payload, $now): void {
+                        $recipient = $recipientsInLog->first();
+                        EmailReplyMessage::query()->create([
+                            'email_log_id' => $recipient->email_log_id,
+                            'email_recipient_id' => $recipient->id,
+                            'direction' => 'inbound',
+                            'from_email' => data_get($payload, 'FromFull.Email') ?? data_get($payload, 'From'),
+                            'subject' => data_get($payload, 'Subject'),
+                            'text_body' => data_get($payload, 'TextBody'),
+                            'html_body' => data_get($payload, 'HtmlBody'),
+                            'payload' => $payload,
+                            'received_at' => $now,
+                        ]);
+                    });
 
                 if ($newlyRepliedIds->isNotEmpty()) {
                     $this->refreshEmailLogReplyCounts($matchingRecipients->pluck('email_log_id')->unique()->values());
