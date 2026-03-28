@@ -79,6 +79,7 @@ class ListPlans extends ListRecords
             $notFoundCount = 0;
             $emptyCodeCount = 0;
             $duplicateSkipped = 0;
+            $createdCount = 0;
             $firstRowDebug = null;
 
             foreach ($rows as $row) {
@@ -97,11 +98,16 @@ class ListPlans extends ListRecords
                     $firstRowDebug = 'Row 1 raw: ' . implode(', ', $pairs);
                 }
 
-                $plan = $this->resolvePlanFromRow($data);
+                $wasCreated = false;
+                $plan = $this->resolveOrCreatePlanFromRow($data, $wasCreated);
 
                 if (! $plan) {
                     $notFoundCount++;
                     continue;
+                }
+
+                if ($wasCreated) {
+                    $createdCount++;
                 }
 
                 $couponCode = Str::upper(trim((string) ($this->getCellValue($data, [
@@ -180,6 +186,10 @@ class ListPlans extends ListRecords
 
             $body = "{$successful} plan(s) updated.";
 
+            if ($createdCount > 0) {
+                $body .= " {$createdCount} plan(s) created.";
+            }
+
             if ($notFoundCount > 0) {
                 $body .= " {$notFoundCount} row(s) skipped (plan name not found).";
             }
@@ -223,12 +233,54 @@ class ListPlans extends ListRecords
         return $mapped;
     }
 
-    protected function resolvePlanFromRow(array $data): ?Plan
+    protected function resolveOrCreatePlanFromRow(array $data, bool &$wasCreated = false): ?Plan
     {
+        $wasCreated = false;
+
+        $planId = $this->normalizeNullableInteger($this->getCellValue($data, ['id', 'plan_id', 'planid']));
+
+        if (filled($planId)) {
+            $plan = Plan::query()->find($planId);
+
+            if ($plan) {
+                return $plan;
+            }
+        }
+
         $planName = trim((string) ($this->getCellValue($data, ['plan_name', 'name', 'plan_title', 'title', 'plan']) ?? ''));
 
         if ($planName !== '') {
-            return Plan::query()->where('name', $planName)->first();
+            $existing = Plan::query()
+                ->whereRaw('LOWER(TRIM(name)) = ?', [Str::lower($planName)])
+                ->first();
+
+            if ($existing) {
+                return $existing;
+            }
+
+            $price = $this->normalizeNullableFloat($this->getCellValue($data, ['price']));
+            $currency = Str::lower(trim((string) ($this->getCellValue($data, ['currency'], 'usd') ?? 'usd')));
+            $interval = $this->normalizeInterval((string) ($this->getCellValue($data, ['interval'], 'month') ?? 'month'));
+
+            if ($price === null || $currency === '' || $interval === null) {
+                return null;
+            }
+
+            $plan = Plan::query()->create([
+                'name' => $planName,
+                'description' => $this->normalizeNullableString($this->getCellValue($data, ['description'])),
+                'price' => $price,
+                'currency' => $currency,
+                'interval' => $interval,
+                'interval_count' => $this->normalizeNullableInteger($this->getCellValue($data, ['interval_count']), 1),
+                'trial_period_days' => $this->normalizeNullableIntegerWithZero($this->getCellValue($data, ['trial_period_days'])),
+                'active' => $this->normalizeBoolean($this->getCellValue($data, ['active', 'is_active', 'status'], true)),
+                'is_hide' => $this->normalizeBoolean($this->getCellValue($data, ['hide', 'is_hide'], false)),
+            ]);
+
+            $wasCreated = true;
+
+            return $plan;
         }
 
         return null;
@@ -237,8 +289,18 @@ class ListPlans extends ListRecords
     protected function getCellValue(array $data, array $keys, mixed $default = null): mixed
     {
         foreach ($keys as $key) {
-            if (array_key_exists($key, $data) && filled($data[$key])) {
-                return $data[$key];
+            if (! array_key_exists($key, $data)) {
+                continue;
+            }
+
+            $value = $data[$key];
+
+            if ($this->isNullish($value)) {
+                continue;
+            }
+
+            if (filled($value)) {
+                return $value;
             }
         }
 
@@ -277,13 +339,66 @@ class ListPlans extends ListRecords
         return in_array(Str::lower(trim((string) $value)), ['1', 'true', 'yes', 'y', 'on', 'active'], true);
     }
 
-    protected function normalizeNullableInteger(mixed $value): ?int
+    protected function normalizeNullableInteger(mixed $value, ?int $default = null): ?int
     {
-        if (blank($value)) {
-            return null;
+        if ($this->isNullish($value) || blank($value)) {
+            return $default;
         }
 
         return max(1, (int) $value);
+    }
+
+    protected function normalizeNullableIntegerWithZero(mixed $value, ?int $default = null): ?int
+    {
+        if ($this->isNullish($value) || blank($value)) {
+            return $default;
+        }
+
+        return max(0, (int) $value);
+    }
+
+    protected function normalizeNullableFloat(mixed $value): ?float
+    {
+        if ($this->isNullish($value) || blank($value)) {
+            return null;
+        }
+
+        return (float) $value;
+    }
+
+    protected function normalizeNullableString(mixed $value): ?string
+    {
+        if ($this->isNullish($value) || blank($value)) {
+            return null;
+        }
+
+        return trim((string) $value);
+    }
+
+    protected function normalizeInterval(string $value): ?string
+    {
+        $normalized = Str::lower(trim($value));
+
+        return match ($normalized) {
+            'day', 'daily' => 'day',
+            'week', 'weekly' => 'week',
+            'month', 'monthly' => 'month',
+            'year', 'yearly', 'annual' => 'year',
+            default => null,
+        };
+    }
+
+    protected function isNullish(mixed $value): bool
+    {
+        if ($value === null) {
+            return true;
+        }
+
+        if (is_string($value)) {
+            return Str::lower(trim($value)) === 'null';
+        }
+
+        return false;
     }
 
     protected function rowIsEmpty(array $row): bool

@@ -19,20 +19,65 @@ class PlanAccessCodeImport extends Importer
         return [
             ImportColumn::make('id')
                 ->label('Plan ID')
-                ->guess(['plan_id'])
+                ->guess(['plan_id', 'id', 'Plan ID'])
                 ->integer()
                 ->rules(['nullable', 'integer', 'exists:plans,id'])
                 ->helperText('Use the plan ID to update an existing plan.'),
 
             ImportColumn::make('name')
                 ->label('Plan Name')
-                ->guess(['plan_name'])
+                ->guess(['plan_name', 'name', 'Name', 'Plan Name'])
                 ->rules(['nullable', 'string', 'max:255'])
                 ->helperText('Used when Plan ID is not provided.'),
 
+            ImportColumn::make('description')
+                ->label('Description')
+                ->guess(['Description'])
+                ->rules(['nullable', 'string']),
+
+            ImportColumn::make('price')
+                ->label('Price')
+                ->numeric()
+                ->guess(['Price'])
+                ->rules(['nullable', 'numeric', 'min:0']),
+
+            ImportColumn::make('currency')
+                ->label('Currency')
+                ->guess(['Currency'])
+                ->rules(['nullable', 'string', 'size:3'])
+                ->fillRecordUsing(function (Plan $record, string $state): void {
+                    $record->currency = Str::lower(trim($state));
+                }),
+
+            ImportColumn::make('interval')
+                ->label('Interval')
+                ->guess(['Interval'])
+                ->rules(['nullable', 'string', 'in:day,week,month,year']),
+
+            ImportColumn::make('interval_count')
+                ->label('Interval Count')
+                ->integer()
+                ->guess(['Interval count'])
+                ->rules(['nullable', 'integer', 'min:1'])
+                ->ignoreBlankState(),
+
+            ImportColumn::make('trial_period_days')
+                ->label('Trial Period Days')
+                ->integer()
+                ->guess(['Trial period days'])
+                ->rules(['nullable', 'integer', 'min:0'])
+                ->ignoreBlankState(),
+
+            ImportColumn::make('is_hide')
+                ->label('Hide')
+                ->boolean()
+                ->guess(['hide', 'Hide'])
+                ->rules(['nullable', 'boolean'])
+                ->ignoreBlankState(),
+
             ImportColumn::make('coupon_code')
                 ->label('Access Code')
-                ->guess(['access_code', 'coupon'])
+                ->guess(['access_code', 'coupon', 'coupon_code', 'Access code', 'Access Code'])
                 ->requiredMapping()
                 ->rules([
                     'required',
@@ -84,21 +129,72 @@ class PlanAccessCodeImport extends Importer
         }
 
         if ($planName !== '') {
-            $plan = Plan::query()->where('name', $planName)->first();
+            $normalizedPlanName = Str::lower(trim($planName));
+
+            $plan = Plan::query()
+                ->whereRaw('LOWER(TRIM(name)) = ?', [$normalizedPlanName])
+                ->first();
 
             if ($plan) {
                 return $plan;
             }
         }
 
-        throw ValidationException::withMessages([
-            'name' => 'No matching plan was found for this row. Provide a valid Plan ID or Plan Name.',
-        ]);
+        if ($planName === '') {
+            throw ValidationException::withMessages([
+                'name' => 'Plan Name is required when Plan ID is empty.',
+            ]);
+        }
+
+        $requiredForCreate = ['price', 'currency', 'interval'];
+        $missing = collect($requiredForCreate)
+            ->filter(fn (string $field) => blank($this->data[$field] ?? null))
+            ->values()
+            ->all();
+
+        if ($missing !== []) {
+            throw ValidationException::withMessages([
+                'name' => 'Plan not found by name, and missing required create fields: ' . implode(', ', $missing) . '.',
+            ]);
+        }
+
+        return new Plan();
     }
 
     protected function beforeFill(): void
     {
+        // Convert literal "NULL" strings to null
+        foreach ($this->data as $key => $value) {
+            if ($value === 'NULL' || $value === 'null') {
+                $this->data[$key] = null;
+            }
+        }
+
         $this->data['coupon_code'] = Str::upper(trim((string) ($this->data['coupon_code'] ?? '')));
+
+        $interval = Str::lower(trim((string) ($this->data['interval'] ?? '')));
+        $intervalMap = [
+            'daily' => 'day',
+            'day' => 'day',
+            'weekly' => 'week',
+            'week' => 'week',
+            'monthly' => 'month',
+            'month' => 'month',
+            'yearly' => 'year',
+            'annual' => 'year',
+            'year' => 'year',
+        ];
+        if ($interval !== '' && array_key_exists($interval, $intervalMap)) {
+            $this->data['interval'] = $intervalMap[$interval];
+        }
+
+        if (! array_key_exists('interval_count', $this->data) || blank($this->data['interval_count'])) {
+            $this->data['interval_count'] = 1;
+        }
+
+        if (! array_key_exists('currency', $this->data) || blank($this->data['currency'])) {
+            $this->data['currency'] = 'usd';
+        }
 
         if (! array_key_exists('is_coupon_enabled', $this->data) || blank($this->data['is_coupon_enabled'])) {
             $this->data['is_coupon_enabled'] = true;
@@ -113,6 +209,6 @@ class PlanAccessCodeImport extends Importer
     {
         $count = $import->successful_rows;
 
-        return "Access code import completed. {$count} plan(s) updated successfully.";
+        return "Access code import completed. {$count} plan(s) created/updated successfully.";
     }
 }
