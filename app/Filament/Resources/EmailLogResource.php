@@ -212,11 +212,11 @@ class EmailLogResource extends Resource
                             ->badge()
                             ->color('gray'),
 
-                        InfoComponents\TextEntry::make('inbound_replies')
-                            ->label('Inbound Replies')
-                            ->getStateUsing(fn (EmailLog $record): int => $record->replyMessages()->where('direction', 'inbound')->count())
-                            ->badge()
-                            ->color('success'),
+                        // InfoComponents\TextEntry::make('inbound_replies')
+                        //     ->label('Inbound Replies')
+                        //     ->getStateUsing(fn (EmailLog $record): int => $record->replyMessages()->where('direction', 'inbound')->count())
+                        //     ->badge()
+                        //     ->color('success'),
 
                         InfoComponents\TextEntry::make('outbound_replies')
                             ->label('Sent Replies')

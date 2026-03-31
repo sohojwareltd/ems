@@ -269,11 +269,31 @@ class AdminEmailResource extends Resource
     public static function sendEmail(AdminEmail $record): void
     {
         try {
-            app(AdminEmailSender::class)->send($record->fresh());
+            $emailLog = app(AdminEmailSender::class)->send($record->fresh());
+
+            if ($emailLog?->status === 'sent') {
+                Notification::make()
+                    ->title('Emails sent successfully')
+                    ->success()
+                    ->send();
+
+                return;
+            }
+
+            if ($emailLog?->status === 'partial') {
+                Notification::make()
+                    ->title('Emails sent partially')
+                    ->body($emailLog->error_message)
+                    ->warning()
+                    ->send();
+
+                return;
+            }
 
             Notification::make()
-                ->title('Email queued successfully')
-                ->success()
+                ->title('Email sending failed')
+                ->body($emailLog?->error_message)
+                ->danger()
                 ->send();
         } catch (\Throwable $throwable) {
             Notification::make()

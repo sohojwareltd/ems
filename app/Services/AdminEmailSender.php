@@ -44,49 +44,46 @@ class AdminEmailSender
             throw new InvalidArgumentException('Invalid email address found: ' . implode(', ', $invalidEmails));
         }
 
-        try {
-            // Create email log entry for tracking replies
-            $emailLog = $this->createEmailLog($adminEmail, $to, $cc, $bcc);
+        // Create email log entry for tracking replies before sending.
+        $emailLog = $this->createEmailLog($adminEmail, $to, $cc, $bcc);
 
-            $mailable = new AdminCustomEmail($adminEmail);
+        $replyToAddress = config('mail.reply_to.address');
+        $replyToName = config('mail.reply_to.name');
 
-            $replyToAddress = config('mail.reply_to.address');
-            $replyToName = config('mail.reply_to.name');
+        $successCount = 0;
+        $failedRecipients = [];
 
-            if (filled($replyToAddress)) {
-                $mailable->replyTo($replyToAddress, $replyToName);
+        foreach ($allRecipients as $recipient) {
+            try {
+                $mailable = new AdminCustomEmail($adminEmail);
+
+                if (filled($replyToAddress)) {
+                    $mailable->replyTo($replyToAddress, $replyToName);
+                }
+
+                // Send strictly one-by-one to avoid a single bulk delivery.
+                Mail::to($recipient)->send($mailable);
+                $successCount++;
+            } catch (\Throwable $exception) {
+                $failedRecipients[] = $recipient;
             }
-
-            // Send the email via queue
-            // Mail::queue(
-            //     $mailable
-            //         ->to($to)
-            //         ->cc($cc)
-            //         ->bcc($bcc)
-            // );
-            Mail::to($to)
-                ->cc($cc)
-                ->bcc($bcc)
-                ->send($mailable);
-
-            // Mark as sent
-            $emailLog->update([
-                'status' => 'sent',
-                'sent_at' => now(),
-            ]);
-
-            return $emailLog;
-        } catch (\Exception $e) {
-            // Log the error if email log was partially created
-            if (isset($emailLog)) {
-                $emailLog->update([
-                    'status' => 'failed',
-                    'error_message' => $e->getMessage(),
-                ]);
-            }
-
-            throw $e;
         }
+
+        $status = match (true) {
+            $successCount === count($allRecipients) => 'sent',
+            $successCount > 0 => 'partial',
+            default => 'failed',
+        };
+
+        $emailLog->update([
+            'status' => $status,
+            'sent_at' => $successCount > 0 ? now() : null,
+            'error_message' => $failedRecipients !== []
+                ? 'Failed recipients: ' . implode(', ', $failedRecipients)
+                : null,
+        ]);
+
+        return $emailLog;
     }
 
     /**

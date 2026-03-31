@@ -13,6 +13,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -130,6 +131,79 @@ class RepliedRecipientsRelationManager extends RelationManager
                                 ->send();
                         }
                     }),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkAction::make('sendCommonReply')
+                    ->label('Send Common Mail')
+                    ->icon('heroicon-o-paper-airplane')
+                    ->color('primary')
+                    ->modalHeading('Send Common Mail')
+                    ->modalDescription('This message will be sent to all selected replied emails.')
+                    ->form([
+                        Forms\Components\TextInput::make('subject')
+                            ->label('Subject')
+                            ->required()
+                            ->maxLength(255)
+                            ->default(fn (): string => 'Re: ' . ($this->ownerRecord->subject ?? '')),
+
+                        Forms\Components\RichEditor::make('body')
+                            ->label('Message')
+                            ->required()
+                            ->columnSpanFull(),
+                    ])
+                    ->action(function (Collection $records, array $data): void {
+                        $successCount = 0;
+                        $failed = [];
+
+                        foreach ($records as $record) {
+                            try {
+                                $adminEmail = new AdminEmail([
+                                    'to_emails' => $record->email,
+                                    'cc_emails' => null,
+                                    'bcc_emails' => null,
+                                    'email_groups' => null,
+                                    'subject' => $data['subject'],
+                                    'body' => $data['body'],
+                                    'created_by' => Auth::id(),
+                                ]);
+
+                                Mail::to($record->email)->send(new AdminCustomEmail($adminEmail));
+
+                                EmailReplyMessage::query()->create([
+                                    'email_log_id' => $record->email_log_id,
+                                    'email_recipient_id' => $record->id,
+                                    'direction' => 'outbound',
+                                    'from_email' => (string) config('mail.from.address'),
+                                    'subject' => $data['subject'],
+                                    'text_body' => html_entity_decode(trim(strip_tags((string) $data['body'])), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+                                    'html_body' => $data['body'],
+                                    'payload' => null,
+                                    'received_at' => now(),
+                                ]);
+
+                                $successCount++;
+                            } catch (\Throwable $exception) {
+                                $failed[] = $record->email;
+                            }
+                        }
+
+                        if ($successCount > 0) {
+                            Notification::make()
+                                ->title('Common mail sent')
+                                ->body("{$successCount} selected email(s) processed successfully.")
+                                ->success()
+                                ->send();
+                        }
+
+                        if ($failed !== []) {
+                            Notification::make()
+                                ->title('Some emails failed')
+                                ->body('Failed for: ' . implode(', ', $failed))
+                                ->warning()
+                                ->send();
+                        }
+                    })
+                    ->deselectRecordsAfterCompletion(),
             ])
             ->headerActions([])
             ->paginated([10, 25, 50]);
