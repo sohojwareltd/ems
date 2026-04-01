@@ -53,10 +53,10 @@ class RepliedRecipientsRelationManager extends RelationManager
                         default => 'gray',
                     }),
 
-                Tables\Columns\TextColumn::make('replied_at')
-                    ->label('Replied At')
-                    ->dateTime()
-                    ->sortable(),
+                // Tables\Columns\TextColumn::make('replied_at')
+                //     ->label('Replied At')
+                //     ->dateTime()
+                //     ->sortable(),
 
                 Tables\Columns\TextColumn::make('replies_count')
                     ->label('Number of Replies')
@@ -64,7 +64,7 @@ class RepliedRecipientsRelationManager extends RelationManager
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('last_replied_at')
-                    ->label('Last Replied At')
+                    ->label('Replied At')
                     ->dateTime()
                     ->sortable(),
 
