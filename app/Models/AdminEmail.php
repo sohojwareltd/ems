@@ -15,6 +15,14 @@ class AdminEmail extends Model
         'attachment_file_names' => 'array',
     ];
 
+    public function setAttachmentFileNamesAttribute(mixed $value): void
+    {
+        $attachments = $this->normalizeAttachments($this->attributes['attachments'] ?? $this->attachments ?? []);
+        $fileNames = $this->normalizeAttachmentFileNames($value, $attachments);
+
+        $this->attributes['attachment_file_names'] = json_encode($fileNames);
+    }
+
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -74,5 +82,58 @@ class AdminEmail extends Model
             ->unique()
             ->values()
             ->all();
+    }
+
+    private function normalizeAttachmentFileNames(mixed $value, array $attachments): array
+    {
+        if (! is_array($value) || $value === []) {
+            return [];
+        }
+
+        if (array_is_list($value)) {
+            return collect($value)
+                ->filter(fn (mixed $name): bool => is_string($name) && trim($name) !== '')
+                ->map(fn (string $name): string => trim($name))
+                ->values()
+                ->all();
+        }
+
+        if ($attachments !== []) {
+            return collect($attachments)
+                ->map(function (string $path) use ($value): string {
+                    $name = data_get($value, $path);
+
+                    if (is_string($name) && trim($name) !== '') {
+                        return trim($name);
+                    }
+
+                    return basename($path);
+                })
+                ->values()
+                ->all();
+        }
+
+        return collect($value)
+            ->filter(fn (mixed $name): bool => is_string($name) && trim($name) !== '')
+            ->map(fn (string $name): string => trim($name))
+            ->values()
+            ->all();
+    }
+
+    private function normalizeAttachments(mixed $value): array
+    {
+        if (is_array($value)) {
+            return array_values(array_filter($value, fn (mixed $path): bool => is_string($path) && trim($path) !== ''));
+        }
+
+        if (is_string($value) && $value !== '') {
+            $decoded = json_decode($value, true);
+
+            if (is_array($decoded)) {
+                return array_values(array_filter($decoded, fn (mixed $path): bool => is_string($path) && trim($path) !== ''));
+            }
+        }
+
+        return [];
     }
 }

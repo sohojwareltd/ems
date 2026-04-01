@@ -12,6 +12,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class AdminEmailResource extends Resource
 {
@@ -140,6 +141,8 @@ class AdminEmailResource extends Resource
                         ->disk('local')
                         ->directory('admin-email-attachments')
                         ->multiple()
+                        ->preserveFilenames()
+                        ->getUploadedFileNameForStorageUsing(fn (TemporaryUploadedFile $file): string => $file->getClientOriginalName())
                         ->storeFileNamesIn('attachment_file_names')
                         ->downloadable()
                         ->openable()

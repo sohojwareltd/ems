@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Locked;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ReplyAdminEmail extends CreateRecord
 {
@@ -93,6 +94,8 @@ class ReplyAdminEmail extends CreateRecord
                         ->disk('local')
                         ->directory('admin-email-attachments')
                         ->multiple()
+                        ->preserveFilenames()
+                        ->getUploadedFileNameForStorageUsing(fn (TemporaryUploadedFile $file): string => $file->getClientOriginalName())
                         ->storeFileNamesIn('attachment_file_names')
                         ->downloadable()
                         ->openable(),

@@ -52,6 +52,7 @@ class AdminEmailSender
 
         $successCount = 0;
         $failedRecipients = [];
+        $failureReasons = [];
 
         foreach ($allRecipients as $recipient) {
             try {
@@ -66,6 +67,7 @@ class AdminEmailSender
                 $successCount++;
             } catch (\Throwable $exception) {
                 $failedRecipients[] = $recipient;
+                $failureReasons[] = sprintf('%s: %s', $recipient, $exception->getMessage());
             }
         }
 
@@ -79,7 +81,7 @@ class AdminEmailSender
             'status' => $status,
             'sent_at' => $successCount > 0 ? now() : null,
             'error_message' => $failedRecipients !== []
-                ? 'Failed recipients: ' . implode(', ', $failedRecipients)
+                ? 'Failed recipients: ' . implode(', ', $failedRecipients) . ' | Reasons: ' . implode(' ; ', $failureReasons)
                 : null,
         ]);
 
