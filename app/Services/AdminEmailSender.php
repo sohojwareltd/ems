@@ -47,9 +47,6 @@ class AdminEmailSender
         // Create email log entry for tracking replies before sending.
         $emailLog = $this->createEmailLog($adminEmail, $to, $cc, $bcc);
 
-        $replyToAddress = config('mail.reply_to.address');
-        $replyToName = config('mail.reply_to.name');
-
         $successCount = 0;
         $failedRecipients = [];
         $failureReasons = [];
@@ -57,10 +54,6 @@ class AdminEmailSender
         foreach ($allRecipients as $recipient) {
             try {
                 $mailable = new AdminCustomEmail($adminEmail);
-
-                if (filled($replyToAddress)) {
-                    $mailable->replyTo($replyToAddress, $replyToName);
-                }
 
                 // Send strictly one-by-one to avoid a single bulk delivery.
                 Mail::to($recipient)->send($mailable);

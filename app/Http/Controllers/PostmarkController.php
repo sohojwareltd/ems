@@ -19,6 +19,13 @@ class PostmarkController extends Controller
     {
         try {
             $payload = $request->all();
+            Log::info('Postmark inbound webhook received', [
+                'subject' => data_get($payload, 'Subject'),
+                'from' => data_get($payload, 'From'),
+                'from_full' => data_get($payload, 'FromFull'),
+                'to' => data_get($payload, 'To'),
+                'original_recipient' => data_get($payload, 'OriginalRecipient'),
+            ]);
             $encodedPayload = json_encode($payload, JSON_UNESCAPED_UNICODE);
             $now = now();
 

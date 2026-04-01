@@ -95,7 +95,10 @@ Route::post('/paypal/webhook', [PayPalController::class, 'webhook'])->name('payp
 // Postmark inbound webhook for reply tracking.
 Route::post('/webhooks/postmark/inbound', [PostmarkController::class, 'handleInbound'])
     ->name('postmark.inbound')
-    ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class]);
+    ->withoutMiddleware([
+        \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+        \App\Http\Middleware\CheckDeviceSession::class,
+    ]);
 
 Route::get('/stripe/setup-intent', [SubscriptionController::class, 'getSetupIntent']);
 Route::get('/tuition', [PageController::class, 'tuition'])->name('tuition');
