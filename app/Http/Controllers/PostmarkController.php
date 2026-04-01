@@ -20,6 +20,7 @@ class PostmarkController extends Controller
         try {
             $payload = $request->all();
             Log::info('Postmark inbound webhook received', [
+                'payload_keys' => array_keys($payload),
                 'subject' => data_get($payload, 'Subject'),
                 'from' => data_get($payload, 'From'),
                 'from_full' => data_get($payload, 'FromFull'),
@@ -31,7 +32,19 @@ class PostmarkController extends Controller
 
             $senderCandidates = $this->extractSenderCandidates($payload);
 
+            Log::info('Postmark sender candidates extracted', [
+                'sender_candidates' => $senderCandidates->all(),
+                'candidate_count' => $senderCandidates->count(),
+            ]);
+
             if ($senderCandidates->isEmpty()) {
+                Log::warning('Postmark inbound missing sender candidates', [
+                    'from' => data_get($payload, 'From'),
+                    'from_full' => data_get($payload, 'FromFull'),
+                    'sender' => data_get($payload, 'Sender'),
+                    'reply_to' => data_get($payload, 'ReplyTo'),
+                ]);
+
                 return response()->json([
                     'success' => false,
                     'message' => 'Sender email not found in webhook payload.',
@@ -48,6 +61,11 @@ class PostmarkController extends Controller
                 ->whereNull('replied_at')
                 ->get(['id', 'email_log_id', 'replied_at']);
 
+            Log::info('Postmark pending recipient matches', [
+                'matched_count' => $matchingRecipients->count(),
+                'matched_ids' => $matchingRecipients->pluck('id')->values()->all(),
+            ]);
+
             // If no pending rows match, use the most recently replied recipient for ongoing thread tracking.
             if ($matchingRecipients->isEmpty()) {
                 $matchingRecipients = EmailRecipient::query()
@@ -60,6 +78,11 @@ class PostmarkController extends Controller
                     ->orderByDesc('replied_at')
                     ->limit(1)
                     ->get(['id', 'email_log_id', 'replied_at']);
+
+                Log::info('Postmark fallback replied recipient match', [
+                    'matched_count' => $matchingRecipients->count(),
+                    'matched_ids' => $matchingRecipients->pluck('id')->values()->all(),
+                ]);
             }
 
             $updatedCount = 0;
@@ -74,9 +97,19 @@ class PostmarkController extends Controller
                         'updated_at' => $now,
                     ]);
 
+                Log::info('Postmark recipients payload updated', [
+                    'updated_count' => $updatedCount,
+                    'recipient_ids' => $recipientIds->values()->all(),
+                ]);
+
                 $newlyRepliedIds = $matchingRecipients
                     ->whereNull('replied_at')
                     ->pluck('id');
+
+                Log::info('Postmark newly replied recipients resolved', [
+                    'newly_replied_count' => $newlyRepliedIds->count(),
+                    'newly_replied_ids' => $newlyRepliedIds->values()->all(),
+                ]);
 
                 if ($newlyRepliedIds->isNotEmpty()) {
                     EmailRecipient::query()
@@ -85,6 +118,11 @@ class PostmarkController extends Controller
                             'replied_at' => $now,
                             'updated_at' => $now,
                         ]);
+
+                    Log::info('Postmark replied_at updated', [
+                        'updated_ids' => $newlyRepliedIds->values()->all(),
+                        'replied_at' => $now->toDateTimeString(),
+                    ]);
                 }
 
                 // Deduplicate: one history record per email_log only.
@@ -103,10 +141,21 @@ class PostmarkController extends Controller
                             'payload' => $payload,
                             'received_at' => $now,
                         ]);
+
+                        Log::info('Postmark inbound reply message saved', [
+                            'email_log_id' => $recipient->email_log_id,
+                            'email_recipient_id' => $recipient->id,
+                            'from_email' => data_get($payload, 'FromFull.Email') ?? data_get($payload, 'From'),
+                            'received_at' => $now->toDateTimeString(),
+                        ]);
                     });
 
                 if ($newlyRepliedIds->isNotEmpty()) {
                     $this->refreshEmailLogReplyCounts($matchingRecipients->pluck('email_log_id')->unique()->values());
+
+                    Log::info('Postmark email log counters refreshed', [
+                        'email_log_ids' => $matchingRecipients->pluck('email_log_id')->unique()->values()->all(),
+                    ]);
                 }
             }
 
