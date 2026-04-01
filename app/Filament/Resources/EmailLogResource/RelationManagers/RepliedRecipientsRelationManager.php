@@ -32,7 +32,12 @@ class RepliedRecipientsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query): Builder => $query->whereNotNull('replied_at')->latest('replied_at'))
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query
+                ->whereNotNull('replied_at')
+                ->withCount('replyMessages as replies_count')
+                ->withMax('replyMessages as last_replied_at', 'received_at')
+                ->orderByDesc('last_replied_at')
+                ->orderByDesc('replied_at'))
             ->columns([
                 Tables\Columns\TextColumn::make('email')
                     ->label('Email')
@@ -50,6 +55,16 @@ class RepliedRecipientsRelationManager extends RelationManager
 
                 Tables\Columns\TextColumn::make('replied_at')
                     ->label('Replied At')
+                    ->dateTime()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('replies_count')
+                    ->label('Number of Replies')
+                    ->badge()
+                    ->sortable(),
+
+                Tables\Columns\TextColumn::make('last_replied_at')
+                    ->label('Last Replied At')
                     ->dateTime()
                     ->sortable(),
 

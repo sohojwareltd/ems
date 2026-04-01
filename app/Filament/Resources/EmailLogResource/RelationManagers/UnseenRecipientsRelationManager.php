@@ -22,7 +22,7 @@ class UnseenRecipientsRelationManager extends RelationManager
 {
     protected static string $relationship = 'recipients';
 
-    protected static ?string $title = 'Unseen Emails (Grouped by Type)';
+    protected static ?string $title = 'No Reply';
 
     public function form(Form $form): Form
     {
