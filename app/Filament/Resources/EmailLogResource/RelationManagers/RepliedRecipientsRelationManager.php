@@ -73,6 +73,30 @@ class RepliedRecipientsRelationManager extends RelationManager
                     ->limit(70)
                     ->toggleable(),
             ])
+            ->filters([
+                Tables\Filters\Filter::make('reply_count')
+                    ->label('Reply Count')
+                    ->form([
+                        Forms\Components\TextInput::make('reply_count')
+                            ->label('Number of Replies')
+                            ->type('text')
+                            ->inputMode('numeric')
+                            ->rule('integer')
+                            ->rule('min:1')
+                            ->prefixIcon(null)
+                            ->suffixIcon(null)
+                            ->placeholder('e.g. 1, 2, 3'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        $replyCount = $data['reply_count'] ?? null;
+
+                        if ($replyCount === null || $replyCount === '') {
+                            return $query;
+                        }
+
+                        return $query->has('replyMessages', '=', (int) $replyCount);
+                    }),
+            ])
             ->actions([
                 Tables\Actions\Action::make('viewReply')
                     ->label('View Reply')

@@ -221,7 +221,7 @@
                                                     <div class="mt-3 d-flex justify-content-between align-items-center">
                                                         <div><strong>{{ $essay->name }}</strong></div>
                                                         <a href="{{ asset('storage/' . $essay->file) }}"  target="_blank"
-                                                            class="btn btn-sm btn-primary">Download</a>
+                                                            class="btn btn-sm btn-primary">{{ $essay->file_name ?: basename($essay->file) }}</a>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -262,7 +262,7 @@
                                                                     target="_blank">See PDF</a>
                                                                 @if ($essay->ppt_file)
                                                                     <a href="{{ asset('storage/' . $essay->ppt_file) }}"
-                                                                        download>Download Documents</a>
+                                                                        download>{{ $essay->ppt_file_name ?: basename($essay->ppt_file) }}</a>
                                                                 @endif
                                                             </div>
                                                         @else
@@ -295,7 +295,7 @@
                                                     <div class="mt-3 d-flex justify-content-between align-items-center">
                                                         <div><strong>{{ $essay->name }}</strong></div>
                                                         <a href="{{ asset('storage/' . $essay->file) }}"  target="_blank"
-                                                            class="btn btn-sm btn-primary">Download</a>
+                                                            class="btn btn-sm btn-primary">{{ $essay->file_name ?: basename($essay->file) }}</a>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -322,10 +322,10 @@
                                                         <div><strong>{{ $essay->name }}</strong></div>
                                                         <div class="d-flex gap-2">
                                                             <a href="{{ asset('storage/' . $essay->file) }}"
-                                                                target="_blank">Download PDF</a>
+                                                                target="_blank">{{ $essay->file_name ?: basename($essay->file) }}</a>
                                                             @if ($essay->ppt_file)
                                                                 <a href="{{ asset('storage/' . $essay->ppt_file) }}"
-                                                                    download>Download Documents</a>
+                                                                    download>{{ $essay->ppt_file_name ?: basename($essay->ppt_file) }}</a>
                                                             @endif
                                                         </div>
                                                     </div>

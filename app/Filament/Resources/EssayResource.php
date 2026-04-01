@@ -172,13 +172,15 @@ class EssayResource extends Resource
                             Forms\Components\FileUpload::make('file')
                                 ->label('PDF File')
                                 ->directory('products/essay')
+                                ->storeFileNamesIn('file_name')
                                 ->acceptedFileTypes(['application/pdf'])
                                 ->required()
                                 ->maxSize(5120),
 
                             Forms\Components\FileUpload::make('ppt_file')
                                 ->label('Zip File')
-                                ->directory('products/powerpoints'),
+                                ->directory('products/powerpoints')
+                                ->storeFileNamesIn('ppt_file_name'),
                         ]),
                 ])
                 ->maxWidth('full')
