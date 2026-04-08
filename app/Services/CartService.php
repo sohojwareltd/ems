@@ -464,8 +464,14 @@ class CartService
         // Implement coupon logic here
         $coupon = \App\Models\Coupon::where('code', $code)
             ->where('is_active', true)
-            ->where('starts_at', '<=', Carbon::now())
-            ->where('ends_at', '>=', Carbon::now())
+            ->where(function ($query) {
+                $query->whereNull('starts_at')
+                      ->orWhere('starts_at', '<=', Carbon::now());
+            })
+            ->where(function ($query) {
+                $query->whereNull('ends_at')
+                      ->orWhere('ends_at', '>=', Carbon::now());
+            })
             ->first();
 
         if (!$coupon) {
