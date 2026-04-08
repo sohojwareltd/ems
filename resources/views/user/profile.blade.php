@@ -210,10 +210,6 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <p class="alert alert-info mb-3">
-                            <i class="bi bi-info-circle me-2"></i>
-                            A verification email will be sent to verify your password change for security.
-                        </p>
                         <form action="{{ route('user.password.change') }}" method="POST">
                             @csrf
 

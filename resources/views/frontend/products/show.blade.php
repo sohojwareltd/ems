@@ -644,7 +644,11 @@
             });
 
             // Close lightbox
-            $('#lightboxClose, #lightbox').on('click', function(e) {
+            $('#lightboxClose').on('click', function() {
+                closeLightbox();
+            });
+
+            $('#lightbox').on('click', function(e) {
                 if (e.target === this) {
                     closeLightbox();
                 }
