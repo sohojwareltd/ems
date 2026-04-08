@@ -138,14 +138,7 @@ class ProductController extends Controller
                       ->where('category_id', '!=', $product->category_id);
                 });
             })
-            ->orderByRaw('
-                CASE
-                    WHEN category_id = ? AND brand_id = ? THEN 1
-                    WHEN category_id = ? THEN 2
-                    WHEN brand_id = ? THEN 3
-                    ELSE 4
-                END
-            ', [$product->category_id, $product->brand_id, $product->category_id, $product->brand_id])
+            ->orderBy('sort_order', 'asc')
             ->limit(4)
             ->get();
 
