@@ -58,7 +58,6 @@ class SubscriptionController extends Controller
 
         $plan = Plan::query()
             ->where('active', true)
-            ->where('is_hide', false)
             ->where('is_coupon_enabled', true)
             ->whereRaw('UPPER(coupon_code) = ?', [strtoupper($couponCode)])
             ->first();
@@ -100,7 +99,6 @@ class SubscriptionController extends Controller
         $plan = Plan::query()
             ->whereKey($validated['plan_id'])
             ->where('active', true)
-            ->where('is_hide', false)
             ->where('is_coupon_enabled', true)
             ->first();
 
